@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +19,14 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import rs.ac.uns.ftn.informatika.spring.security.model.User;
 import rs.ac.uns.ftn.informatika.spring.security.service.UserService;
+import rs.ac.uns.ftn.informatika.spring.security.view.UserRegisterView;
 
 // Primer kontrolera cijim metodama mogu pristupiti samo autorizovani korisnici
 @RestController
@@ -59,4 +63,18 @@ public class UserController {
         fooObj.put("foo", "bar");
         return fooObj;
     }
+
+	@GetMapping("/profilePatient/{id}")
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	public ResponseEntity<User> pharmacistDetails(@PathVariable(name="id") String id)  {
+		User existUser = this.userService.findByUsername(id);
+		
+		return new ResponseEntity<User>(existUser,HttpStatus.OK);
+	}
+	
+	@PostMapping("/editProfile")
+	public ResponseEntity<User> editUser(@RequestBody UserRegisterView userRequest, UriComponentsBuilder ucBuilder) {
+		System.out.println(userRequest);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
 }

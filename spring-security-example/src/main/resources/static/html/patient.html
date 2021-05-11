@@ -1,8 +1,4 @@
-
-<html>
-
-<head>
-  <meta charset="utf-8">
+ <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
@@ -19,7 +15,7 @@
 
   <taglib uri="http://coverity.com/security" prefix="cov" />
   <script src="../scripts/customAjax.js"></script>
-  <script src="../scripts/registration.js"></script>
+  <script src="../scripts/patient.js"></script>
 
 
   <!--za bootstrap-->
@@ -29,13 +25,49 @@
 
 
   <style type="text/css">
-    .btn-info {
-      color: #fff;
-      background-color: #5bc0de !important;
-      border-color: #46b8da !important;
-    }
-    
-    .container_1 {
+  ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #5bc0de !important;
+}
+li {
+  float: left;
+}
+
+li a, .dropbtn {
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li.dropdown {
+  display: inline-block;
+}
+.dropdown-content {
+  display: none;
+  position: fixed;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+  
+ .dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+.dropdown-content a:hover {background-color: #f1f1f1;}
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+ .container_1 {
     height: 100vh;
     width: 207.4vh;
     background: url('../images/medicine-generic-banner.jpg') no-repeat center center/cover;
@@ -68,19 +100,58 @@
 }
   </style>
 </head>
+<body>
+<div class="container_1">
+<div>
+<ul>
+  <li><a href="#home">My apointments</a></li>
+  <li><a href="#news">Penals</a></li>
+  <li><a href="#news">Complaints</a></li>
+  <li >
+    <a href="javascript:void(0)" class="dropbtn">Schedule</a>
+    <div class="dropdown-content">
+      <a href="#">Schedule dermatologist</a>
+      <a href="#">Schedule consulting with pharmacist</a>
+    </div>
+   </li>
+  <li class="dropdown">
+    <a href="javascript:void(0)" class="dropbtn">Pharamices</a>
+    <div class="dropdown-content">
+      <a href="#">My pharamices</a>
+      <a href="#">All pharamices</a>
+    </div>
+  </li>
+    <li class="dropdown">
+    <a href="javascript:void(0)" class="dropbtn">Drugs</a>
+    <div class="dropdown-content">
+      <a href="#">ePrescription drugs</a>
+       <a href="#">Issued ePrescription drugs </a>
+      <a href="#">Take over your drugs</a>
+      <a href="#">Reserved drugs</a>
+    </div>
+  </li>
+      <li class="dropdown">
+    <a href="javascript:void(0)" class="dropbtn">Appointments history</a>
+    <div class="dropdown-content">
+      <a href="#">Dermatology </a>
+      <a href="#">Pharamcy</a>
+    </div>
+  </li>
 
-<body >
-<div class="container_1" >
-  <div style="padding:10px 100px 50px 0px;" class="row">
+  <li class="dropdown" style="float:right;">
+    <a href="javascript:void(0)" class="dropbtn">Profile</a>
+    <div class="dropdown-content">
+      <a id="profile" href="#">Profile </a>
+      <a id="logout" href="#">Log out</a>
+    </div>
+  </li>
+</ul>
+</div>
+<!-- EDIT PROFILE -->
+ <div style="padding:10px 100px 50px 0px;" class="cloumn" hidden="true" id="edit-profile">
     <div class="col-sm-12 col-md-8 col-lg-6 offset-sm-0 offset-md-2 offset-lg-4">
       <form class="border rounded px-2 py-1 text-center">
-
-        <h5 style="font-weight: bold" >REGISTRATION</h5>
-       
-        <label>Please fill out the registration, our support will get back to you shortly.
-Already have an account? Go to <a href= "login.html"><b>Log in</b></a> </label>
-		
-
+      <h5 style="font-weight: bold" >Basic information</h5>
         <div class="form-group">
           <input type="text" class="form-control form-control-sm not-pass" id="id_first_name" placeholder="First name" autofocus>
           <p id="errorFirstName"></p>
@@ -106,25 +177,16 @@ Already have an account? Go to <a href= "login.html"><b>Log in</b></a> </label>
           <p id="errorPhone"></p>
         </div>
         <div class="form-group">
-          <input type="text" class="form-control form-control-sm not-pass" id="id_email" placeholder="Email" autofocus>
+          <input type="text" class="form-control form-control-sm not-pass" id="id_email" placeholder="Email" autofocus disabled>
           <p id = "errorEmail"></p>
         </div>
-        <div class="form-group">
-          <input type="password" class="form-control form-control-sm not-pass" id="id_password" placeholder="Password">
-          <p id = "errorPassword"></p>
-        </div>
-        <div class="form-group">
-          <input type="password" class="form-control form-control-sm not-pass" id="id_password_repeat" placeholder="Repeat your password">
-          <p id = "errorPasswordRepeat"></p>
-        </div>
-        <button type="button" class="btn btn-info" id="id_button" >REGISTER</button>
+        <button type="button" class="btn btn-info" id="id_submit_changes" >SUBMIT CHANGES</button>
       </form>
       <p class="invalid_1" id="id_p_log"></p>
     </div>
+</div>
   </div>
 
-</div>
 
 </body>
-
 </html>

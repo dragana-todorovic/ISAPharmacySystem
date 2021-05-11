@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService {
 		return u;
 	}
 	@Override
-	public User save(UserRegisterView userRequest) {
+	public User save(UserRegisterView userRequest) {	
 		User u = new User();
 		u.setEmail(userRequest.getEmail());
 		u.setUsername(userRequest.getEmail());
