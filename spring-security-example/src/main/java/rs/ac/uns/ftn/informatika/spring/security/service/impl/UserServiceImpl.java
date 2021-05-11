@@ -6,6 +6,7 @@ import rs.ac.uns.ftn.informatika.spring.security.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -90,6 +91,19 @@ public class UserServiceImpl implements UserService {
 		
 		u = this.userRepository.save(u);
 		return u;
+	}
+	@Override
+	public Boolean changePassword(String email, String password) {
+		User u = findByEmail(email);
+		System.out.println(u);
+		if(u == null) {
+			return false;
+		}
+		u.setPassword(BCrypt.hashpw(password, BCrypt.gensalt(12)));
+		this.userRepository.save(u);
+		return true;
+		
+		
 	}
 
 }

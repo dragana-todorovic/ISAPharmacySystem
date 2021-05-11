@@ -3,6 +3,8 @@ package rs.ac.uns.ftn.informatika.spring.security.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,6 +25,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import rs.ac.uns.ftn.informatika.spring.security.exception.ResourceConflictException;
 import rs.ac.uns.ftn.informatika.spring.security.model.Authority;
+import rs.ac.uns.ftn.informatika.spring.security.model.ChangePassword;
 import rs.ac.uns.ftn.informatika.spring.security.model.User;
 import rs.ac.uns.ftn.informatika.spring.security.service.AuthorityService;
 import rs.ac.uns.ftn.informatika.spring.security.view.UserRegisterView;
@@ -152,6 +155,36 @@ public class AuthenticationController {
 		Map<String, String> result = new HashMap<>();
 		result.put("result", "success");
 		return ResponseEntity.accepted().body(result);
+	}
+	@GetMapping("/profilePharmacist/{id}")
+	@PreAuthorize("hasRole('ROLE_PHARMACIST')")
+	public ResponseEntity<User> pharmacistDetails(@PathVariable(name="id") String id)  {
+		User existUser = this.userService.findByUsername(id);
+		
+		return new ResponseEntity<User>(existUser,HttpStatus.OK);
+	}
+	@RequestMapping(value = "/changePassword" , method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> changePassword(@RequestBody ChangePassword change) {
+		System.out.println(change);
+		String regexEmail = "^([_a-zA-Z0-9-]+)@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*(\\.[a-zA-Z]{1,6})?$";
+		Pattern patternEmail = Pattern.compile(regexEmail);
+        Matcher matcherEmail = patternEmail.matcher(change.getEmail());
+        
+        String regexPassword = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
+        Pattern patternPassword = Pattern.compile(regexPassword);
+        Matcher matcherPassword = patternPassword.matcher(change.getNewPass());
+        
+        if(matcherEmail.matches() && matcherPassword.matches() && change.getNewPass().equals(change.getConfirmPass())) {
+		Boolean result = userService.changePassword(change.getEmail(), change.getNewPass());
+		if(result==false) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	else {
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);		
+	}	
 	}
 
 	static class PasswordChanger {
