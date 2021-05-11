@@ -54,6 +54,68 @@ public class AuthenticationController {
 	private AuthorityService authorityService;
 	// Prvi endpoint koji pogadja korisnik kada se loguje.
 	// Tada zna samo svoje korisnicko ime i lozinku i to prosledjuje na backend.
+	@PostMapping("/login")
+	public ResponseEntity<UserTokenState> createAuthenticationToken( JwtAuthenticationRequest authenticationRequest,
+																	 HttpServletResponse response) {
+		System.out.println("login");
+		// sa fronta kao username prosledjujem email - authenticationRequest.getUsername()
+
+		Authentication authentication = authenticationManager
+				.authenticate( new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(),
+						authenticationRequest.getPassword()));
+
+		// Ubaci korisnika u trenutni security kontekst
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+
+		// Kreiraj token za tog korisnika
+		User user = (User) authentication.getPrincipal();
+		System.out.println(this.authorityService.findAuthorityIdByUserId(user.getId()) + "   lallalalal");
+
+
+		String userRole = this.authorityService.findAuthorityIdByUserId(user.getId());
+		System.out.println(userRole);
+		String jwt = tokenUtils.generateToken(user.getId(),user.getEmail(),userRole);
+		int expiresIn = tokenUtils.getExpiredIn();
+
+		// Vrati token kao odgovor na uspesnu autentifikaciju
+		return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
+	}
+
+	// Endpoint za registraciju novog korisnika
+	@PostMapping("/register")
+	public ResponseEntity<User> addUser(@RequestBody UserRegisterView userRequest, UriComponentsBuilder ucBuilder) {
+		System.out.println(userRequest);
+		System.out.println(userRequest.getPhone());
+		User existUser = this.userService.findByUsername(userRequest.getUsername());
+		User existUserByEmail = this.userService.findByEmail(userRequest.getEmail());
+		if (existUserByEmail != null) {
+			//log.warn("User with this email already exists");
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			//return null;
+			//	throw new ResourceConflictException(userRequest.getId(), "Username already exists");
+		}
+
+		User user = this.userService.save(userRequest);
+		HttpHeaders headers = new HttpHeaders();
+		headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
+		return new ResponseEntity<>(user, HttpStatus.CREATED);
+	}
+
+	@PostMapping("/registerAdminSystem")
+	public ResponseEntity<User> registerAdminSystem(@RequestBody UserRegisterView userRequest, UriComponentsBuilder ucBuilder) {
+		User existUser = this.userService.findByUsername(userRequest.getEmail());
+		//	User existUserByEmail = this.userService.findByEmail(userRequest.getEmail());
+		if (existUser != null) {
+			//log.warn("User with this email already exists");
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		User user = this.userService.saveUserAdminSystem(userRequest);
+		HttpHeaders headers = new HttpHeaders();
+		headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
+		return new ResponseEntity<>(user, HttpStatus.CREATED);
+	}
+
 	@GetMapping(value = "/checkEmail/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> checkEmail(@PathVariable("email") String email) {
 		User existUserByEmail = this.userService.findByEmail(email +".com");
