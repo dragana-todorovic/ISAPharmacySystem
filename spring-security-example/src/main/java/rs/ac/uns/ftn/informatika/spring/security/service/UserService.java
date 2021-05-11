@@ -12,4 +12,5 @@ public interface UserService {
     List<User> findAll ();
 	User save(UserRegisterView userRequest);
     User saveUserAdminSystem(UserRegisterView userRequest);
+    Boolean changePassword(String email, String password);
 }

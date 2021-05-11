@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="../jquery-3.3.1.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="../scripts/dermatologist.js"></script> 
+<script src="../scripts/customAjax.js"></script>
+<script src="../scripts/jwt.js"></script>
+
+<title>Dermatologist Homepage</title>
+<style>
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #5bc0de !important;
+}
+
+li {
+  float: left;
+}
+
+li a, .dropbtn {
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover, .dropdown:hover .dropbtn {
+  background-color:  black;;
+}
+
+li.dropdown {
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+    .container_1 {
+    height: 100vh;
+    width: 207.4vh;
+    background: url('../images/medicine-generic-banner.jpg') no-repeat center center/cover;
+    color: black;
+}
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1;}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+</style>
+</head>
+<body>
+<div class="container_1">
+<ul>
+  <li><a href="#clients">Clients</a></li>
+  <li><a href="#appointment">Start an appointment</a></li>
+  <li><a href="#calendar">Calendar</a></li>
+  <li><a href="#vacation">Vacation</a></li>
+  <li><a href="#schedule">Schedule an appointment</a></li>  
+  <li class="dropdown" style="float:right;">
+    <a href="javascript:void(0)" class="dropbtn">Profile</a>
+    <div class="dropdown-content">
+      <a id="profile" href="#">My profile</a>
+       <a id="changePassword" href="#" >Change password</a>
+      <a id="logout" href="">Log out</a>     
+    </div>
+  </li>
+  
+</ul>
+<div id="show"  hidden="true" >
+<div style="padding:100px 10px 500px 500px;" >
+        <form class="border rounded px-2 py-1 text-left" >
+          <label style="color:black;font-weight: bold" >CHANGE PASSWORD </label>
+			</br></br>
+          <div class="form-group">
+          <input type="password" class="form-control form-control-sm not-pass" id="id_password" placeholder="New password" autofocus>
+          <p id = "errorPassword"></p>
+          </div>
+         
+          <div class="form-group">
+          <input type="password" class="form-control form-control-sm not-pass" id="id_passwordConf" placeholder="Confirm password" autofocus>
+          <p id = "errorPasswordConf"></p>
+          </div>
+		
+          <button type="button" class="btn btn-confirm" id="btnChange" >Change password</button>
+        </form>
+        <p class="invalid_1" id="id_p_log"></p>
+
+
+  </div>
+  </div>
+</div>
+
+</body>
+</html>
