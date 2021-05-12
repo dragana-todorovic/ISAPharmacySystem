@@ -1,10 +1,180 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+
+<!-- fontovi -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
+      crossorigin="anonymous">
+
+<taglib uri="http://coverity.com/security" prefix="cov" />
+<script src="../scripts/customAjax.js"></script>
+<script src="../scripts/jwt.js"></script>
+<script src="../scripts/adminsystem.js"></script>
+
+
+<!--za bootstrap-->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous">
+
+
+
+<style type="text/css">
+  ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #5bc0de !important;
+}
+li {
+  float: left;
+}
+
+li a, .dropbtn {
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li.dropdown {
+  display: inline-block;
+}
+.dropdown-content {
+  display: none;
+  position: fixed;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+ .dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+.dropdown-content a:hover {background-color: #f1f1f1;}
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+ .container_1 {
+    height: 100vh;
+    width: 207.4vh;
+    background: url('../images/medicine-generic-banner.jpg') no-repeat center center/cover;
+    color: black;
+}
+
+.btn_1 {
+    display: inline-block;
+    margin-top: 1.5rem;
+    color: #fff;
+    background: #a85432;
+    padding: 0.5rem 2rem;
+    border: none;
+    border-radius: 5px;
+}
+
+.btn_1:hover {
+    background: #853b1e;
+}
+
+.a_a {
+    color: #853b1e;
+}
+
+.invalid_1 {
+    color: rgb(165, 11, 11);
+    padding: 0;
+    margin: 0;
+    font-size: 0.8rem;
+}
+  </style>
 </head>
 <body>
+<div class="container_1">
+    <div>
+        <ul>
+            <li><a href="#users_complaints">Users Complaints</a></li>
+            <li><a href="#loyalty_program">Loyalty Program</a></li>
+            <li><a href="#add_medicine">Add Medicine</a></li>
+            <li  class="dropdown" >
+                <a href="javascript:void(0)" class="dropbtn">Register</a>
+                <div class="dropdown-content">
+                    <a href="#register_pharmacy">Pharmacy&Admin</a>
+                    <a href="#register_dermatologist">Dermatologist</a>
+                    <a href="#register_supplier">Supplier</a>
+                    <a id="a_register_admin_system" href = "#">Admin System</a>
+                </div>
+            </li>
+            <li class="dropdown" style="float:right;">
+                <a href="javascript:void(0)" class="dropbtn">Profile</a>
+                <div class="dropdown-content">
+                    <a id="profile" href="#">Profile </a>
+                    <a id="logout" href="#">Log out</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div style="padding:10px 100px 50px 0px;" class="cloumn" hidden="true" id = "register_admin_system">
+        <div class="col-sm-12 col-md-8 col-lg-6 offset-sm-0 offset-md-2 offset-lg-4">
+            <form class="border rounded px-2 py-1 text-center">
+
+                <h5 style="font-weight: bold" >REGISTER ADMIN SYSTEM</h5>
+
+                <label>Please enter all fields to register new admin system </label>
+
+
+                <div class="form-group">
+                    <input type="text" class="form-control form-control-sm not-pass" id="id_first_name" placeholder="First name" autofocus>
+                    <p id="errorFirstName"></p>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control form-control-sm not-pass" id="id_last_name" placeholder="Last name" autofocus>
+                    <p id="errorLastName"></p>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control form-control-sm not-pass" id="id_country" placeholder="Country" autofocus>
+                    <p id="errorCountry"></p>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control form-control-sm not-pass" id="id_city" placeholder="City" autofocus>
+                    <p id="errorCity"></p>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control form-control-sm not-pass" id="id_address" placeholder="Address" autofocus>
+                    <p id="errorAddress"></p>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control form-control-sm not-pass" id="id_phone" placeholder="Phone" autofocus>
+                    <p id="errorPhone"></p>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control form-control-sm not-pass" id="id_email" placeholder="Email" autofocus>
+                    <p id = "errorEmail"></p>
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control form-control-sm not-pass" id="id_password" placeholder="Password">
+                    <p id = "errorPassword"></p>
+                </div>
+                <button type="button" class="btn btn-info" id="register_adminsystem_button" >REGISTER</button>
+            </form>
+            <p class="invalid_1" id="id_p_log"></p>
+        </div>
+    </div>
+</div>
+
 
 </body>
 </html>
