@@ -124,37 +124,37 @@ let editProfile = function(user) {
 					        <tbody>
 					            <tr>
 					                <td>Email:</td>
-					                <td class="ui input small"> <input type="text" id="txtUsername" disabled="disabled" value="`+ ((user.username != null) ? user.username:`` ) + `"/></td>
+					                <td> <input type="text" id="txtUsername" disabled="disabled" value="`+ ((user.username != null) ? user.username:`` ) + `"/></td>
 					              
 					            </tr>
 					            <tr>
 					                <td>First name:</td>
-					                <td class="ui input small"> <input type="text" id="txtFirstName" value="`+ ((user.firstName != null) ? user.firstName:`` ) + `"/></td>
+					                <td> <input type="text" id="txtFirstName" value="`+ ((user.firstName != null) ? user.firstName:`` ) + `"/></td>
 					              
 					            </tr>
 					            <tr>
 					                <td>Last name:</td>
-					                <td class="ui input small"> <input type="text" id="txtLastName" value="`+ ((user.lastName != null) ? user.lastName:`` ) + `"/></td>
+					                <td> <input type="text" id="txtLastName" value="`+ ((user.lastName != null) ? user.lastName:`` ) + `"/></td>
 					              
 					            </tr>
 					           <tr>
 					                <td>Country:</td>
-					                <td class="ui input small"> <input type="text" id="txtCountry" value="`+ ((user.country != null) ? user.country:`` ) + `"/></td>
+					                <td> <input type="text" id="txtCountry" value="`+ ((user.country != null) ? user.country:`` ) + `"/></td>
 					              
 					            </tr>
 					           <tr>
 					                <td>City:</td>
-					                <td class="ui input small"> <input type="text" id="txtCity" value="`+ ((user.city != null) ? user.city:`` ) + `"/></td>
+					                <td> <input type="text" id="txtCity" value="`+ ((user.city != null) ? user.city:`` ) + `"/></td>
 					              
 					            </tr>
 					           <tr>
 					                <td>Address:</td>
-					                <td class="ui input small"> <input type="text" id="txtAddress" value="`+ ((user.address != null) ? user.address:`` ) + `"/></td>
+					                <td> <input type="text" id="txtAddress" value="`+ ((user.address != null) ? user.address:`` ) + `"/></td>
 					              
 					            </tr>
 					           <tr>
 					                <td>Phone number:</td>
-					                <td class="ui input small"> <input type="text" id="txtPhoneNumber" value="`+ ((user.phone != null) ? user.phone:`` ) + `"/></td>
+					                <td> <input type="text" id="txtPhoneNumber" value="`+ ((user.phone != null) ? user.phone:`` ) + `"/></td>
 					              
 					            </tr>
 					           
@@ -225,7 +225,7 @@ let changePassword = function(){
 				            <tr>
 				                <td>Repeat new password:</td>
 				                 <td class="ui input small" > <input type="password" id="txtNewPasswordRepeat" value=""/></td>
-
+				              
 				            </tr>
 				          
 				        </tbody>

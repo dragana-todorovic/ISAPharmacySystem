@@ -12,17 +12,11 @@
 <title>Admin pharmacy Homepage</title>
 <style>
 ul {
-  color: #f2f2f2;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  font-size: 17px;
   list-style-type: none;
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: #333;
-  font-size : 20px;
+  background-color: #5bc0de !important;
 }
 
 li {
@@ -38,7 +32,7 @@ li a, .dropbtn {
 }
 
 li a:hover, .dropdown:hover .dropbtn {
-  background-color: lightblue;
+  background-color:  black;;
 }
 
 li.dropdown {
@@ -47,27 +41,59 @@ li.dropdown {
 
 .dropdown-content {
   display: none;
-  position: absolute;
+  position: fixed;
   background-color: #f9f9f9;
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
 }
-
+    .container_1 {
+    height: 100vh;
+    width: 207.4vh;
+    background: url('../images/medicine-generic-banner.jpg') no-repeat center center/cover;
+    color: black;
+}
 .dropdown-content a {
   color: black;
   padding: 12px 16px;
   text-decoration: none;
   display: block;
   text-align: left;
-  right: 0;
 }
-
+ .btn-confirm {
+      color: #fff;
+      background-color: #5bc0de !important;
+      border-color: #46b8da !important;
+    }
 
 .dropdown-content a:hover {background-color: #f1f1f1;}
 
 .dropdown:hover .dropdown-content {
   display: block;
+}
+.a_a {
+    color: #853b1e;
+}
+
+.invalid_1 {
+    color: rgb(165, 11, 11);
+    padding: 0;
+    margin: 0;
+    font-size: 0.8rem;
+}
+
+.btn_1 {
+    display: inline-block;
+    margin-top: 1.5rem;
+    color: #fff;
+    background: #a85432;
+    padding: 0.5rem 2rem;
+    border: none;
+    border-radius: 5px;
+}
+
+.btn_1:hover {
+    background: #853b1e;
 }
 div.container4 {
     height: 10em;
@@ -82,7 +108,7 @@ div.container4 h2 {
 </style>
 </head>
 <body>
-
+<div class="container_1">
 <ul style="background:skyblue">
  <li><a href=""><i class="home icon" style="color:white"></i></a></li>
  
@@ -99,7 +125,7 @@ div.container4 h2 {
  
   
 </ul>
-	<div id = "showData" class="container4" style = "color : skyblue"><h2>You have successfully logged in as a pharmacy administrator!</h2></div>
-
+	<div id = "showData" class="container4" style = "color : white"><h2>You have successfully logged in as a pharmacy administrator!</h2></div>
+</div>
 </body>
 </html>
