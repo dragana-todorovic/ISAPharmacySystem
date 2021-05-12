@@ -16,6 +16,10 @@ var input_phone;
 var input_email;
 var btnSubmit;
 $(document).ready(function() { 
+		$('a#appointment').click(function(){
+		console.log("Usao u appointment");
+		alert("Usao")
+		});	
 		$('a#logout').click(function(){
 		localStorage.removeItem('jwt')		
 		location.href = "login.html";
