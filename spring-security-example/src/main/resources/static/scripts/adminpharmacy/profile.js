@@ -19,6 +19,33 @@ $(document).ready(function(e){
 		localStorage.removeItem('jwt')		
 		location.href = "login.html";
 		});
+	
+	$("#pharmacyProfile").click(function () {
+		  customAjax({
+		      url: '/user/getByEmail/' + email,
+		      method: 'GET',
+		      success: function(user){
+
+		    	  console.log(JSON.stringify(user))
+		    	  customAjax({
+				      url: '/pharmacy/getPharmacyByAdmin',
+				      method: 'POST',
+				      data:JSON.stringify(user),
+				      contentType: 'application/json',
+				      success: function(pharmacy){
+				    	  console.log(pharmacy)
+				      },
+				      error: function(){
+				      }
+			
+			 });
+		      },
+		      error: function(){
+		      }
+	
+	 });
+	  });  
+	
   });
 let showProfile = function(user) {
 

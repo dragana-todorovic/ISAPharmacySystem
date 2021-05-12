@@ -30,3 +30,10 @@ INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (5, 3);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (6, 5);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (8, 6);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (7, 4);
+
+
+INSERT INTO PHARMACY (name, address, description) VALUES ('Jankovic', 'Bulevar oslobodjenja', 'Opis Jankovic');
+
+INSERT INTO PHARMACYADMIN (id, pharmacy_id, user_id) VALUES (1,1,8);
+
+
