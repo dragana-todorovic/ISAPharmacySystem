@@ -19,7 +19,7 @@ function authentification(){
     if( role == 'ROLE_USER')
         window.location.href = "/html/user.html";
     else if (role == 'ROLE_ADMIN_SYSTEM')
-        window.location.href = "/html/adminsystem/register_adminsystem.html";
+        window.location.href = "/html/adminsystem.html";
     else if ( role == 'ROLE_PATIENT')
         window.location.href = "/html/patient.html";
     else if ( role == 'ROLE_PHARMACIST')
@@ -96,8 +96,11 @@ $(document).ready(function(e){
 	        authentification();
 	      //  window.location.href = "/html/certificates.html";
     	}
+	
+	
       },
       error: function(){
+	
         p_log.text('Wrong credentials');
       }
     });

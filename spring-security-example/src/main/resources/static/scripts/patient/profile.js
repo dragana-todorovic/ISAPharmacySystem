@@ -7,7 +7,8 @@ $(document).ready(function() {
 		location.href = "login.html";
 		});
 		
-		$('a#changePassword').click(function(){	
+
+		$('a#changePassword').click(function(){
 		$('#show').attr('hidden',false);
 		$('#edit-profile').attr('hidden', true);
 		input_password = $('#id_password');

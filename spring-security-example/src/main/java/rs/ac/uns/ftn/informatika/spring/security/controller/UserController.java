@@ -52,6 +52,7 @@ public class UserController {
 		return this.userService.findByEmail(email);
 	}
 
+
 	@GetMapping("/user/all")
 	@PreAuthorize("hasRole('ADMIN')")
 	public List<User> loadAll() {
@@ -72,7 +73,7 @@ public class UserController {
     }
 
 	@GetMapping("/profilePatient/{id}")
-	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	@PreAuthorize("hasRole('ROLE_PATIENT')  || hasRole('ADMIN_SYSTEM')")
 	public ResponseEntity<User> pharmacistDetails(@PathVariable(name="id") String id)  {
 		User existUser = this.userService.findByUsername(id);
 		

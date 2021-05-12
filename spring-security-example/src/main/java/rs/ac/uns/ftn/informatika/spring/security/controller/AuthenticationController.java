@@ -77,9 +77,9 @@ public class AuthenticationController {
 
 		String userRole = this.authorityService.findAuthorityIdByUserId(user.getId());
 		System.out.println(userRole);
+		
 		String jwt = tokenUtils.generateToken(user.getId(),user.getEmail(),userRole);
 		int expiresIn = tokenUtils.getExpiredIn();
-
 		// Vrati token kao odgovor na uspesnu autentifikaciju
 		return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
 	}
