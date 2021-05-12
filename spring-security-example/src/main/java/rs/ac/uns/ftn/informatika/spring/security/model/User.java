@@ -67,6 +67,7 @@ public class User implements UserDetails {
 
     @Column( name = "phone")
     private String phoneNumber;
+    
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_authority",
@@ -74,7 +75,16 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
     private List<Authority> authorities;
 
-    public Long getId() {
+    
+    public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public Long getId() {
         return id;
     }
 
