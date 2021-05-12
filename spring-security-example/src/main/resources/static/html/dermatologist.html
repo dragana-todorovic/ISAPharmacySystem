@@ -4,9 +4,10 @@
 <meta charset="UTF-8">
 <script src="../jquery-3.3.1.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script src="../scripts/pharmacist.js"></script> 
+<script src="../scripts/dermatologist.js"></script> 
 <script src="../scripts/customAjax.js"></script>
 <script src="../scripts/jwt.js"></script>
+
 
  <!-- fontovi -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
@@ -124,6 +125,44 @@ li.dropdown {
   </li>
   
 </ul>
+<!-- EDIT PROFILE -->
+ <div style="padding:10px 100px 50px 0px;" class="cloumn" hidden="true" id="edit-profile">
+    <div class="col-sm-12 col-md-8 col-lg-6 offset-sm-0 offset-md-2 offset-lg-4">
+      <form class="border rounded px-2 py-1 text-center">
+      <h5 style="font-weight: bold" >Basic information</h5>
+        <div class="form-group">
+          <input type="text" class="form-control form-control-sm not-pass" id="id_first_name" placeholder="First name" autofocus>
+          <p id="errorFirstName"></p>
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control form-control-sm not-pass" id="id_last_name" placeholder="Last name" autofocus>
+          <p id="errorLastName"></p>
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control form-control-sm not-pass" id="id_country" placeholder="Country" autofocus>
+          <p id="errorCountry"></p>
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control form-control-sm not-pass" id="id_city" placeholder="City" autofocus>
+          <p id="errorCity"></p>
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control form-control-sm not-pass" id="id_address" placeholder="Address" autofocus>
+          <p id="errorAddress"></p>
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control form-control-sm not-pass" id="id_phone" placeholder="Phone" autofocus>
+          <p id="errorPhone"></p>
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control form-control-sm not-pass" id="id_email" placeholder="Email" autofocus disabled>
+          <p id = "errorEmail"></p>
+        </div>
+        <button type="button" class="btn btn-info" id="id_submit_changes" >SUBMIT CHANGES</button>
+      </form>
+      <p class="invalid_1" id="id_p_log"></p>
+    </div>
+</div>
 <div id="show"   hidden="true">
 <div style="padding:100px 300px 500px 300px;" class="cloumn" >
         <form class="border rounded px-2 py-1 text-center" >

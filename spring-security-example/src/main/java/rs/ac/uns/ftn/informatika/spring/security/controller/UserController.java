@@ -80,7 +80,9 @@ public class UserController {
     }
 
 	@GetMapping("/profilePatient/{id}")
-	@PreAuthorize("hasRole('ROLE_PATIENT')  || hasRole('ADMIN_SYSTEM')")
+	@PreAuthorize("hasRole('ROLE_PATIENT')  || hasRole('ADMIN_SYSTEM')"+"|| hasRole('ROLE_PHARMACIST')"
+	        +
+	        "|| hasRole('ROLE_DERMATOLOGIST')")
 	public ResponseEntity<User> pharmacistDetails(@PathVariable(name="id") String id)  {
 		User existUser = this.userService.findByUsername(id);
 		
