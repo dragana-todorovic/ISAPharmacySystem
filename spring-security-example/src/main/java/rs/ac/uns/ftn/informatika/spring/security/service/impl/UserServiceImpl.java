@@ -108,6 +108,7 @@ public class UserServiceImpl implements UserService {
 	}
 	@Override
 	public void editPersonalData(UserRegisterView u) {
+		System.out.println(u.getEmail() + "userrrr");
 		User user = findByEmail(u.getEmail());
 		user.setFirstName(u.getFirstname());
 		user.setLastName(u.getLastname());
