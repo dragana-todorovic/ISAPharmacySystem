@@ -30,6 +30,10 @@ INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (5, 3);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (6, 5);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (8, 6);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (7, 4);
+--patient
+INSERT INTO PATIENTS (id,user_id,points,category) VALUES (1,5,10,0);
+INSERT INTO patients_allergies_medicine(patient_id, allergies_medicine_id) values (1,1);
+
 
 
 INSERT INTO PHARMACY (name, address, description) VALUES ('Jankovic', 'Bulevar oslobodjenja', 'Opis Jankovic');
