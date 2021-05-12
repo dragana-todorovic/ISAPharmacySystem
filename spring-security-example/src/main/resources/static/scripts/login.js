@@ -96,8 +96,11 @@ $(document).ready(function(e){
 	        authentification();
 	      //  window.location.href = "/html/certificates.html";
     	}
+	
+	
       },
       error: function(){
+	
         p_log.text('Wrong credentials');
       }
     });

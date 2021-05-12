@@ -85,6 +85,7 @@ public class UserServiceImpl implements UserService {
 		u.setPhone(userRequest.getPhone());
 		u.setEnabled(true);
 		
+		
 		List<Authority> auth = authService.findByname("ROLE_USER");
 		// u primeru se registruju samo obicni korisnici i u skladu sa tim im se i dodeljuje samo rola USER
 		u.setAuthorities(auth);
