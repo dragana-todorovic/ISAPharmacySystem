@@ -24,7 +24,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
 import rs.ac.uns.ftn.informatika.spring.security.model.User;
+import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacyAdminRepository;
+import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyAdminService;
 import rs.ac.uns.ftn.informatika.spring.security.service.UserService;
 import rs.ac.uns.ftn.informatika.spring.security.view.UserRegisterView;
 
@@ -35,6 +38,10 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
+	private PharmacyAdminService pharmacyAdminService;
+	@Autowired
+	private PharmacyAdminRepository pharmacyAdminRepository;
+
 
 	// Za pristup ovoj metodi neophodno je da ulogovani korisnik ima ADMIN ulogu
 	// Ukoliko nema, server ce vratiti gresku 403 Forbidden
@@ -73,7 +80,9 @@ public class UserController {
     }
 
 	@GetMapping("/profilePatient/{id}")
-	@PreAuthorize("hasRole('ROLE_PATIENT')  || hasRole('ADMIN_SYSTEM')")
+	@PreAuthorize("hasRole('ROLE_PATIENT')  || hasRole('ADMIN_SYSTEM')"+"|| hasRole('ROLE_PHARMACIST')"
+	        +
+	        "|| hasRole('ROLE_DERMATOLOGIST')")
 	public ResponseEntity<User> pharmacistDetails(@PathVariable(name="id") String id)  {
 		User existUser = this.userService.findByUsername(id);
 		
@@ -85,4 +94,5 @@ public class UserController {
 		userService.editPersonalData(userRequest);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
+	
 }

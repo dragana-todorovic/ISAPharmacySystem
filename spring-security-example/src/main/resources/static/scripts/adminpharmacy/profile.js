@@ -19,6 +19,33 @@ $(document).ready(function(e){
 		localStorage.removeItem('jwt')		
 		location.href = "login.html";
 		});
+	
+	$("#pharmacyProfile").click(function () {
+		  customAjax({
+		      url: '/user/getByEmail/' + email,
+		      method: 'GET',
+		      success: function(user){
+
+		    	  console.log(JSON.stringify(user))
+		    	  customAjax({
+				      url: '/pharmacy/getPharmacyByAdmin',
+				      method: 'POST',
+				      data:JSON.stringify(user),
+				      contentType: 'application/json',
+				      success: function(pharmacy){
+				    	  showPharmacyBasicInfo(pharmacy);
+				      },
+				      error: function(){
+				      }
+			
+			 });
+		      },
+		      error: function(){
+		      }
+	
+	 });
+	  });  
+	
   });
 let showProfile = function(user) {
 
@@ -63,9 +90,9 @@ let showProfile = function(user) {
     <tr>
       <th></th>
       <th colspan="2">
-		   <input id = "changePassword" class="ui right floated small primary button" type = "button" value = "Change password"></input>
+		   <input id = "changePassword" class="ui right floated teal basic button" type = "button" value = "Change password"></input>
       
-          <input id = "changeData" class="ui right floated small primary button" type = "button" value = "Edit profile"></input>
+          <input id = "changeData" class="ui right floated teal basic button" type = "button" value = "Edit profile"></input>
 		  
        
       </th>
@@ -97,37 +124,37 @@ let editProfile = function(user) {
 					        <tbody>
 					            <tr>
 					                <td>Email:</td>
-					                <td> <input type="text" id="txtUsername" disabled="disabled" value="`+ ((user.username != null) ? user.username:`` ) + `"/></td>
+					                <td class="ui input small"> <input type="text" id="txtUsername" disabled="disabled" value="`+ ((user.username != null) ? user.username:`` ) + `"/></td>
 					              
 					            </tr>
 					            <tr>
 					                <td>First name:</td>
-					                <td> <input type="text" id="txtFirstName" value="`+ ((user.firstName != null) ? user.firstName:`` ) + `"/></td>
+					                <td class="ui input small"> <input type="text" id="txtFirstName" value="`+ ((user.firstName != null) ? user.firstName:`` ) + `"/></td>
 					              
 					            </tr>
 					            <tr>
 					                <td>Last name:</td>
-					                <td> <input type="text" id="txtLastName" value="`+ ((user.lastName != null) ? user.lastName:`` ) + `"/></td>
+					                <td class="ui input small"> <input type="text" id="txtLastName" value="`+ ((user.lastName != null) ? user.lastName:`` ) + `"/></td>
 					              
 					            </tr>
 					           <tr>
 					                <td>Country:</td>
-					                <td> <input type="text" id="txtCountry" value="`+ ((user.country != null) ? user.country:`` ) + `"/></td>
+					                <td class="ui input small"> <input type="text" id="txtCountry" value="`+ ((user.country != null) ? user.country:`` ) + `"/></td>
 					              
 					            </tr>
 					           <tr>
 					                <td>City:</td>
-					                <td> <input type="text" id="txtCity" value="`+ ((user.city != null) ? user.city:`` ) + `"/></td>
+					                <td class="ui input small"> <input type="text" id="txtCity" value="`+ ((user.city != null) ? user.city:`` ) + `"/></td>
 					              
 					            </tr>
 					           <tr>
 					                <td>Address:</td>
-					                <td> <input type="text" id="txtAddress" value="`+ ((user.address != null) ? user.address:`` ) + `"/></td>
+					                <td class="ui input small"> <input type="text" id="txtAddress" value="`+ ((user.address != null) ? user.address:`` ) + `"/></td>
 					              
 					            </tr>
 					           <tr>
 					                <td>Phone number:</td>
-					                <td> <input type="text" id="txtPhoneNumber" value="`+ ((user.phone != null) ? user.phone:`` ) + `"/></td>
+					                <td class="ui input small"> <input type="text" id="txtPhoneNumber" value="`+ ((user.phone != null) ? user.phone:`` ) + `"/></td>
 					              
 					            </tr>
 					           
@@ -136,7 +163,7 @@ let editProfile = function(user) {
 			    <tr>
 			      <th></th>
 			      <th colspan="2">
-					   <input id = "acceptChange" class="ui right floated small primary button" type = "button" value = "Accept changes"></input>
+					   <input id = "acceptChange" class="ui right floated positive basic button" type = "button" value = "Accept changes"></input>
 			    
 			      </th>
 			    </tr>
@@ -192,14 +219,13 @@ let changePassword = function(){
 				        <tbody>
 				            <tr>
 				                <td>New password:</td>
-				                 <td> <input type="password" id="txtNewPassword" value=""/></td>
-				              	
+				                 <td class="ui input small"> <input type="password" id="txtNewPassword" value=""/></td>
 				            </tr>
 				            
 				            <tr>
 				                <td>Repeat new password:</td>
-				                 <td> <input type="password" id="txtNewPasswordRepeat" value=""/></td>
-				              
+				                 <td class="ui input small" > <input type="password" id="txtNewPasswordRepeat" value=""/></td>
+
 				            </tr>
 				          
 				        </tbody>
@@ -207,7 +233,7 @@ let changePassword = function(){
 		    <tr>
 		      <th></th>
 		      <th colspan="2">
-				   <input id = "acceptChange" class="ui right floated small primary button" type = "button" value = "Accept changes"></input>
+				   <input id = "acceptChange" class="ui right floated positive basic button" type = "button" value = "Accept changes"></input>
 		    
 		      </th>
 		    </tr>
@@ -285,5 +311,48 @@ function validatePassword(password) {
 	  		return false;
 	  	}
 }	
+
+
+let showPharmacyBasicInfo = function(pharmacy){
+	
+	$("#showData").html(`<table class="ui large table" style="width:50%; margin-left:auto; 
+		    margin-right:auto; margin-top: 40px;">
+				        <thead>
+				            <tr class="success">
+				                <th colspan="3" class = "text-info" style= "text-align:center;">Pharmacy basic information</th>
+				            </tr>
+				            <tr>
+				            	<th>Name</th>
+				            	<th>Address</th>
+				            	<th>Description</th>
+				            </tr>
+				            
+				        </thead>
+				        <tbody>
+				        	
+				            <tr>
+				                <td>` + ((pharmacy.name != null) ? pharmacy.name:`-`) + `</td>
+				               <td>` + ((pharmacy.address != null) ? pharmacy.address:`-`) + `</td>
+				              <td>` + ((pharmacy.description != null) ? pharmacy.description:`-`) + `</td>
+				        
+				            </tr>
+				            
+				                     
+				        </tbody>
+				        <tfoot class="full-width">
+		    <tr>
+		      <th></th>
+		      <th colspan="2">
+				   <input id = "changeData" class="ui right floated teal basic button" type = "button" value = "Change data"></input>
+		    
+		      </th>
+		    </tr>
+		    
+		  <p id="errorPassword"> </p>
+		  </tfoot>
+				    </table> `);
+	
+}
+
 
 
