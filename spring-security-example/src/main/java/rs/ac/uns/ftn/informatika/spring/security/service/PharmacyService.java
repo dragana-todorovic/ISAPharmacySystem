@@ -8,5 +8,6 @@ import rs.ac.uns.ftn.informatika.spring.security.model.User;
 
 public interface PharmacyService {
 	Optional<Pharmacy> findById(Long id);
+	void editPharmacy(Pharmacy p);
 
 }

@@ -20,4 +20,15 @@ public class PharmacyServiceImpl implements PharmacyService{
 		return pharmacyRepository.findById(id);
 	}
 
+	@Override
+	public void editPharmacy(Pharmacy p) {
+		Pharmacy pharmacy = findById(p.getId()).get();
+		pharmacy.setName(p.getName());
+		pharmacy.setAddress(p.getAddress());
+		pharmacy.setDescription(p.getDescription());
+		
+		pharmacyRepository.save(pharmacy);
+
+	}
+
 }
