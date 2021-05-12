@@ -26,7 +26,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
 import rs.ac.uns.ftn.informatika.spring.security.model.User;
+import rs.ac.uns.ftn.informatika.spring.security.repository.PatientRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacyAdminRepository;
+import rs.ac.uns.ftn.informatika.spring.security.service.PatientService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyAdminService;
 import rs.ac.uns.ftn.informatika.spring.security.service.UserService;
 import rs.ac.uns.ftn.informatika.spring.security.view.UserRegisterView;
@@ -40,7 +42,13 @@ public class UserController {
 	private UserService userService;
 	private PharmacyAdminService pharmacyAdminService;
 	@Autowired
+	private PatientService patientService;
+	@Autowired
 	private PharmacyAdminRepository pharmacyAdminRepository;
+	
+	@Autowired
+	private PatientRepository patientRepostitory;
+
 
 
 	// Za pristup ovoj metodi neophodno je da ulogovani korisnik ima ADMIN ulogu
@@ -86,6 +94,17 @@ public class UserController {
 	public ResponseEntity<User> pharmacistDetails(@PathVariable(name="id") String id)  {
 		User existUser = this.userService.findByUsername(id);
 		
+		return new ResponseEntity<User>(existUser,HttpStatus.OK);
+	}
+	
+	@GetMapping("/profileP/{id}")
+	@PreAuthorize("hasRole('ROLE_PATIENT')  || hasRole('ADMIN_SYSTEM')"+"|| hasRole('ROLE_PHARMACIST')"
+	        +
+	        "|| hasRole('ROLE_DERMATOLOGIST')")
+	public ResponseEntity<User> pharmacistDetailsP(@PathVariable(name="id") String id)  {
+		User existUser = this.userService.findByUsername(id);
+		System.out.println("KONTROLER");
+		System.out.println(this.patientService.findPatientsAllergies(existUser.getId()));
 		return new ResponseEntity<User>(existUser,HttpStatus.OK);
 	}
 	
