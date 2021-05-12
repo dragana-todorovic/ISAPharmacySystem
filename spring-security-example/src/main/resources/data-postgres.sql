@@ -8,8 +8,12 @@ INSERT INTO USERS (username, password, first_name, last_name, email, country, ci
 INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('dermatologist@example.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.Lrd4j8amcljStog3n4APU5EX3bGJIUK', 'Marko', 'Markovic', 'dermatologist@example.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
 INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('pharmacist@example.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.Lrd4j8amcljStog3n4APU5EX3bGJIUK', 'Marko', 'Markovic', 'pharmacist@example.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
 INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('adminpharmacyr@example.com', '$2y$10$Dz4zbJOWPOfxHsjy2QgDk.SoBDiwsiQ3.2Vgxw0hhNfoDO4rZZB5i', 'Dragana', 'Todorovic', 'adminpharmacyr@example.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
-
--- roles
+--medicine
+INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,notes) VALUES ('1234','Brufen',1,'nesto','Galenika',false,'Ne konzumirati uz alkohol');
+INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,notes) VALUES ('12333','Aspirin',1,'nesto','Galenika',false,'Ne konzumirati uz alkohol');
+INSERT INTO medicine_substitute_medicine_codes(medicine_id, substitute_medicine_codes) VALUES(1,'12333');
+INSERT INTO medicine_substitute_medicine_codes(medicine_id, substitute_medicine_codes) VALUES(2,'1234');
+-- role
 INSERT INTO AUTHORITY (name) VALUES ('ROLE_USER');
 INSERT INTO AUTHORITY (name) VALUES ('ROLE_ADMIN_SYSTEM');
 INSERT INTO AUTHORITY (name) VALUES ('ROLE_PATIENT');

@@ -15,7 +15,7 @@
 
   <taglib uri="http://coverity.com/security" prefix="cov" />
   <script src="../scripts/customAjax.js"></script>
-  <script src="../scripts/patient.js"></script>
+  <script src="../scripts/patient/profile.js"></script>
   <script src="../scripts/jwt.js"></script>
 
 
@@ -142,18 +142,20 @@ li.dropdown {
   <li class="dropdown" style="float:right;">
     <a href="javascript:void(0)" class="dropbtn">Profile</a>
     <div class="dropdown-content">
-      <a id="profile" href="#">Profile </a>
+      <a id="profile" href="#">My profile</a>
        <a id="changePassword" href="#" >Change password</a>
       <a id="logout" href="#">Log out</a>
     </div>
   </li>
 </ul>
 </div>
+
 <!-- EDIT PROFILE -->
+
  <div style="padding:10px 100px 50px 0px;" class="cloumn" hidden="true" id="edit-profile">
     <div class="col-sm-12 col-md-8 col-lg-6 offset-sm-0 offset-md-2 offset-lg-4">
       <form class="border rounded px-2 py-1 text-center">
-      <h5 style="font-weight: bold" >Basic information</h5>
+      <h5 style="font-weight: bold" >Personal information</h5>
         <div class="form-group">
           <input type="text" class="form-control form-control-sm not-pass" id="id_first_name" placeholder="First name" autofocus>
           <p id="errorFirstName"></p>
@@ -186,10 +188,24 @@ li.dropdown {
       </form>
       <p class="invalid_1" id="id_p_log"></p>
     </div>
-</div>
+    
+     <div class="col-sm-12 col-md-8 col-lg-6 offset-sm-0 offset-md-2 offset-lg-4">
+      <form class="border rounded px-2 py-1 text-center">
+      <h5 style="font-weight: bold" >Allergies</h5>
+        <div class="form-group">
+          <input type="text" class="form-control form-control-sm not-pass" id="id_alergies" placeholder="Alergies" autofocus>
+          <p id="errorAlergies"></p>
+        <button type="button" class="btn btn-info" id="id_add_alergies" >ADD ALLERGIES</button>
+        </div>
+      </form>
+      <p class="invalid_1" id="id_p_log"></p>
+    </div>
+</div>    
+
+<!-- CHANGE PASSWORD -->
 
 <div id="show"  hidden="true">
-<div style="padding:100px 10px 500px 500px;" >
+<div style="padding:100px 300px 500px 300px;" class="cloumn" >
         <form class="border rounded px-2 py-1 text-left" >
 
           <label style="color:black;font-weight: bold" >CHANGE PASSWORD </label>

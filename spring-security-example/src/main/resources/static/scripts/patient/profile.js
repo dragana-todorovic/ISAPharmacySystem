@@ -1,12 +1,15 @@
 $(document).ready(function() {
-
+		$('#edit-profile').attr('hidden', true);
+		$('#show').attr('hidden',true);
+		
 		$('a#logout').click(function(){
 		localStorage.removeItem('jwt')		
 		location.href = "login.html";
 		});
 		
-			$('a#changePassword').click(function(){	
+		$('a#changePassword').click(function(){	
 		$('#show').attr('hidden',false);
+		$('#edit-profile').attr('hidden', true);
 		input_password = $('#id_password');
 		console.log(input_password)
 		input_passwordConf = $('#id_passwordConf');
@@ -112,7 +115,9 @@ $(document).ready(function() {
 	  contentType: 'application/json',
 	        success: function(){
 	        	alert("Sucess.")
-	        	
+	        	location.href="patient.html";
+				$('#edit-profile').attr('hidden', false);
+				
 			},
 		      error: function(){
 		       	alert('Error');
@@ -125,6 +130,7 @@ $(document).ready(function() {
 	});
 function showProfile(data){
 	$('#edit-profile').attr('hidden', false);
+		$('#show').attr('hidden',true);
     			 $('#id_first_name').val(data.firstName);
     		    	$('#id_last_name').val(data.lastName);
     		    	$('#id_country').val(data.country);
