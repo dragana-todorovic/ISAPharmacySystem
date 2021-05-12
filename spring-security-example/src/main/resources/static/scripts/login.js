@@ -27,7 +27,7 @@ function authentification(){
     else if ( role == 'ROLE_DERMATOLOGIST')
         window.location.href = "/html/dermatologist.html";
     else if ( role == 'ROLE_ADMIN_PHARMACY')
-    	window.location.href = "/html/adminpharmacy/adminpharmacy.html";
+    	window.location.href = "/html/adminpharmacy.html";
     else if ( role == 'ROLE_SUPPLIER')
         window.location.href = "/html/supplier.html";
 }

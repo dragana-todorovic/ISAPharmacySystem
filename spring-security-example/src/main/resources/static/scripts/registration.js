@@ -8,7 +8,6 @@ var button_register;
 var p_log;
 
 $(document).ready(function(e){
-  //localStorage.removeItem('jwt');
   input_first_name=$('#id_first_name');
   input_last_name=$('#id_last_name');
   input_country = $('#id_country');

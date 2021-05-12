@@ -105,5 +105,16 @@ public class UserServiceImpl implements UserService {
 		
 		
 	}
+	@Override
+	public void editPersonalData(UserRegisterView u) {
+		User user = findByEmail(u.getEmail());
+		user.setFirstName(u.getFirstname());
+		user.setLastName(u.getLastname());
+		user.setAddress(u.getAddress());
+		user.setCity(u.getCity());
+		user.setCountry(u.getCountry());
+		user.setPhone(u.getPhone());
+		this.userRepository.save(user);
+	}
 
 }

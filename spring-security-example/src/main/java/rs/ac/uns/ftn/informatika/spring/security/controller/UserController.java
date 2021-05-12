@@ -80,8 +80,8 @@ public class UserController {
 	}
 	
 	@PostMapping("/editProfile")
-	public ResponseEntity<User> editUser(@RequestBody UserRegisterView userRequest, UriComponentsBuilder ucBuilder) {
-		System.out.println(userRequest);
+	public ResponseEntity<?> editUser(@RequestBody UserRegisterView userRequest) {
+		userService.editPersonalData(userRequest);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

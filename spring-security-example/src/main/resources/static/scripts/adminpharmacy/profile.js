@@ -13,6 +13,12 @@ $(document).ready(function(e){
 	
 	 });
 	  });  
+	
+	$('#logout').click(function(){
+		console.log("blabla")
+		localStorage.removeItem('jwt')		
+		location.href = "login.html";
+		});
   });
 let showProfile = function(user) {
 
@@ -25,7 +31,7 @@ let showProfile = function(user) {
 		        </thead>
 		        <tbody>
 		            <tr>
-		                <td>Username:</td>
+		                <td>Email:</td>
 		                <td>` + ((user.username != null) ? user.username:`-`) + `</td>
 		            </tr>
 		            <tr>
@@ -90,8 +96,8 @@ let editProfile = function(user) {
 					        </thead>
 					        <tbody>
 					            <tr>
-					                <td>Username:</td>
-					                <td> <input type="text" id="txtUsername" value="`+ ((user.username != null) ? user.username:`` ) + `"/></td>
+					                <td>Email:</td>
+					                <td> <input type="text" id="txtUsername" disabled="disabled" value="`+ ((user.username != null) ? user.username:`` ) + `"/></td>
 					              
 					            </tr>
 					            <tr>
@@ -136,6 +142,42 @@ let editProfile = function(user) {
 			    </tr>
 			  </tfoot>
 					    </table> <p id="er"> </p>`);
+	 
+	 $('#acceptChange').click(function(){
+		 	
+			let firstName=$('#txtFirstName').val()
+			let lastName=$('#txtLastName').val()
+			let country=$('#txtCountry').val()
+			let city=$('#txtCity').val()
+			let address=$('#txtAddress').val()
+			let phone=$('#txtPhoneNumber').val()
+			let email=user.email
+
+			obj = JSON.stringify({
+			firstname:firstName,
+			lastname:lastName,
+			country: country,
+			city:city,
+			address:address,
+			phone :phone,
+			email:email});
+			
+			    customAjax({
+	      url: '/user/editProfile',
+	      method: 'POST',
+	      data:obj,
+		  contentType: 'application/json',
+		        success: function(){
+		        	alert("Sucess.")
+		        	location.href = "adminpharmacy.html";
+		        	
+				},
+			      error: function(){
+			       	alert('Error');
+			      }
+	    });
+	 });
+			
 	 
 };
 let changePassword = function(){

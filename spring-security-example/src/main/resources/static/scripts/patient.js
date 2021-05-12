@@ -9,7 +9,7 @@ $(document).ready(function() {
 			var id = localStorage.getItem('email')
 			customAjax({
 				method:'GET',
-		        url:'/api/profilePatient/' + id,
+		        url:'/user/profilePatient/' + id,
 		        contentType: 'application/json',
 	    		success: function(data) {
 				console.log("uspesno profil");	
@@ -43,7 +43,7 @@ $(document).ready(function() {
 		email:email});
 		
 		    customAjax({
-      url: '/api/editProfile',
+      url: '/user/editProfile',
       method: 'POST',
       data:obj,
 	  contentType: 'application/json',
