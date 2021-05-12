@@ -15,7 +15,13 @@ var input_address;
 var input_phone;
 var input_email;
 var btnSubmit;
-$(document).ready(function() {	    				    	    	   	
+$(document).ready(function() {
+		$('a#appointment').click(function(){
+		console.log("Usao u appointment");
+		$('#edit-profile').attr('hidden', true);
+			$('#show').attr('hidden',true)
+		$('#appointentForPatient').attr('hidden',false)
+		});	    				    	    	   	
 		$('a#logout').click(function(){
 		localStorage.removeItem('jwt')		
 		location.href = "login.html";
