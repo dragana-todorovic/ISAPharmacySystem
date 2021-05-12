@@ -16,6 +16,7 @@
   <taglib uri="http://coverity.com/security" prefix="cov" />
   <script src="../scripts/customAjax.js"></script>
   <script src="../scripts/patient.js"></script>
+  <script src="../scripts/jwt.js"></script>
 
 
   <!--za bootstrap-->
@@ -142,6 +143,7 @@ li.dropdown {
     <a href="javascript:void(0)" class="dropbtn">Profile</a>
     <div class="dropdown-content">
       <a id="profile" href="#">Profile </a>
+       <a id="changePassword" href="#" >Change password</a>
       <a id="logout" href="#">Log out</a>
     </div>
   </li>
@@ -185,6 +187,31 @@ li.dropdown {
       <p class="invalid_1" id="id_p_log"></p>
     </div>
 </div>
+
+<div id="show"  hidden="true">
+<div style="padding:100px 10px 500px 500px;" >
+        <form class="border rounded px-2 py-1 text-left" >
+
+          <label style="color:black;font-weight: bold" >CHANGE PASSWORD </label>
+			</br></br>
+          <div class="form-group">
+          <input type="password" class="form-control form-control-sm not-pass" id="id_password" placeholder="New password" autofocus>
+          <p id = "errorPassword"></p>
+          </div>
+         
+          <div class="form-group">
+          <input type="password" class="form-control form-control-sm not-pass" id="id_passwordConf" placeholder="Confirm password" autofocus>
+          <p id = "errorPasswordConf"></p>
+          </div>
+		
+          <button type="button" class="btn btn-confirm" id="btnChange" >Change password</button>
+        </form>
+        <p class="invalid_1" id="id_p_log"></p>
+
+
+  </div></div>
+</div>
+
   </div>
 
 
