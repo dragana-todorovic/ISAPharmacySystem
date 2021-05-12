@@ -124,37 +124,37 @@ let editProfile = function(user) {
 					        <tbody>
 					            <tr>
 					                <td>Email:</td>
-					                <td> <input type="text" id="txtUsername" disabled="disabled" value="`+ ((user.username != null) ? user.username:`` ) + `"/></td>
+					                <td class="ui input small"> <input type="text" id="txtUsername" disabled="disabled" value="`+ ((user.username != null) ? user.username:`` ) + `"/></td>
 					              
 					            </tr>
 					            <tr>
 					                <td>First name:</td>
-					                <td> <input type="text" id="txtFirstName" value="`+ ((user.firstName != null) ? user.firstName:`` ) + `"/></td>
+					                <td class="ui input small"> <input type="text" id="txtFirstName" value="`+ ((user.firstName != null) ? user.firstName:`` ) + `"/></td>
 					              
 					            </tr>
 					            <tr>
 					                <td>Last name:</td>
-					                <td> <input type="text" id="txtLastName" value="`+ ((user.lastName != null) ? user.lastName:`` ) + `"/></td>
+					                <td class="ui input small"> <input type="text" id="txtLastName" value="`+ ((user.lastName != null) ? user.lastName:`` ) + `"/></td>
 					              
 					            </tr>
 					           <tr>
 					                <td>Country:</td>
-					                <td> <input type="text" id="txtCountry" value="`+ ((user.country != null) ? user.country:`` ) + `"/></td>
+					                <td class="ui input small"> <input type="text" id="txtCountry" value="`+ ((user.country != null) ? user.country:`` ) + `"/></td>
 					              
 					            </tr>
 					           <tr>
 					                <td>City:</td>
-					                <td> <input type="text" id="txtCity" value="`+ ((user.city != null) ? user.city:`` ) + `"/></td>
+					                <td class="ui input small"> <input type="text" id="txtCity" value="`+ ((user.city != null) ? user.city:`` ) + `"/></td>
 					              
 					            </tr>
 					           <tr>
 					                <td>Address:</td>
-					                <td> <input type="text" id="txtAddress" value="`+ ((user.address != null) ? user.address:`` ) + `"/></td>
+					                <td class="ui input small"> <input type="text" id="txtAddress" value="`+ ((user.address != null) ? user.address:`` ) + `"/></td>
 					              
 					            </tr>
 					           <tr>
 					                <td>Phone number:</td>
-					                <td> <input type="text" id="txtPhoneNumber" value="`+ ((user.phone != null) ? user.phone:`` ) + `"/></td>
+					                <td class="ui input small"> <input type="text" id="txtPhoneNumber" value="`+ ((user.phone != null) ? user.phone:`` ) + `"/></td>
 					              
 					            </tr>
 					           
@@ -351,6 +351,81 @@ let showPharmacyBasicInfo = function(pharmacy){
 		  <p id="errorPassword"> </p>
 		  </tfoot>
 				    </table> `);
+	 $("#changeData").click(function () {
+		 editPharmacy(pharmacy)
+	 });
+		
+	
+}
+
+let editPharmacy = function (pharmacy) {
+	 $("#showData").html(`<table class="ui large table" style="width:50%; margin-left:auto; 
+			    margin-right:auto; margin-top: 40px;">
+					        <thead>
+					            <tr class="success">
+					                <th colspan="2" class = "text-info" style= "text-align:center;">Edit pharmacy</th>
+					            </tr>
+					        </thead>
+					        <tbody>
+					            <tr>
+					                <td>Name:</td>
+					                <td class="ui input small"> <input type="text" id="txtName" value="`+ ((pharmacy.name != null) ? pharmacy.name:`` ) + `"/></td>
+					              
+					            </tr>
+					            <tr>
+					                <td>Address:</td>
+					                <td class="ui input small"> <input type="text" id="txtAddress" value="`+ ((pharmacy.address != null) ? pharmacy.address:`` ) + `"/></td>
+					              
+					            </tr>
+					            <tr>
+					                <td>Description:</td>
+					                <td class="ui input small"> <input type="text" id="txtDescription" value="`+ ((pharmacy.description != null) ? pharmacy.description:`` ) + `"/></td>
+					              
+					            </tr>
+					         
+					        </tbody>
+					        <tfoot class="full-width">
+			    <tr>
+			      <th></th>
+			      <th colspan="2">
+					   <input id = "acceptChange" class="ui right floated positive basic button" type = "button" value = "Accept changes"></input>
+			    
+			      </th>
+			    </tr>
+			  </tfoot>
+					    </table> <p id="er"> </p>`);
+	 
+	 $('#acceptChange').click(function(){
+		 	
+			let name=$('#txtName').val()
+			let address=$('#txtAddress').val()
+			let description=$('#txtDescription').val()
+		
+			obj = JSON.stringify({
+			id:pharmacy.id,
+			name:name,
+			address:address,
+			description: description,
+			});
+			
+			console.log(obj)
+			
+			    customAjax({
+	      url: '/pharmacy/editPharmacy',
+	      method: 'POST',
+	      data:obj,
+		  contentType: 'application/json',
+		        success: function(){
+		        	alert("Sucess change data.")
+		        	location.href = "adminpharmacy.html";
+		        	
+				},
+			      error: function(){
+			       	alert('Error');
+			      }
+	    });
+	 });
+	
 	
 }
 

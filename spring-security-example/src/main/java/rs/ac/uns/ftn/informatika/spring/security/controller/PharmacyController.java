@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -42,6 +43,15 @@ public class PharmacyController {
 		PharmacyAdmin pa = pharmacyAdminService.findPharmacyAdminByUser(user);
 		System.out.println(pa);
 		return pharmacyService.findById(pa.getPharmacy().getId());
+		
+	}
+	
+	@PostMapping("/editPharmacy")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public ResponseEntity<?> editPharmacy(@RequestBody Pharmacy pharmacy) {
+		
+		pharmacyService.editPharmacy(pharmacy);
+		return new ResponseEntity<>(HttpStatus.OK);
 		
 	}
 
