@@ -14,6 +14,6 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
 	
 	@Query(nativeQuery = true, value = "select name from patients_allergies_medicine left join medicine \n" +
 			"on medicine.id=patients_allergies_medicine.allergies_medicine_id right join patients\n" +
-			"on patients.id=patients_allergies_medicine.patient_id where patients.user_id= :user_id;")
+			"on patients.id=patients_allergies_medicine.patient_id where patients.user_id= :user_id")
 	ArrayList<String> findPatientsAllergies(@Param("user_id") Long user_id);
 }

@@ -97,16 +97,6 @@ public class UserController {
 		return new ResponseEntity<User>(existUser,HttpStatus.OK);
 	}
 	
-	@GetMapping("/profileP/{id}")
-	@PreAuthorize("hasRole('ROLE_PATIENT')  || hasRole('ADMIN_SYSTEM')"+"|| hasRole('ROLE_PHARMACIST')"
-	        +
-	        "|| hasRole('ROLE_DERMATOLOGIST')")
-	public ResponseEntity<User> pharmacistDetailsP(@PathVariable(name="id") String id)  {
-		User existUser = this.userService.findByUsername(id);
-		System.out.println("KONTROLER");
-		System.out.println(this.patientService.findPatientsAllergies(existUser.getId()));
-		return new ResponseEntity<User>(existUser,HttpStatus.OK);
-	}
 	
 	@PostMapping("/editProfile")
 	public ResponseEntity<?> editUser(@RequestBody UserRegisterView userRequest) {
