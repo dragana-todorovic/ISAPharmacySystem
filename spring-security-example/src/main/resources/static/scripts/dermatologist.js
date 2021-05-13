@@ -15,20 +15,79 @@ var input_address;
 var input_phone;
 var input_email;
 var btnSubmit;
-$(document).ready(function() {
-		$('a#appointment').click(function(){
-		console.log("Usao u appointment");
-		$('#edit-profile').attr('hidden', true);
-			$('#show').attr('hidden',true)
-		$('#appointentForPatient').attr('hidden',false)
-		});	    				    	    	   	
+$(document).ready(function() {	    				    	    	   	
 		$('a#logout').click(function(){
 		localStorage.removeItem('jwt')		
 		location.href = "login.html";
 		});
+		$('a#appointment').click(function(){
+		$('#edit-profile').attr('hidden', true);
+		$('#show').attr('hidden',true);
+		$('#patientAppointement').attr('hidden',false);
+		customAjax({
+				method:'GET',
+		        url:'/patient/getAll',
+		        contentType: 'application/json',
+	    		success: function(data) {
+				for (var i = 0; i < data.length; i++) { 
+					 var option = document.createElement("option");
+					 var dropdown = document.getElementById("dropdownPatients");
+					 option.text = (data[i].user.email);
+					 dropdown.add(option); }
+				$('#dropdownPatients').on('change',function(){	
+				var patient = $('#dropdownPatients option:selected').text();
+				console.log("*********"+patient)
+				var email = patient
+		
+		customAjax({
+				method:'GET',
+		        url:'/patient/profileP/' + email,
+		        contentType: 'application/json',
+	    		success: function(data) {
+					list = data					
+					var drugs = list.join('');
+					
+					var listString = "";
+					for (var i = 0; i < data.length; i++) {
+						listString += data[i] + "*";
+					 }
+				drugs=listString
+				console.log(listString)
+					
+
+		customAjax({
+				method:'GET',
+		        url:'/patient/getDrugs/' + drugs,
+		        contentType: 'application/json',
+	    		success: function(data) {					
+				console.log("Usao u lijekove")	
+				console.log(data)
+	    		},
+	    		error:function(message){
+					alert("Error")
+	    			console.log('Error')
+	    		}
+	    	});	
+						
+					
+	    		},
+	    		error:function(message){
+					alert("Error")
+	    			console.log('Error')
+	    		}
+	    	});				  					    		
+					});
+	    		},
+	    		error:function(message){
+					alert("Error")
+	    		}
+	    	});
+		});
 		$('a#profile').click(function(){
 			$('#edit-profile').attr('hidden', false);
 			$('#show').attr('hidden',true)
+			$('#patientAppointement').attr('hidden',true);
+			
 			console.log("Usao")		
 			var id = localStorage.getItem('email')
 			customAjax({
@@ -193,6 +252,8 @@ input_phone.keyup(function () {
 		$('a#changePassword').click(function(){	
 		$('#edit-profile').attr('hidden', true);
 		$('#show').attr('hidden',false);
+		$('#patientAppointement').attr('hidden',true);
+		
 		input_password = $('#id_password');
 		console.log(input_password)
 		input_passwordConf = $('#id_passwordConf');

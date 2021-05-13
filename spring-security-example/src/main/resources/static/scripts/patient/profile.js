@@ -76,7 +76,7 @@ $(document).ready(function() {
 			var id = localStorage.getItem('email')
 			customAjax({
 				method:'GET',
-		        url:'/user/profileP/' + id,
+		        url:'/patient/profileP/' + id,
 		        contentType: 'application/json',
 	    		success: function(data) {
 				console.log("uspesno profil");	
