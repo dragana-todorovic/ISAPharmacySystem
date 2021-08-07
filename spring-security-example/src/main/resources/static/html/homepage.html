@@ -17,9 +17,34 @@
   <!--za bootstrap-->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
         crossorigin="anonymous">
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.css" rel="stylesheet"/>
+        
+         <script src="../scripts/customAjax.js"></script>
+  		<script src="../scripts/homepage.js"></script> 
 
 <title>Homepage</title>
+
 <style type="text/css">
+
+input[type=text] {
+  width: 350px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  background-color: white;
+  background-image: url('searchicon.png');
+  background-position: 10px 10px; 
+  background-repeat: no-repeat;
+  padding: 12px 20px 12px 40px;
+  -webkit-transition: width 0.4s ease-in-out;
+  transition: width 0.4s ease-in-out;
+}
+
+input[type=text]:focus {
+  width: 100%;
+}
+
     .btn-info {
       color: #fff;
       background-color: #5bc0de !important;
@@ -61,17 +86,23 @@
 </head>
 <body>
  <div class="container_1" id="loginTab">
-    <div style="padding:200px 10px 50px 60px;" class="row">
-      <div class="col-sm-12 col-md-8 col-lg-4 offset-sm-0 offset-md-2 offset-lg-4">
-          <label style="color:white;font-weight: bold" >WELCOME</label>
-          <div class="form-group">
+    <div class="column">
+    	 <label style="color:white;font-weight: bold" >WELCOME</label>
+    	 </div>
+    	      <div class="form-group">
           <button onClick="window.location='/html/login.html';" type="button" class="btn btn-info" id="login_button" style="width:20%;">LOG IN</button>
           </div>
 		   <div class="form-group">
           <button onClick="window.location='/html/registration.html';" type="button" class="btn btn-info" id="register_button" style="width:20%;">REGISTER</button>
            </div>
-    </div>
-
+    	  <div class="ui icon input">
+          <input  class="prompt" type="text" id="pharmaciesSearch" placeholder="Search pharmacies..">
+          <i class="search link icon" id="searchPharmacies"></i>
+          </div>
+           <div class="ui icon input">
+           <input class="prompt" type="text" id="drugsSearch" name="search" placeholder="Search drugs..">
+           <i class="search link icon" id="searchDrugs"></i>
+         </div>
   </div>
   </div>
 
