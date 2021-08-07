@@ -3,6 +3,7 @@ package rs.ac.uns.ftn.informatika.spring.security.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -10,6 +11,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -39,10 +41,13 @@ public class Medicine {
    private boolean withprescription;
    
    @ElementCollection(fetch = FetchType.LAZY)
-	private Set<String> substituteMedicineCodes = new HashSet<String>();
+   private Set<String> substituteMedicineCodes = new HashSet<String>();
    
    @Column(name = "notes")
    private String notes;
+   
+   @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Set<Rating> ratings = new HashSet<Rating>();
 
    
    
