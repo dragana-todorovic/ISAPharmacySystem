@@ -76,12 +76,16 @@ $(document).ready(function() {
 			var id = localStorage.getItem('email')
 			customAjax({
 				method:'GET',
+		        url:'/user/profilePatient/' + id,
+		        contentType: 'application/json',
+	    		success: function(data) { 	
+					customAjax({
+				method:'GET',
 		        url:'/patient/profileP/' + id,
 		        contentType: 'application/json',
-	    		success: function(data) {
-				console.log("uspesno profil");	
-				console.log(data);    	
-				showProfile(data)	
+	    		success: function(result) { 	
+		
+				showProfile(data,result)	
 		
 	    		},
 	    		error:function(message){
@@ -89,6 +93,26 @@ $(document).ready(function() {
 	    			console.log('Error')
 	    		}
 	    	});
+		
+	    		},
+	    		error:function(message){
+					alert("Error")
+	    			console.log('Error')
+	    		}
+	    	});
+	
+			customAjax({
+				method:'GET',
+		        url:'/patient/getAllMedicine/',
+		        contentType: 'application/json',
+	    		success: function(data) { 	
+			for(var i = 0; i < data.length; i++) {
+   				$('#dropdown select').append('<option value='+i+'>'+data[i].name+'</option>');
+			}
+			},
+	    		error:function(message){
+					alert("Error")
+	    		}
 	    				    	    	    	
 	    })
 	  $('#id_submit_changes').click(function(){
@@ -129,16 +153,31 @@ $(document).ready(function() {
     })
 		
 	});
-function showProfile(data){
+	});
+function showProfile(data,result){
 	$('#edit-profile').attr('hidden', false);
 		$('#show').attr('hidden',true);
-    			 $('#id_first_name').val(data.firstName);
+    			    $('#id_first_name').val(data.firstName);
     		    	$('#id_last_name').val(data.lastName);
     		    	$('#id_country').val(data.country);
     		    	$('#id_city').val(data.city);
 					$('#id_address').val(data.address);
 					$('#id_phone').val(data.phone);
 					$('#id_email').val(data.email);
+	    var table = $('<table></table>').addClass('foo');
+        for (var i = 0; i < result.length; i++) {
+                row = $('<tr></tr>');
+                    var rowData = $('<td></td>').addClass('bar').text(result[i]);
+                    row.append(rowData);
+               	    table.append(row);
+            }
+
+        if ($('table').length) {
+             $("#id_alergies tr:first").after(row);
+        }
+        else {
+            $('#id_alergies').append(table);
+        }
 };
 function parseJwt (token) {
     var base64Url = token.split('.')[1];

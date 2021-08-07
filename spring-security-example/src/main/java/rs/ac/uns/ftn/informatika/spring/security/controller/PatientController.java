@@ -72,5 +72,11 @@ public class PatientController {
 		System.out.println("Poslijee"+allDrugs);
 		return new ResponseEntity<String>("ok",HttpStatus.OK);
 	}
+	
+	@GetMapping("/getAllMedicine")
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	public List<Medicine> getAllMedicine()   {
+		return this.medicineService.findAll();
+	}
 
 }

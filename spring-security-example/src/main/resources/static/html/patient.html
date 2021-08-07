@@ -23,7 +23,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
         crossorigin="anonymous">
 
-
+ <link href="http://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.css" rel="stylesheet"/>
 
   <style type="text/css">
   ul {
@@ -151,11 +151,29 @@ li.dropdown {
 </div>
 
 <!-- EDIT PROFILE -->
-
- <div style="padding:10px 100px 50px 0px;" class="cloumn" hidden="true" id="edit-profile">
-    <div class="col-sm-12 col-md-8 col-lg-6 offset-sm-0 offset-md-2 offset-lg-4">
+<div  style="padding:10px 100px 50px 0px;" class="cloumn" hidden="true" id="edit-profile">
+  <div class="ui two column very relaxed grid">
+    <div class="column">
+        <h5 style="font-weight: bold" class="border rounded px-2 py-1 text-left" >Category</h5>
+         <h5 style="font-weight: bold" class="border rounded px-2 py-1 text-left" >Actions and benefits</h5>
+          <h5 style="font-weight: bold" class="border rounded px-2 py-1 text-left" >My points</h5>
+      <form class="border rounded px-2 py-1 text-left">
+      <h5 style="font-weight: bold" >My allergies</h5>
+        <div class="form-group" id="id_alergies" >
+         <th height="50">
+			<div id='dropdown'>
+  				<select id="start-date" >
+ 			 </select>
+			</div>
+		  </th>
+        <button type="button" class="btn btn-info" id="id_add_alergies" >ADD ALLERGIES</button>
+        </div>
+      </form>
+      <p class="invalid_1" id="id_p_log"></p>
+    </div>
+    <div class="column">
       <form class="border rounded px-2 py-1 text-center">
-      <h5 style="font-weight: bold" >Personal information</h5>
+      <h5 style="font-weight: bold" >Basic information</h5>
         <div class="form-group">
           <input type="text" class="form-control form-control-sm not-pass" id="id_first_name" placeholder="First name" autofocus>
           <p id="errorFirstName"></p>
@@ -188,19 +206,9 @@ li.dropdown {
       </form>
       <p class="invalid_1" id="id_p_log"></p>
     </div>
-    
-     <div class="col-sm-12 col-md-8 col-lg-6 offset-sm-0 offset-md-2 offset-lg-4">
-      <form class="border rounded px-2 py-1 text-center">
-      <h5 style="font-weight: bold" >Allergies</h5>
-        <div class="form-group">
-          <input type="text" class="form-control form-control-sm not-pass" id="id_alergies" placeholder="Alergies" autofocus>
-          <p id="errorAlergies"></p>
-        <button type="button" class="btn btn-info" id="id_add_alergies" >ADD ALLERGIES</button>
-        </div>
-      </form>
-      <p class="invalid_1" id="id_p_log"></p>
-    </div>
-</div>    
+  </div>
+</div>
+
 
 <!-- CHANGE PASSWORD -->
 
