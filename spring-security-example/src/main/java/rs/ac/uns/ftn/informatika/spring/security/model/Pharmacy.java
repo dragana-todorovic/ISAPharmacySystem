@@ -1,10 +1,16 @@
 package rs.ac.uns.ftn.informatika.spring.security.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -30,6 +36,27 @@ public class Pharmacy {
 
     @Column(name = "description")
     private String description;
+    
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<MedicineWithQuantity> medicineWithQuantity = new HashSet<MedicineWithQuantity>();
+    
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Set<Rating> ratings = new HashSet<Rating>();
+    
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<MedicinePrice> medicinePrices = new HashSet<MedicinePrice>();
+    
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<AppoitmentPrice> appoitmentPrices = new HashSet<AppoitmentPrice>();
+    
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<MedicineReservation> medicineReservations = new HashSet<MedicineReservation>();
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<MedicineOrder> medicineOrders = new HashSet<MedicineOrder>();
+    
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<ActionAndBenefit> actionsAndBenefits = new HashSet<ActionAndBenefit>();
 
 	public Long getId() {
 		return id;
