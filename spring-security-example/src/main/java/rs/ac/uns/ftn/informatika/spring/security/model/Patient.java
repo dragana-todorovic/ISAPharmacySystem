@@ -11,7 +11,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -34,25 +33,6 @@ public class Patient {
 	
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	private Set<Medicine> allergiesMedicine = new HashSet<Medicine>();
-	
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-	private Set<Pharmacy> patientSubscriptions = new HashSet<Pharmacy>();
-	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-	private Set<DermatologistComplaint> dermatologistComplaints = new HashSet<DermatologistComplaint>();
-	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-	private Set<PharmacistComplaint> pharmacistComplaints = new HashSet<PharmacistComplaint>();
-	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-	private Set<PharmacyComplaint> pharmacyComplaints = new HashSet<PharmacyComplaint>();
-	
-		
-	@Column(name = "penal", nullable = false)
-	private int penal = 0;
-	
-	@Column(name = "point", nullable = false)
-	private int point;
 
 	public Long getId() {
 		return id;
