@@ -80,19 +80,19 @@ $(document).ready(function() {
 		        contentType: 'application/json',
 	    		success: function(data) { 	
 					customAjax({
-				method:'GET',
-		        url:'/patient/profileP/' + id,
-		        contentType: 'application/json',
-	    		success: function(result) { 	
-		
-				showProfile(data,result)	
-		
-	    		},
-	    		error:function(message){
-					alert("Error")
-	    			console.log('Error')
-	    		}
-	    	});
+					method:'GET',
+			        url:'/patient/profileP/' + id,
+			        contentType: 'application/json',
+		    		success: function(result) { 	
+			
+					showProfile(data,result)	
+			
+		    		},
+		    		error:function(message){
+						alert("Error")
+		    			console.log('Error')
+		    		}
+		    	});
 		
 	    		},
 	    		error:function(message){
@@ -106,9 +106,19 @@ $(document).ready(function() {
 		        url:'/patient/getAllMedicine/',
 		        contentType: 'application/json',
 	    		success: function(data) { 	
-			for(var i = 0; i < data.length; i++) {
-   				$('#dropdown select').append('<option value='+i+'>'+data[i].name+'</option>');
-			}
+						showAllergies(data);
+			},
+	    		error:function(message){
+					alert("Error")
+	    		}
+	    				    	    	    	
+	    })
+			customAjax({
+				method:'GET',
+		        url:'/patient/getPatientById/'+id,
+		        contentType: 'application/json',
+	    		success: function(data) { 	
+						showPatientData(data);
 			},
 	    		error:function(message){
 					alert("Error")
@@ -133,27 +143,42 @@ $(document).ready(function() {
 		phone :phone,
 		email:email});
 		
-		    customAjax({
-      url: '/user/editProfile',
-      method: 'POST',
-      data:obj,
-	  contentType: 'application/json',
-	        success: function(){
-	        	alert("Sucess.")
-	        	location.href="patient.html";
-				$('#edit-profile').attr('hidden', false);
-				
-			},
-		      error: function(){
-		       	alert('Error');
-		      }
+	 customAjax({
+	      url: '/user/editProfile',
+	      method: 'POST',
+	      data:obj,
+		  contentType: 'application/json',
+		        success: function(){
+		        	alert("Sucess.")
+		        	location.href="patient.html";
+					$('#edit-profile').attr('hidden', false);
+					
+				},
+			      error: function(){
+			       	alert('Error');
+			      }
     });
 		
    
     })
-		
 	});
 	});
+function showPatientData(data){
+		$('#category').text("Category:"+data.category);
+		$('#mypoints').text("My points:"+data.points);
+};
+function showAllergies(data){
+	let temp='';
+	for (i in data){
+		temp+=`<tr id="`+data[i].id+`">
+			<td><h4 class="ui image header"> <div class="content">
+             `+data[i].name+`</div>
+      			</h4></td>
+     			 <td><button class="ui primary basic button">Add Allergie</button>
+      			</td></tr>`;
+	}
+	$('#medicine_for_allergies').html(temp);
+};
 function showProfile(data,result){
 	$('#edit-profile').attr('hidden', false);
 		$('#show').attr('hidden',true);
@@ -164,20 +189,16 @@ function showProfile(data,result){
 					$('#id_address').val(data.address);
 					$('#id_phone').val(data.phone);
 					$('#id_email').val(data.email);
-	    var table = $('<table></table>').addClass('foo');
-        for (var i = 0; i < result.length; i++) {
-                row = $('<tr></tr>');
-                    var rowData = $('<td></td>').addClass('bar').text(result[i]);
-                    row.append(rowData);
-               	    table.append(row);
-            }
-
-        if ($('table').length) {
-             $("#id_alergies tr:first").after(row);
-        }
-        else {
-            $('#id_alergies').append(table);
-        }
+		let temp='';
+			for (i in result){
+				temp+=`<tr id="`+result[i]+`">
+					<td><h4 class="ui image header"> <div class="content">
+		             `+result[i]+`</div>
+		      			</h4></td>
+		     			 <td><button class="ui negative basic button">Remove Allergie</button>
+		      			</td></tr>`;
+			}
+		$('#my_allergies').html(temp);
 };
 function parseJwt (token) {
     var base64Url = token.split('.')[1];

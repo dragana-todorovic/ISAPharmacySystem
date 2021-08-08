@@ -1,5 +1,7 @@
 package rs.ac.uns.ftn.informatika.spring.security.service.impl;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,20 @@ public class PharmacyServiceImpl implements PharmacyService{
 		
 		pharmacyRepository.save(pharmacy);
 
+	}
+
+	@Override
+	public Collection<Pharmacy> searchPharmacy(String p) {
+	   ArrayList<Pharmacy> pharmacies = new ArrayList<>();
+	   for(Pharmacy pharamacy : pharmacyRepository.findAll()){
+		   if(pharamacy.getName().equalsIgnoreCase(p)) {
+			   pharmacies.add(pharamacy);
+		   }
+		   else if(pharamacy.getAddress().equalsIgnoreCase(p)){
+			   pharmacies.add(pharamacy);
+		   }
+	   }
+        return pharmacies;
 	}
 
 }

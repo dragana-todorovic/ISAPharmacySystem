@@ -3,7 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 <script src="../jquery-3.3.1.min.js"></script>
+<script src="../scripts/customAjax.js"></script>
+ <script src="../scripts/homepage.js"></script> 
+<taglib uri="http://coverity.com/security" prefix="cov" />
 
  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
           crossorigin="anonymous"></script>
@@ -19,8 +23,7 @@
         crossorigin="anonymous">
     <link href="http://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.css" rel="stylesheet"/>
         
-         <script src="../scripts/customAjax.js"></script>
-  		<script src="../scripts/homepage.js"></script> 
+       
 
 <title>Homepage</title>
 
@@ -87,9 +90,9 @@ input[type=text]:focus {
 <body>
  <div class="container_1" id="loginTab">
     <div class="column">
-    	 <label style="color:white;font-weight: bold" >WELCOME</label>
+    	 <h1 class="ui header" style="color:white;font-weight: bold" >WELCOME</h1>
     	 </div>
-    	      <div class="form-group">
+    	   <div class="form-group ">
           <button onClick="window.location='/html/login.html';" type="button" class="btn btn-info" id="login_button" style="width:20%;">LOG IN</button>
           </div>
 		   <div class="form-group">
@@ -100,11 +103,40 @@ input[type=text]:focus {
           <i class="search link icon" id="searchPharmacies"></i>
           </div>
            <div class="ui icon input">
-           <input class="prompt" type="text" id="drugsSearch" name="search" placeholder="Search drugs..">
-           <i class="search link icon" id="searchDrugs"></i>
+           <input class="prompt" type="text" id="medicineSearch" name="search" placeholder="Search medicine..">
+           <i class="search link icon" id="searchMedicine"></i>
          </div>
-  </div>
-  </div>
+    <div class="container_1" hidden='true' id="pharmacies_show">
+        <form class="border rounded px-2 py-1 text-center">       
+        		 <table class="ui celled table" >
+		  	<thead>
+		    	<tr><th>Name</th>
+		   		 <th>Address</th>
+		   		 <th>Description</th>
+		 		 </tr></thead>
+		 	 <tbody id="pharmacies_table" >
+		 	 </tbody>
+		</table>  
+        </form>
+      </div>
+      	    <div class="container_1" hidden='true' id="medicine_show">
+        <form class="border rounded px-2 py-1 text-center">       
+        		 <table class="ui celled table" >
+		  	<thead>
+		    	<tr><th>Code</th>
+		   		 <th>Name</th>
+		   		 <th>Shape</th>
+		   		 <th>Content</th>
+		   		 <th>Produces</th>
+		   		 <th>With prescription?</th>
+		   		 <th>Notes</th>
+		 		 </tr></thead>
+		 	 <tbody id="medicine_table" >
+		 	 </tbody>
+		</table>  
+        </form>
+      </div>
+    </div>
 
 </body>
 </html>

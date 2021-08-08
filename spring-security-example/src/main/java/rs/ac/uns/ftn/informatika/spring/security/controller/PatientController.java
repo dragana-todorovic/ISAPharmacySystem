@@ -48,6 +48,13 @@ public class PatientController {
 		ArrayList<String> result = this.patientService.findPatientsAllergies(existUser.getId());
 		return new ResponseEntity<ArrayList<String>>(result,HttpStatus.OK);
 	}
+	@GetMapping("/getPatientById/{id}")
+	@PreAuthorize("hasRole('ROLE_PATIENT') ")
+	public ResponseEntity<Patient> patientDetails(@PathVariable(name="id") String id)  {
+		User existUser = this.userService.findByUsername(id);
+		Patient patient = this.patientService.findPatientByUser(existUser);
+		return new ResponseEntity <Patient>(patient,HttpStatus.OK);
+	}
 	@GetMapping("/getDrugs/{drugs}")
 	@PreAuthorize("hasRole('ROLE_PHARMACIST')"
 	        +
@@ -78,5 +85,5 @@ public class PatientController {
 	public List<Medicine> getAllMedicine()   {
 		return this.medicineService.findAll();
 	}
-
+	
 }
