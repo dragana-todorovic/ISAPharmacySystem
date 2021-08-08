@@ -1,4 +1,96 @@
+let jsonObjekat;
+var pomocnaP;
 $(document).ready(function(e){
+	
+	function reverseGeocode(coords) {
+        fetch('https://nominatim.openstreetmap.org/reverse?format=json&lon=' + coords[0] + '&lat=' + coords[1])
+            .then(function (response) {
+                //alert(response);
+                return response.json();
+            }).then(function (json) {
+            let location = json["address"]["road"] + ` ` + json["address"]["house_number"] + ` , ` + json["address"]["city"] + ` , ` + json["address"]["country"];
+            $('#txtAddress').val(location)
+
+            // $('#street-number').val(json["address"]["house_number"])
+            //$('#city').val(json["address"]["city"])
+            //$('#zip-code').val(json["address"]["postcode"])
+
+
+            //$('#location-longitude').val(json["lon"]);
+            //$('#location-latitude').val(json["lat"]);
+
+
+            jsonObjekat = json;
+        });
+    };
+
+    pomocnaP = function () {
+        var map = new ol.Map({
+
+            target: 'map',
+            layers: [
+                new ol.layer.Tile({
+                    source: new ol.source.OSM()
+                })
+            ],
+            view: new ol.View({
+                center: ol.proj.fromLonLat([19.8424, 45.2541]),
+                zoom: 15
+            })
+        });
+        //var jsonObjekat;
+        map.on('click', function (evt) {
+            var coord = ol.proj.toLonLat(evt.coordinate);
+            reverseGeocode(coord);
+            var iconFeatures = [];
+            var lon = coord[0];
+            var lat = coord[1];
+           // var icon = "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Map_marker_font_awesome.svg/200px-Map_marker_font_awesome.svg.png";
+            var iconGeometry = new ol.geom.Point(ol.proj.transform([lon, lat], 'EPSG:4326', 'EPSG:3857'));
+            var iconFeature = new ol.Feature({
+                geometry: iconGeometry
+            });
+
+            iconFeatures.push(iconFeature);
+
+            var vectorSource = new ol.source.Vector({
+                features: iconFeatures //add an array of features
+            });
+
+
+            var iconStyle = new ol.style.Style({
+                image: new ol.style.Icon(/** @type {olx.style.IconOptions} */({
+                    anchor: [0.5, 46],
+                    anchorXUnits: 'fraction',
+                    anchorYUnits: 'pixels',
+                    opacity: 0.95,
+                    src: icon
+                }))
+            });
+
+            var vectorLayer = new ol.layer.Vector({
+                source: vectorSource,
+                style: iconStyle
+            });
+          /*  var markers = new ol.layer.Vector({
+            	  source: new ol.source.Vector(),
+            	  style: new ol.style.Style({
+            	    image: new ol.style.Icon({
+            	      anchor: [0.5, 1],
+            	      src: 'marker.png'
+            	    })
+            	  })
+            	});
+            	map.addLayer(markers);
+
+            	var marker = new ol.Feature(new ol.geom.Point(ol.proj.fromLonLat([106.8478695, -6.1568562])));
+            	markers.getSource().addFeature(marker);*/
+
+            map.addLayer(vectorLayer);
+
+        });
+    }
+	
 	var email = localStorage.getItem('email')
 	
 	  $("#profileInfo").click(function () {
@@ -33,7 +125,7 @@ $(document).ready(function(e){
 				      data:JSON.stringify(user),
 				      contentType: 'application/json',
 				      success: function(pharmacy){
-				    	  showPharmacyBasicInfo(pharmacy);
+				    	  editPharmacy(pharmacy);
 				      },
 				      error: function(){
 				      }
@@ -359,11 +451,11 @@ let showPharmacyBasicInfo = function(pharmacy){
 }
 
 let editPharmacy = function (pharmacy) {
-	 $("#showData").html(`<table class="ui large table" style="width:50%; margin-left:auto; 
+	 $("#showData").html(`<table class="ui basic large table" style="width:50%; margin-left:auto; 
 			    margin-right:auto; margin-top: 40px;">
 					        <thead>
 					            <tr class="success">
-					                <th colspan="2" class = "text-info" style= "text-align:center;">Edit pharmacy</th>
+					                <th colspan="3" class = "text-info" style= "text-align:center;">Edit pharmacy</th>
 					            </tr>
 					        </thead>
 					        <tbody>
@@ -374,21 +466,23 @@ let editPharmacy = function (pharmacy) {
 					            </tr>
 					            <tr>
 					                <td>Address:</td>
-					                <td class="ui input small"> <input type="text" id="txtAddress" value="`+ ((pharmacy.address != null) ? pharmacy.address:`` ) + `"/></td>
-					              
+					                <td class="ui input small"> <input type="text" disabled="true" id="txtAddress" value="`+ ((pharmacy.address != null) ? pharmacy.address:`` ) + `"/></td>
+					                <td><div id="map" class="map"  style="width:350px;"></div>
+                                            <script>pomocnaP();</script></td>
 					            </tr>
 					            <tr>
 					                <td>Description:</td>
 					                <td class="ui input small"> <input type="text" id="txtDescription" value="`+ ((pharmacy.description != null) ? pharmacy.description:`` ) + `"/></td>
 					              
 					            </tr>
-					         
+					        
 					        </tbody>
+					        
 					        <tfoot class="full-width">
 			    <tr>
 			      <th></th>
 			      <th colspan="2">
-					   <input id = "acceptChange" class="ui right floated positive basic button" type = "button" value = "Accept changes"></input>
+					   <input id = "acceptChange" class="ui right floated positive button" type = "button" value = "Accept changes"></input>
 			    
 			      </th>
 			    </tr>
