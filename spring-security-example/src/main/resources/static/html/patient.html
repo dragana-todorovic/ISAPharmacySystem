@@ -16,6 +16,7 @@
   <taglib uri="http://coverity.com/security" prefix="cov" />
   <script src="../scripts/customAjax.js"></script>
   <script src="../scripts/patient/profile.js"></script>
+  <script src="../scripts/patient/appointments.js"></script>
   <script src="../scripts/jwt.js"></script>
 
 
@@ -105,13 +106,17 @@ li.dropdown {
 <div class="container_1">
 <div>
 <ul>
-  <li><a href="#home">My apointments</a></li>
+  <li class="dropdown"><a href="javascript:void(0)" class="dropbtn">My appointments</a>
+   <div class="dropdown-content">
+      <a href="#">My appointments at dermatologists</a>
+       <a href="#">My appointments at pharmacists </a>
+  </li>
   <li><a href="#news">Penals</a></li>
   <li><a href="#news">Complaints</a></li>
-  <li >
+  <li class="dropdown" >
     <a href="javascript:void(0)" class="dropbtn">Schedule</a>
     <div class="dropdown-content">
-      <a href="#">Schedule dermatologist</a>
+      <a id="dermatology_appointment_scedule" href="#">Schedule dermatologist</a>
       <a href="#">Schedule consulting with pharmacist</a>
     </div>
    </li>
@@ -125,7 +130,7 @@ li.dropdown {
     <li class="dropdown">
     <a href="javascript:void(0)" class="dropbtn">Drugs</a>
     <div class="dropdown-content">
-      <a href="#">ePrescription drugs</a>
+      <a href="#">My ePrescription drugs</a>
        <a href="#">Issued ePrescription drugs </a>
       <a href="#">Take over your drugs</a>
       <a href="#">Reserved drugs</a>
@@ -154,21 +159,41 @@ li.dropdown {
 <div  style="padding:10px 100px 50px 0px;" class="cloumn" hidden="true" id="edit-profile">
   <div class="ui two column very relaxed grid">
     <div class="column">
-        <h5 style="font-weight: bold" class="border rounded px-2 py-1 text-left" >Category</h5>
-         <h5 style="font-weight: bold" class="border rounded px-2 py-1 text-left" >Actions and benefits</h5>
-          <h5 style="font-weight: bold" class="border rounded px-2 py-1 text-left" >My points</h5>
+	        <h5 id="category"  class="border rounded px-2 py-1 text-center" ></h5>
+         <h5 style="font-weight: bold" class="border rounded px-2 py-1 text-center" >Actions and benefits</h5>
+          <h5 id="mypoints" style="font-weight: bold" class="border rounded px-2 py-1 text-center" ></h5>
+        <div class="ui two column very relaxed grid">
+        <div class="column">
       <form class="border rounded px-2 py-1 text-left">
-      <h5 style="font-weight: bold" >My allergies</h5>
+      <h5 style="font-weight: bold" >Add allergies</h5>
         <div class="form-group" id="id_alergies" >
-         <th height="50">
-			<div id='dropdown'>
-  				<select id="start-date" >
- 			 </select>
-			</div>
-		  </th>
-        <button type="button" class="btn btn-info" id="id_add_alergies" >ADD ALLERGIES</button>
         </div>
+        <table class="ui very basic collapsing celled table">
+  <thead>
+    <tr><th>Medicine</th>
+    <th></th>
+  </tr></thead>
+  <tbody id="medicine_for_allergies">
+  </tbody>
+</table>
       </form>
+      </div>
+       <div class="column">
+       <form class="border rounded px-2 py-1 text-left">
+      <h5 style="font-weight: bold" >My allergies:</h5>
+        <div class="form-group" >
+        </div>
+        <table class="ui very basic collapsing celled table">
+  <thead>
+    <tr><th>Medicine</th>
+    <th></th>
+  </tr></thead>
+  <tbody id="my_allergies">
+  </tbody>
+</table>
+      </form>
+       </div>
+  </div>
       <p class="invalid_1" id="id_p_log"></p>
     </div>
     <div class="column">
@@ -234,10 +259,33 @@ li.dropdown {
 
 
   </div></div>
+  <!-- DERMATOLOGY APPOINTMENT-->
+
+<div id="derm_appointments"  hidden="true">
+<div style="padding:100px 300px 500px 300px;" class="cloumn" >
+          <label style="color:black;font-weight: bold" >AVAILABLE APPOINTMENTS </label>
+			</br></br>
+                  <form class="border rounded px-2 py-1 text-center">       
+        		 <table class="ui celled table" >
+		  	<thead>
+		    	<tr><th>Dermatologist</th>
+		   		 <th>Dermatologists grade</th>
+		   		 <th>Date</th>
+		   		 <th>Time</th>
+		   		 <th>Price</th>
+		   		 <th>Pharmacy</th>
+		 		 </tr></thead>
+		 	 <tbody id="appointments_dermatology_table" >
+		 	 </tbody>
+		</table>  
+        </form>
+
+
+  </div></div>
 </div>
 
-  </div>
 
+</div>
 
 </body>
 </html>

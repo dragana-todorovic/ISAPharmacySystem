@@ -1,5 +1,6 @@
 package rs.ac.uns.ftn.informatika.spring.security.controller;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,8 +27,12 @@ import org.springframework.web.util.UriComponentsBuilder;
 import rs.ac.uns.ftn.informatika.spring.security.exception.ResourceConflictException;
 import rs.ac.uns.ftn.informatika.spring.security.model.Authority;
 import rs.ac.uns.ftn.informatika.spring.security.model.ChangePassword;
+import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
+import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.User;
 import rs.ac.uns.ftn.informatika.spring.security.service.AuthorityService;
+import rs.ac.uns.ftn.informatika.spring.security.service.MedicineService;
+import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyService;
 import rs.ac.uns.ftn.informatika.spring.security.view.UserRegisterView;
 import rs.ac.uns.ftn.informatika.spring.security.model.UserTokenState;
 import rs.ac.uns.ftn.informatika.spring.security.security.TokenUtils;
@@ -52,6 +57,12 @@ public class AuthenticationController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private MedicineService medicineService;
+	
+	@Autowired
+	private PharmacyService pharmacyService;
 
 	@Autowired
 	private AuthorityService authorityService;
@@ -103,6 +114,14 @@ public class AuthenticationController {
 		headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
 		return new ResponseEntity<>(user, HttpStatus.CREATED);
 	}
+	@GetMapping(value = "/searchPharmacies/{let}",produces = MediaType.APPLICATION_JSON_VALUE)
+	public Collection<Pharmacy> searchPharmacies(@PathVariable("let") String let) {
+		return pharmacyService.searchPharmacy(let);
+	}
+	@GetMapping(value = "/searchMedicine/{let}",produces = MediaType.APPLICATION_JSON_VALUE)
+	public Collection<Medicine> searchMedicine(@PathVariable("let") String let) {
+		return medicineService.searchMedicine(let);
+	}
 
 	@PostMapping("/registerAdminSystem")
 	public ResponseEntity<User> registerAdminSystem(@RequestBody UserRegisterView userRequest, UriComponentsBuilder ucBuilder) {
@@ -127,7 +146,7 @@ public class AuthenticationController {
 		}
 		return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-
+	
 	// U slucaju isteka vazenja JWT tokena, endpoint koji se poziva da se token osvezi
 	@PostMapping(value = "/refresh")
 	public ResponseEntity<UserTokenState> refreshAuthenticationToken(HttpServletRequest request) {

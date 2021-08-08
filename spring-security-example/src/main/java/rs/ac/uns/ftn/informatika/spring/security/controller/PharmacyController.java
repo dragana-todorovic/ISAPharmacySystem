@@ -1,6 +1,8 @@
 package rs.ac.uns.ftn.informatika.spring.security.controller;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,7 +56,6 @@ public class PharmacyController {
 		return new ResponseEntity<>(HttpStatus.OK);
 		
 	}
-
 
 }
 	

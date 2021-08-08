@@ -47,14 +47,20 @@ INSERT INTO suplier(id,user_id) VALUES (1,6);
 
 --pharmacy
 INSERT INTO PHARMACY (name, address, description) VALUES ('Jankovic', 'Bulevar oslobodjenja', 'Opis Jankovic');
+INSERT INTO PHARMACY (name, address, description) VALUES ('Benu', 'Janka Cmelika', 'Opis Benu');
 
 
 --pharmacyadmin
+
+INSERT INTO PHARMACYADMIN (id, pharmacy_id, user_id) VALUES (1,1,8);
+INSERT INTO PHARMACYADMIN (id, pharmacy_id, user_id) VALUES (2,2,9);
+
 INSERT INTO PHARMACYADMIN (id, pharmacy_id, user_id) VALUES (1,1,9);
+
 
 --dermatologist 
 INSERT INTO DERMATOLOGIST (id, pharmacy_id, user_id) VALUES (1,1,7);
-
+INSERT INTO DERMATOLOGIST (id, pharmacy_id, user_id) VALUES (2,2,7);
 --appoitment
 INSERT INTO APPOITMENT (id, duration, start_date_time, description, dermatologist_id, patient_id) VALUES (1,30,'2017-10-01 21:58:58.508-07','opis1',1,1);
 INSERT INTO APPOITMENT (id, duration, start_date_time, description, dermatologist_id, patient_id) VALUES (2,30,'2017-10-02 21:58:58.508-07','opis2',1,2);
@@ -100,6 +106,7 @@ INSERT INTO pharmacy_medicine_with_quantity (pharmacy_id, medicine_with_quantity
 
 --pharmacist
 INSERT INTO PHARMACIST (id, pharmacy_id, user_id) VALUES (1,1,9);
+INSERT INTO PHARMACIST (id, pharmacy_id, user_id) VALUES (2,2,9);
 
 --pharmacist rating
 INSERT INTO pharmacist_ratings (pharmacist_id, ratings_id) VALUES (1,1);

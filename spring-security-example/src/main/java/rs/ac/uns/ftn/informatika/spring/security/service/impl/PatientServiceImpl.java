@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import rs.ac.uns.ftn.informatika.spring.security.model.Patient;
+import rs.ac.uns.ftn.informatika.spring.security.model.User;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PatientRepository;
 import rs.ac.uns.ftn.informatika.spring.security.service.PatientService;
 
@@ -25,6 +26,11 @@ public class PatientServiceImpl implements PatientService {
 		System.out.println("//////////////////////////////");
 		System.out.println("Service"+ this.patientRepository.findPatientsAllergies(user_id));
 		return this.patientRepository.findPatientsAllergies(user_id);
+	}
+	@Override
+	public Patient findPatientByUser(User user) {
+		System.out.println(this.patientRepository.findByUser(user));
+		return this.patientRepository.findByUser(user);
 	}
 
 }

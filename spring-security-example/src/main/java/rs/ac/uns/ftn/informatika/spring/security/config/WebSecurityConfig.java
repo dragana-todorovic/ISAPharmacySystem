@@ -95,6 +95,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers(
                 HttpMethod.GET,
                 "/scripts/login.js",
+                "/scripts/homepage.js",
                 "/scripts/customAjax.js",
                 "/scripts/bootstrap-datetimepicker.js",
                 "/scripts/pkiAdminScript.js",
