@@ -29,11 +29,15 @@ public class PharmacyAdminServiceImpl implements PharmacyAdminService {
 	@Override
 	public PharmacyAdmin findPharmacyAdminByUser(User user) throws UsernameNotFoundException {
 		List<PharmacyAdmin> getAll = pharmacyAdminRepository.findAll();
+		System.out.println("USEEEERRR IDDDDDDD" + user.getId());
 		for(PharmacyAdmin p : getAll) {
+			System.out.println("###########################" + p.getUser().getId());
 			if(p.getUser().getId().equals(user.getId())) {
+				System.out.println("USAO U IF @@@@@@@@@@@@@@@@@@@@@@@@@");
 				return p;
 			}
 		}
+		System.out.println("USAO U else @@@@@@@@@@@@@@@@@@@@@@@@@");
 		return null;
 	}
 	

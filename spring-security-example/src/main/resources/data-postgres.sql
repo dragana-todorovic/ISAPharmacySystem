@@ -50,7 +50,7 @@ INSERT INTO PHARMACY (name, address, description) VALUES ('Jankovic', 'Bulevar o
 
 
 --pharmacyadmin
-INSERT INTO PHARMACYADMIN (id, pharmacy_id, user_id) VALUES (1,1,8);
+INSERT INTO PHARMACYADMIN (id, pharmacy_id, user_id) VALUES (1,1,9);
 
 --dermatologist 
 INSERT INTO DERMATOLOGIST (id, pharmacy_id, user_id) VALUES (1,1,7);
