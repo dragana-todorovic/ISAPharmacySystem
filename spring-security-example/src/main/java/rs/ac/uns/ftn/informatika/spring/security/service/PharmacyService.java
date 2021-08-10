@@ -2,8 +2,10 @@ package rs.ac.uns.ftn.informatika.spring.security.service;
 
 import java.util.Collection;
 import java.util.Optional;
+import java.util.Set;
 
 import rs.ac.uns.ftn.informatika.spring.security.model.ActionAndBenefit;
+import rs.ac.uns.ftn.informatika.spring.security.model.Dermatologist;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
 import rs.ac.uns.ftn.informatika.spring.security.model.User;
@@ -14,5 +16,6 @@ public interface PharmacyService {
 	Optional<Pharmacy> findById(Long id);
 	void editPharmacy(EditPharmacyView p);
 	ActionAndBenefit addNew(ActionAndBenefitDTO actionAndBenefit);
+	Set<Dermatologist> getDermatologistsByPharmacyAdmin (String email);
 	//Collection<Pharmacy> searchPharmacy(String p);
 }

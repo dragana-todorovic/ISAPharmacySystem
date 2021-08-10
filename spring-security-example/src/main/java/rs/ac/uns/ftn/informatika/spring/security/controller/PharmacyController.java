@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import rs.ac.uns.ftn.informatika.spring.security.model.Dermatologist;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
 import rs.ac.uns.ftn.informatika.spring.security.model.User;
@@ -30,6 +32,7 @@ import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyService;
 import rs.ac.uns.ftn.informatika.spring.security.service.UserService;
 import rs.ac.uns.ftn.informatika.spring.security.view.EditPharmacyView;
 import rs.ac.uns.ftn.informatika.spring.security.view.UserRegisterView;
+import rs.ac.uns.ftn.informatika.spring.security.view.WorkingDayDTO;
 
 @RestController
 @RequestMapping(value = "/pharmacy", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -57,6 +60,23 @@ public class PharmacyController {
 		return new ResponseEntity<>(HttpStatus.OK);
 		
 	}
+	
+	@GetMapping("/getAllDermatologist/{email}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public Set<Dermatologist> getDermatologsts(@PathVariable(name="email") String email) {
+		return this.pharmacyService.getDermatologistsByPharmacyAdmin(email);
+		
+	}
+	
+
+	@PostMapping("/addWorkingDayForDermatologist/{email}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public ResponseEntity<?> addWorkingTime(@PathVariable(name="email") String email,@RequestBody WorkingDayDTO workingDay) {
+		//trebaa doraditi
+		return new ResponseEntity<>(HttpStatus.OK);
+		
+	}
+	
 
 }
 	

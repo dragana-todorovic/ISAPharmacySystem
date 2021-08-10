@@ -3,16 +3,21 @@ package rs.ac.uns.ftn.informatika.spring.security.service.impl;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import rs.ac.uns.ftn.informatika.spring.security.model.ActionAndBenefit;
 import rs.ac.uns.ftn.informatika.spring.security.model.Address;
+import rs.ac.uns.ftn.informatika.spring.security.model.Dermatologist;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
 import rs.ac.uns.ftn.informatika.spring.security.repository.ActionAndBenefitRepository;
+import rs.ac.uns.ftn.informatika.spring.security.repository.DermatologistRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacyRepository;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyAdminService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyService;
@@ -25,6 +30,9 @@ public class PharmacyServiceImpl implements PharmacyService{
 
 	@Autowired
 	private PharmacyRepository pharmacyRepository;
+	
+	@Autowired
+	private DermatologistRepository dermatologistRepository;
 	
 	@Autowired
 	private ActionAndBenefitRepository actionAndBenefitRepository;
@@ -74,6 +82,26 @@ public class PharmacyServiceImpl implements PharmacyService{
 		return ab;
 		
 	}
+
+	@Override
+	public Set<Dermatologist> getDermatologistsByPharmacyAdmin(String email) {
+		PharmacyAdmin pa = pharmacyAdminService.findPharmacyAdminByUser(userService.findByEmail(email));
+		
+		Pharmacy p = pa.getPharmacy();
+		
+		List<Dermatologist> dermatologists = dermatologistRepository.findAll();
+		Set<Dermatologist> result = new HashSet<Dermatologist>();
+		for(Dermatologist d : dermatologists) {
+			if(d.getPharmacy().equals(p)) {
+				result.add(d);
+			}
+		}
+		
+		return result;
+		
+	}
+
+
 
 	/*@Override
 	public Collection<Pharmacy> searchPharmacy(String p) {

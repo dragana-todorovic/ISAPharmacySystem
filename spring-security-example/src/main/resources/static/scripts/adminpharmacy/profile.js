@@ -145,7 +145,7 @@ $(document).ready(function(e){
   });
 let showProfile = function(user) {
 
-	 $("#showData").html(`<table class="ui large table" style="width:50%; margin-left:auto;
+	 $("#showData").html(`<table class="ui large basic table" style="width:50%; margin-left:auto;
     margin-right:auto; margin-top: 40px;">
 		        <thead>
 		            <tr class="success">
@@ -186,9 +186,9 @@ let showProfile = function(user) {
     <tr>
       <th></th>
       <th colspan="2">
-		   <input id = "changePassword" class="ui right floated teal basic button" type = "button" value = "Change password"></input>
+		   <input id = "changePassword" class="ui right floated teal button" type = "button" value = "Change password"></input>
 
-          <input id = "changeData" class="ui right floated teal basic button" type = "button" value = "Edit profile"></input>
+          <input id = "changeData" class="ui right floated teal button" type = "button" value = "Edit profile"></input>
 
 
       </th>
@@ -210,7 +210,7 @@ let showProfile = function(user) {
 
 let editProfile = function(user) {
 
-	 $("#showData").html(`<table class="ui large table" style="width:50%; margin-left:auto;
+	 $("#showData").html(`<table class="ui large basic table" style="width:50%; margin-left:auto;
 			    margin-right:auto; margin-top: 40px;">
 					        <thead>
 					            <tr class="success">
@@ -259,7 +259,7 @@ let editProfile = function(user) {
 			    <tr>
 			      <th></th>
 			      <th colspan="2">
-					   <input id = "acceptChange" class="ui right floated positive basic button" type = "button" value = "Accept changes"></input>
+					   <input id = "acceptChange" class="ui right floated positive button" type = "button" value = "Accept changes"></input>
 
 			      </th>
 			    </tr>
@@ -305,7 +305,7 @@ let editProfile = function(user) {
 };
 let changePassword = function(){
 
-	$("#showData").html(`<table class="ui large table" style="width:50%; margin-left:auto;
+	$("#showData").html(`<table class="ui large basic table" style="width:50%; margin-left:auto;
 		    margin-right:auto; margin-top: 40px;">
 				        <thead>
 				            <tr class="success">
@@ -329,7 +329,7 @@ let changePassword = function(){
 		    <tr>
 		      <th></th>
 		      <th colspan="2">
-				   <input id = "acceptChange" class="ui right floated positive basic button" type = "button" value = "Accept changes"></input>
+				   <input id = "acceptChange" class="ui right floated positive button" type = "button" value = "Accept changes"></input>
 
 		      </th>
 		    </tr>

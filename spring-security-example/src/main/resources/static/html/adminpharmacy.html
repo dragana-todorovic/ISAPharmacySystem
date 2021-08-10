@@ -12,6 +12,7 @@
     <script src="../scripts/adminpharmacy/profile.js"></script>
     <script src="../scripts/jwt.js"></script>
     <script src="../scripts/adminpharmacy/actionsAndBenefits.js"></script>
+    <script src="../scripts/adminpharmacy/pharmacyEmployees.js"></script>
     <script src="../scripts/adminpharmacy/ol.js"></script>
 <title>Admin pharmacy Homepage</title>
 <style>
@@ -53,7 +54,7 @@ li.dropdown {
 }
     .container_1 {
     height: 100vh;
-    background: url('../images/medicine-generic-banner.jpg') no-repeat center center/cover;
+    background: url('../images/pharmacy.jpg') no-repeat center center/cover;
     color: black;
 }
 .dropdown-content a {
@@ -115,6 +116,15 @@ div.container4 h2 {
 <ul style="background:skyblue">
  <li><a href=""><i class="home icon" style="color:white"></i></a></li>
     <li class="item"><a href="#actionsAndBenefits" id="actionsAndBenefits">Actions and benefits</a></li>
+  
+   <li class="dropdown" style="float:left;">
+    <a href="javascript:void(0)" class="dropbtn">Pharmacy empoloyees</a>
+    <div class="dropdown-content" >
+      <a id = "dermatologist" href="#">Dermatologists</a>
+      <a id = "pharmacists" href="#">Pharmacists</a>
+    </div>
+    
+  </li>
   <li class="dropdown" style="float:right;">
     <a href="javascript:void(0)" class="dropbtn">Profile</a>
     <div class="dropdown-content" style="right:0;">
