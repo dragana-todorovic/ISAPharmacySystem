@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import rs.ac.uns.ftn.informatika.spring.security.model.ActionAndBenefit;
 import rs.ac.uns.ftn.informatika.spring.security.model.Authority;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
 import rs.ac.uns.ftn.informatika.spring.security.model.User;
@@ -17,6 +18,7 @@ import rs.ac.uns.ftn.informatika.spring.security.repository.UserRepository;
 import rs.ac.uns.ftn.informatika.spring.security.service.AuthorityService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyAdminService;
 import rs.ac.uns.ftn.informatika.spring.security.service.UserService;
+import rs.ac.uns.ftn.informatika.spring.security.view.ActionAndBenefitDTO;
 import rs.ac.uns.ftn.informatika.spring.security.view.UserRegisterView;
 
 @Service
@@ -29,18 +31,16 @@ public class PharmacyAdminServiceImpl implements PharmacyAdminService {
 	@Override
 	public PharmacyAdmin findPharmacyAdminByUser(User user) throws UsernameNotFoundException {
 		List<PharmacyAdmin> getAll = pharmacyAdminRepository.findAll();
-		System.out.println("USEEEERRR IDDDDDDD" + user.getId());
 		for(PharmacyAdmin p : getAll) {
 			System.out.println("###########################" + p.getUser().getId());
 			if(p.getUser().getId().equals(user.getId())) {
-				System.out.println("USAO U IF @@@@@@@@@@@@@@@@@@@@@@@@@");
 				return p;
 			}
 		}
-		System.out.println("USAO U else @@@@@@@@@@@@@@@@@@@@@@@@@");
 		return null;
 	}
-	
+
+
 	
 
 

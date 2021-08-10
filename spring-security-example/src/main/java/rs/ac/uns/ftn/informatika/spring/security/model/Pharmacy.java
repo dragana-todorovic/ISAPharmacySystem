@@ -87,4 +87,60 @@ public class Pharmacy {
 	public void setAddress(Address a) {
 		this.address = a;
 	}
+
+	public Set<MedicineWithQuantity> getMedicineWithQuantity() {
+		return medicineWithQuantity;
+	}
+
+	public void setMedicineWithQuantity(Set<MedicineWithQuantity> medicineWithQuantity) {
+		this.medicineWithQuantity = medicineWithQuantity;
+	}
+
+	public Set<Rating> getRatings() {
+		return ratings;
+	}
+
+	public void setRatings(Set<Rating> ratings) {
+		this.ratings = ratings;
+	}
+
+	public Set<MedicinePrice> getMedicinePrices() {
+		return medicinePrices;
+	}
+
+	public void setMedicinePrices(Set<MedicinePrice> medicinePrices) {
+		this.medicinePrices = medicinePrices;
+	}
+
+	public Set<AppoitmentPrice> getAppoitmentPrices() {
+		return appoitmentPrices;
+	}
+
+	public void setAppoitmentPrices(Set<AppoitmentPrice> appoitmentPrices) {
+		this.appoitmentPrices = appoitmentPrices;
+	}
+
+	public Set<MedicineReservation> getMedicineReservations() {
+		return medicineReservations;
+	}
+
+	public void setMedicineReservations(Set<MedicineReservation> medicineReservations) {
+		this.medicineReservations = medicineReservations;
+	}
+
+	public Set<MedicineOrder> getMedicineOrders() {
+		return medicineOrders;
+	}
+
+	public void setMedicineOrders(Set<MedicineOrder> medicineOrders) {
+		this.medicineOrders = medicineOrders;
+	}
+
+	public Set<ActionAndBenefit> getActionsAndBenefits() {
+		return actionsAndBenefits;
+	}
+
+	public void setActionsAndBenefits(Set<ActionAndBenefit> actionsAndBenefits) {
+		this.actionsAndBenefits = actionsAndBenefits;
+	}
 }

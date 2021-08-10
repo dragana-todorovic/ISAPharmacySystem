@@ -51,11 +51,8 @@ INSERT INTO ADDRESS (street,city) VALUES ('Kralja Petra 20', 'Beograd');
 INSERT INTO PHARMACY (name, description, address_id) VALUES ('Jankovic', 'Opis Jankovic',2);
 INSERT INTO PHARMACY (name, description, address_id) VALUES ('Benu', 'Opis Benu',1);
 
-
 --pharmacyadmin
-
 INSERT INTO PHARMACYADMIN (id, pharmacy_id, user_id) VALUES (1,2,9);
-
 
 --dermatologist 
 INSERT INTO DERMATOLOGIST (id, pharmacy_id, user_id) VALUES (1,1,7);
@@ -116,9 +113,9 @@ INSERT INTO pharmacy_ratings (pharmacy_id, ratings_id) VALUES (1,3);
 INSERT INTO pharmacy_ratings (pharmacy_id, ratings_id) VALUES (1,5);
 
 --actions and benefits
-INSERT INTO actionandbenefit (id,description,start_date,end_date) VALUES (1, 'brufen 20%','2017-10-01 21:58:58.508-07','2017-12-01 21:58:58.508-07');
-INSERT INTO actionandbenefit (id,description,start_date,end_date) VALUES (2, 'kupis 2 dobijes 3','2017-10-01 21:58:58.508-07','2017-12-01 21:58:58.508-07');
-INSERT INTO actionandbenefit (id,description,start_date,end_date) VALUES (3, 'paracetamol 10%','2017-10-01 21:58:58.508-07','2017-12-01 21:58:58.508-07');
+INSERT INTO actionandbenefit (description,start_date,end_date) VALUES ( 'brufen 20%','2017-10-01 21:58:58.508-07','2017-12-01 21:58:58.508-07');
+INSERT INTO actionandbenefit (description,start_date,end_date) VALUES ( 'kupis 2 dobijes 3','2017-10-01 21:58:58.508-07','2017-12-01 21:58:58.508-07');
+INSERT INTO actionandbenefit (description,start_date,end_date) VALUES ( 'paracetamol 10%','2017-10-01 21:58:58.508-07','2017-12-01 21:58:58.508-07');
 
 --pharmacy actions and benefits
 INSERT INTO pharmacy_actions_and_benefits(pharmacy_id,actions_and_benefits_id) VALUES (1,1);
