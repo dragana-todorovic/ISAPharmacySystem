@@ -15,7 +15,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="APPOITMENT")
-public class DermatologistAppoitment {
+public class DermatologistAppointment {
 	
 	@Id
 	 @Column(name = "id")

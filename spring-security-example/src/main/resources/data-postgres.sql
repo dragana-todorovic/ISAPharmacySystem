@@ -55,7 +55,7 @@ INSERT INTO PHARMACY (name, address, description) VALUES ('Benu', 'Janka Cmelika
 INSERT INTO PHARMACYADMIN (id, pharmacy_id, user_id) VALUES (1,1,8);
 INSERT INTO PHARMACYADMIN (id, pharmacy_id, user_id) VALUES (2,2,9);
 
-INSERT INTO PHARMACYADMIN (id, pharmacy_id, user_id) VALUES (1,1,9);
+INSERT INTO PHARMACYADMIN (id, pharmacy_id, user_id) VALUES (3,1,9);
 
 
 --dermatologist 
