@@ -7,9 +7,11 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import rs.ac.uns.ftn.informatika.spring.security.model.Address;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacyRepository;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyService;
+import rs.ac.uns.ftn.informatika.spring.security.view.EditPharmacyView;
 
 @Service
 public class PharmacyServiceImpl implements PharmacyService{
@@ -23,17 +25,20 @@ public class PharmacyServiceImpl implements PharmacyService{
 	}
 
 	@Override
-	public void editPharmacy(Pharmacy p) {
+	public void editPharmacy(EditPharmacyView p) {
+		Address a = new Address();
+		a.setStreet(p.getStreet());
+		a.setCity(p.getCity());
 		Pharmacy pharmacy = findById(p.getId()).get();
 		pharmacy.setName(p.getName());
-		pharmacy.setAddress(p.getAddress());
+		pharmacy.setAddress(a);
 		pharmacy.setDescription(p.getDescription());
 		
 		pharmacyRepository.save(pharmacy);
 
 	}
 
-	@Override
+	/*@Override
 	public Collection<Pharmacy> searchPharmacy(String p) {
 	   ArrayList<Pharmacy> pharmacies = new ArrayList<>();
 	   for(Pharmacy pharamacy : pharmacyRepository.findAll()){
@@ -45,6 +50,6 @@ public class PharmacyServiceImpl implements PharmacyService{
 		   }
 	   }
         return pharmacies;
-	}
+	}*/
 
 }
