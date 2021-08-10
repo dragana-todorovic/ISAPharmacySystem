@@ -8,8 +8,12 @@ $(document).ready(function(e){
                 //alert(response);
                 return response.json();
             }).then(function (json) {
-            let location = json["address"]["road"] + ` ` + json["address"]["house_number"] + ` , ` + json["address"]["city"] + ` , ` + json["address"]["country"];
-            $('#txtAddress').val(location)
+            	let street = json["address"]["road"] + ` ` + json["address"]["house_number"];
+            	let city = json["address"]["city"];
+            //let location = json["address"]["road"] + ` ` + json["address"]["house_number"] + ` , ` + json["address"]["city"] + ` , ` + json["address"]["country"];
+            $('#txtStreet').val(street)
+            $('#txtCity').val(city)
+
 
             // $('#street-number').val(json["address"]["house_number"])
             //$('#city').val(json["address"]["city"])
@@ -90,9 +94,9 @@ $(document).ready(function(e){
 
         });
     }
-	
+
 	var email = localStorage.getItem('email')
-	
+
 	  $("#profileInfo").click(function () {
 		  customAjax({
 		      url: '/user/getByEmail/' + email,
@@ -102,16 +106,16 @@ $(document).ready(function(e){
 		      },
 		      error: function(){
 		      }
-	
+
 	 });
-	  });  
-	
+	  });
+
 	$('#logout').click(function(){
 		console.log("blabla")
-		localStorage.removeItem('jwt')		
+		localStorage.removeItem('jwt')
 		location.href = "login.html";
 		});
-	
+
 	$("#pharmacyProfile").click(function () {
 		  customAjax({
 		      url: '/user/getByEmail/' + email,
@@ -129,19 +133,19 @@ $(document).ready(function(e){
 				      },
 				      error: function(){
 				      }
-			
+
 			 });
 		      },
 		      error: function(){
 		      }
-	
+
 	 });
-	  });  
-	
+	  });
+
   });
 let showProfile = function(user) {
 
-	 $("#showData").html(`<table class="ui large table" style="width:50%; margin-left:auto; 
+	 $("#showData").html(`<table class="ui large table" style="width:50%; margin-left:auto;
     margin-right:auto; margin-top: 40px;">
 		        <thead>
 		            <tr class="success">
@@ -183,30 +187,30 @@ let showProfile = function(user) {
       <th></th>
       <th colspan="2">
 		   <input id = "changePassword" class="ui right floated teal basic button" type = "button" value = "Change password"></input>
-      
+
           <input id = "changeData" class="ui right floated teal basic button" type = "button" value = "Edit profile"></input>
-		  
-       
+
+
       </th>
     </tr>
   </tfoot>
 		    </table> <p id="er"> </p>`);
-	 
+
 	 $("#changeData").click(function () {
 		 editProfile(user)
 	 });
-	 
+
 	 $("#changePassword").click(function () {
 		 changePassword()
 	 });
-	
-	 
+
+
 };
 
 
 let editProfile = function(user) {
 
-	 $("#showData").html(`<table class="ui large table" style="width:50%; margin-left:auto; 
+	 $("#showData").html(`<table class="ui large table" style="width:50%; margin-left:auto;
 			    margin-right:auto; margin-top: 40px;">
 					        <thead>
 					            <tr class="success">
@@ -217,53 +221,53 @@ let editProfile = function(user) {
 					            <tr>
 					                <td>Email:</td>
 					                <td class="ui input small"> <input type="text" id="txtUsername" disabled="disabled" value="`+ ((user.username != null) ? user.username:`` ) + `"/></td>
-					              
+
 					            </tr>
 					            <tr>
 					                <td>First name:</td>
 					                <td class="ui input small"> <input type="text" id="txtFirstName" value="`+ ((user.firstName != null) ? user.firstName:`` ) + `"/></td>
-					              
+
 					            </tr>
 					            <tr>
 					                <td>Last name:</td>
 					                <td class="ui input small"> <input type="text" id="txtLastName" value="`+ ((user.lastName != null) ? user.lastName:`` ) + `"/></td>
-					              
+
 					            </tr>
 					           <tr>
 					                <td>Country:</td>
 					                <td class="ui input small"> <input type="text" id="txtCountry" value="`+ ((user.country != null) ? user.country:`` ) + `"/></td>
-					              
+
 					            </tr>
 					           <tr>
 					                <td>City:</td>
 					                <td class="ui input small"> <input type="text" id="txtCity" value="`+ ((user.city != null) ? user.city:`` ) + `"/></td>
-					              
+
 					            </tr>
 					           <tr>
 					                <td>Address:</td>
 					                <td class="ui input small"> <input type="text" id="txtAddress" value="`+ ((user.address != null) ? user.address:`` ) + `"/></td>
-					              
+
 					            </tr>
 					           <tr>
 					                <td>Phone number:</td>
 					                <td class="ui input small"> <input type="text" id="txtPhoneNumber" value="`+ ((user.phone != null) ? user.phone:`` ) + `"/></td>
-					              
+
 					            </tr>
-					           
+
 					        </tbody>
 					        <tfoot class="full-width">
 			    <tr>
 			      <th></th>
 			      <th colspan="2">
 					   <input id = "acceptChange" class="ui right floated positive basic button" type = "button" value = "Accept changes"></input>
-			    
+
 			      </th>
 			    </tr>
 			  </tfoot>
 					    </table> <p id="er"> </p>`);
-	 
+
 	 $('#acceptChange').click(function(){
-		 	
+
 			let firstName=$('#txtFirstName').val()
 			let lastName=$('#txtLastName').val()
 			let country=$('#txtCountry').val()
@@ -280,7 +284,7 @@ let editProfile = function(user) {
 			address:address,
 			phone :phone,
 			email:email});
-			
+
 			    customAjax({
 	      url: '/user/editProfile',
 	      method: 'POST',
@@ -289,19 +293,19 @@ let editProfile = function(user) {
 		        success: function(){
 		        	alert("Sucess.")
 		        	location.href = "adminpharmacy.html";
-		        	
+
 				},
 			      error: function(){
 			       	alert('Error');
 			      }
 	    });
 	 });
-			
-	 
+
+
 };
 let changePassword = function(){
-	
-	$("#showData").html(`<table class="ui large table" style="width:50%; margin-left:auto; 
+
+	$("#showData").html(`<table class="ui large table" style="width:50%; margin-left:auto;
 		    margin-right:auto; margin-top: 40px;">
 				        <thead>
 				            <tr class="success">
@@ -313,30 +317,30 @@ let changePassword = function(){
 				                <td>New password:</td>
 				                 <td class="ui input small"> <input type="password" id="txtNewPassword" value=""/></td>
 				            </tr>
-				            
+
 				            <tr>
 				                <td>Repeat new password:</td>
 				                 <td class="ui input small" > <input type="password" id="txtNewPasswordRepeat" value=""/></td>
-				              
+
 				            </tr>
-				          
+
 				        </tbody>
 				        <tfoot class="full-width">
 		    <tr>
 		      <th></th>
 		      <th colspan="2">
 				   <input id = "acceptChange" class="ui right floated positive basic button" type = "button" value = "Accept changes"></input>
-		    
+
 		      </th>
 		    </tr>
-		    
+
 		  <p id="errorPassword"> </p>
 		  </tfoot>
 				    </table> `);
-	
+
 		btnAcceptChange = document.getElementById("acceptChange")
 		btnAcceptChange.disabled = true
-	
+
 
 	  $('#txtNewPassword').keyup(function () {
 		  	if(!validatePassword($('#txtNewPassword').val())){
@@ -350,7 +354,7 @@ let changePassword = function(){
 		  		$('#txtNewPassword').css('border-color', '');
 		  		$("#errorPassword").text("")
 		  	}
-	  });	
+	  });
 	  $('#txtNewPasswordRepeat').keyup(function () {
 		  	if($('#txtNewPassword').val()!=$('#txtNewPasswordRepeat').val()){
 		  		btnAcceptChange.disabled = true
@@ -359,14 +363,14 @@ let changePassword = function(){
 		  		$("#errorPassword").text("Passwords must match!")
 		  		$('#errorPassword').css('color', 'red');
 		  	}else {
-			
+
 		  		$(this).removeClass(`alert-danger`);
 		  		$('#txtNewPasswordRepeat').css('border-color', '');
 		  		$("#errorPassword").text("")
 				btnAcceptChange.disabled = false;
 		  	}
 	  });
-	  
+
 	  $('#acceptChange').click(function() {
 			var newPassword = $('#txtNewPassword').val()
 			var confirmPassword = $('#txtNewPasswordRepeat').val()
@@ -389,12 +393,12 @@ let changePassword = function(){
 		            });
 
 			});
-		
-	
+
+
 }
 
 function validatePassword(password) {
-	  
+
 	  var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
 	  	if(password.match(strongRegex)) {
 	  		return true;
@@ -402,12 +406,12 @@ function validatePassword(password) {
 	  	else {
 	  		return false;
 	  	}
-}	
+}
 
 
 let showPharmacyBasicInfo = function(pharmacy){
-	
-	$("#showData").html(`<table class="ui large table" style="width:50%; margin-left:auto; 
+
+	$("#showData").html(`<table class="ui large table" style="width:50%; margin-left:auto;
 		    margin-right:auto; margin-top: 40px;">
 				        <thead>
 				            <tr class="success">
@@ -418,40 +422,41 @@ let showPharmacyBasicInfo = function(pharmacy){
 				            	<th>Address</th>
 				            	<th>Description</th>
 				            </tr>
-				            
+
 				        </thead>
 				        <tbody>
-				        	
+
 				            <tr>
 				                <td>` + ((pharmacy.name != null) ? pharmacy.name:`-`) + `</td>
 				               <td>` + ((pharmacy.address != null) ? pharmacy.address:`-`) + `</td>
 				              <td>` + ((pharmacy.description != null) ? pharmacy.description:`-`) + `</td>
-				        
+
 				            </tr>
-				            
-				                     
+
+
 				        </tbody>
 				        <tfoot class="full-width">
 		    <tr>
 		      <th></th>
 		      <th colspan="2">
 				   <input id = "changeData" class="ui right floated teal basic button" type = "button" value = "Change data"></input>
-		    
+
 		      </th>
 		    </tr>
-		    
+
 		  <p id="errorPassword"> </p>
 		  </tfoot>
 				    </table> `);
 	 $("#changeData").click(function () {
 		 editPharmacy(pharmacy)
 	 });
-		
-	
+
+
 }
 
 let editPharmacy = function (pharmacy) {
-	 $("#showData").html(`<table class="ui basic large table" style="width:50%; margin-left:auto; 
+	console.log(pharmacy)
+	 $("#showData").html(`<table class="ui basic large table" style="width:50%; margin-left:auto;
 			    margin-right:auto; margin-top: 40px;">
 					        <thead>
 					            <tr class="success">
@@ -461,44 +466,47 @@ let editPharmacy = function (pharmacy) {
 					        <tbody>
 					            <tr>
 					                <td>Name:</td>
-					                <td class="ui input small"> <input type="text" id="txtName" value="`+ ((pharmacy.name != null) ? pharmacy.name:`` ) + `"/></td>
-					              
+					                <td class="ui input"> <input type="text" id="txtName" value="`+ ((pharmacy.name != null) ? pharmacy.name:`` ) + `"/></td>
+
 					            </tr>
 					            <tr>
 					                <td>Address:</td>
-					                <td class="ui input small"> <input type="text" disabled="true" id="txtAddress" value="`+ ((pharmacy.address != null) ? pharmacy.address:`` ) + `"/></td>
+					                <td class="ui fluid icon input"> <input type="text" disabled="true" id="txtStreet" value="`+ ((pharmacy.address != null) ? pharmacy.address.street:`` ) + `"/></td>
+					                <td class="ui fluid icon input"> <input type="text" disabled="true" id="txtCity" value="`+ ((pharmacy.address != null) ? pharmacy.address.city:`` ) + `"/></td>
 					                <td><div id="map" class="map"  style="width:350px;"></div>
                                             <script>pomocnaP();</script></td>
 					            </tr>
 					            <tr>
 					                <td>Description:</td>
-					                <td class="ui input small"> <input type="text" id="txtDescription" value="`+ ((pharmacy.description != null) ? pharmacy.description:`` ) + `"/></td>
-					              
+					                <td class="ui input"> <input type="text" id="txtDescription" value="`+ ((pharmacy.description != null) ? pharmacy.description:`` ) + `"/></td>
+
 					            </tr>
-					        
+
 					        </tbody>
-					        
+
 					        <tfoot class="full-width">
 			    <tr>
 			      <th></th>
 			      <th colspan="2">
 					   <input id = "acceptChange" class="ui right floated positive button" type = "button" value = "Accept changes"></input>
-			    
+
 			      </th>
 			    </tr>
 			  </tfoot>
 					    </table> <p id="er"> </p>`);
-	 
+
 	 $('#acceptChange').click(function(){
-		 	
+
 			let name=$('#txtName').val()
-			let address=$('#txtAddress').val()
+			let street=$('#txtStreet').val()
+			let city = $('#txtCity').val()
 			let description=$('#txtDescription').val()
-		
+
 			obj = JSON.stringify({
 			id:pharmacy.id,
 			name:name,
-			address:address,
+			street:street,
+			city:city,
 			description: description,
 			});
 			

@@ -28,6 +28,7 @@ import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacyAdminReposit
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyAdminService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyService;
 import rs.ac.uns.ftn.informatika.spring.security.service.UserService;
+import rs.ac.uns.ftn.informatika.spring.security.view.EditPharmacyView;
 import rs.ac.uns.ftn.informatika.spring.security.view.UserRegisterView;
 
 @RestController
@@ -50,7 +51,7 @@ public class PharmacyController {
 	
 	@PostMapping("/editPharmacy")
 	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
-	public ResponseEntity<?> editPharmacy(@RequestBody Pharmacy pharmacy) {
+	public ResponseEntity<?> editPharmacy(@RequestBody EditPharmacyView pharmacy) {
 		
 		pharmacyService.editPharmacy(pharmacy);
 		return new ResponseEntity<>(HttpStatus.OK);

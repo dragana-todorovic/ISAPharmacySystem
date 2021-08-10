@@ -3,15 +3,7 @@ package rs.ac.uns.ftn.informatika.spring.security.model;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -31,8 +23,8 @@ public class Pharmacy {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "address")
-    private String address;
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Address address;
 
     @Column(name = "description")
     private String description;
@@ -73,14 +65,10 @@ public class Pharmacy {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	public String getAddress() {
+	public Address getAddress() {
 		return address;
 	}
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
 
 	public String getDescription() {
 		return description;
@@ -95,5 +83,8 @@ public class Pharmacy {
 		return "Pharmacy [id=" + id + ", name=" + name + ", address=" + address + ", description=" + description + "]";
 	}
 
-   
+
+	public void setAddress(Address a) {
+		this.address = a;
+	}
 }

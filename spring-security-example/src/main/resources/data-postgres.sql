@@ -9,6 +9,7 @@ INSERT INTO USERS (username, password, first_name, last_name, email, country, ci
 INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('dermatologist@example.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.Lrd4j8amcljStog3n4APU5EX3bGJIUK', 'Marko', 'Markovic', 'dermatologist@example.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
 INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('pharmacist@example.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.', 'Marko', 'Markovic', 'pharmacist@example.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
 INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('adminpharmacyr@example.com', '$2y$10$Dz4zbJOWPOfxHsjy2QgDk.SoBDiwsiQ3.2Vgxw0hhNfoDO4rZZB5i', 'Dragana', 'Todorovic', 'adminpharmacyr@example.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
+
 --medicine
 INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,notes) VALUES ('1234','Brufen',1,'nesto','Galenika',false,'Ne konzumirati uz alkohol');
 INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,notes) VALUES ('12333','Aspirin',1,'nesto','Galenika',false,'Ne konzumirati uz alkohol');
@@ -44,18 +45,16 @@ INSERT INTO patients_allergies_medicine(patient_id, allergies_medicine_id) value
 --suplier 
 INSERT INTO suplier(id,user_id) VALUES (1,6);
 
-
+INSERT INTO ADDRESS (street,city) VALUES ('Bulevar oslobodjenja 4', 'Novi Sad');
+INSERT INTO ADDRESS (street,city) VALUES ('Kralja Petra 20', 'Beograd');
 --pharmacy
-INSERT INTO PHARMACY (name, address, description) VALUES ('Jankovic', 'Bulevar oslobodjenja', 'Opis Jankovic');
-INSERT INTO PHARMACY (name, address, description) VALUES ('Benu', 'Janka Cmelika', 'Opis Benu');
+INSERT INTO PHARMACY (name, description, address_id) VALUES ('Jankovic', 'Opis Jankovic',2);
+INSERT INTO PHARMACY (name, description, address_id) VALUES ('Benu', 'Opis Benu',1);
 
 
 --pharmacyadmin
 
-INSERT INTO PHARMACYADMIN (id, pharmacy_id, user_id) VALUES (1,1,8);
-INSERT INTO PHARMACYADMIN (id, pharmacy_id, user_id) VALUES (2,2,9);
-
-INSERT INTO PHARMACYADMIN (id, pharmacy_id, user_id) VALUES (3,1,9);
+INSERT INTO PHARMACYADMIN (id, pharmacy_id, user_id) VALUES (1,2,9);
 
 
 --dermatologist 
@@ -105,8 +104,8 @@ INSERT INTO pharmacy_medicine_with_quantity (pharmacy_id, medicine_with_quantity
 INSERT INTO pharmacy_medicine_with_quantity (pharmacy_id, medicine_with_quantity_id) VALUES (1, 3);
 
 --pharmacist
-INSERT INTO PHARMACIST (id, pharmacy_id, user_id) VALUES (1,1,9);
-INSERT INTO PHARMACIST (id, pharmacy_id, user_id) VALUES (2,2,9);
+INSERT INTO PHARMACIST (id, pharmacy_id, user_id) VALUES (1,1,8);
+INSERT INTO PHARMACIST (id, pharmacy_id, user_id) VALUES (2,2,8);
 
 --pharmacist rating
 INSERT INTO pharmacist_ratings (pharmacist_id, ratings_id) VALUES (1,1);
