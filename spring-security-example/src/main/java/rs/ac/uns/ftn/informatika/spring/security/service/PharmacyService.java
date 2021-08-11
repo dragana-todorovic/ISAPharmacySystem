@@ -6,6 +6,7 @@ import java.util.Set;
 
 import rs.ac.uns.ftn.informatika.spring.security.model.ActionAndBenefit;
 import rs.ac.uns.ftn.informatika.spring.security.model.Dermatologist;
+import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacist;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
 import rs.ac.uns.ftn.informatika.spring.security.model.User;
@@ -22,4 +23,10 @@ public interface PharmacyService {
 	void addWorkingTimeForDermatologist(String dermatologistId, String email, WorkingDayDTO workingDay);
 	//Collection<Pharmacy> searchPharmacy(String p);
 	Set<WorkingDay> getWorkingDayForDermatolog(String id, String email);
+	void deleteDermatologistFromPharmacy(String id, String email);
+	Set<Pharmacist> getPharmacistssByPharmacyAdmin (String email);
+	void addWorkingTimeForPharmacist(String dermatologistId, String email, WorkingDayDTO workingDay);
+	//Collection<Pharmacy> searchPharmacy(String p);
+	Set<WorkingDay> getWorkingDayForPharmacist(String id, String email);
+	void deletePharmacistFromPharmacy(String id, String email);
 }

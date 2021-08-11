@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import rs.ac.uns.ftn.informatika.spring.security.model.Dermatologist;
+import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacist;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
 import rs.ac.uns.ftn.informatika.spring.security.model.User;
@@ -88,6 +89,47 @@ public class PharmacyController {
 		
 	}
 	
-
+	@GetMapping("/deleteDermatologist/{id}/{email}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public ResponseEntity<?> deleteDermatologist(@PathVariable(name="id") String id,
+			@PathVariable(name="email") String email) {
+		this.pharmacyService.deleteDermatologistFromPharmacy(id, email);
+		return new ResponseEntity<>(HttpStatus.OK);
+		
+	}
+	
+	@GetMapping("/getAllPharmacists/{email}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public Set<Pharmacist> getPharmacists(@PathVariable(name="email") String email) {
+		return this.pharmacyService.getPharmacistssByPharmacyAdmin(email);
+		
+	}
+	
+	@PostMapping("/addWorkingDayForPharmacist/{id}/{email}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public ResponseEntity<?> addWorkingTimePharmacist(@PathVariable(name="id") String id,
+			@PathVariable(name="email") String email,@RequestBody WorkingDayDTO workingDay) {
+		this.pharmacyService.addWorkingTimeForPharmacist(id, email, workingDay);
+		
+		return new ResponseEntity<>(HttpStatus.OK);
+		
+	}
+	
+	@GetMapping("/getAllWorkingTimesPharmacist/{id}/{email}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public Set<WorkingDay> getAllWorkingtimesPharmacist(@PathVariable(name="id") String id,
+			@PathVariable(name="email") String email) {
+		return this.pharmacyService.getWorkingDayForPharmacist(id, email);
+		
+	}
+	
+	@GetMapping("/deletePharmacist/{id}/{email}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public ResponseEntity<?> deletePharmacist(@PathVariable(name="id") String id,
+			@PathVariable(name="email") String email) {
+		this.pharmacyService.deletePharmacistFromPharmacy(id, email);
+		return new ResponseEntity<>(HttpStatus.OK);
+		
+	}
 }
 	
