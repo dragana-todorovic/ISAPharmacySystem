@@ -141,13 +141,13 @@ INSERT INTO pharmacist_holiday_requests(pharmacist_id,holiday_requests_id) VALUE
 
 
 --working days
-INSERT INTO workingday (id,day,end_time,start_time) VALUES (1,'2021-10-01','13:00:00.000000', '08:00:00.000000');
-INSERT INTO workingday (id,day,end_time,start_time) VALUES (2,'2021-10-02','13:00:00.000000', '08:00:00.000000');
-INSERT INTO workingday (id,day,end_time,start_time) VALUES (3,'2021-10-03','13:00:00.000000', '08:00:00.000000');
-INSERT INTO workingday (id,day,end_time,start_time) VALUES (4,'2021-10-04','13:00:00.000000', '08:00:00.000000');
+INSERT INTO workingday (day,end_time,start_time) VALUES ('2021-10-01','13:00:00.000000', '08:00:00.000000');
+INSERT INTO workingday (day,end_time,start_time) VALUES ('2021-10-02','13:00:00.000000', '08:00:00.000000');
+INSERT INTO workingday (day,end_time,start_time) VALUES ('2021-10-03','13:00:00.000000', '08:00:00.000000');
+INSERT INTO workingday (day,end_time,start_time) VALUES ('2021-10-04','13:00:00.000000', '08:00:00.000000');
 
 --working time
-INSERT INTO workingtime (id,pharmacy_id) VALUES (1,1);
+INSERT INTO workingtime (pharmacy_id) VALUES (2);
 
 --working time with working days
 INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (1,1);
@@ -157,7 +157,7 @@ INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (
 
 
 --dermatologist working time
-INSERT INTO dermatologist_working_times (dermatologist_id, working_times_id) VALUES (1,1); 
+INSERT INTO dermatologist_working_times (dermatologist_id, working_times_id) VALUES (2,1); 
 
 --pharmacist working time
 INSERT INTO pharmacist_working_times (pharmacist_id, working_times_id) VALUES (1,1); 

@@ -26,6 +26,7 @@ import rs.ac.uns.ftn.informatika.spring.security.model.Dermatologist;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
 import rs.ac.uns.ftn.informatika.spring.security.model.User;
+import rs.ac.uns.ftn.informatika.spring.security.model.WorkingDay;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacyAdminRepository;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyAdminService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyService;
@@ -69,11 +70,21 @@ public class PharmacyController {
 	}
 	
 
-	@PostMapping("/addWorkingDayForDermatologist/{email}")
+	@PostMapping("/addWorkingDayForDermatologist/{id}/{email}")
 	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
-	public ResponseEntity<?> addWorkingTime(@PathVariable(name="email") String email,@RequestBody WorkingDayDTO workingDay) {
-		//trebaa doraditi
+	public ResponseEntity<?> addWorkingTime(@PathVariable(name="id") String id,
+			@PathVariable(name="email") String email,@RequestBody WorkingDayDTO workingDay) {
+		this.pharmacyService.addWorkingTimeForDermatologist(id, email, workingDay);
+		
 		return new ResponseEntity<>(HttpStatus.OK);
+		
+	}
+	
+	@GetMapping("/getAllWorkingTimes/{id}/{email}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public Set<WorkingDay> getAllWorkingtimes(@PathVariable(name="id") String id,
+			@PathVariable(name="email") String email) {
+		return this.pharmacyService.getWorkingDayForDermatolog(id, email);
 		
 	}
 	

@@ -31,4 +31,33 @@ public class WorkingTime {
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<WorkingDay> workingDays = new HashSet<WorkingDay>();
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Pharmacy getPharmacy() {
+		return pharmacy;
+	}
+
+	public void setPharmacy(Pharmacy pharmacy) {
+		this.pharmacy = pharmacy;
+	}
+
+	public Set<WorkingDay> getWorkingDays() {
+		return workingDays;
+	}
+
+	public void setWorkingDays(Set<WorkingDay> workingDays) {
+		this.workingDays = workingDays;
+	}
+
+	@Override
+	public String toString() {
+		return "WorkingTime [id=" + id + ", pharmacy=" + pharmacy + ", workingDays=" + workingDays + "]";
+	}
+
 }

@@ -1,6 +1,7 @@
 package rs.ac.uns.ftn.informatika.spring.security.service.impl;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -16,6 +17,8 @@ import rs.ac.uns.ftn.informatika.spring.security.model.Address;
 import rs.ac.uns.ftn.informatika.spring.security.model.Dermatologist;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
+import rs.ac.uns.ftn.informatika.spring.security.model.WorkingDay;
+import rs.ac.uns.ftn.informatika.spring.security.model.WorkingTime;
 import rs.ac.uns.ftn.informatika.spring.security.repository.ActionAndBenefitRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.DermatologistRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacyRepository;
@@ -24,6 +27,7 @@ import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyService;
 import rs.ac.uns.ftn.informatika.spring.security.service.UserService;
 import rs.ac.uns.ftn.informatika.spring.security.view.ActionAndBenefitDTO;
 import rs.ac.uns.ftn.informatika.spring.security.view.EditPharmacyView;
+import rs.ac.uns.ftn.informatika.spring.security.view.WorkingDayDTO;
 
 @Service
 public class PharmacyServiceImpl implements PharmacyService{
@@ -98,6 +102,49 @@ public class PharmacyServiceImpl implements PharmacyService{
 		}
 		
 		return result;
+		
+	}
+
+	@Override
+	public void addWorkingTimeForDermatologist(String dermatologistId, String email, WorkingDayDTO workingDay) {
+		
+		Dermatologist dermatologist = this.dermatologistRepository.findById(Long.parseLong(dermatologistId)).get();
+
+		PharmacyAdmin pa = pharmacyAdminService.findPharmacyAdminByUser(userService.findByEmail(email));
+		Pharmacy p = pa.getPharmacy();
+		WorkingDay wd = new WorkingDay();
+		wd.setDay(LocalDate.parse(workingDay.getWorkingDate()));
+		wd.setStartTime(LocalTime.parse(workingDay.getStartTime()));
+		wd.setEndTime(LocalTime.parse(workingDay.getEndTime()));
+		
+		//treba dodati uslov ako je prazno
+		
+		for(WorkingTime t : dermatologist.getWorkingTimes()) {
+			System.out.println(t.getPharmacy());
+			if(t.getPharmacy().equals(p)) {
+				System.out.println("usao u if");
+				t.getWorkingDays().add(wd);
+			}
+		}
+		this.dermatologistRepository.save(dermatologist);
+		
+	}
+
+	@Override
+	public Set<WorkingDay> getWorkingDayForDermatolog(String id, String email) {
+		Dermatologist dermatologist = this.dermatologistRepository.findById(Long.parseLong(id)).get();
+
+		PharmacyAdmin pa = pharmacyAdminService.findPharmacyAdminByUser(userService.findByEmail(email));
+		Pharmacy p = pa.getPharmacy();
+		
+		for(WorkingTime t : dermatologist.getWorkingTimes()) {
+			System.out.println(t.getPharmacy());
+			if(t.getPharmacy().equals(p)) {
+				return t.getWorkingDays();
+			}
+		}
+		return null;
+		
 		
 	}
 
