@@ -14,8 +14,11 @@ import org.springframework.stereotype.Service;
 
 import rs.ac.uns.ftn.informatika.spring.security.model.ActionAndBenefit;
 import rs.ac.uns.ftn.informatika.spring.security.model.Address;
+import rs.ac.uns.ftn.informatika.spring.security.model.Patient;
+
 import rs.ac.uns.ftn.informatika.spring.security.model.Dermatologist;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacist;
+
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
 import rs.ac.uns.ftn.informatika.spring.security.model.WorkingDay;
@@ -93,6 +96,10 @@ public class PharmacyServiceImpl implements PharmacyService{
 	}
 
 	@Override
+
+	public List<Pharmacy> findAll() {
+		List<Pharmacy> result = pharmacyRepository.findAll();
+		return result;
 	public Set<Dermatologist> getDermatologistsByPharmacyAdmin(String email) {
 		PharmacyAdmin pa = pharmacyAdminService.findPharmacyAdminByUser(userService.findByEmail(email));
 		
@@ -243,7 +250,7 @@ public class PharmacyServiceImpl implements PharmacyService{
 		}
 		
 		this.pharmacistRepository.save(pharmacist);
-		
+
 	}
 
 

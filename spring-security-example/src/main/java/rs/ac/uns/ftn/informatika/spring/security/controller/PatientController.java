@@ -3,6 +3,7 @@ package rs.ac.uns.ftn.informatika.spring.security.controller;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,6 +23,7 @@ import rs.ac.uns.ftn.informatika.spring.security.model.User;
 import rs.ac.uns.ftn.informatika.spring.security.service.MedicineService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PatientService;
 import rs.ac.uns.ftn.informatika.spring.security.service.UserService;
+import rs.ac.uns.ftn.informatika.spring.security.view.UserRegisterView;
 
 
 @RestController
@@ -84,6 +88,44 @@ public class PatientController {
 	@PreAuthorize("hasRole('ROLE_PATIENT')")
 	public List<Medicine> getAllMedicine()   {
 		return this.medicineService.findAll();
+	}
+	
+	@PostMapping("/removeAllergie/{id}")
+	@PreAuthorize("hasRole('ROLE_PATIENT')  || hasRole('ADMIN_SYSTEM')"+"|| hasRole('ROLE_PHARMACIST')"
+	        +
+	        "|| hasRole('ROLE_DERMATOLOGIST')")
+	public ResponseEntity<ArrayList<String>> removeAllerige(@PathVariable(name="id") String id,@RequestBody UserRegisterView userRequest) {
+		User existUser = this.userService.findByUsername(userRequest.getEmail());
+		Patient patient = this.patientService.findPatientByUser(existUser);
+		Set<Medicine> allergies = patient.getAllergies();
+		for(Medicine s:patient.getAllergies()) {
+			if(s.getName().equalsIgnoreCase(id)) {
+				allergies.remove(s);
+			}
+		}
+		patient.setAllergies(allergies);
+		this.patientService.savePatient(patient);
+		return null;
+	}
+	
+	@PostMapping("/addAllergie/{id}")
+	@PreAuthorize("hasRole('ROLE_PATIENT')  || hasRole('ADMIN_SYSTEM')"+"|| hasRole('ROLE_PHARMACIST')"
+	        +
+	        "|| hasRole('ROLE_DERMATOLOGIST')")
+	public ResponseEntity<ArrayList<String>> addAllergie(@PathVariable(name="id") String id,@RequestBody UserRegisterView userRequest) {
+		User existUser = this.userService.findByUsername(userRequest.getEmail());
+		Patient patient = this.patientService.findPatientByUser(existUser);
+		List<Medicine> medicine=this.medicineService.findAll();
+		Set<Medicine> allergies = patient.getAllergies();
+		for(Medicine s:this.medicineService.findAll()) {
+			if(s.getName().equalsIgnoreCase(id)) {
+				allergies.add(s);
+				System.out.println(s.getName());
+			}
+		}
+		patient.setAllergies(allergies);
+		this.patientService.savePatient(patient);
+		return null;
 	}
 	
 }

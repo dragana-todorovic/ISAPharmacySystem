@@ -71,7 +71,6 @@ $(document).ready(function() {
 		});
 	
 		});
-		
 	$('a#profile').click(function(){
 			var id = localStorage.getItem('email')
 			customAjax({
@@ -126,13 +125,13 @@ $(document).ready(function() {
 	    				    	    	    	
 	    })
 	  $('#id_submit_changes').click(function(){
-		let firstName=$('#id_first_name').val()
-		let lastName=$('#id_last_name').val()
-		let country=$('#id_country').val()
-		let city=$('#id_city').val()
-		let address=$('#id_address').val()
-		let phone=$('#id_phone').val()
-		let email=$('#id_email').val()
+			var firstName=$('#id_first_name').val()
+			var lastName=$('#id_last_name').val()
+			var country=$('#id_country').val()
+			var city=$('#id_city').val()
+			var address=$('#id_address').val()
+			var phone=$('#id_phone').val()
+			var email=$('#id_email').val()
 
 		obj = JSON.stringify({
 		firstname:firstName,
@@ -161,6 +160,68 @@ $(document).ready(function() {
 		
    
     })
+		 $('#my_allergies').on('click','button',function(event){
+
+		if($(event.target).attr('id')=="remove-allergie"){
+			var trid = $(event.target).closest('tr').attr('id');
+			var firstName=$('#id_first_name').val()
+			var lastName=$('#id_last_name').val()
+			var country=$('#id_country').val()
+			var city=$('#id_city').val()
+			var address=$('#id_address').val()
+			var phone=$('#id_phone').val()
+			var email=$('#id_email').val()
+					obj = JSON.stringify({
+					firstname:firstName,
+					lastname:lastName,
+					country: country,
+					city:city,
+					address:address,
+					phone :phone,
+					email:email});
+	
+				customAjax({
+				url:"/patient/removeAllergie/"+trid,
+				method : "POST",
+				data:obj,
+		 		contentType: 'application/json',
+				success:function(){
+					alert("Successfully removed allergie. ");
+				}
+			})
+		}
+	})
+		 $('#medicine_for_allergies').on('click','button',function(event){
+
+		if($(event.target).attr('id')=="add-allergie"){
+			var trid = $(event.target).closest('tr').attr('id');
+			var firstName=$('#id_first_name').val()
+			var lastName=$('#id_last_name').val()
+			var country=$('#id_country').val()
+			var city=$('#id_city').val()
+			var address=$('#id_address').val()
+			var phone=$('#id_phone').val()
+			var email=$('#id_email').val()
+					obj = JSON.stringify({
+					firstname:firstName,
+					lastname:lastName,
+					country: country,
+					city:city,
+					address:address,
+					phone :phone,
+					email:email});
+	
+				customAjax({
+				url:"/patient/addAllergie/"+trid,
+				method : "POST",
+				data:obj,
+		 		contentType: 'application/json',
+				success:function(){
+					alert("Successfully added allergie. ");
+				}
+			})
+		}
+	})
 	});
 	});
 function showPatientData(data){
@@ -170,11 +231,11 @@ function showPatientData(data){
 function showAllergies(data){
 	let temp='';
 	for (i in data){
-		temp+=`<tr id="`+data[i].id+`">
+		temp+=`<tr id="`+data[i].name+`">
 			<td><h4 class="ui image header"> <div class="content">
              `+data[i].name+`</div>
       			</h4></td>
-     			 <td><button class="ui primary basic button">Add Allergie</button>
+     			 <td><button id="add-allergie" class="ui primary basic button">Add Allergie</button>
       			</td></tr>`;
 	}
 	$('#medicine_for_allergies').html(temp);
@@ -195,7 +256,7 @@ function showProfile(data,result){
 					<td><h4 class="ui image header"> <div class="content">
 		             `+result[i]+`</div>
 		      			</h4></td>
-		     			 <td><button class="ui negative basic button">Remove Allergie</button>
+		     			 <td><button id="remove-allergie" class="ui negative basic button">Remove Allergie</button>
 		      			</td></tr>`;
 			}
 		$('#my_allergies').html(temp);
