@@ -24,4 +24,35 @@ public class MedicineWithQuantity {
 	@Column(name = "quantity", nullable = false)
 	private int quantity;
 
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public Medicine getMedicine() {
+		return medicine;
+	}
+
+	public void setMedicine(Medicine medicine) {
+		this.medicine = medicine;
+	}
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+
+	@Override
+	public String toString() {
+		return "MedicineWithQuantity [id=" + id + ", medicine=" + medicine + ", quantity=" + quantity + ", getId()="
+				+ getId() + ", getMedicine()=" + getMedicine() + ", getQuantity()=" + getQuantity() + ", getClass()="
+				+ getClass() + ", hashCode()=" + hashCode() + ", toString()=" + super.toString() + "]";
+	}
+
 }
