@@ -15,8 +15,8 @@ public interface MedicineService {
 	List<Medicine> findAll();
 	Collection<Medicine> searchMedicine(String p);
 	Medicine save(Medicine medicine);
-
 	Set<MedicineWithQuantity> getMedicinesByPharmacy (String email);
+	Medicine findByName(String name);
 
 
 }

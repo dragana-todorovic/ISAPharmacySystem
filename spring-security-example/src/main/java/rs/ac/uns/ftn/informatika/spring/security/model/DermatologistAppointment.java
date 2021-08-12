@@ -39,6 +39,63 @@ public class DermatologistAppointment {
 	
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Therapy therapy;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Dermatologist getDermatologist() {
+		return dermatologist;
+	}
+
+	public void setDermatologist(Dermatologist dermatologist) {
+		this.dermatologist = dermatologist;
+	}
+
+	public Patient getPatient() {
+		return patient;
+	}
+
+	public void setPatient(Patient patient) {
+		this.patient = patient;
+	}
+
+	public LocalDateTime getStartDateTime() {
+		return startDateTime;
+	}
+
+	public void setStartDateTime(LocalDateTime startDateTime) {
+		this.startDateTime = startDateTime;
+	}
+
+	public int getDuration() {
+		return duration;
+	}
+
+	public void setDuration(int duration) {
+		this.duration = duration;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Therapy getTherapy() {
+		return therapy;
+	}
+
+	public void setTherapy(Therapy therapy) {
+		this.therapy = therapy;
+	}
+	
 	
 
 }

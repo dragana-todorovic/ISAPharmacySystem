@@ -87,10 +87,12 @@ public class Pharmacist {
 		this.holidayRequests = holidayRequests;
 	}
 
+
 	@Override
 	public String toString() {
 		return "Pharmacist [id=" + id + ", user=" + user + ", pharmacy=" + pharmacy + ", ratings=" + ratings
 				+ ", workingTimes=" + workingTimes + ", holidayRequests=" + holidayRequests + "]";
 	}
+
 
 }

@@ -1,3 +1,4 @@
+
 package rs.ac.uns.ftn.informatika.spring.security.repository;
 
 import java.util.List;
@@ -16,3 +17,5 @@ public interface DermatologistRepository extends JpaRepository<Dermatologist, Lo
 	Optional<Dermatologist> findById(Long id);	
 
 }
+
+

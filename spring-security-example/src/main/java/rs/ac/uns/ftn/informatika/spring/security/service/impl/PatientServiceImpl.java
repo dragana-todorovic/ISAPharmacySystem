@@ -46,4 +46,11 @@ public class PatientServiceImpl implements PatientService {
 		return p;
 	}
 
+	public Patient findPatientById(Long id) {
+		Patient p = patientRepository.findPatientById(id);
+		return p;
+	}
+
+
+
 }

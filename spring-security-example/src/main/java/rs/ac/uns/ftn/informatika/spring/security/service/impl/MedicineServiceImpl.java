@@ -14,6 +14,7 @@ import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicineWithQuantity;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
+import rs.ac.uns.ftn.informatika.spring.security.model.User;
 import rs.ac.uns.ftn.informatika.spring.security.repository.MedicineRepository;
 import rs.ac.uns.ftn.informatika.spring.security.service.MedicineService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyAdminService;
@@ -56,11 +57,17 @@ public class MedicineServiceImpl implements MedicineService{
 	}
 	public Set<MedicineWithQuantity> getMedicinesByPharmacy(String email) {
 		PharmacyAdmin pa = pharmacyAdminService.findPharmacyAdminByUser(userService.findByEmail(email));
-		
+
 		Pharmacy p = pa.getPharmacy();
 		System.out.println(p.getMedicineWithQuantity());
-		
+
 		return p.getMedicineWithQuantity();
+	}
+	public Medicine findByName(String name) {
+		System.out.println("Usao u servis");
+		Medicine m = medicineRepository.findByName(name);
+		return m;
+
 	}
 
 }

@@ -87,9 +87,11 @@ public class Dermatologist {
 		this.holidayRequests = holidayRequests;
 	}
 
+
 	@Override
 	public String toString() {
 		return "Dermatologist [id=" + id + ", user=" + user + ", pharmacy=" + pharmacy + ", ratings=" + ratings
 				+ ", workingTimes=" + workingTimes + ", holidayRequests=" + holidayRequests + "]";
 	}
+
 }
