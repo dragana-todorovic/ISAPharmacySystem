@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import rs.ac.uns.ftn.informatika.spring.security.model.Authority;
 import rs.ac.uns.ftn.informatika.spring.security.model.Patient;
 import rs.ac.uns.ftn.informatika.spring.security.model.User;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PatientRepository;
@@ -31,6 +32,18 @@ public class PatientServiceImpl implements PatientService {
 	public Patient findPatientByUser(User user) {
 		System.out.println(this.patientRepository.findByUser(user));
 		return this.patientRepository.findByUser(user);
+	}
+	@Override
+	public Patient savePatient(Patient patient) {
+		Patient p = new Patient();
+		p.setAllergies(patient.getAllergies());
+		p.setCategory(patient.getCategory());
+		p.setPoints(patient.getPoints());
+		p.setUser(patient.getUser());
+		p.setId(patient.getId());
+
+		p = this.patientRepository.save(p);
+		return p;
 	}
 
 }

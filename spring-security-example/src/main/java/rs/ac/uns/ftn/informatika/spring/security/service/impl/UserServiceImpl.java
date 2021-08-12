@@ -92,6 +92,7 @@ public class UserServiceImpl implements UserService {
 		
 		u = this.userRepository.save(u);
 		return u;
+		
 	}
 	@Override
 	public Boolean changePassword(String email, String password) {

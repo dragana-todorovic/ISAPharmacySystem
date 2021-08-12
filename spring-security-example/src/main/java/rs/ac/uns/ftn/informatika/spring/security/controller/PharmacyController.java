@@ -48,6 +48,13 @@ public class PharmacyController {
 		return pharmacyService.findById(pa.getPharmacy().getId());
 		
 	}
+	@GetMapping("/getAll")
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	public List<Pharmacy> getAll() {
+		System.out.println("Pogodjena medota");
+		return this.pharmacyService.findAll();
+		
+	}
 	
 	@PostMapping("/editPharmacy")
 	@PreAuthorize("hasRole('ADMIN_PHARMACY')")

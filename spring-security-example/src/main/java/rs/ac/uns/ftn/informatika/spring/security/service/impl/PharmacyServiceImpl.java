@@ -3,6 +3,7 @@ package rs.ac.uns.ftn.informatika.spring.security.service.impl;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import rs.ac.uns.ftn.informatika.spring.security.model.ActionAndBenefit;
 import rs.ac.uns.ftn.informatika.spring.security.model.Address;
+import rs.ac.uns.ftn.informatika.spring.security.model.Patient;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
 import rs.ac.uns.ftn.informatika.spring.security.repository.ActionAndBenefitRepository;
@@ -74,6 +76,14 @@ public class PharmacyServiceImpl implements PharmacyService{
 		return ab;
 		
 	}
+
+	@Override
+	public List<Pharmacy> findAll() {
+		List<Pharmacy> result = pharmacyRepository.findAll();
+		return result;
+	}
+
+
 
 	/*@Override
 	public Collection<Pharmacy> searchPharmacy(String p) {

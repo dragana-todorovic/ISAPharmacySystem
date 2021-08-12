@@ -1,9 +1,11 @@
 package rs.ac.uns.ftn.informatika.spring.security.service;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import rs.ac.uns.ftn.informatika.spring.security.model.ActionAndBenefit;
+import rs.ac.uns.ftn.informatika.spring.security.model.Patient;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
 import rs.ac.uns.ftn.informatika.spring.security.model.User;
@@ -15,4 +17,5 @@ public interface PharmacyService {
 	void editPharmacy(EditPharmacyView p);
 	ActionAndBenefit addNew(ActionAndBenefitDTO actionAndBenefit);
 	//Collection<Pharmacy> searchPharmacy(String p);
+	List<Pharmacy> findAll ();
 }
