@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"  />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <script src="../scripts/customAjax.js"></script>
+    <script src="../scripts/adminsystem/main.js"></script>
+    <script src="../scripts/jwt.js"></script>
+    <title>Admin system Homepage</title>
+    <style>
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #5bc0de !important;
+}
+
+li {
+  float: left;
+}
+
+li a, .dropbtn {
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover, .dropdown:hover .dropbtn {
+  background-color:  black;;
+}
+
+li.dropdown {
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: fixed;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+    .container_1 {
+    height: 100vh;
+    background: url('../images/medicine-generic-banner.jpg') no-repeat center center/cover;
+    color: black;
+}
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+ .btn-confirm {
+      color: #fff;
+      background-color: #5bc0de !important;
+      border-color: #46b8da !important;
+    }
+
+.dropdown-content a:hover {background-color: #f1f1f1;}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+.a_a {
+    color: #853b1e;
+}
+
+.invalid_1 {
+    color: rgb(165, 11, 11);
+    padding: 0;
+    margin: 0;
+    font-size: 0.8rem;
+}
+
+.btn_1 {
+    display: inline-block;
+    margin-top: 1.5rem;
+    color: #fff;
+    background: #a85432;
+    padding: 0.5rem 2rem;
+    border: none;
+    border-radius: 5px;
+}
+
+.btn_1:hover {
+    background: #853b1e;
+}
+div.container4 {
+    height: 10em;
+    position: relative }
+div.container4 h2 {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%) }
+</style>
+</head>
+<body>
+<div class="container_1">
+    <ul style="background:skyblue">
+        <li><a href=""><i class="home icon" style="color:white"></i></a></li>
+
+        <li><a id="users_complaints" href="#">Users Complaints</a></li>
+        <li><a id="loyalty_program" href="#">Loyalty Program</a></li>
+        <li><a id="add_medicine" href="addMedicine.html">Add Medicine</a></li>
+        <li  class="dropdown" >
+            <a href="javascript:void(0)" class="dropbtn">Register</a>
+            <div class="dropdown-content">
+                <a id="register_pharmacy" href="#">Pharmacy&Admin</a>
+                <a id="register_dermatologist" href="#">Dermatologist</a>
+                <a id="register_supplier" href="#">Supplier</a>
+                <a id="register_admin_system" href="#" >Admin System</a>
+            </div>
+        </li>
+
+        <li class="dropdown" style="float:right;">
+            <a href="javascript:void(0)" class="dropbtn">Profile</a>
+            <div class="dropdown-content" style="right:0;">
+                <a id = "profileInfo" href="#"><i class="user icon"></i> My Profile </a>
+                <a id = "logout" href="#"><i class = "sign-out icon"></i> Log out</a>
+            </div>
+
+        </li>
+
+
+    </ul>
+    <div id = "showData" class="container4" style = "color : white">
+        <table class="ui large table" style="width:50%; margin-left:auto;
+			    margin-right:auto; margin-top: 40px;">
+            <thead>
+            <tr class="success">
+                <th colspan="2" class = "text-info" style= "text-align:center;">Add New Medicine</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Code:</td>
+                <td class="ui input small"> <input type="text" id="txtCode"/></td>
+
+            </tr>
+            <tr>
+                <td>Name:</td>
+                <td class="ui input small"> <input type="text" id="txtName" /></td>
+
+            </tr>
+            <tr>
+                <td>Shape:</td>
+                <td class="ui input small">
+                    <select  id="txtShape">
+                        <option value = "1">CAPSULE</option>
+                        <option value = "2">TABLET</option>
+                        <option value = "3">POWDER</option>
+                        <option value = "4">CREAM</option>
+                        <option value = "5">OIL</option>
+                        <option value = "6">SYRUP</option>
+                    </select>
+                </td>
+
+            </tr>
+            <tr>
+                <td>Type:</td>
+                <td class="ui input small">
+                    <select  id="txtType">
+                        <option value = "1">ANTIBIOTIC</option>
+                        <option value = "2">ANESTHETIC</option>
+                        <option value = "3">ANTIHISTAMINE</option>
+                    </select>
+                </td>
+
+            </tr>
+            <tr>
+                <td>Content:</td>
+                <td class="ui input small"> <input type="text" id="txtContent" /></td>
+
+            </tr>
+            <tr>
+                <td>Producer:</td>
+                <td class="ui input small"> <input type="text" id="txtProducer" /></td>
+
+            </tr>
+            <tr>
+                <td>Can Medicine be Taken With Prescription:</td>
+                <td class="ui input small">
+                    <div class="ui radio checkbox">
+                        <input type="radio"  id = "withPrescriptionTrue">
+                        <label>Yes</label>
+                    </div>
+                    <div class="ui radio checkbox">
+                        <input type="radio" id = "withPrescriptionFalse">
+                        <label>No</label>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Substitute Medicine Codes:</td>
+                <td class="ui input small">
+                    <table  id="txtSubstituteMedicineCodes" >
+                        <thead>
+                        <tr class="success">
+                            <th></th>
+                            <th>Code</th>
+                            <th>Medicine Name</th>
+                        </tr>
+                        </thead>
+                        <tbody id="medicineTable">
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Notes: </td>
+                <td class="ui input small"> <input type="text" id="txtNotes" /></td>
+            </tr>
+            <tr>
+                <td>Contradiction: </td>
+                <td class="ui input small"> <input type="text" id="txtContradiction" /></td>
+            </tr>
+            <tr>
+                <td>Advised daily dose: </td>
+                <td class="ui input small"> <input type="number" id="txtAdvisedDailyDose" /></td>
+            </tr>
+            </tbody>
+            <tfoot class="full-width">
+            <tr>
+                <th></th>
+                <th colspan="2">
+                    <input id = "submitAddMedicine" class="ui right floated positive basic button" type = "button" value = "Submit"></input>
+
+                </th>
+            </tr>
+            </tfoot>
+        </table> <p id="er"> </p>
+    </div>
+</div>
+</body>
+</html>

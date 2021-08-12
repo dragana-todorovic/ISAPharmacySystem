@@ -11,5 +11,6 @@ public interface MedicineService {
 
 	List<Medicine> findAll();
 	Collection<Medicine> searchMedicine(String p);
+	Medicine save(Medicine medicine);
 
 }
