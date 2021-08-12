@@ -1,7 +1,6 @@
 $(document).ready(function(e){ 
 	
 	$("#actionsAndBenefits").click(function () {
-		  console.log("USAO U KLIK")
 		  actionandbenefit()
 	 });
 	

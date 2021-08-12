@@ -30,8 +30,11 @@ public class Medicine {
    
    @Column(name = "shape")
    private MedicineShape shape=MedicineShape.CAPSULE;
-   
-   @Column(name = "content")
+
+	@Column(name = "type", nullable = false)
+	private MedicineType type=MedicineType.ANESTHETIC;
+
+	@Column(name = "content")
    private String content;
    
    @Column(name = "producer")
@@ -45,7 +48,13 @@ public class Medicine {
    
    @Column(name = "notes")
    private String notes;
-   
+
+	@Column(name = "adviseddailydose")
+	private int adviseddailydose;
+
+	@Column(name = "contradiction")
+	private String contradiction;
+
    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<Rating> ratings = new HashSet<Rating>();
 
@@ -55,8 +64,23 @@ public Medicine() {
 	super();
 }
 
-public Medicine(Long id, String code, String name, MedicineShape shape, String content, String producer,
-		boolean withprescription, Set<String> substituteMedicineCodes, String notes) {
+	public Medicine(Long id, String code, String name, MedicineShape shape, MedicineType type, String content, String producer, boolean withprescription, Set<String> substituteMedicineCodes, String notes, int adviseddailydose, String contradiction) {
+		this.id = id;
+		this.code = code;
+		this.name = name;
+		this.shape = shape;
+		this.type = type;
+		this.content = content;
+		this.producer = producer;
+		this.withprescription = withprescription;
+		this.substituteMedicineCodes = substituteMedicineCodes;
+		this.notes = notes;
+		this.adviseddailydose = adviseddailydose;
+		this.contradiction = contradiction;
+	}
+
+	public Medicine(Long id, String code, String name, MedicineShape shape, String content, String producer,
+					boolean withprescription, Set<String> substituteMedicineCodes, String notes) {
 	super();
 	this.id = id;
 	this.code = code;
@@ -69,6 +93,29 @@ public Medicine(Long id, String code, String name, MedicineShape shape, String c
 	this.notes = notes;
 }
 
+	public MedicineType getType() {
+		return type;
+	}
+
+	public void setType(MedicineType type) {
+		this.type = type;
+	}
+
+	public int getAdviseddailydose() {
+		return adviseddailydose;
+	}
+
+	public void setAdviseddailydose(int adviseddailydose) {
+		this.adviseddailydose = adviseddailydose;
+	}
+
+	public String getContradiction() {
+		return contradiction;
+	}
+
+	public void setContradiction(String contradiction) {
+		this.contradiction = contradiction;
+	}
 public Long getId() {
 	return id;
 }
