@@ -100,6 +100,7 @@ public class PharmacyServiceImpl implements PharmacyService{
 	public List<Pharmacy> findAll() {
 		List<Pharmacy> result = pharmacyRepository.findAll();
 		return result;
+	}
 	public Set<Dermatologist> getDermatologistsByPharmacyAdmin(String email) {
 		PharmacyAdmin pa = pharmacyAdminService.findPharmacyAdminByUser(userService.findByEmail(email));
 		

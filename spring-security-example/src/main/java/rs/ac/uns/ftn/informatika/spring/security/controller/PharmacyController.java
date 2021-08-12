@@ -23,12 +23,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import rs.ac.uns.ftn.informatika.spring.security.model.Dermatologist;
+import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
+import rs.ac.uns.ftn.informatika.spring.security.model.MedicineWithQuantity;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacist;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
 import rs.ac.uns.ftn.informatika.spring.security.model.User;
 import rs.ac.uns.ftn.informatika.spring.security.model.WorkingDay;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacyAdminRepository;
+import rs.ac.uns.ftn.informatika.spring.security.service.MedicineService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyAdminService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyService;
 import rs.ac.uns.ftn.informatika.spring.security.service.UserService;
@@ -44,6 +47,8 @@ public class PharmacyController {
 	private PharmacyAdminService pharmacyAdminService;
 	@Autowired
 	private PharmacyService pharmacyService;
+	@Autowired
+	private MedicineService medicineService;
 	
 	@PostMapping("/getPharmacyByAdmin")
 	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
@@ -67,6 +72,13 @@ public class PharmacyController {
 		
 		pharmacyService.editPharmacy(pharmacy);
 		return new ResponseEntity<>(HttpStatus.OK);
+		
+	}
+	
+	@GetMapping("/getAllMedicinesWithQuantity/{email}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public Set<MedicineWithQuantity> getMedicines(@PathVariable(name="email") String email) {
+		return this.medicineService.getMedicinesByPharmacy(email);
 		
 	}
 	
