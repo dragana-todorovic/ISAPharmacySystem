@@ -17,6 +17,9 @@ public interface MedicineService {
 	Medicine save(Medicine medicine);
 
 	Set<MedicineWithQuantity> getMedicinesByPharmacy (String email);
-
+	Set<Medicine> getAllMedicinesExceptExisted (String email);
+	
+	void addMedicineWithQuatityInPharmacy(String email,String medicineName, int quantity);
+	void deleteMedicineFromPharmacy(Long id, String email);
 
 }

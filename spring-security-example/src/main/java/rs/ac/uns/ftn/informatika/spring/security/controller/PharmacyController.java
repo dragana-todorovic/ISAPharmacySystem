@@ -150,5 +150,31 @@ public class PharmacyController {
 		return new ResponseEntity<>(HttpStatus.OK);
 		
 	}
+	
+	@GetMapping("/getAllMedicineExceptAlreadyExisted/{email}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public Set<Medicine> getAllMedicineExceptAlreadyExisted(@PathVariable(name="email") String email) {
+		return this.medicineService.getAllMedicinesExceptExisted(email);
+		
+	}
+	
+	@PostMapping("/addMedicineWithQuantityInPharmacy/{email}/{medicineName}/{quantity}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public ResponseEntity<?> getAllMedicineExceptAlreadyExisted(@PathVariable(name="email") String email,
+			@PathVariable(name="medicineName") String medicineName,@PathVariable(name="quantity") String quantity) {
+		int q = Integer.parseInt(quantity);
+		this.medicineService.addMedicineWithQuatityInPharmacy(email, medicineName, q);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@GetMapping("/deleteMedicineFromPharmacy/{id}/{email}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public ResponseEntity<?> deleteMedicineFromPharmacy(@PathVariable(name="id") String id,
+			@PathVariable(name="email") String email) {
+		Long medicineId = Long.parseLong(id);
+		this.medicineService.deleteMedicineFromPharmacy(medicineId, email);
+		return new ResponseEntity<>(HttpStatus.OK);
+		
+	}
 }
 	

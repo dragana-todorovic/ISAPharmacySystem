@@ -12,12 +12,12 @@ INSERT INTO USERS (username, password, first_name, last_name, email, country, ci
 
 --medicine
 
-INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,type,notes) VALUES ('Code1','Brufen',1,'content1','Galenika',false,0,'Ne konzumirati uz alkohol');
-INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,type,notes) VALUES ('Code2','Aspirin',1,'content2','Galenika',false,0,'Ne konzumirati uz alkohol');
-INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,type,notes) VALUES ('Code3','Paracetamol',1,'content3','HEMOFARM',false,0,'Ne konzumirati uz alkohol');
-INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,type,notes) VALUES ('Code4','Andol',1,'content4','FARMAVITA',false,0,'Ne konzumirati uz alkohol');
-INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,type,notes) VALUES ('Code5','Deksomen',1,'content5','Galenika',false,0,'Ne konzumirati uz alkohol');
-INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,type,notes) VALUES ('Code6','Analgin',1,'content6','HEMOFARM',false,0,'Ne konzumirati uz alkohol');
+INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,type,notes,adviseddailydose,contradiction) VALUES ('Code1','Midol',1,'content1','Galenika',false,0,'Ne konzumirati uz alkohol',1,'Contradiction0');
+INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,type,notes,adviseddailydose,contradiction) VALUES ('Code2','Rapten DUO',1,'content2','Galenika',false,0,'Ne konzumirati uz alkohol',2,'Contradiction1');
+INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,type,notes,adviseddailydose,contradiction) VALUES ('Code3','Paracetamol',1,'content3','HEMOFARM',false,0,'Ne konzumirati uz alkohol',2,'Contradiction2');
+INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,type,notes,adviseddailydose,contradiction) VALUES ('Code4','Andol',1,'content4','FARMAVITA',false,0,'Ne konzumirati uz alkohol',3,'Contradiction3');
+INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,type,notes,adviseddailydose,contradiction) VALUES ('Code5','Deksomen',1,'content5','Galenika',false,0,'Ne konzumirati uz alkohol',5,'Contradiction4');
+INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,type,notes,adviseddailydose,contradiction) VALUES ('Code6','Analgin',1,'content6','HEMOFARM',false,0,'Ne konzumirati uz alkohol',4,'Contradiction5');
 
 INSERT INTO MEDICINE(code,name,shape,type,content,producer,withprescription,notes,adviseddailydose,contradiction) VALUES ('1234','Brufen',1,1,'nesto','Galenika',false,'Ne konzumirati uz alkohol', 2,'Contradiction');
 INSERT INTO MEDICINE(code,name,shape,type,content,producer,withprescription,notes,adviseddailydose,contradiction) VALUES ('12333','Aspirin',1,2,'nesto','Galenika',false,'Ne konzumirati uz alkohol',3,'Contradiction2');
@@ -108,7 +108,6 @@ INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (30, 4);
 INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (25, 5);
 INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (28, 6);
 INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (3, 6);
-INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (57, 3);
 
 
 --pharmacy medicine prices
@@ -117,12 +116,11 @@ INSERT INTO pharmacy_medicine_prices (pharmacy_id, medicine_prices_id) VALUES (1
 
 --pharmacy medicine with quantity
 INSERT INTO pharmacy_medicine_with_quantity (pharmacy_id, medicine_with_quantity_id) VALUES (2, 1);
-INSERT INTO pharmacy_medicine_with_quantity (pharmacy_id, medicine_with_quantity_id) VALUES (2, 3);
+INSERT INTO pharmacy_medicine_with_quantity (pharmacy_id, medicine_with_quantity_id) VALUES (1, 3);
 INSERT INTO pharmacy_medicine_with_quantity (pharmacy_id, medicine_with_quantity_id) VALUES (2, 4);
-INSERT INTO pharmacy_medicine_with_quantity (pharmacy_id, medicine_with_quantity_id) VALUES (2, 5);
-INSERT INTO pharmacy_medicine_with_quantity (pharmacy_id, medicine_with_quantity_id) VALUES (2, 6);
-INSERT INTO pharmacy_medicine_with_quantity (pharmacy_id, medicine_with_quantity_id) VALUES (2, 2);
-INSERT INTO pharmacy_medicine_with_quantity (pharmacy_id, medicine_with_quantity_id) VALUES (2, 9);
+INSERT INTO pharmacy_medicine_with_quantity (pharmacy_id, medicine_with_quantity_id) VALUES (1, 5);
+INSERT INTO pharmacy_medicine_with_quantity (pharmacy_id, medicine_with_quantity_id) VALUES (1, 6);
+INSERT INTO pharmacy_medicine_with_quantity (pharmacy_id, medicine_with_quantity_id) VALUES (1, 2);
 INSERT INTO pharmacy_medicine_with_quantity (pharmacy_id, medicine_with_quantity_id) VALUES (2, 7);
 
 --pharmacist
