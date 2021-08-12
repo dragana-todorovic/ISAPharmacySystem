@@ -35,4 +35,9 @@ public class MedicineServiceImpl implements MedicineService{
 	        return medicines;
 	}
 
+	@Override
+	public Medicine save(Medicine medicine) {
+		Medicine medicineSaved = this.medicineRepository.save(medicine);
+		return medicineSaved;
+	}
 }
