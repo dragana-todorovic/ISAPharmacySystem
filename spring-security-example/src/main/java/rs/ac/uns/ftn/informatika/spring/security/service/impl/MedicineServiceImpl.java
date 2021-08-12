@@ -16,6 +16,8 @@ import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
 import rs.ac.uns.ftn.informatika.spring.security.model.User;
 import rs.ac.uns.ftn.informatika.spring.security.repository.MedicineRepository;
+import rs.ac.uns.ftn.informatika.spring.security.repository.MedicineWithQuantityRepository;
+import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacyRepository;
 import rs.ac.uns.ftn.informatika.spring.security.service.MedicineService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyAdminService;
 import rs.ac.uns.ftn.informatika.spring.security.service.UserService;
@@ -23,9 +25,13 @@ import rs.ac.uns.ftn.informatika.spring.security.service.UserService;
 @Service
 public class MedicineServiceImpl implements MedicineService{
 
+	
+	@Autowired
+	private PharmacyRepository pharmacyRepository;
 	@Autowired
 	private MedicineRepository medicineRepository;
-	
+	@Autowired
+	private MedicineWithQuantityRepository medicineWithQuantityRepository;
 	@Autowired
 	private UserService userService;
 	
@@ -68,6 +74,59 @@ public class MedicineServiceImpl implements MedicineService{
 		Medicine m = medicineRepository.findByName(name);
 		return m;
 
+	}
+
+	@Override
+	public Set<Medicine> getAllMedicinesExceptExisted(String email) {
+		Set<MedicineWithQuantity> alreadyExisted = getMedicinesByPharmacy(email);
+		List<Medicine> all = findAll();
+		Set<Medicine> result = new HashSet<Medicine>();
+		Set<Medicine> pomocna = new HashSet<Medicine>();
+		
+		for(MedicineWithQuantity mq : alreadyExisted) {
+			pomocna.add(mq.getMedicine());
+		}		
+		
+		for(Medicine m : all) {	
+				if(!pomocna.contains(m)) {
+					result.add(m);
+				}
+			}
+		
+		return result;
+	}
+
+	@Override
+	public void addMedicineWithQuatityInPharmacy(String email, String medicineName, int quantity) {
+		PharmacyAdmin pa = pharmacyAdminService.findPharmacyAdminByUser(userService.findByEmail(email));
+		
+		Pharmacy pharmacy = pa.getPharmacy();
+		
+		Medicine medicine = medicineRepository.findfindByName(medicineName);
+		
+		MedicineWithQuantity medicineWithQuantity = new MedicineWithQuantity();
+		medicineWithQuantity.setMedicine(medicine);
+		medicineWithQuantity.setQuantity(quantity);
+
+		
+		pharmacy.getMedicineWithQuantity().add(medicineWithQuantity);
+		
+		this.pharmacyRepository.save(pharmacy);
+		
+	}
+
+	@Override
+	public void deleteMedicineFromPharmacy(Long id, String email) {
+		PharmacyAdmin pa = pharmacyAdminService.findPharmacyAdminByUser(userService.findByEmail(email));
+		
+		Pharmacy pharmacy = pa.getPharmacy();
+		
+		MedicineWithQuantity medicineWithQuantity = medicineWithQuantityRepository.getOne(id);
+		
+		pharmacy.getMedicineWithQuantity().remove(medicineWithQuantity);
+		this.pharmacyRepository.save(pharmacy);
+		
+		
 	}
 
 }

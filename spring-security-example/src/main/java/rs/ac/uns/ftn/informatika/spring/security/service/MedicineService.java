@@ -16,7 +16,13 @@ public interface MedicineService {
 	Collection<Medicine> searchMedicine(String p);
 	Medicine save(Medicine medicine);
 	Set<MedicineWithQuantity> getMedicinesByPharmacy (String email);
+
 	Medicine findByName(String name);
+
+	Set<Medicine> getAllMedicinesExceptExisted (String email);
+	
+	void addMedicineWithQuatityInPharmacy(String email,String medicineName, int quantity);
+	void deleteMedicineFromPharmacy(Long id, String email);
 
 
 }

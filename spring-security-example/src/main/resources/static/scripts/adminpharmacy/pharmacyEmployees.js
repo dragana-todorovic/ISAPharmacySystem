@@ -243,7 +243,7 @@ $("button[name=obrisiDermatologa]").click(function() {
 	      method: 'GET',
 		  contentType: 'application/json',
 		        success: function(){
-		        	alert("Succesifuly deleted!")
+		        	refreshujTabeluZaDermatologe()
 				},
 			      error: function(){
 			       	alert('Error');
@@ -491,7 +491,7 @@ $("button[name=obrisiDermatologa]").click(function() {
 	      method: 'GET',
 		  contentType: 'application/json',
 		        success: function(){
-		        	alert("Succesifuly deleted!")
+		        	refreshujTabeluZaFarmaceute()
 				},
 			      error: function(){
 			       	alert('Error');
@@ -554,6 +554,36 @@ function formatDate(date) {
         day = '0' + day;
 
     return [year, month, day].join('-');
+}
+
+let refreshujTabeluZaDermatologe = function(){
+	customAjax({
+	      url: '/pharmacy/getAllDermatologist/' + email,
+	      method: 'GET',
+	      contentType: 'application/json',
+	      success: function(data){	 
+	    	  console.log(data)
+	    	  showDermatologists(data);
+	      },
+	      error: function(){
+	      }
+
+});
+}
+
+let refreshujTabeluZaFarmaceute = function(){
+	customAjax({
+	      url: '/pharmacy/getAllPharmacists/' + email,
+	      method: 'GET',
+	      contentType: 'application/json',
+	      success: function(data){	 
+	    	  console.log(data)
+	    	  showPharmacists(data);
+	      },
+	      error: function(){
+	      }
+
+});
 }
 
 
