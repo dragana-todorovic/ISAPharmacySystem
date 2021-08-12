@@ -19,7 +19,7 @@ public class AppoitmentPrice {
 	  private Long id;
 	
 	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	private DermatologistAppoitment appoitment;
+	private DermatologistAppointment appoitment;
 	
 	 @Column(name = "price", nullable = false)
 	private double price;

@@ -1,3 +1,4 @@
+
 package rs.ac.uns.ftn.informatika.spring.security;
 
 import org.springframework.boot.SpringApplication;
