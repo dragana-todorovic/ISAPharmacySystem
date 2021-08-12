@@ -7,8 +7,11 @@ INSERT INTO USERS (username, password, first_name, last_name, email, country, ci
 INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('user@example.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.Lrd4j8amcljStog3n4APU5EX3bGJIUK', 'Marko', 'Markovic', 'user@example.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
 INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('patient@example.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.Lrd4j8amcljStog3n4APU5EX3bGJIUK', 'Nikola', 'Nikolic', 'patient@example.com','Republika Srbija', 'Nis', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
 INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('dermatologist@example.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.Lrd4j8amcljStog3n4APU5EX3bGJIUK', 'Marko', 'Markovic', 'dermatologist@example.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
-INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('pharmacist@example.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.', 'Marko', 'Markovic', 'pharmacist@example.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
+INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('pharmacist@example.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.Lrd4j8amcljStog3n4APU5EX3bGJIUK', 'Marko', 'Markovic', 'pharmacist@example.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
 INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('adminpharmacyr@example.com', '$2y$10$Dz4zbJOWPOfxHsjy2QgDk.SoBDiwsiQ3.2Vgxw0hhNfoDO4rZZB5i', 'Dragana', 'Todorovic', 'adminpharmacyr@example.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
+INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('dermatologist1@example.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.Lrd4j8amcljStog3n4APU5EX3bGJIUK', 'Maja', 'Tepavcevic', 'dermatologist1@example.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
+INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('patient1@example.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.Lrd4j8amcljStog3n4APU5EX3bGJIUK', 'Nikola', 'Nikolic', 'patient1@example.com','Republika Srbija', 'Nis', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
+INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('dermatologist1@example.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.Lrd4j8amcljStog3n4APU5EX3bGJIUK', 'Marko', 'Markovic', 'dermatologist1@example.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
 --medicine
 INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,notes) VALUES ('1234','Brufen',1,'nesto','Galenika',false,'Ne konzumirati uz alkohol');
 INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,notes) VALUES ('12333','Aspirin',1,'nesto','Galenika',false,'Ne konzumirati uz alkohol');
@@ -34,12 +37,16 @@ INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (6, 7);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (7, 5);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (9, 6);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (8, 4);
+INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (10, 5);
+INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (11, 3);
+INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (12, 5);
 --patient
 INSERT INTO PATIENTS (id,user_id,points,category,penal,point) VALUES (1,5,10,0,0,0);
 INSERT INTO PATIENTS (id,user_id,points,category,penal,point) VALUES (2,6,100,0,0,0);
+INSERT INTO PATIENTS (id,user_id,points,category,penal,point) VALUES (3,11,100,0,0,0);
 INSERT INTO patients_allergies_medicine(patient_id, allergies_medicine_id) values (1,1);
 INSERT INTO patients_allergies_medicine(patient_id, allergies_medicine_id) values (1,2);
-INSERT INTO patients_allergies_medicine(patient_id, allergies_medicine_id) values (2,2);
+
 
 --suplier 
 INSERT INTO suplier(id,user_id) VALUES (1,6);
@@ -54,11 +61,18 @@ INSERT INTO PHARMACYADMIN (id, pharmacy_id, user_id) VALUES (1,1,8);
 
 --dermatologist 
 INSERT INTO DERMATOLOGIST (id, pharmacy_id, user_id) VALUES (1,1,7);
+INSERT INTO DERMATOLOGIST (id, pharmacy_id, user_id) VALUES (2,1,7);
+INSERT INTO DERMATOLOGIST (id, pharmacy_id, user_id) VALUES (3,1,10);
 
+--pharmacist
+INSERT INTO PHARMACIST (id, pharmacy_id, user_id) VALUES (1,1,8);
 --appoitment
-INSERT INTO APPOITMENT (id, duration, start_date_time, description, dermatologist_id, patient_id) VALUES (1,30,'2017-10-01 21:58:58.508-07','opis1',1,1);
-INSERT INTO APPOITMENT (id, duration, start_date_time, description, dermatologist_id, patient_id) VALUES (2,30,'2017-10-02 21:58:58.508-07','opis2',1,2);
-
+INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id, patient_id) VALUES (30,'2022-10-01 21:58:58.508-07','opis1',1,1);
+INSERT INTO APPOITMENT (duration, start_date_time, description, dermatologist_id, patient_id) VALUES (30,'2022-08-10 21:58:58.508-07','opis2',1,2);
+INSERT INTO APPOITMENT (duration, start_date_time, description, dermatologist_id, patient_id) VALUES (30,'2017-10-02 21:58:58.508-07','opis2',2,3);
+--counseling 
+INSERT INTO PHARMACISTCOUNSELING (id, duration, start_date_time, description, pharmacist_id, patient_id) VALUES (2,30,'2022-10-02 21:58:58.508-07','opis2',1,2);
+INSERT INTO PHARMACISTCOUNSELING (id, duration, start_date_time, description, pharmacist_id, patient_id) VALUES (1,30,'2022-10-01 21:58:58.508-07','opis2',1,1);
 --appoitment price
 INSERT INTO APPOITMENTPRICE (id,price,appoitment_id) VALUES (1,400,1);
 INSERT INTO APPOITMENTPRICE (id,price,appoitment_id) VALUES (2,500,2);
@@ -98,8 +112,7 @@ INSERT INTO pharmacy_medicine_prices (pharmacy_id, medicine_prices_id) VALUES (1
 INSERT INTO pharmacy_medicine_with_quantity (pharmacy_id, medicine_with_quantity_id) VALUES (1, 1);
 INSERT INTO pharmacy_medicine_with_quantity (pharmacy_id, medicine_with_quantity_id) VALUES (1, 3);
 
---pharmacist
-INSERT INTO PHARMACIST (id, pharmacy_id, user_id) VALUES (1,1,9);
+
 
 --pharmacist rating
 INSERT INTO pharmacist_ratings (pharmacist_id, ratings_id) VALUES (1,1);
@@ -128,8 +141,7 @@ INSERT INTO patients_dermatologist_complaints(patient_id,dermatologist_complaint
 
 
 --holiday request
-INSERT INTO holidayrequest(id,start_date,end_date,status) VALUES (1,'2017-10-01 21:58:58.508-07','2017-12-01 21:58:58.508-07',0);
-
+INSERT INTO holidayrequest(start_date,end_date,status) VALUES ('2021-10-01','2021-11-01',0);
 --dermatologist holiday request
 INSERT INTO dermatologist_holiday_requests(dermatologist_id,holiday_requests_id) VALUES (1,1);
 
@@ -225,8 +237,8 @@ INSERT INTO suplier_offers(suplier_id,offers_id) VALUES (1,1);
 INSERT INTO suplier_offers(suplier_id,offers_id) VALUES (1,2);
 
 --theraphy
-INSERT INTO therapy(id,duration,medicine_id) VALUES (1,4,1);
-INSERT INTO therapy(id,duration,medicine_id) VALUES (2,6,2);
+INSERT INTO therapy(duration,medicine_id) VALUES (4,1);
+INSERT INTO therapy(duration,medicine_id) VALUES (6,2);
 
 --loyalty scale
 INSERT INTO loyaltyscale(id,category,needed_points,discount) VALUES (1,0,0,0);

@@ -38,4 +38,53 @@ public class Dermatologist {
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<HolidayRequest> holidayRequests = new HashSet<HolidayRequest>();
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public Pharmacy getPharmacy() {
+		return pharmacy;
+	}
+
+	public void setPharmacy(Pharmacy pharmacy) {
+		this.pharmacy = pharmacy;
+	}
+
+	public Set<Rating> getRatings() {
+		return ratings;
+	}
+
+	public void setRatings(Set<Rating> ratings) {
+		this.ratings = ratings;
+	}
+
+	public Set<WorkingTime> getWorkingTimes() {
+		return workingTimes;
+	}
+
+	public void setWorkingTimes(Set<WorkingTime> workingTimes) {
+		this.workingTimes = workingTimes;
+	}
+
+	public Set<HolidayRequest> getHolidayRequests() {
+		return holidayRequests;
+	}
+
+	public void setHolidayRequests(Set<HolidayRequest> holidayRequests) {
+		this.holidayRequests = holidayRequests;
+	}
+	
 }
