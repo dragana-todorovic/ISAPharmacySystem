@@ -27,14 +27,11 @@ public class Pharmacist {
 	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private User user;
 	
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	private Pharmacy pharmacy;
-	
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<Rating> ratings = new HashSet<Rating>();
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Set<WorkingTime> workingTimes = new HashSet<WorkingTime>();
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private WorkingTime workingTime;
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<HolidayRequest> holidayRequests = new HashSet<HolidayRequest>();
@@ -55,14 +52,6 @@ public class Pharmacist {
 		this.user = user;
 	}
 
-	public Pharmacy getPharmacy() {
-		return pharmacy;
-	}
-
-	public void setPharmacy(Pharmacy pharmacy) {
-		this.pharmacy = pharmacy;
-	}
-
 	public Set<Rating> getRatings() {
 		return ratings;
 	}
@@ -71,12 +60,12 @@ public class Pharmacist {
 		this.ratings = ratings;
 	}
 
-	public Set<WorkingTime> getWorkingTimes() {
-		return workingTimes;
+	public WorkingTime getWorkingTimes() {
+		return workingTime;
 	}
 
-	public void setWorkingTimes(Set<WorkingTime> workingTimes) {
-		this.workingTimes = workingTimes;
+	public void setWorkingTimes(WorkingTime workingTimes) {
+		this.workingTime = workingTimes;
 	}
 
 	public Set<HolidayRequest> getHolidayRequests() {
@@ -87,11 +76,10 @@ public class Pharmacist {
 		this.holidayRequests = holidayRequests;
 	}
 
-
 	@Override
 	public String toString() {
-		return "Pharmacist [id=" + id + ", user=" + user + ", pharmacy=" + pharmacy + ", ratings=" + ratings
-				+ ", workingTimes=" + workingTimes + ", holidayRequests=" + holidayRequests + "]";
+		return "Pharmacist [id=" + id + ", user=" + user + ", ratings=" + ratings + ", workingTime=" + workingTime
+				+ ", holidayRequests=" + holidayRequests + "]";
 	}
 
 

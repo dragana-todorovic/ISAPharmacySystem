@@ -109,8 +109,10 @@ public class PharmacyServiceImpl implements PharmacyService{
 		List<Dermatologist> dermatologists = dermatologistRepository.findAll();
 		Set<Dermatologist> result = new HashSet<Dermatologist>();
 		for(Dermatologist d : dermatologists) {
-			if(d.getPharmacy().equals(p)) {
-				result.add(d);
+			for(WorkingTime wt : d.getWorkingTimes()) {
+				if(wt.getPharmacy().equals(p)) {
+					result.add(d);
+				}
 			}
 		}
 		
@@ -171,7 +173,8 @@ public class PharmacyServiceImpl implements PharmacyService{
 		for(WorkingTime t : dermatologist.getWorkingTimes()) {
 			System.out.println(t.getPharmacy());
 			if(t.getPharmacy().equals(p)) {
-				dermatologist.setPharmacy(new Pharmacy());
+				//dermatologist.setPharmacy(new Pharmacy());
+				dermatologist.getWorkingTimes().remove(t);
 			}
 		}
 		
@@ -188,11 +191,12 @@ public class PharmacyServiceImpl implements PharmacyService{
 		List<Pharmacist> pharmacists = this.pharmacistRepository.findAll();
 		Set<Pharmacist> result = new HashSet<Pharmacist>();
 		for(Pharmacist d : pharmacists) {
-			if(d.getPharmacy().equals(p)) {
+			if(d.getWorkingTimes() != null) {
+			if( d.getWorkingTimes().getPharmacy().equals(p)) {
 				result.add(d);
+			}	
 			}
-		}
-		
+		}	
 		return result;
 	}
 
@@ -207,15 +211,12 @@ public class PharmacyServiceImpl implements PharmacyService{
 		wd.setStartTime(LocalTime.parse(workingDay.getStartTime()));
 		wd.setEndTime(LocalTime.parse(workingDay.getEndTime()));
 		
-		//treba dodati uslov ako je prazno
-		
-		for(WorkingTime t : pharmacist.getWorkingTimes()) {
-			System.out.println(t.getPharmacy());
-			if(t.getPharmacy().equals(p)) {
-				t.getWorkingDays().add(wd);
-			}
+		WorkingTime pharacistWorkingTime = pharmacist.getWorkingTimes();
+		if(pharacistWorkingTime.getPharmacy().equals(p)) {
+			pharmacist.getWorkingTimes().getWorkingDays().add(wd);
 		}
 		this.pharmacistRepository.save(pharmacist);
+		//treba dodati uslov ako je prazno
 		
 	}
 
@@ -227,13 +228,12 @@ public class PharmacyServiceImpl implements PharmacyService{
 		Pharmacy p = pa.getPharmacy();
 		System.out.println(p);
 		
-		for(WorkingTime t : pharmacist.getWorkingTimes()) {
-			System.out.println(t.getPharmacy());
-			if(t.getPharmacy().equals(p)) {
-				return t.getWorkingDays();
-			}
+		WorkingTime pharacistWorkingTime = pharmacist.getWorkingTimes();
+		if(pharacistWorkingTime.getPharmacy().equals(p)) {
+			return pharacistWorkingTime.getWorkingDays();
 		}
 		return null;
+		
 	}
 
 	@Override
@@ -243,11 +243,9 @@ public class PharmacyServiceImpl implements PharmacyService{
 		PharmacyAdmin pa = pharmacyAdminService.findPharmacyAdminByUser(userService.findByEmail(email));
 		Pharmacy p = pa.getPharmacy();
 		
-		for(WorkingTime t : pharmacist.getWorkingTimes()) {
-			System.out.println(t.getPharmacy());
-			if(t.getPharmacy().equals(p)) {
-				pharmacist.setPharmacy(new Pharmacy());
-			}
+		WorkingTime pharacistWorkingTime = pharmacist.getWorkingTimes();
+		if(pharacistWorkingTime.getPharmacy().equals(p)) {
+			pharmacist.setWorkingTimes(null);
 		}
 		
 		this.pharmacistRepository.save(pharmacist);

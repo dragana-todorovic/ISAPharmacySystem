@@ -172,8 +172,11 @@ public class PharmacyController {
 	public ResponseEntity<?> deleteMedicineFromPharmacy(@PathVariable(name="id") String id,
 			@PathVariable(name="email") String email) {
 		Long medicineId = Long.parseLong(id);
-		this.medicineService.deleteMedicineFromPharmacy(medicineId, email);
-		return new ResponseEntity<>(HttpStatus.OK);
+		if(this.medicineService.deleteMedicineFromPharmacy(medicineId, email)) {
+			return new ResponseEntity<>(HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+		}
 		
 	}
 }

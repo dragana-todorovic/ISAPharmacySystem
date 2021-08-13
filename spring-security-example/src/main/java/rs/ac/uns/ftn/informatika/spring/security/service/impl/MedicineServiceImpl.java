@@ -11,11 +11,14 @@ import org.springframework.stereotype.Service;
 
 import rs.ac.uns.ftn.informatika.spring.security.model.Dermatologist;
 import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
+import rs.ac.uns.ftn.informatika.spring.security.model.MedicineReservation;
+import rs.ac.uns.ftn.informatika.spring.security.model.MedicineReservationStatus;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicineWithQuantity;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
 import rs.ac.uns.ftn.informatika.spring.security.model.User;
 import rs.ac.uns.ftn.informatika.spring.security.repository.MedicineRepository;
+import rs.ac.uns.ftn.informatika.spring.security.repository.MedicineReservationRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.MedicineWithQuantityRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacyRepository;
 import rs.ac.uns.ftn.informatika.spring.security.service.MedicineService;
@@ -30,6 +33,8 @@ public class MedicineServiceImpl implements MedicineService{
 	private PharmacyRepository pharmacyRepository;
 	@Autowired
 	private MedicineRepository medicineRepository;
+	@Autowired
+	private MedicineReservationRepository medicineReservationRepository;
 	@Autowired
 	private MedicineWithQuantityRepository medicineWithQuantityRepository;
 	@Autowired
@@ -116,15 +121,25 @@ public class MedicineServiceImpl implements MedicineService{
 	}
 
 	@Override
-	public void deleteMedicineFromPharmacy(Long id, String email) {
+	public Boolean deleteMedicineFromPharmacy(Long id, String email) {
 		PharmacyAdmin pa = pharmacyAdminService.findPharmacyAdminByUser(userService.findByEmail(email));
 		
 		Pharmacy pharmacy = pa.getPharmacy();
+		Set<MedicineReservation> pharmacyMedicineReservations = pharmacy.getMedicineReservations();
 		
 		MedicineWithQuantity medicineWithQuantity = medicineWithQuantityRepository.getOne(id);
+		List<MedicineReservation> medicineReservation = medicineReservationRepository.getMedicineReservationByMedicineWithQuantity(id);
+		
+		for(MedicineReservation mr : medicineReservation) {
+			if(pharmacyMedicineReservations.contains(mr) && mr.getStatus().equals(MedicineReservationStatus.RESERVED)) {
+				return false;
+			}
+		}
+		
 		
 		pharmacy.getMedicineWithQuantity().remove(medicineWithQuantity);
 		this.pharmacyRepository.save(pharmacy);
+		return true;
 		
 		
 	}

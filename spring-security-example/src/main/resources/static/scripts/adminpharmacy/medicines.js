@@ -160,6 +160,22 @@ $('.ui.dropdown')
 	</div>
 	
 	
+	<div id="errorDelete" class="ui modal">
+	  <i class="close icon"></i>
+	  <div class="header">
+		Error
+	  </div>
+	  <div class="content">
+	  <div class="ui negative message">
+  <div class="header">
+    We're sorry, you cannot delete that medicine.
+  </div>
+  <p>That medicine is reserved!
+</p></div>
+	  </div>
+	</div>
+	
+	
 	`);
 	function RefreshTable() {
 	    $( "#medicineTable" ).load( "adminpharmacy.html #medicineTable" );
@@ -201,7 +217,9 @@ $('.ui.dropdown')
 			        	refreshujTabeluZaLijekove()
 					},
 				      error: function(){
-				       	alert('Error');
+				    	  $('#errorDelete')
+						  .modal('show')
+						
 				      }
 		    });
 		

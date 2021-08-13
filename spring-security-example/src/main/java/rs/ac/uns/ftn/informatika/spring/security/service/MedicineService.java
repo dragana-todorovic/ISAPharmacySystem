@@ -22,7 +22,7 @@ public interface MedicineService {
 	Set<Medicine> getAllMedicinesExceptExisted (String email);
 	
 	void addMedicineWithQuatityInPharmacy(String email,String medicineName, int quantity);
-	void deleteMedicineFromPharmacy(Long id, String email);
+	Boolean deleteMedicineFromPharmacy(Long id, String email);
 
 
 }
