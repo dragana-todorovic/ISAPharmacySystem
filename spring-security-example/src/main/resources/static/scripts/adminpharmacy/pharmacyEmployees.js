@@ -1,4 +1,36 @@
 var email = localStorage.getItem('email')
+const days = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY","SATURDAY","SUNDAY"];
+
+
+let izaberiDermatologa;
+	customAjax({
+	    url: '/pharmacy/getAllDermatologistsExpectAlreadyExisted/' + email,
+	    method: 'GET',
+	    contentType: 'application/json',
+	    success: function(data){
+	  	  izaberiDermatologa = data
+	  	  console.log(izaberiDermatologa)
+	    },
+	    error: function(){
+	    }
+	});
+	
+	let izaberiFarmaceuta;
+	customAjax({
+	    url: '/pharmacy/getAllPharmacistsExpectAlreadyExisted/' + email,
+	    method: 'GET',
+	    contentType: 'application/json',
+	    success: function(data){
+	    	izaberiFarmaceuta = data
+	  	  console.log(izaberiFarmaceuta)
+	    },
+	    error: function(){
+	    }
+	});
+
+
+
+
 $(document).ready(function(e){ 
 	
 	$("#dermatologist").click(function () {
@@ -40,28 +72,42 @@ let showWorkingDays = function(data) {
 	let temp='';
 	for(i in data) {
 		temp+=`<tr><td class="firstname">`+
-		data[i].day+`</td><td class="soba">`+data[i].startTime+`</td><td>`+data[i].endTime+`</td>`;
+		data[i].day+`</td><td>`+data[i].startTime+`</td><td>`+data[i].endTime+`</td>`;
 	}
 	temp+=`</tr>`
 		$('#bodyTime').html(temp)
 }
 
 let showDermatologists = function(data) {
+	
+	let radnoVrijeme = '';
+	for (i in days) {
+		radnoVrijeme += `<tr><td><div class="ui checkbox">
+  <input type="checkbox" id = "`+days[i]+`" name="radniDan">
+  <label>`+days[i]+`</label></td><td>
+    <div class="ui input left icon">
+     <div class="ui input left icon">
+      <input type="time" value="07:30:00" placeholder="Time" id = "start`+days[i]+`">
+  </div>
+</div></td><td>
+    <div class="ui input left icon">
+      <div class="ui input left icon">
+      <input type="time" value="16:00:00" placeholder="Time" id = "end`+days[i]+`">
+  </div>
+</div>
+</td></tr>`
+	}
+	
+	let dermatologistCombo = ''
+		  for (i in izaberiDermatologa) {
+			  dermatologistCombo += `<div class="item" data-value="` + izaberiDermatologa[i].id + `">` + izaberiDermatologa[i].user.firstName + ` `+  izaberiDermatologa[i].user.lastName + `</div>`
+	      }
+	
 	let temp='';
 	for (i in data){
 		temp+=`<tr><td class="firstname">`+
-		data[i].user.firstName+`</td><td class="soba">`+data[i].user.lastName+`</td><td></td>								   
-		<td>
-		<button id = "`+data[i].id+`" name="dodajVrijeme" class="ui primary button">
-		<i class="plus icon"></i>
-		Add working time
-		</button>
-		<br>
-		<button id = "`+data[i].id+`" name="prikaziVrijeme" class="ui secondary button">
-		<i class="eye icon"></i>
-		Show working times
-		</button>
-			 </td>
+		data[i].user.firstName+`</td><td class="soba">`+data[i].user.lastName+`</td><td></td><td></td>								   
+		
 		<td>
 			<button id = "`+data[i].id+`" name="obrisiDermatologa" class="ui red button">
 		<i class="close icon"></i>
@@ -92,7 +138,7 @@ let showDermatologists = function(data) {
 	    <tr><th>First name</th>
 	    <th>Last name</th>
 	    <th>Avarage rating</th>
-	    <th></th>
+	    <th>Pharmacies</th>
 	    <th>Delete dermatologist</th>
 	  </tr></thead><tbody id="tabelaDermatologa">
 	  </tbody>
@@ -106,45 +152,38 @@ let showDermatologists = function(data) {
 			    </tr>
 			  </tfoot>
 	</table>
-	 <div id="modalniZaNovoVrijeme" class="ui modal">
+
+
+
+
+
+ <div id="modalniZaNovogDermatologa" class="ui modal">
   <i class="close icon"></i>
   <div class="header">
-	Add working day
+	Add dermatologist to pharmacy
   </div>
   <div class="content">
 
-    <table class="ui basic large table" style="width:50%; margin-left:auto; 
+    <table class="ui basic large table" style="width:100%; margin-left:auto; 
 			    margin-right:auto; margin-top: 40px;">
     <tbody>
-			 <tr>
-					        	
-					                <td>Date:</td>
-					                <td>
-  <div class="ui calendar" id="datum">
-    <div class="ui input left icon">
-      <i class="calendar icon"></i>
-      <input type="text" placeholder="Date" id="workingDate">
-    </div>
-  </div></td>
-					            </tr>
-					            <tr>
-					            <td>Start time:</td>
-					            <td>
-    <div class="ui input left icon">
-      <input type="time" placeholder="Time" id="startTime">
-  </div></td>
-
-					            </tr>
-					            <tr>
-					            <td>End time:</td>
-					            <td>
-					            
-    <div class="ui input left icon">
-      <input type="time" placeholder="Time" id="endTime"></div>
- </td>
-					            </tr>
-					           
-					           
+    
+    <tr>
+			 <td class="ui input"> <div class="ui selection dropdown">
+  <input type="hidden" id="dermatologistCombo">
+  <i class="dropdown icon"></i>
+  <div class="default text">Choose dermatologist...</div>
+  <div class="menu">
+  `+dermatologistCombo+`
+  </div>
+</div>
+<script>
+$('.ui.dropdown')
+  .dropdown()
+;
+</script></td>
+    </tr>	
+    	`+radnoVrijeme+`
 					        </tbody>
 					        
 					    </table>
@@ -153,33 +192,11 @@ let showDermatologists = function(data) {
     <div class="ui black deny button">
       Nope
     </div>
-      <input class="ui right floated positive button" type = "button" value = "Add time" id="addWorkingDay"></input>
+      <input class="ui right floated positive button" type = "button" value = "Add" id="addDermatologist"></input>
 			 
      
   </div>
 </div>
-
-
-<div id="modalZaRadnoVrijeme" class="ui modal">
-  <i class="close icon"></i>
-  <div class="header">
-	Working times
-  </div>
-  <div class="content">
-<table class="ui black table" id="tabelaZaRadneDane">
-										  <thead>
-										    <tr><th>Date</th>
-										    <th>Start time</th>
-										    <th>End time</th>
-										  </tr></thead><tbody id="bodyTime">
-										   
-										  </tbody>
-										   <tfoot class="full-width"></tfoot>
-										   </table>
-  </div>
-</div>
-
-
 
 `)
 
@@ -213,32 +230,7 @@ $("#firstNameSearch").keyup(function () {
 
 let idSelected;
 $('#tabelaDermatologa').html(temp)
-$("button[name=dodajVrijeme]").click(function() {
-		idSelected = this.id
-		 $('#modalniZaNovoVrijeme')
-		  .modal('show')
-		
-	 });
 
-
-$("button[name=prikaziVrijeme]").click(function() {
-	idSelected = this.id
-	customAjax({
-	      url: '/pharmacy/getAllWorkingTimes/' + idSelected + '/' + email,
-	      method: 'GET',
-	      async: false,
-		  contentType: 'application/json',
-		        success: function(data){
-		        	showWorkingDays(data)
-				},
-			      error: function(){
-			       	alert('Error');
-			      }
-	    });
-	 $('#modalZaRadnoVrijeme')
-	  .modal('show')
-	
- });
 
 $("button[name=obrisiDermatologa]").click(function() {
 	idSelected = this.id
@@ -247,7 +239,8 @@ $("button[name=obrisiDermatologa]").click(function() {
 	      method: 'GET',
 		  contentType: 'application/json',
 		        success: function(){
-		        	refreshujTabeluZaDermatologe()
+		        	alert("Success deleted dermatologist in from phamacy")
+					  location.href = "adminpharmacy.html"
 				},
 			      error: function(){
 			       	alert('Error');
@@ -260,7 +253,6 @@ $('#addNew').click(function() {
 	 $('#modalniZaNovogDermatologa')
 	  .modal('show')
 })
-
 $('#datum').calendar({
 	  type: 'date'
 	});
@@ -271,55 +263,83 @@ $('#end').calendar({
 	  type: 'time'
 	});
 
-$("#addWorkingDay").click(function() {
-	console.log(idSelected)
-	let workingDate = formatDate($('#workingDate').val())
-		let startTime = $('#startTime').val()
-		let endTime = $('#endTime').val()
-		console.log(startTime)
-		
-		obj = JSON.stringify({
-
-			workingDate:workingDate,
-			startTime:startTime,
-		endTime: endTime
-		});
-	
-	
+$("#addDermatologist").click(function() {
+	var dermatologistId = $('#dermatologistCombo').val()
+	 
 	customAjax({
-	      url: '/pharmacy/addWorkingDayForDermatologist/' + idSelected + '/' + email,
-	      method: 'POST',
-	      data:obj,
-		  contentType: 'application/json',
-		        success: function(){
-		        	alert('Successfully added!')
-		        	
-				},
-			      error: function(){
-			       	alert('Error');
-			      }
-	    });
+	    url: '/pharmacy/addDermatologistInPharmacy/' + email + '/' + dermatologistId,
+	    method: 'POST',
+	    contentType: 'application/json',
+	    success: function(){
+	    	$('input[name="radniDan"]:checked').each(function () {
+	    		//var workingDay = document.getElementById(this.id);
+	    		var workingDay = this.id;
+	    		var startTime = $("#start"+this.id).val();
+	    		var endTime = $("#end"+this.id).val();
+	    		obj = JSON.stringify({
+	    			startTime:startTime,
+	    			endTime:endTime
+	    			});
+	    		console.log(obj);
+	    		customAjax({
+		    	    url: '/pharmacy/addWorkingDayDermatologist/' + dermatologistId + '/' + email + '/' + workingDay,
+		    	    method: 'POST',
+		    	    data : obj,
+		    	    contentType: 'application/json',
+		    	    success: function(){
+		    	    	
+		    	    },
+		    	    error: function(){
+		    	    	console.log(obj)
+		    	    	console.log(data)
+		    	    	alert("Failed")
+		    	    }
+
+		    	});
+	    	
+	    	});
+		      alert("Success added dermatologist in pharmacy")
+				  location.href = "adminpharmacy.html"
+	    },
+	    error: function(){
+	    	alert("Failed")
+	    }
+
+	});
 });
-	
 }
 
 
 let showPharmacists = function(data) {
+	
+	let radnoVrijeme = '';
+	for (i in days) {
+		radnoVrijeme += `<tr><td><div class="ui checkbox">
+  <input type="checkbox" id = "`+days[i]+`" name="radniDan">
+  <label>`+days[i]+`</label></td><td>
+    <div class="ui input left icon">
+     <div class="ui input left icon">
+      <input type="time" value="07:30:00" placeholder="Time" id = "start`+days[i]+`">
+  </div>
+</div></td><td>
+    <div class="ui input left icon">
+      <div class="ui input left icon">
+      <input type="time" value="16:00:00" placeholder="Time" id = "end`+days[i]+`">
+  </div>
+</div>
+</td></tr>`
+	}
+	
+	let pharmacistCombo = ''
+		  for (i in izaberiFarmaceuta) {
+			  pharmacistCombo += `<div class="item" data-value="` + izaberiFarmaceuta[i].id + `">` + izaberiFarmaceuta[i].user.firstName + ` `+  izaberiDermatologa[i].user.lastName + `</div>`
+	      }
+	
 	let temp='';
 	for (i in data){
 		temp+=`<tr><td class="firstname">`+
-		data[i].user.firstName+`</td><td class="soba">`+data[i].user.lastName+`</td><td></td>								   
-		<td>
-		<button id = "`+data[i].id+`" name="dodajVrijeme" class="ui primary button">
-		<i class="plus icon"></i>
-		Add working time
-		</button>
-		<br>
-		<button id = "`+data[i].id+`" name="prikaziVrijeme" class="ui secondary button">
-		<i class="eye icon"></i>
-		Show working times
-		</button>
-			 </td>
+		data[i].user.firstName+`</td><td class="soba">`+data[i].user.lastName+`</td><td></td><td></td>								   
+		
 		<td>
 			<button id = "`+data[i].id+`" name="obrisiDermatologa" class="ui red button">
 		<i class="close icon"></i>
@@ -350,8 +370,8 @@ let showPharmacists = function(data) {
 	    <tr><th>First name</th>
 	    <th>Last name</th>
 	    <th>Avarage rating</th>
-	    <th></th>
-	    <th>Delete dermatologist</th>
+	    <th>Pharmacies</th>
+	    <th>Delete pharmacist</th>
 	  </tr></thead><tbody id="tabelaFarmaceuta">
 	  </tbody>
 	  <tfoot class="full-width">
@@ -364,45 +384,38 @@ let showPharmacists = function(data) {
 			    </tr>
 			  </tfoot>
 	</table>
-	 <div id="modalniZaNovoVrijeme" class="ui modal">
+
+
+
+
+
+ <div id="modalniZaNovogDermatologa" class="ui modal">
   <i class="close icon"></i>
   <div class="header">
-	Add working day
+	Add dermatologist to pharmacy
   </div>
   <div class="content">
 
-    <table class="ui basic large table" style="width:50%; margin-left:auto; 
+    <table class="ui basic large table" style="width:100%; margin-left:auto; 
 			    margin-right:auto; margin-top: 40px;">
     <tbody>
-			 <tr>
-					        	
-					                <td>Date:</td>
-					                <td>
-  <div class="ui calendar" id="datum">
-    <div class="ui input left icon">
-      <i class="calendar icon"></i>
-      <input type="text" placeholder="Date" id="workingDate">
-    </div>
-  </div></td>
-					            </tr>
-					            <tr>
-					            <td>Start time:</td>
-					            <td>
-    <div class="ui input left icon">
-      <input type="time" placeholder="Time" id="startTime">
-  </div></td>
-
-					            </tr>
-					            <tr>
-					            <td>End time:</td>
-					            <td>
-					            
-    <div class="ui input left icon">
-      <input type="time" placeholder="Time" id="endTime"></div>
- </td>
-					            </tr>
-					           
-					           
+    
+    <tr>
+			 <td class="ui input"> <div class="ui selection dropdown">
+  <input type="hidden" id="dermatologistCombo">
+  <i class="dropdown icon"></i>
+  <div class="default text">Choose dermatologist...</div>
+  <div class="menu">
+  `+pharmacistCombo+`
+  </div>
+</div>
+<script>
+$('.ui.dropdown')
+  .dropdown()
+;
+</script></td>
+    </tr>	
+    	`+radnoVrijeme+`
 					        </tbody>
 					        
 					    </table>
@@ -411,31 +424,12 @@ let showPharmacists = function(data) {
     <div class="ui black deny button">
       Nope
     </div>
-      <input class="ui right floated positive button" type = "button" value = "Add time" id="addWorkingDay"></input>
+      <input class="ui right floated positive button" type = "button" value = "Add" id="addDermatologist"></input>
 			 
      
   </div>
 </div>
 
-
-<div id="modalZaRadnoVrijeme" class="ui modal">
-  <i class="close icon"></i>
-  <div class="header">
-	Working times
-  </div>
-  <div class="content">
-<table class="ui black table" id="tabelaZaRadneDane">
-										  <thead>
-										    <tr><th>Date</th>
-										    <th>Start time</th>
-										    <th>End time</th>
-										  </tr></thead><tbody id="bodyTime">
-										   
-										  </tbody>
-										   <tfoot class="full-width"></tfoot>
-										   </table>
-  </div>
-</div>
 `)
 
 $("#firstNameSearch").keyup(function () {
@@ -468,34 +462,7 @@ $("#firstNameSearch").keyup(function () {
 
 let idSelected;
 $('#tabelaFarmaceuta').html(temp)
-$("button[name=dodajVrijeme]").click(function() {
-		idSelected = this.id
-		 $('#modalniZaNovoVrijeme')
-		  .modal('show')
-		
-	 });
 
-
-$("button[name=prikaziVrijeme]").click(function() {
-	idSelected = this.id
-	customAjax({
-	      url: '/pharmacy/getAllWorkingTimesPharmacist/' + idSelected + '/' + email,
-	      method: 'GET',
-	      async: false,
-		  contentType: 'application/json',
-		        success: function(data){
-		        	showWorkingDays(data)
-		        	
-				},
-			      error: function(){
-			       	alert('Error');
-			      }
-	    });
-	$('#modalZaRadnoVrijeme')
-	  .modal('show')
-	
-	 
- });
 
 $("button[name=obrisiDermatologa]").click(function() {
 	idSelected = this.id
@@ -504,7 +471,8 @@ $("button[name=obrisiDermatologa]").click(function() {
 	      method: 'GET',
 		  contentType: 'application/json',
 		        success: function(){
-		        	refreshujTabeluZaFarmaceute()
+		        	alert("Success deleted dermatologist in from phamacy")
+					  location.href = "adminpharmacy.html"
 				},
 			      error: function(){
 			       	alert('Error');
@@ -513,6 +481,10 @@ $("button[name=obrisiDermatologa]").click(function() {
 	
  });
 
+$('#addNew').click(function() {
+	 $('#modalniZaNovogDermatologa')
+	  .modal('show')
+})
 $('#datum').calendar({
 	  type: 'date'
 	});
@@ -523,81 +495,52 @@ $('#end').calendar({
 	  type: 'time'
 	});
 
-$("#addWorkingDay").click(function() {
-	console.log(idSelected)
-	let workingDate = formatDate($('#workingDate').val())
-		let startTime = $('#startTime').val()
-		let endTime = $('#endTime').val()
-		console.log(startTime)
-		
-		obj = JSON.stringify({
-
-			workingDate:workingDate,
-			startTime:startTime,
-		endTime: endTime
-		});
-	
-	
+$("#addDermatologist").click(function() {
+	var dermatologistId = $('#pharmacistCombo').val()
+	 
 	customAjax({
-	      url: '/pharmacy/addWorkingDayForPharmacist/' + idSelected + '/' + email,
-	      method: 'POST',
-	      data:obj,
-		  contentType: 'application/json',
-		        success: function(){
-		        	alert('Successfully added!')
-		        	
-				},
-			      error: function(){
-			       	alert('Error');
-			      }
-	    });
-});
-	
-}
+	    url: '/pharmacy/addPharmacistInPharmacy/' + email + '/' + dermatologistId,
+	    method: 'POST',
+	    contentType: 'application/json',
+	    success: function(){
+	    	$('input[name="radniDan"]:checked').each(function () {
+	    		//var workingDay = document.getElementById(this.id);
+	    		var workingDay = this.id;
+	    		var startTime = $("#start"+this.id).val();
+	    		var endTime = $("#end"+this.id).val();
+	    		obj = JSON.stringify({
+	    			startTime:startTime,
+	    			endTime:endTime
+	    			});
+	    		console.log(obj);
+	    		customAjax({
+		    	    url: '/pharmacy/addWorkingDayPharmacist/' + dermatologistId + '/' + email + '/' + workingDay,
+		    	    method: 'POST',
+		    	    data : obj,
+		    	    contentType: 'application/json',
+		    	    success: function(){
+		    	    	
+		    	    },
+		    	    error: function(){
+		    	    	console.log(obj)
+		    	    	console.log(data)
+		    	    	alert("Failed")
+		    	    }
 
-function formatDate(date) {
-    var d = new Date(date),
-        month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
-        year = d.getFullYear();
+		    	});
+	    	
+	    	});
+		      alert("Success added dermatologist in pharmacy")
+				  location.href = "adminpharmacy.html"
+	    },
+	    error: function(){
+	    	alert("Failed")
+	    }
 
-    if (month.length < 2) 
-        month = '0' + month;
-    if (day.length < 2) 
-        day = '0' + day;
-
-    return [year, month, day].join('-');
-}
-
-let refreshujTabeluZaDermatologe = function(){
-	customAjax({
-	      url: '/pharmacy/getAllDermatologist/' + email,
-	      method: 'GET',
-	      contentType: 'application/json',
-	      success: function(data){	 
-	    	  console.log(data)
-	    	  showDermatologists(data);
-	      },
-	      error: function(){
-	      }
-
+	});
 });
 }
 
-let refreshujTabeluZaFarmaceute = function(){
-	customAjax({
-	      url: '/pharmacy/getAllPharmacists/' + email,
-	      method: 'GET',
-	      contentType: 'application/json',
-	      success: function(data){	 
-	    	  console.log(data)
-	    	  showPharmacists(data);
-	      },
-	      error: function(){
-	      }
-
-});
-}
 
 
 

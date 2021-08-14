@@ -1,16 +1,12 @@
 package rs.ac.uns.ftn.informatika.spring.security.view;
 
-public class WorkingDayDTO {
+
+public class WorkingTimeIntervalDTO {
 	
-	private String workingDate;
 	private String startTime;
 	private String endTime;
-	public String getWorkingDate() {
-		return workingDate;
-	}
-	public void setWorkingDate(String workingDate) {
-		this.workingDate = workingDate;
-	}
+	
+
 	public String getStartTime() {
 		return startTime;
 	}
@@ -22,6 +18,10 @@ public class WorkingDayDTO {
 	}
 	public void setEndTime(String endTime) {
 		this.endTime = endTime;
+	}
+	@Override
+	public String toString() {
+		return "WorkingDayDTO [ startTime=" + startTime + ", endTime=" + endTime + "]";
 	}
 
 }

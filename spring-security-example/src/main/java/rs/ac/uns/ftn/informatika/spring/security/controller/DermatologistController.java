@@ -153,4 +153,6 @@ public class DermatologistController {
 		this.dermatologistService.saveAppointment(appointmentDTO);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
+	
+	
 }

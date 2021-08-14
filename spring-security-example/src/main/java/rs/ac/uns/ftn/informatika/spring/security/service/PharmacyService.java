@@ -30,7 +30,7 @@ import rs.ac.uns.ftn.informatika.spring.security.model.User;
 import rs.ac.uns.ftn.informatika.spring.security.model.WorkingDay;
 import rs.ac.uns.ftn.informatika.spring.security.view.ActionAndBenefitDTO;
 import rs.ac.uns.ftn.informatika.spring.security.view.EditPharmacyView;
-import rs.ac.uns.ftn.informatika.spring.security.view.WorkingDayDTO;
+import rs.ac.uns.ftn.informatika.spring.security.view.WorkingTimeIntervalDTO;
 
 public interface PharmacyService {
 
@@ -38,17 +38,26 @@ public interface PharmacyService {
 	void editPharmacy(EditPharmacyView p);
 	ActionAndBenefit addNew(ActionAndBenefitDTO actionAndBenefit);
 	Set<Dermatologist> getDermatologistsByPharmacyAdmin (String email);
-	void addWorkingTimeForDermatologist(String dermatologistId, String email, WorkingDayDTO workingDay);
+
+	
 	Collection<Pharmacy> searchPharmacy(String p);
+
+	void addWorkingTimeForDermatologist(String dermatologistId, String email, String wd, WorkingTimeIntervalDTO workingDay);
+	//Collection<Pharmacy> searchPharmacy(String p);
 
 	List<Pharmacy> findAll ();
 
 	Set<WorkingDay> getWorkingDayForDermatolog(String id, String email);
 	void deleteDermatologistFromPharmacy(String id, String email);
 	Set<Pharmacist> getPharmacistssByPharmacyAdmin (String email);
-	void addWorkingTimeForPharmacist(String dermatologistId, String email, WorkingDayDTO workingDay);
+	void addWorkingTimeForPharmacist(String dermatologistId, String email, String wd, WorkingTimeIntervalDTO workingDay);
 	//Collection<Pharmacy> searchPharmacy(String p);
 	Set<WorkingDay> getWorkingDayForPharmacist(String id, String email);
 	void deletePharmacistFromPharmacy(String id, String email);
 
+	
+	Set<Dermatologist> getAllDermatologistExpectAlreadyExisted(String email);
+	void addDermatologistInPharmacy(String email,Long id);
+	void addPharmacistInPharmacy(String email, Long id);
+	Set<Pharmacist> getAllPharmacistsExpectAlreadyExisted(String email);
 }
