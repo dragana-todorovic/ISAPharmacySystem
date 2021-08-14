@@ -33,8 +33,6 @@ public class MedicineController {
     @PreAuthorize("hasRole('ADMIN_SYSTEM')")
     public ResponseEntity<?> addNewMedicine(@RequestBody MedicineView medicineView) {
         Medicine medicine = new Medicine();
-        System.out.println("-------------------------------------------");
-        System.out.println(medicineView.isWithPrescription());
         medicine.setCode(medicineView.getCode());
         medicine.setName(medicineView.getName());
         //type shape

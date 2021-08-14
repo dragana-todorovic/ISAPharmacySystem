@@ -1,15 +1,13 @@
 package rs.ac.uns.ftn.informatika.spring.security.controller;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,12 +15,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
-import rs.ac.uns.ftn.informatika.spring.security.model.Patient;
-import rs.ac.uns.ftn.informatika.spring.security.model.User;
+import rs.ac.uns.ftn.informatika.spring.security.model.*;
+import rs.ac.uns.ftn.informatika.spring.security.service.LoyaltyScaleService;
 import rs.ac.uns.ftn.informatika.spring.security.service.MedicineService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PatientService;
 import rs.ac.uns.ftn.informatika.spring.security.service.UserService;
+import rs.ac.uns.ftn.informatika.spring.security.view.LoyaltyScaleView;
 import rs.ac.uns.ftn.informatika.spring.security.view.UserRegisterView;
 
 
@@ -37,7 +35,10 @@ public class PatientController {
 	
 	@Autowired
 	private UserService userService;
-	
+
+	@Autowired
+	private LoyaltyScaleService loyaltyScaleService;
+
 	@GetMapping("/getAll")
 	@PreAuthorize("hasRole('ROLE_PHARMACIST')  || hasRole('ROLE_DERMATOLOGIST')")
 	public List<Patient> loadAll() {
@@ -127,5 +128,20 @@ public class PatientController {
 		this.patientService.savePatient(patient);
 		return null;
 	}
-	
+
+	//mili for loyaltyScale
+	@PostMapping("/saveLoyaltyScale")
+	@PreAuthorize("hasRole('ADMIN_SYSTEM')")
+	public ResponseEntity<?> saveLoyaltyScale(@RequestBody LoyaltyScaleView loyaltyScaleView) {
+		// pronadjem po kategoriji i posaljem dva podatka za cuvanje  i setovanje
+		this.loyaltyScaleService.editLoyalty(loyaltyScaleView);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	@GetMapping("/getLoyalty")
+	@PreAuthorize("hasRole('ADMIN_SYSTEM')")
+	public List<LoyaltyScale> getLoyalty()   {
+		return this.loyaltyScaleService.findAll();
+	}
+
 }
