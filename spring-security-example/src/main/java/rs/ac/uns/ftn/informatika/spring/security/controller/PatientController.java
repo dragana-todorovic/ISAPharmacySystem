@@ -1,7 +1,6 @@
 package rs.ac.uns.ftn.informatika.spring.security.controller;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -84,10 +83,24 @@ public class PatientController {
 		return new ResponseEntity<String>("ok",HttpStatus.OK);
 	}
 	
-	@GetMapping("/getAllMedicine")
+	@GetMapping("/getAllMedicineForAllergies/{id}")
 	@PreAuthorize("hasRole('ROLE_PATIENT')")
-	public List<Medicine> getAllMedicine()   {
-		return this.medicineService.findAll();
+	public List<Medicine> getAllMedicine(@PathVariable(name="id") String id)   {
+		List<Medicine> allergies= this.medicineService.findAll();
+		User existUser = this.userService.findByUsername(id);
+		ArrayList<String> result = this.patientService.findPatientsAllergies(existUser.getId());
+			for(String a: result) {
+				System.out.println("alergije"+a);
+				for(Medicine al: allergies) {
+					System.out.println("Svi lekovi"+al.getName());
+					if(al.getName().equalsIgnoreCase(a)) {
+						System.out.println("brisemo iz svih"+al.getName());
+						allergies.remove(al);
+						//continue;
+					}
+			}
+		}
+		return allergies;
 	}
 	
 	@PostMapping("/removeAllergie/{id}")

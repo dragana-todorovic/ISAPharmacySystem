@@ -27,8 +27,7 @@ public class MedicineServiceImpl implements MedicineService{
 	public Collection<Medicine> searchMedicine(String p) {
 		   ArrayList<Medicine> medicines = new ArrayList<>();
 		   for(Medicine medicine : medicineRepository.findAll()){
-			   if(medicine.getName().equalsIgnoreCase(p)) {
-				   System.out.println(p);
+			   if(medicine.getName().toLowerCase().contains(p.toLowerCase())) {
 				   medicines.add(medicine);
 			   }
 		   }

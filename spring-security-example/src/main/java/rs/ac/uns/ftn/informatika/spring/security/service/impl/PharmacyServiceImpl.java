@@ -83,20 +83,20 @@ public class PharmacyServiceImpl implements PharmacyService{
 		return result;
 	}
 
-
-
-	/*@Override
+	@Override
 	public Collection<Pharmacy> searchPharmacy(String p) {
-	   ArrayList<Pharmacy> pharmacies = new ArrayList<>();
-	   for(Pharmacy pharamacy : pharmacyRepository.findAll()){
-		   if(pharamacy.getName().equalsIgnoreCase(p)) {
-			   pharmacies.add(pharamacy);
+		   ArrayList<Pharmacy> pharmacies = new ArrayList<>();
+		   for(Pharmacy pharamacy : pharmacyRepository.findAll()){
+			   if(pharamacy.getName().toLowerCase().contains(p.toLowerCase())) {
+				   pharmacies.add(pharamacy);
+			   }
+			   else if(pharamacy.getAddress().getCity().toLowerCase().contains(p.toLowerCase())){
+				   pharmacies.add(pharamacy);
+			   }
+			   else if(pharamacy.getAddress().getStreet().toLowerCase().contains(p.toLowerCase())){
+				   pharmacies.add(pharamacy);
+			   }
 		   }
-		   else if(pharamacy.getAddress().equalsIgnoreCase(p)){
-			   pharmacies.add(pharamacy);
-		   }
-	   }
-        return pharmacies;
-	}*/
-
+	        return pharmacies;
+	}
 }

@@ -16,6 +16,6 @@ public interface PharmacyService {
 	Optional<Pharmacy> findById(Long id);
 	void editPharmacy(EditPharmacyView p);
 	ActionAndBenefit addNew(ActionAndBenefitDTO actionAndBenefit);
-	//Collection<Pharmacy> searchPharmacy(String p);
+	Collection<Pharmacy> searchPharmacy(String p);
 	List<Pharmacy> findAll ();
 }

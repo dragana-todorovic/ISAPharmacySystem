@@ -102,7 +102,7 @@ $(document).ready(function() {
 	
 			customAjax({
 				method:'GET',
-		        url:'/patient/getAllMedicine/',
+		        url:'/patient/getAllMedicineForAllergies/'+id,
 		        contentType: 'application/json',
 	    		success: function(data) { 	
 						showAllergies(data);
@@ -227,6 +227,19 @@ $(document).ready(function() {
 function showPatientData(data){
 		$('#category').text("Category:"+data.category);
 		$('#mypoints').text("My points:"+data.points);
+		/*	customAjax({
+				method:'GET',
+		        url:'/patient/getActionsAndBenefitsByCategory/'+category,
+		        contentType: 'application/json',
+	    		success: function(data) { 	
+						console.log(data)
+			},
+	    		error:function(message){
+					alert(message)
+	    		}
+	    				    	    	    	
+	    })*/
+		
 };
 function showAllergies(data){
 	let temp='';

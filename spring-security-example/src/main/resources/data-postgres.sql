@@ -39,7 +39,6 @@ INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (8, 4);
 INSERT INTO PATIENTS (id,user_id,points,category,penal,point) VALUES (1,5,10,0,0,0);
 INSERT INTO PATIENTS (id,user_id,points,category,penal,point) VALUES (2,6,100,0,0,0);
 INSERT INTO patients_allergies_medicine(patient_id, allergies_medicine_id) values (1,1);
-INSERT INTO patients_allergies_medicine(patient_id, allergies_medicine_id) values (1,2);
 INSERT INTO patients_allergies_medicine(patient_id, allergies_medicine_id) values (2,2);
 
 --suplier 

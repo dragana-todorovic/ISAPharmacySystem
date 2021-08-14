@@ -1,19 +1,4 @@
 $(document).ready(function(){
-//$.get({
-//	url : "ProjectRents/currentUser",
-//	 contentType: 'application/json',
-//	success : function(data){
-//		 if(data){
-//             if(data.role == "ADMIN"){
-//                 window.location.href="./admin.html";
-//             }else if(data.role == "GUEST"){
-//                 window.location.href="./guest.html";
-//             }
-//         }else{
-//              window.location.href="./login.html";
-//         }
-//	}	
-//})
 	$("#searchPharmacies").click(function () {
 		$('#pharmacies_show').attr('hidden',true);
 		$('#medicine_show').attr('hidden',true);
@@ -57,7 +42,8 @@ function showPharmacies(data){
 	for (i in data){
 		temp+=`<tr id="`+data[i].id+`">
 			<td>`+data[i].name+`</td>
-			<td>`+data[i].address+`</td>
+			<td>`+data[i].address.city+`</td>
+			<td>`+data[i].address.street+`</td>
 			<td>`+data[i].description+`</td>
 			</tr>`;
 	}

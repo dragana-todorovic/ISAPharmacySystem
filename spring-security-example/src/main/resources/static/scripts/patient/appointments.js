@@ -1,18 +1,6 @@
 $(document).ready(function() {
-	$('a#dermatology_appointment_scedule').click(function(){
-	/*	$('#derm_appointments').attr('hidden', false);
-			customAjax({
-		        method:'GET',
-		        url:'/appointment/getAll',
-		        contentType: 'application/json',
-		        success: function(data){
-					showDermatologyAppointments(data)
-				},
-				error: function(){
-					console.log("error");
-				}
-		     });*/
-		//$('#pharmacies_for_derm_appointments').attr('hidden', false);
+	var trid;
+	$('a#all_pharmacies').click(function(){
 				customAjax({
 		        method:'GET',
 		        url:'/pharmacy/getAll',
@@ -26,7 +14,38 @@ $(document).ready(function() {
 		     });
 
 	});
+	 $('#pharmacies_tableBody').on('click','button',function(event){
+			trid = $(event.target).closest('tr').attr('id');
+			customAjax({
+				method:'GET',
+		        url:'/pharmacy/getPharmacyById/' + trid,
+		        contentType: 'application/json',
+	    		success: function(data) { 	
+					showPharmacy(data)
+	    		},
+	    		error:function(message){
+					alert("Error")
+	    			console.log(message)
+	    		}
+	    	});	
+	})
+	$('#appointments_derm').on('click',function(){
+		alert(trid);
+				customAjax({
+				method:'GET',
+		        url:'/appointment/getAllByPharmacyId/' + trid,
+		        contentType: 'application/json',
+	    		success: function(data) { 	
+					alert(success);
+	    		},
+	    		error:function(message){
+					alert("Error")
+	    			console.log(message)
+	    		}
+	    	});	
+	})
 function showPharmacies(data){
+	$('#pharmacy-details').attr('hidden',true);
 	let temp='';
 	for (i in data){
 		temp+=`<tr id="`+data[i].id+`">
@@ -34,11 +53,20 @@ function showPharmacies(data){
 			<td>`+data[i].address.city+`</td>
 			<td>`+data[i].address.street+`</td>
 			<td>`+data[i].description+`</td>
-			<td><button  class="ui primary basic button">Show available appointments</button>
+			<td><button  class="ui primary basic button">Details</button>
 			</tr>`;
 	}
 	$('#pharmacies_tableBody').html(temp);
-	$('#pharmacies_for_derm_appointments').attr('hidden',false);
+	$('#pharmacies_for_derm_appointments').attr('hidden',false);	
+}
+function showPharmacy(data){
+	$('#pharmacy-name').text("Name:"+data.name);
+	$('#pharmacy-description').text("Description:"+data.description);
+	$('#pharmacy-city').text("City:"+data.address.city);
+	$('#pharmacy-address').text("Street:"+data.address.street);
+	$('#pharmacy-details').attr('hidden',false);
+	$('#pharmacies_for_derm_appointments').attr('hidden',true);
+	
 }
 function showDermatologyAppointments(data){
 	console.log(data);
