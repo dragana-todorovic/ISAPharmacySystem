@@ -114,10 +114,10 @@ public class AuthenticationController {
 		headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
 		return new ResponseEntity<>(user, HttpStatus.CREATED);
 	}
-	/*@GetMapping(value = "/searchPharmacies/{let}",produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/searchPharmacies/{let}",produces = MediaType.APPLICATION_JSON_VALUE)
 	public Collection<Pharmacy> searchPharmacies(@PathVariable("let") String let) {
 		return pharmacyService.searchPharmacy(let);
-	}*/
+	}
 	@GetMapping(value = "/searchMedicine/{let}",produces = MediaType.APPLICATION_JSON_VALUE)
 	public Collection<Medicine> searchMedicine(@PathVariable("let") String let) {
 		return medicineService.searchMedicine(let);

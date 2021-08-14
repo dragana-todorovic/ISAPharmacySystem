@@ -99,11 +99,11 @@ input[type=text]:focus {
           <button onClick="window.location='/html/registration.html';" type="button" class="btn btn-info" id="register_button" style="width:20%;">REGISTER</button>
            </div>
     	  <div class="ui icon input">
-          <input  class="prompt" type="text" id="pharmaciesSearch" placeholder="Search pharmacies..">
+          <input  class="prompt" type="text" id="pharmaciesSearch" placeholder="Search pharmacies by name,city,address..">
           <i class="search link icon" id="searchPharmacies"></i>
           </div>
            <div class="ui icon input">
-           <input class="prompt" type="text" id="medicineSearch" name="search" placeholder="Search medicine..">
+           <input class="prompt" type="text" id="medicineSearch" name="search" placeholder="Search medicine by name..">
            <i class="search link icon" id="searchMedicine"></i>
          </div>
     <div class="container_1" hidden='true' id="pharmacies_show">
@@ -111,7 +111,8 @@ input[type=text]:focus {
         		 <table class="ui celled table" >
 		  	<thead>
 		    	<tr><th>Name</th>
-		   		 <th>Address</th>
+		   		 <th>City</th>
+		   		 <th>Street</th>
 		   		 <th>Description</th>
 		 		 </tr></thead>
 		 	 <tbody id="pharmacies_table" >
