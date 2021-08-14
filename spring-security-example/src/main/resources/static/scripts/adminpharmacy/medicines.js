@@ -176,10 +176,23 @@ $('.ui.dropdown')
 	</div>
 	
 	
+	<div id="successAdd" class="ui modal">
+	  <i class="close icon"></i>
+	  <div class="header">
+		Error
+	  </div>
+	  <div class="content">
+	  <div class="ui positive message">
+  <div class="header">
+   Success.
+  </div>
+  <p>Medicine is added in pharmacy offer!
+</p></div>
+	  </div>
+	</div>
+	
 	`);
-	function RefreshTable() {
-	    $( "#medicineTable" ).load( "adminpharmacy.html #medicineTable" );
-	}
+	
 	$('#tabelaLijekova').html(temp)
 	
 	$("#addNew").click(function() {
@@ -197,7 +210,9 @@ $('.ui.dropdown')
 		    method: 'POST',
 		    contentType: 'application/json',
 		    success: function(){
-		    	refreshujTabeluZaLijekove()
+		    	//refreshujTabeluZaLijekove()
+		      alert("Success added medicine in pharmacy offer")
+				  location.href = "adminpharmacy.html"
 		    },
 		    error: function(){
 		    	alert("Failed")
@@ -214,7 +229,9 @@ $('.ui.dropdown')
 		      method: 'GET',
 			  contentType: 'application/json',
 			        success: function(){
-			        	refreshujTabeluZaLijekove()
+			        	alert("Success deleted medicine from pharmacy offer")
+						  location.href = "adminpharmacy.html"
+			        	//refreshujTabeluZaLijekove()
 					},
 				      error: function(){
 				    	  $('#errorDelete')
@@ -226,7 +243,7 @@ $('.ui.dropdown')
 	 });
 }
 
-let refreshujTabeluZaLijekove = function(){
+/*let refreshujTabeluZaLijekove = function(){
 	customAjax({
 	      url: '/pharmacy/getAllMedicinesWithQuantity/' + email,
 	      method: 'GET',
@@ -238,7 +255,7 @@ let refreshujTabeluZaLijekove = function(){
 	      }
 
 });
-}
+}*/
 
 
 

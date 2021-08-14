@@ -1,5 +1,6 @@
 package rs.ac.uns.ftn.informatika.spring.security.model;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -19,7 +20,7 @@ public class WorkingDay {
 	private Long id;
 	
 	@Column(name = "day", nullable = false)
-	private LocalDate day;
+	private DayOfWeek day;
 	
 	@Column(name = "startTime", nullable = false)
 	private LocalTime startTime;
@@ -35,11 +36,11 @@ public class WorkingDay {
 		this.id = id;
 	}
 
-	public LocalDate getDay() {
+	public DayOfWeek getDay() {
 		return day;
 	}
 
-	public void setDay(LocalDate day) {
+	public void setDay(DayOfWeek day) {
 		this.day = day;
 	}
 

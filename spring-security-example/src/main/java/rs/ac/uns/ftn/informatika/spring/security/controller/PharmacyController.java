@@ -37,7 +37,7 @@ import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyService;
 import rs.ac.uns.ftn.informatika.spring.security.service.UserService;
 import rs.ac.uns.ftn.informatika.spring.security.view.EditPharmacyView;
 import rs.ac.uns.ftn.informatika.spring.security.view.UserRegisterView;
-import rs.ac.uns.ftn.informatika.spring.security.view.WorkingDayDTO;
+import rs.ac.uns.ftn.informatika.spring.security.view.WorkingTimeIntervalDTO;
 
 @RestController
 @RequestMapping(value = "/pharmacy", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -93,8 +93,8 @@ public class PharmacyController {
 	@PostMapping("/addWorkingDayForDermatologist/{id}/{email}")
 	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
 	public ResponseEntity<?> addWorkingTime(@PathVariable(name="id") String id,
-			@PathVariable(name="email") String email,@RequestBody WorkingDayDTO workingDay) {
-		this.pharmacyService.addWorkingTimeForDermatologist(id, email, workingDay);
+			@PathVariable(name="email") String email,@RequestBody WorkingTimeIntervalDTO workingDay) {
+	//	this.pharmacyService.addWorkingTimeForDermatologist(id, email, workingDay);
 		
 		return new ResponseEntity<>(HttpStatus.OK);
 		
@@ -121,16 +121,6 @@ public class PharmacyController {
 	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
 	public Set<Pharmacist> getPharmacists(@PathVariable(name="email") String email) {
 		return this.pharmacyService.getPharmacistssByPharmacyAdmin(email);
-		
-	}
-	
-	@PostMapping("/addWorkingDayForPharmacist/{id}/{email}")
-	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
-	public ResponseEntity<?> addWorkingTimePharmacist(@PathVariable(name="id") String id,
-			@PathVariable(name="email") String email,@RequestBody WorkingDayDTO workingDay) {
-		this.pharmacyService.addWorkingTimeForPharmacist(id, email, workingDay);
-		
-		return new ResponseEntity<>(HttpStatus.OK);
 		
 	}
 	
@@ -177,6 +167,59 @@ public class PharmacyController {
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
 		}
+		
+	}
+	
+
+	@GetMapping("/getAllDermatologistsExpectAlreadyExisted/{email}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public Set<Dermatologist> getDermatologists(@PathVariable String email) {
+		return this.pharmacyService.getAllDermatologistExpectAlreadyExisted(email);
+	}
+	
+
+	@GetMapping("/getAllPharmacistsExpectAlreadyExisted/{email}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public Set<Pharmacist> getPharmacist(@PathVariable String email) {
+		return this.pharmacyService.getAllPharmacistsExpectAlreadyExisted(email);
+	}
+	
+	
+	@PostMapping("/addDermatologistInPharmacy/{email}/{id}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public ResponseEntity<?> addDermatologistInPharmacy(@PathVariable(name="email") String email,@PathVariable(name="id") String id) {
+		this.pharmacyService.addDermatologistInPharmacy(email, Long.parseLong(id));
+		
+		return new ResponseEntity<>(HttpStatus.OK);
+		
+	}
+	
+	@PostMapping("/addPharmacistInPharmacy/{email}/{id}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public ResponseEntity<?> addPharmacistInPharmacy(@PathVariable(name="email") String email,@PathVariable(name="id") String id) {
+		this.pharmacyService.addPharmacistInPharmacy(email, Long.parseLong(id));
+		
+		return new ResponseEntity<>(HttpStatus.OK);
+		
+	}
+	
+	@PostMapping("/addWorkingDayDermatologist/{id}/{email}/{workingDay}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public ResponseEntity<?> addWorkingDayDermatologist(@PathVariable(name="id") String id,@PathVariable(name="email") String email,
+			@PathVariable(name="workingDay") String workingDay,@RequestBody WorkingTimeIntervalDTO wd) {
+		System.out.println(wd);
+		this.pharmacyService.addWorkingTimeForDermatologist(id, email, workingDay, wd);
+		return new ResponseEntity<>(HttpStatus.OK);
+		
+	}
+	
+	@PostMapping("/addWorkingDayPharmacist/{id}/{email}/{workingDay}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public ResponseEntity<?> addWorkingDayPharmacist(@PathVariable(name="id") String id,@PathVariable(name="email") String email,
+			@PathVariable(name="workingDay") String workingDay,@RequestBody WorkingTimeIntervalDTO wd) {
+		System.out.println(wd);
+		this.pharmacyService.addWorkingTimeForPharmacist(id, email, workingDay, wd);
+		return new ResponseEntity<>(HttpStatus.OK);
 		
 	}
 }
