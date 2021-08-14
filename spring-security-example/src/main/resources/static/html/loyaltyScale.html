@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <script src="../scripts/customAjax.js"></script>
-    <script src="../scripts/adminsystem/main.js"></script>
+    <script src="../scripts/adminsystem/loyalty.js"></script>
     <script src="../scripts/jwt.js"></script>
     <title>Admin system Homepage</title>
     <style>
@@ -137,106 +137,70 @@ div.container4 h2 {
     </ul>
     <div id = "showData" class="container4" style = "color : white">
         <table class="ui large table" style="width:50%; margin-left:auto;
+			    margin-right:auto; margin-top: 40px;" >
+            <thead>
+            <th colspan="4" class = "text-info" style= "text-align:center;">Loyalty Category and Scale</th>
+            <tr class="success">
+                <th></th>
+                <th>Needed Points</th>
+                <th>Discount</th>
+            </tr>
+            </thead>
+            <tbody id="loyaltyTable">
+            </tbody>
+        </table>
+        <table class="ui large table" style="width:50%; margin-left:auto;
 			    margin-right:auto; margin-top: 40px;">
             <thead>
             <tr class="success">
-                <th colspan="2" class = "text-info" style= "text-align:center;">Add New Medicine</th>
+                <th colspan="2" class = "text-info" style= "text-align:center;">Define Loyalty Category and Scale</th>
             </tr>
             </thead>
             <tbody>
             <tr>
-                <td>Code:</td>
-                <td class="ui input small"> <input type="text" id="txtCode"/></td>
-
+                <td>
+                    <b>Information about REGULAR user</b>
+                    <br>
+                    <p>intial user is regular</p></td>
             </tr>
             <tr>
-                <td>Name:</td>
-                <td class="ui input small"> <input type="text" id="txtName" /></td>
-
+                <td>Needed points:</td>
+                <td class="ui input small"> <input type="number" id="txtRegularNeededPoints" value = "0" disabled = "true"/></td>
             </tr>
             <tr>
-                <td>Shape:</td>
-                <td class="ui input small">
-                    <select  id="txtShape">
-                        <option value = "1">CAPSULE</option>
-                        <option value = "2">TABLET</option>
-                        <option value = "3">POWDER</option>
-                        <option value = "4">CREAM</option>
-                        <option value = "5">OIL</option>
-                        <option value = "6">SYRUP</option>
-                    </select>
-                </td>
-
+                <td>Discount:</td>
+                <td class="ui input small"> <input type="number" id="txtRegularDiscount" value = "0" disabled = "true"/></td>
             </tr>
             <tr>
-                <td>Type:</td>
-                <td class="ui input small">
-                    <select  id="txtType">
-                        <option value = "1">ANTIBIOTIC</option>
-                        <option value = "2">ANESTHETIC</option>
-                        <option value = "3">ANTIHISTAMINE</option>
-                    </select>
-                </td>
-
+                <td>
+                    <b>Information about SILVER user</b></td>
             </tr>
             <tr>
-                <td>Content:</td>
-                <td class="ui input small"> <input type="text" id="txtContent" /></td>
-
+                <td>Needed points:</td>
+                <td class="ui input small"> <input type="number" id="txtSilverNeededPoints"/></td>
             </tr>
             <tr>
-                <td>Producer:</td>
-                <td class="ui input small"> <input type="text" id="txtProducer" /></td>
-
+                <td>Discount:</td>
+                <td class="ui input small"> <input type="number" id="txtSilverDiscount"/></td>
             </tr>
             <tr>
-                <td>Can Medicine be Taken With Prescription:</td>
-                <td class="ui input small">
-                    <div class="ui radio checkbox">
-                        <input type="radio"  id = "withPrescriptionTrue">
-                        <label>Yes</label>
-                    </div>
-                    <div class="ui radio checkbox">
-                        <input type="radio" id = "withPrescriptionFalse">
-                        <label>No</label>
-                    </div>
-                </td>
+                <td>
+                    <b>Information about GOLD user</b></td>
             </tr>
             <tr>
-                <td>Substitute Medicine Codes:</td>
-                <td class="ui input small">
-                    <table  id="txtSubstituteMedicineCodes" >
-                        <thead>
-                        <tr class="success">
-                            <th></th>
-                            <th>Code</th>
-                            <th>Medicine Name</th>
-                        </tr>
-                        </thead>
-                        <tbody id="medicineTable">
-                        </tbody>
-                    </table>
-                </td>
+                <td>Needed points:</td>
+                <td class="ui input small"> <input type="number" id="txtGoldNeededPoints"/></td>
             </tr>
             <tr>
-                <td>Notes: </td>
-                <td class="ui input small"> <input type="text" id="txtNotes" /></td>
-            </tr>
-            <tr>
-                <td>Contradiction: </td>
-                <td class="ui input small"> <input type="text" id="txtContradiction" /></td>
-            </tr>
-            <tr>
-                <td>Advised daily dose: </td>
-                <td class="ui input small"> <input type="number" id="txtAdvisedDailyDose" /></td>
+                <td>Discount:</td>
+                <td class="ui input small"> <input type="number" id="txtGoldDiscount"/></td>
             </tr>
             </tbody>
             <tfoot class="full-width">
             <tr>
                 <th></th>
                 <th colspan="2">
-                    <input id = "submitAddMedicine" class="ui right floated positive basic button" type = "button" value = "Submit"></input>
-
+                    <input id = "submitLoyalty" class="ui right floated positive basic button" type = "button" value = "Submit"></input>
                 </th>
             </tr>
             </tfoot>
