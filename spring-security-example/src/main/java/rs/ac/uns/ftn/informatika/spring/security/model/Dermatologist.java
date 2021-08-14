@@ -27,9 +27,6 @@ public class Dermatologist {
 	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private User user;
 	
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	private Pharmacy pharmacy;
-	
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<Rating> ratings = new HashSet<Rating>();
 	
@@ -53,14 +50,6 @@ public class Dermatologist {
 
 	public void setUser(User user) {
 		this.user = user;
-	}
-
-	public Pharmacy getPharmacy() {
-		return pharmacy;
-	}
-
-	public void setPharmacy(Pharmacy pharmacy) {
-		this.pharmacy = pharmacy;
 	}
 
 	public Set<Rating> getRatings() {
@@ -89,7 +78,10 @@ public class Dermatologist {
 
 	@Override
 	public String toString() {
-		return "Dermatologist [id=" + id + ", user=" + user + ", pharmacy=" + pharmacy + ", ratings=" + ratings
-				+ ", workingTimes=" + workingTimes + ", holidayRequests=" + holidayRequests + "]";
+		return "Dermatologist [id=" + id + ", user=" + user + ", ratings=" + ratings + ", workingTimes=" + workingTimes
+				+ ", holidayRequests=" + holidayRequests + "]";
 	}
+
+
+
 }

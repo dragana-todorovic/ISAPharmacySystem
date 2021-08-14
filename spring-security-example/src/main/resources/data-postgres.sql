@@ -7,12 +7,23 @@ INSERT INTO USERS (username, password, first_name, last_name, email, country, ci
 INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('user@example.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.Lrd4j8amcljStog3n4APU5EX3bGJIUK', 'Marko', 'Markovic', 'user@example.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
 INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('patient@example.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.Lrd4j8amcljStog3n4APU5EX3bGJIUK', 'Nikola', 'Nikolic', 'patient@example.com','Republika Srbija', 'Nis', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
 INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('dermatologist@example.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.Lrd4j8amcljStog3n4APU5EX3bGJIUK', 'Marko', 'Markovic', 'dermatologist@example.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
-INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('pharmacist@example.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.', 'Jovan', 'Jovanovic', 'pharmacist@example.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
+INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('pharmacist@example.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.Lrd4j8amcljStog3n4APU5EX3bGJIUK', 'Jovan', 'Jovanovic', 'pharmacist@example.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
 INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('adminpharmacyr@example.com', '$2y$10$Dz4zbJOWPOfxHsjy2QgDk.SoBDiwsiQ3.2Vgxw0hhNfoDO4rZZB5i', 'Dragana', 'Todorovic', 'adminpharmacyr@example.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
+INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('pharmacist1@example.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.Lrd4j8amcljStog3n4APU5EX3bGJIUK', 'Ivana', 'Ivanovic', 'pharmacist1@example.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
 
 --medicine
+
+INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,type,notes,adviseddailydose,contradiction) VALUES ('Code1','Midol',1,'content1','Galenika',false,0,'Ne konzumirati uz alkohol',1,'Contradiction0');
+INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,type,notes,adviseddailydose,contradiction) VALUES ('Code2','Rapten DUO',1,'content2','Galenika',false,0,'Ne konzumirati uz alkohol',2,'Contradiction1');
+INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,type,notes,adviseddailydose,contradiction) VALUES ('Code3','Paracetamol',1,'content3','HEMOFARM',false,0,'Ne konzumirati uz alkohol',2,'Contradiction2');
+INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,type,notes,adviseddailydose,contradiction) VALUES ('Code4','Andol',1,'content4','FARMAVITA',false,0,'Ne konzumirati uz alkohol',3,'Contradiction3');
+INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,type,notes,adviseddailydose,contradiction) VALUES ('Code5','Deksomen',1,'content5','Galenika',false,0,'Ne konzumirati uz alkohol',5,'Contradiction4');
+INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,type,notes,adviseddailydose,contradiction) VALUES ('Code6','Analgin',1,'content6','HEMOFARM',false,0,'Ne konzumirati uz alkohol',4,'Contradiction5');
+
 INSERT INTO MEDICINE(code,name,shape,type,content,producer,withprescription,notes,adviseddailydose,contradiction) VALUES ('1234','Brufen',1,1,'nesto','Galenika',false,'Ne konzumirati uz alkohol', 2,'Contradiction');
 INSERT INTO MEDICINE(code,name,shape,type,content,producer,withprescription,notes,adviseddailydose,contradiction) VALUES ('12333','Aspirin',1,2,'nesto','Galenika',false,'Ne konzumirati uz alkohol',3,'Contradiction2');
+
+
 INSERT INTO medicine_substitute_medicine_codes(medicine_id, substitute_medicine_codes) VALUES(1,'12333');
 INSERT INTO medicine_substitute_medicine_codes(medicine_id, substitute_medicine_codes) VALUES(2,'1234');
 
@@ -35,6 +46,7 @@ INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (6, 7);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (7, 5);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (9, 6);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (8, 4);
+INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (10, 4);
 --patient
 INSERT INTO PATIENTS (id,user_id,points,category,penal,point) VALUES (1,5,10,0,0,0);
 INSERT INTO PATIENTS (id,user_id,points,category,penal,point) VALUES (2,6,100,0,0,0);
@@ -56,8 +68,8 @@ INSERT INTO PHARMACYADMIN (id, pharmacy_id, user_id) VALUES (1,2,9);
 
 
 --dermatologist 
-INSERT INTO DERMATOLOGIST (id, pharmacy_id, user_id) VALUES (1,1,7);
-INSERT INTO DERMATOLOGIST (id, pharmacy_id, user_id) VALUES (2,2,7);
+INSERT INTO DERMATOLOGIST (id, user_id) VALUES (1,7);
+INSERT INTO DERMATOLOGIST (id, user_id) VALUES (2,7);
 --appoitment
 INSERT INTO APPOITMENT (id, duration, start_date_time, description, dermatologist_id, patient_id) VALUES (1,30,'2017-10-01 21:58:58.508-07','opis1',1,1);
 INSERT INTO APPOITMENT (id, duration, start_date_time, description, dermatologist_id, patient_id) VALUES (2,30,'2017-10-02 21:58:58.508-07','opis2',1,2);
@@ -89,25 +101,30 @@ INSERT INTO MEDICINEPRICE (id, price,start_date,end_date, medicine_id) VALUES (2
 INSERT INTO MEDICINEPRICE (id, price,start_date,end_date, medicine_id) VALUES (3, 300, '2017-10-01 21:58:58.508-07','2017-12-01 21:58:58.508-07',2);
 
 --medicine with quantity
-INSERT INTO MEDICINEWITHQUANTITY (id, quantity, medicine_id) VALUES (1, 20, 1);
-INSERT INTO MEDICINEWITHQUANTITY (id, quantity, medicine_id) VALUES (2, 30, 1);
-INSERT INTO MEDICINEWITHQUANTITY (id, quantity, medicine_id) VALUES (3, 50, 2);
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (20, 1);
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (30, 1);
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (50, 2);
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (100, 3);
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (30, 4);
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (25, 5);
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (28, 6);
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (3, 6);
+
 
 --pharmacy medicine prices
 INSERT INTO pharmacy_medicine_prices (pharmacy_id, medicine_prices_id) VALUES (1, 1);
 INSERT INTO pharmacy_medicine_prices (pharmacy_id, medicine_prices_id) VALUES (1, 3);
 
 --pharmacy medicine with quantity
-INSERT INTO pharmacy_medicine_with_quantity (pharmacy_id, medicine_with_quantity_id) VALUES (1, 1);
+INSERT INTO pharmacy_medicine_with_quantity (pharmacy_id, medicine_with_quantity_id) VALUES (2, 1);
 INSERT INTO pharmacy_medicine_with_quantity (pharmacy_id, medicine_with_quantity_id) VALUES (1, 3);
+INSERT INTO pharmacy_medicine_with_quantity (pharmacy_id, medicine_with_quantity_id) VALUES (2, 4);
+INSERT INTO pharmacy_medicine_with_quantity (pharmacy_id, medicine_with_quantity_id) VALUES (1, 5);
+INSERT INTO pharmacy_medicine_with_quantity (pharmacy_id, medicine_with_quantity_id) VALUES (1, 6);
+INSERT INTO pharmacy_medicine_with_quantity (pharmacy_id, medicine_with_quantity_id) VALUES (1, 2);
+INSERT INTO pharmacy_medicine_with_quantity (pharmacy_id, medicine_with_quantity_id) VALUES (2, 7);
 
---pharmacist
-INSERT INTO PHARMACIST (id, pharmacy_id, user_id) VALUES (1,1,8);
-INSERT INTO PHARMACIST (id, pharmacy_id, user_id) VALUES (2,2,8);
 
---pharmacist rating
-INSERT INTO pharmacist_ratings (pharmacist_id, ratings_id) VALUES (1,1);
-INSERT INTO pharmacist_ratings (pharmacist_id, ratings_id) VALUES (1,3);
 
 --pharmacy rating
 INSERT INTO pharmacy_ratings (pharmacy_id, ratings_id) VALUES (1,3);
@@ -137,17 +154,16 @@ INSERT INTO holidayrequest(id,start_date,end_date,status) VALUES (1,'2017-10-01 
 --dermatologist holiday request
 INSERT INTO dermatologist_holiday_requests(dermatologist_id,holiday_requests_id) VALUES (1,1);
 
---pharmacist holiday request
-INSERT INTO pharmacist_holiday_requests(pharmacist_id,holiday_requests_id) VALUES (1,1);
-
-
 --working days
 INSERT INTO workingday (day,end_time,start_time) VALUES ('2021-10-01','13:00:00.000000', '08:00:00.000000');
 INSERT INTO workingday (day,end_time,start_time) VALUES ('2021-10-02','13:00:00.000000', '08:00:00.000000');
 INSERT INTO workingday (day,end_time,start_time) VALUES ('2021-10-03','13:00:00.000000', '08:00:00.000000');
 INSERT INTO workingday (day,end_time,start_time) VALUES ('2021-10-04','13:00:00.000000', '08:00:00.000000');
+INSERT INTO workingday (day,end_time,start_time) VALUES ('2021-11-03','13:00:00.000000', '08:00:00.000000');
+INSERT INTO workingday (day,end_time,start_time) VALUES ('2021-11-04','13:00:00.000000', '08:00:00.000000');
 
 --working time
+INSERT INTO workingtime (pharmacy_id) VALUES (2);
 INSERT INTO workingtime (pharmacy_id) VALUES (2);
 
 --working time with working days
@@ -155,14 +171,27 @@ INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (
 INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (1,2);
 INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (1,3);
 INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (1,4);
+INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (2,5);
+INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (2,6);
 
 
 --dermatologist working time
 INSERT INTO dermatologist_working_times (dermatologist_id, working_times_id) VALUES (2,1); 
 
---pharmacist working time
-INSERT INTO pharmacist_working_times (pharmacist_id, working_times_id) VALUES (2,1); 
 
+--pharmacist
+INSERT INTO PHARMACIST (user_id,working_time_id) VALUES (8,1);
+INSERT INTO PHARMACIST (user_id,working_time_id) VALUES (10,2);
+
+
+
+--pharmacist rating
+INSERT INTO pharmacist_ratings (pharmacist_id, ratings_id) VALUES (1,1);
+INSERT INTO pharmacist_ratings (pharmacist_id, ratings_id) VALUES (1,3);
+
+
+--pharmacist holiday request
+INSERT INTO pharmacist_holiday_requests(pharmacist_id,holiday_requests_id) VALUES (1,1);
 
 
 --eprescription
@@ -198,11 +227,11 @@ INSERT INTO medicineorder_medicines(medicine_order_id,medicines_id) VALUES (3,2)
 
 --medicine reservation
 INSERT INTO medicinereservation(id,due_to,status,medicine_with_quantity_id,patient_id) VALUES (1,'2017-12-04 21:58:58.508-07',0,1,1);
-INSERT INTO medicinereservation(id,due_to,status,medicine_with_quantity_id,patient_id) VALUES (2,'2017-10-04 21:58:58.508-07',0,2,1);
+INSERT INTO medicinereservation(id,due_to,status,medicine_with_quantity_id,patient_id) VALUES (2,'2017-10-04 21:58:58.508-07',0,4,1);
 INSERT INTO medicinereservation(id,due_to,status,medicine_with_quantity_id,patient_id) VALUES (3,'2017-12-04 21:58:58.508-07',0,1,2);
 
 --pharmacy medicine reservations
-INSERT INTO pharmacy_medicine_reservations(pharmacy_id,medicine_reservations_id) VALUES (1,1);
+INSERT INTO pharmacy_medicine_reservations(pharmacy_id,medicine_reservations_id) VALUES (2,1);
 INSERT INTO pharmacy_medicine_reservations(pharmacy_id,medicine_reservations_id) VALUES (1,2);
 
 --pharmacist complaint
@@ -236,4 +265,3 @@ INSERT INTO therapy(id,duration,medicine_id) VALUES (2,6,2);
 INSERT INTO loyaltyscale(id,category,needed_points,discount) VALUES (1,0,0,0);
 INSERT INTO loyaltyscale(id,category,needed_points,discount) VALUES (2,1,20,10);
 INSERT INTO loyaltyscale(id,category,needed_points,discount) VALUES (3,2,60,30);
-

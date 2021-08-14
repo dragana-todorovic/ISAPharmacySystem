@@ -61,7 +61,8 @@ public class  UserController {
 	}
 	
 	@GetMapping("/getByEmail/{email}")
-	@PreAuthorize("hasRole('ADMIN_PHARMACY')"+ "|| hasRole('ADMIN_SYSTEM')")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY') || hasRole('ADMIN_SYSTEM') || hasRole('ROLE_DERMATOLOGIST') || hasRole('ROLE_PHARMACIST')")
+
 	public User getByEmail(@PathVariable String email) {
 		System.out.println(email);
 		return this.userService.findByEmail(email);

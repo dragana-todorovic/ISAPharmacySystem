@@ -22,8 +22,7 @@ $(document).ready(function(e){
 		      url: '/pharmacy/getAllPharmacists/' + email,
 		      method: 'GET',
 		      contentType: 'application/json',
-		      success: function(data){	 
-		    	  console.log(data)
+		      success: function(data){	
 		    	  showPharmacists(data);
 		      },
 		      error: function(){
@@ -175,9 +174,13 @@ let showDermatologists = function(data) {
 										  </tr></thead><tbody id="bodyTime">
 										   
 										  </tbody>
-										   <tfoot class="full-width">
+										   <tfoot class="full-width"></tfoot>
+										   </table>
   </div>
 </div>
+
+
+
 `)
 
 $("#firstNameSearch").keyup(function () {
@@ -223,6 +226,7 @@ $("button[name=prikaziVrijeme]").click(function() {
 	customAjax({
 	      url: '/pharmacy/getAllWorkingTimes/' + idSelected + '/' + email,
 	      method: 'GET',
+	      async: false,
 		  contentType: 'application/json',
 		        success: function(data){
 		        	showWorkingDays(data)
@@ -243,7 +247,7 @@ $("button[name=obrisiDermatologa]").click(function() {
 	      method: 'GET',
 		  contentType: 'application/json',
 		        success: function(){
-		        	alert("Succesifuly deleted!")
+		        	refreshujTabeluZaDermatologe()
 				},
 			      error: function(){
 			       	alert('Error');
@@ -251,6 +255,11 @@ $("button[name=obrisiDermatologa]").click(function() {
 	    });
 	
  });
+
+$('#addNew').click(function() {
+	 $('#modalniZaNovogDermatologa')
+	  .modal('show')
+})
 
 $('#datum').calendar({
 	  type: 'date'
@@ -423,7 +432,8 @@ let showPharmacists = function(data) {
 										  </tr></thead><tbody id="bodyTime">
 										   
 										  </tbody>
-										   <tfoot class="full-width">
+										   <tfoot class="full-width"></tfoot>
+										   </table>
   </div>
 </div>
 `)
@@ -471,17 +481,20 @@ $("button[name=prikaziVrijeme]").click(function() {
 	customAjax({
 	      url: '/pharmacy/getAllWorkingTimesPharmacist/' + idSelected + '/' + email,
 	      method: 'GET',
+	      async: false,
 		  contentType: 'application/json',
 		        success: function(data){
 		        	showWorkingDays(data)
+		        	
 				},
 			      error: function(){
 			       	alert('Error');
 			      }
 	    });
-	 $('#modalZaRadnoVrijeme')
+	$('#modalZaRadnoVrijeme')
 	  .modal('show')
 	
+	 
  });
 
 $("button[name=obrisiDermatologa]").click(function() {
@@ -491,7 +504,7 @@ $("button[name=obrisiDermatologa]").click(function() {
 	      method: 'GET',
 		  contentType: 'application/json',
 		        success: function(){
-		        	alert("Succesifuly deleted!")
+		        	refreshujTabeluZaFarmaceute()
 				},
 			      error: function(){
 			       	alert('Error');
@@ -554,6 +567,36 @@ function formatDate(date) {
         day = '0' + day;
 
     return [year, month, day].join('-');
+}
+
+let refreshujTabeluZaDermatologe = function(){
+	customAjax({
+	      url: '/pharmacy/getAllDermatologist/' + email,
+	      method: 'GET',
+	      contentType: 'application/json',
+	      success: function(data){	 
+	    	  console.log(data)
+	    	  showDermatologists(data);
+	      },
+	      error: function(){
+	      }
+
+});
+}
+
+let refreshujTabeluZaFarmaceute = function(){
+	customAjax({
+	      url: '/pharmacy/getAllPharmacists/' + email,
+	      method: 'GET',
+	      contentType: 'application/json',
+	      success: function(data){	 
+	    	  console.log(data)
+	    	  showPharmacists(data);
+	      },
+	      error: function(){
+	      }
+
+});
 }
 
 

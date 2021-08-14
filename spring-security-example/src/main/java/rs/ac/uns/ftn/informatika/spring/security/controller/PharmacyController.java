@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import rs.ac.uns.ftn.informatika.spring.security.model.Dermatologist;
+import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
+import rs.ac.uns.ftn.informatika.spring.security.model.MedicineWithQuantity;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacist;
 
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
@@ -31,6 +33,7 @@ import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
 import rs.ac.uns.ftn.informatika.spring.security.model.User;
 import rs.ac.uns.ftn.informatika.spring.security.model.WorkingDay;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacyAdminRepository;
+import rs.ac.uns.ftn.informatika.spring.security.service.MedicineService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyAdminService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyService;
 import rs.ac.uns.ftn.informatika.spring.security.service.UserService;
@@ -46,6 +49,8 @@ public class PharmacyController {
 	private PharmacyAdminService pharmacyAdminService;
 	@Autowired
 	private PharmacyService pharmacyService;
+	@Autowired
+	private MedicineService medicineService;
 	
 	@PostMapping("/getPharmacyByAdmin")
 	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
@@ -74,6 +79,13 @@ public class PharmacyController {
 		
 		pharmacyService.editPharmacy(pharmacy);
 		return new ResponseEntity<>(HttpStatus.OK);
+		
+	}
+	
+	@GetMapping("/getAllMedicinesWithQuantity/{email}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public Set<MedicineWithQuantity> getMedicines(@PathVariable(name="email") String email) {
+		return this.medicineService.getMedicinesByPharmacy(email);
 		
 	}
 	
@@ -143,6 +155,35 @@ public class PharmacyController {
 			@PathVariable(name="email") String email) {
 		this.pharmacyService.deletePharmacistFromPharmacy(id, email);
 		return new ResponseEntity<>(HttpStatus.OK);
+		
+	}
+	
+	@GetMapping("/getAllMedicineExceptAlreadyExisted/{email}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public Set<Medicine> getAllMedicineExceptAlreadyExisted(@PathVariable(name="email") String email) {
+		return this.medicineService.getAllMedicinesExceptExisted(email);
+		
+	}
+	
+	@PostMapping("/addMedicineWithQuantityInPharmacy/{email}/{medicineName}/{quantity}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public ResponseEntity<?> getAllMedicineExceptAlreadyExisted(@PathVariable(name="email") String email,
+			@PathVariable(name="medicineName") String medicineName,@PathVariable(name="quantity") String quantity) {
+		int q = Integer.parseInt(quantity);
+		this.medicineService.addMedicineWithQuatityInPharmacy(email, medicineName, q);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@GetMapping("/deleteMedicineFromPharmacy/{id}/{email}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public ResponseEntity<?> deleteMedicineFromPharmacy(@PathVariable(name="id") String id,
+			@PathVariable(name="email") String email) {
+		Long medicineId = Long.parseLong(id);
+		if(this.medicineService.deleteMedicineFromPharmacy(medicineId, email)) {
+			return new ResponseEntity<>(HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+		}
 		
 	}
 }

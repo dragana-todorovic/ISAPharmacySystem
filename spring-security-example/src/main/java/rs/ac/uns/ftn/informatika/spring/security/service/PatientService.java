@@ -8,9 +8,14 @@ import rs.ac.uns.ftn.informatika.spring.security.model.User;
 import rs.ac.uns.ftn.informatika.spring.security.view.UserRegisterView;
 
 
+
 public interface PatientService {
 	List<Patient> findAll ();
 	ArrayList<String> findPatientsAllergies(Long user_id);
+
 	Patient findPatientByUser(User user);
 	Patient savePatient(Patient patient);
+	Patient findPatientById(Long id);
+	
+
 }

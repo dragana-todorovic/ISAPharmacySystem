@@ -33,4 +33,44 @@ public class MedicineReservation {
 	
 	@Column(name = "status", nullable = false)
 	private MedicineReservationStatus status;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Patient getPatient() {
+		return patient;
+	}
+
+	public void setPatient(Patient patient) {
+		this.patient = patient;
+	}
+
+	public MedicineWithQuantity getMedicineWithQuantity() {
+		return medicineWithQuantity;
+	}
+
+	public void setMedicineWithQuantity(MedicineWithQuantity medicineWithQuantity) {
+		this.medicineWithQuantity = medicineWithQuantity;
+	}
+
+	public LocalDateTime getDueTo() {
+		return dueTo;
+	}
+
+	public void setDueTo(LocalDateTime dueTo) {
+		this.dueTo = dueTo;
+	}
+
+	public MedicineReservationStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(MedicineReservationStatus status) {
+		this.status = status;
+	}
 }

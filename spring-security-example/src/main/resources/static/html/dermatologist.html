@@ -2,21 +2,23 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<script src="../jquery-3.3.1.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script src="../scripts/dermatologist.js"></script> 
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"  />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="../scripts/customAjax.js"></script>
-<script src="../scripts/jwt.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 
-
- <!-- fontovi -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
-        crossorigin="anonymous">
-        
-        <!--za bootstrap-->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-        crossorigin="anonymous">
+<script src="../scripts/dermatologist/profile.js"></script>
+<script src="../scripts/dermatologist/holidayRequest.js"></script>
+<script src="../scripts/dermatologist/myPatients.js"></script>
+<script src="../scripts/dermatologist/startAppointment.js"></script>
+<script src="../scripts/jwt.js"></script> 
+ 
 
 <title>Dermatologist Homepage</title>
 <style>
@@ -58,7 +60,7 @@ li.dropdown {
 }
     .container_1 {
     height: 100vh;
-    width: 207.4vh;
+   
     background: url('../images/medicine-generic-banner.jpg') no-repeat center center/cover;
     color: black;
 }
@@ -104,110 +106,38 @@ li.dropdown {
 .btn_1:hover {
     background: #853b1e;
 }
+div.container4 {
+    height: 10em;
+    position: relative }
+div.container4 h2 {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%) }
 </style>
 </head>
 <body>
 <div class="container_1">
-
-<ul>
- <li><a href="#clients">Clients</a></li>
-  <li><a id="appointment" href="#appointment">Start an appointment</a></li>
-  <li><a href="#calendar">Calendar</a></li>
-  <li><a href="#vacation">Vacation</a></li>
-  <li><a href="#schedule">Schedule an appointment</a></li>  
+<ul style="background:skyblue">
+ <li><a href=""><i class="home icon" style="color:white"></i></a></li>
+ <li><a id="myPatients" ><i >My patients</i></a></li>
+ <li><a id="startAppointment" ><i >Start an appointment</i></a></li>
+ <li><a id="holidayRequest" ><i >Holiday request</i></a></li>
   <li class="dropdown" style="float:right;">
     <a href="javascript:void(0)" class="dropbtn">Profile</a>
-    <div class="dropdown-content">
-      <a id="profile" href="#">My profile</a>
-       <a id="changePassword" href="#" >Change password</a>
-      <a id="logout" href="">Log out</a>     
+    <div class="dropdown-content" style="right:0;">
+      <a id = "profileInfo" href="#"><i class="user icon"></i> My Profile </a>
+      <a id = "logout" href="#"><i class = "sign-out icon"></i> Log out</a>
     </div>
+    
   </li>
+ 
   
 </ul>
-<!-- EDIT PROFILE -->
- <div style="padding:10px 100px 50px 0px;" class="cloumn" hidden="true" id="edit-profile">
-    <div class="col-sm-12 col-md-8 col-lg-6 offset-sm-0 offset-md-2 offset-lg-4">
-      <form class="border rounded px-2 py-1 text-center">
-      <h5 style="font-weight: bold" >Basic information</h5>
-        <div class="form-group">
-          <input type="text" class="form-control form-control-sm not-pass" id="id_first_name" placeholder="First name" autofocus>
-          <p id="errorFirstName"></p>
-        </div>
-        <div class="form-group">
-          <input type="text" class="form-control form-control-sm not-pass" id="id_last_name" placeholder="Last name" autofocus>
-          <p id="errorLastName"></p>
-        </div>
-        <div class="form-group">
-          <input type="text" class="form-control form-control-sm not-pass" id="id_country" placeholder="Country" autofocus>
-          <p id="errorCountry"></p>
-        </div>
-        <div class="form-group">
-          <input type="text" class="form-control form-control-sm not-pass" id="id_city" placeholder="City" autofocus>
-          <p id="errorCity"></p>
-        </div>
-        <div class="form-group">
-          <input type="text" class="form-control form-control-sm not-pass" id="id_address" placeholder="Address" autofocus>
-          <p id="errorAddress"></p>
-        </div>
-        <div class="form-group">
-          <input type="text" class="form-control form-control-sm not-pass" id="id_phone" placeholder="Phone" autofocus>
-          <p id="errorPhone"></p>
-        </div>
-        <div class="form-group">
-          <input type="text" class="form-control form-control-sm not-pass" id="id_email" placeholder="Email" autofocus disabled>
-          <p id = "errorEmail"></p>
-        </div>
-        <button type="button" class="btn btn-info" id="id_submit_changes" >SUBMIT CHANGES</button>
-      </form>
-      <p class="invalid_1" id="id_p_log"></p>
-    </div>
+	<div id = "showData" class="container4" style = "color : white"><h2>You have successfully logged in as a dermatologist!</h2></div>
 </div>
 
-<!--  APPOINTMENT -->
- <div style="padding:10px 100px 50px 0px;" class="cloumn" hidden="true" id="patientAppointement">
-    <div class="col-sm-12 col-md-8 col-lg-6 offset-sm-0 offset-md-2 offset-lg-4">
-      <form class="border rounded px-2 py-1 text-center">
-      <h5 style="font-weight: bold" >Appointment</h5>
-      <label >Patient:</label>
-      <select id="dropdownPatients" >
-      <option value="" disabled selected></option></select>
-       <div class="form-group">
-          <input type="text" class="form-control form-control-sm not-pass" id="id_diagnosis" placeholder="Diagnosis" autofocus>
-          <p id="errorDiagnosis"></p>
-        </div> 
-        <label style="align:left;">Allergies:</label>
-        <select id="dropdownAllergies"></select>   
-        <br>   
-
-<button type="button" class="btn btn-info" id="id_submit" >SUBMIT</button>
-    </form>
-    
-    </div>
-</div>
-
-<div id="show"   hidden="true">
-<div style="padding:100px 300px 500px 300px;" class="cloumn" >
-        <form class="border rounded px-2 py-1 text-center" >
-
-          <label style="color:black;font-weight: bold" >CHANGE PASSWORD </label>
-			</br></br>
-          <div class="form-group">
-          <input type="password" class="form-control form-control-sm not-pass" id="id_password" placeholder="New password" autofocus>
-          <p id = "errorPassword"></p>
-          </div>
-         
-          <div class="form-group">
-          <input type="password" class="form-control form-control-sm not-pass" id="id_passwordConf" placeholder="Confirm password" autofocus>
-          <p id = "errorPasswordConf"></p>
-          </div>
-		
-          <button type="button" class="btn btn-confirm" id="btnChange" >Change password</button>
-        </form>
-        <p class="invalid_1" id="id_p_log"></p>
-
-
-  </div></div>
-</div>
 </body>
 </html>
