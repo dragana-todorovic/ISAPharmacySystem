@@ -10,6 +10,7 @@ $(document).ready(function() {
 
 		$('a#changePassword').click(function(){
 		$('#show').attr('hidden',false);
+		$('#pharmacies_for_derm_appointments').attr('hidden',true);	
 		$('#edit-profile').attr('hidden', true);
 		input_password = $('#id_password');
 		console.log(input_password)
@@ -254,6 +255,8 @@ function showAllergies(data){
 	$('#medicine_for_allergies').html(temp);
 };
 function showProfile(data,result){
+	
+	$('#pharmacies_for_derm_appointments').attr('hidden',true);	
 	$('#edit-profile').attr('hidden', false);
 		$('#show').attr('hidden',true);
     			    $('#id_first_name').val(data.firstName);

@@ -58,6 +58,8 @@ function showPharmacies(data){
 	}
 	$('#pharmacies_tableBody').html(temp);
 	$('#pharmacies_for_derm_appointments').attr('hidden',false);	
+	$('#edit-profile').attr('hidden', true);
+	$('#show').attr('hidden',true);
 }
 function showPharmacy(data){
 	$('#pharmacy-name').text("Name:"+data.name);
