@@ -76,8 +76,8 @@ INSERT INTO DERMATOLOGIST (id, user_id) VALUES (1,7);
 INSERT INTO DERMATOLOGIST (id, user_id) VALUES (2,11);
 INSERT INTO DERMATOLOGIST (id, user_id) VALUES (3,12);
 --appoitment
-INSERT INTO APPOITMENT (id, duration, start_date_time, description, dermatologist_id, patient_id) VALUES (1,30,'2017-10-01 21:58:58.508-07','opis1',1,1);
-INSERT INTO APPOITMENT (id, duration, start_date_time, description, dermatologist_id, patient_id) VALUES (2,30,'2017-10-02 21:58:58.508-07','opis2',1,2);
+INSERT INTO APPOITMENT (id, duration, start_date_time, description, dermatologist_id, patient_id) VALUES (1,30,'2021-10-01 21:58:58.508-07','opis1',1,1);
+INSERT INTO APPOITMENT (id, duration, start_date_time, description, dermatologist_id, patient_id) VALUES (2,30,'2021-10-02 21:58:58.508-07','opis2',1,2);
 
 --appoitment price
 INSERT INTO APPOITMENTPRICE (id,price,appoitment_id) VALUES (1,400,1);
@@ -220,15 +220,18 @@ INSERT INTO medicineorder(id,status,time_limit) VALUES (2,1,'2017-10-29 21:58:58
 INSERT INTO medicineorder(id,status,time_limit) VALUES (3,0,'2017-12-04 21:58:58.508-07');
 
 --pharmacy medicine order
-INSERT INTO pharmacy_medicine_orders(pharmacy_id, medicine_orders_id) VALUES (1,1);
-INSERT INTO pharmacy_medicine_orders(pharmacy_id, medicine_orders_id) VALUES (1,2);
+INSERT INTO pharmacy_medicine_orders(pharmacy_id, medicine_orders_id) VALUES (2,1);
+INSERT INTO pharmacy_medicine_orders(pharmacy_id, medicine_orders_id) VALUES (2,2);
 INSERT INTO pharmacy_medicine_orders(pharmacy_id, medicine_orders_id) VALUES (1,3);
 
 
 --medicine order medicines
 INSERT INTO medicineorder_medicines(medicine_order_id,medicines_id) VALUES (1,1);
+INSERT INTO medicineorder_medicines(medicine_order_id,medicines_id) VALUES (2,2);
+INSERT INTO medicineorder_medicines(medicine_order_id,medicines_id) VALUES (3,3);
 INSERT INTO medicineorder_medicines(medicine_order_id,medicines_id) VALUES (2,1);
-INSERT INTO medicineorder_medicines(medicine_order_id,medicines_id) VALUES (3,2);
+INSERT INTO medicineorder_medicines(medicine_order_id,medicines_id) VALUES (2,3);
+INSERT INTO medicineorder_medicines(medicine_order_id,medicines_id) VALUES (1,4);
 
 --medicine reservation
 INSERT INTO medicinereservation(id,due_to,status,medicine_with_quantity_id,patient_id) VALUES (1,'2017-12-04 21:58:58.508-07',0,1,1);

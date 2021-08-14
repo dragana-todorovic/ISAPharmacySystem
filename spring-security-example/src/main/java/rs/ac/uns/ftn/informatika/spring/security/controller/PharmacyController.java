@@ -119,8 +119,13 @@ public class PharmacyController {
 	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
 	public ResponseEntity<?> deleteDermatologist(@PathVariable(name="id") String id,
 			@PathVariable(name="email") String email) {
-		this.pharmacyService.deleteDermatologistFromPharmacy(id, email);
-		return new ResponseEntity<>(HttpStatus.OK);
+		if(this.pharmacyService.deleteDermatologistFromPharmacy(id, email)) {
+			return new ResponseEntity<>(HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+		}
+		
+		
 		
 	}
 	

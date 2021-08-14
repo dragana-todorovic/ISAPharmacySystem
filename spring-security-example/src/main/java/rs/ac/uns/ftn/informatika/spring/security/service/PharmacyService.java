@@ -48,7 +48,7 @@ public interface PharmacyService {
 	List<Pharmacy> findAll ();
 
 	Set<WorkingDay> getWorkingDayForDermatolog(String id, String email);
-	void deleteDermatologistFromPharmacy(String id, String email);
+	Boolean deleteDermatologistFromPharmacy(String id, String email);
 	Set<Pharmacist> getPharmacistssByPharmacyAdmin (String email);
 	void addWorkingTimeForPharmacist(String dermatologistId, String email, String wd, WorkingTimeIntervalDTO workingDay);
 	//Collection<Pharmacy> searchPharmacy(String p);

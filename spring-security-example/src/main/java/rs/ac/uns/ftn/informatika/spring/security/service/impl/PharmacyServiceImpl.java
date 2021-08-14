@@ -2,6 +2,7 @@ package rs.ac.uns.ftn.informatika.spring.security.service.impl;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -15,6 +16,7 @@ import rs.ac.uns.ftn.informatika.spring.security.model.Address;
 import rs.ac.uns.ftn.informatika.spring.security.model.Patient;
 
 import rs.ac.uns.ftn.informatika.spring.security.model.Dermatologist;
+import rs.ac.uns.ftn.informatika.spring.security.model.DermatologistAppointment;
 import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicineWithQuantity;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacist;
@@ -22,6 +24,7 @@ import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacist;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
 import rs.ac.uns.ftn.informatika.spring.security.repository.ActionAndBenefitRepository;
+import rs.ac.uns.ftn.informatika.spring.security.repository.DermatologistAppointmentRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacyRepository;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyAdminService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyService;
@@ -62,6 +65,9 @@ public class PharmacyServiceImpl implements PharmacyService{
 	
 	@Autowired
 	private PharmacyAdminService pharmacyAdminService;
+	
+	@Autowired
+	private DermatologistAppointmentRepository dermatologistAppoitmentRepository;
 	
 	@Override
 	public Optional<Pharmacy> findById(Long id) {
@@ -189,21 +195,34 @@ public class PharmacyServiceImpl implements PharmacyService{
 	}
 
 	@Override
-	public void deleteDermatologistFromPharmacy(String id, String email) {
+	public Boolean deleteDermatologistFromPharmacy(String id, String email) {
 		Dermatologist dermatologist = this.dermatologistRepository.findById(Long.parseLong(id)).get();
 
 		PharmacyAdmin pa = pharmacyAdminService.findPharmacyAdminByUser(userService.findByEmail(email));
 		Pharmacy p = pa.getPharmacy();
 		
+		List<DermatologistAppointment> appoitments = this.dermatologistAppoitmentRepository.findAll();
+		
+		for(DermatologistAppointment da : appoitments) {
+			if(da.getDermatologist().equals(dermatologist)) {
+				for(WorkingTime wt : dermatologist.getWorkingTimes()) {
+					if(wt.getPharmacy().equals(p)) {
+						if(da.getStartDateTime().isAfter(LocalDateTime.now())) {
+							return false;
+						}
+					}
+				}
+			}
+		}
+		
 		for(WorkingTime t : dermatologist.getWorkingTimes()) {
-			System.out.println(t.getPharmacy());
 			if(t.getPharmacy().equals(p)) {
-				//dermatologist.setPharmacy(new Pharmacy());
 				dermatologist.getWorkingTimes().remove(t);
 			}
 		}
 		
 		this.dermatologistRepository.save(dermatologist);
+		return true;
 			
 	}
 

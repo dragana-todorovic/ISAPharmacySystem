@@ -31,5 +31,43 @@ public class MedicineOrder {
 	
 	@Column(name = "status" , nullable = false)
 	private MedicineOrderStatus status;
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public Set<MedicineWithQuantity> getMedicines() {
+		return medicines;
+	}
+
+	public void setMedicines(Set<MedicineWithQuantity> medicines) {
+		this.medicines = medicines;
+	}
+
+	public LocalDateTime getTimeLimit() {
+		return timeLimit;
+	}
+
+	public void setTimeLimit(LocalDateTime timeLimit) {
+		this.timeLimit = timeLimit;
+	}
+
+	public MedicineOrderStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(MedicineOrderStatus status) {
+		this.status = status;
+	}
+
+	@Override
+	public String toString() {
+		return "MedicineOrder [id=" + id + ", medicines=" + medicines + ", timeLimit=" + timeLimit + ", status="
+				+ status + "]";
+	}
 	
 }

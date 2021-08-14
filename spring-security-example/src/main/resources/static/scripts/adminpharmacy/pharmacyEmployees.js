@@ -198,6 +198,22 @@ $('.ui.dropdown')
   </div>
 </div>
 
+
+<div id="errorDelete" class="ui modal">
+	  <i class="close icon"></i>
+	  <div class="header">
+		Error
+	  </div>
+	  <div class="content">
+	  <div class="ui negative message">
+  <div class="header">
+    We're sorry, you cannot delete that dermatologist.
+  </div>
+  <p>That dermatologist has an appointment scheduled!
+</p></div>
+	  </div>
+	</div>
+
 `)
 
 $("#firstNameSearch").keyup(function () {
@@ -243,7 +259,9 @@ $("button[name=obrisiDermatologa]").click(function() {
 					  location.href = "adminpharmacy.html"
 				},
 			      error: function(){
-			       	alert('Error');
+			    	  $('#errorDelete')
+					  .modal('show')
+					
 			      }
 	    });
 	
