@@ -36,7 +36,7 @@ import rs.ac.uns.ftn.informatika.spring.security.view.UserRegisterView;
 // Primer kontrolera cijim metodama mogu pristupiti samo autorizovani korisnici
 @RestController
 @RequestMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
-public class UserController {
+public class  UserController {
 
 	@Autowired
 	private UserService userService;
@@ -55,13 +55,13 @@ public class UserController {
 	// Ukoliko nema, server ce vratiti gresku 403 Forbidden
 	// Korisnik jeste autentifikovan, ali nije autorizovan da pristupi resursu
 	@GetMapping("/user/{userId}")
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasRole('ADMIN')"  )
 	public User loadById(@PathVariable Long userId) {
 		return this.userService.findById(userId);
 	}
 	
 	@GetMapping("/getByEmail/{email}")
-	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')"+ "|| hasRole('ADMIN_SYSTEM')")
 	public User getByEmail(@PathVariable String email) {
 		System.out.println(email);
 		return this.userService.findByEmail(email);
