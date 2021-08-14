@@ -1,13 +1,10 @@
 package rs.ac.uns.ftn.informatika.spring.security.service.impl;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,23 +12,24 @@ import org.springframework.stereotype.Service;
 import rs.ac.uns.ftn.informatika.spring.security.model.ActionAndBenefit;
 import rs.ac.uns.ftn.informatika.spring.security.model.Address;
 import rs.ac.uns.ftn.informatika.spring.security.model.Patient;
-
-import rs.ac.uns.ftn.informatika.spring.security.model.Dermatologist;
-import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacist;
-
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
-import rs.ac.uns.ftn.informatika.spring.security.model.WorkingDay;
-import rs.ac.uns.ftn.informatika.spring.security.model.WorkingTime;
 import rs.ac.uns.ftn.informatika.spring.security.repository.ActionAndBenefitRepository;
-import rs.ac.uns.ftn.informatika.spring.security.repository.DermatologistRepository;
-import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacistRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacyRepository;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyAdminService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyService;
 import rs.ac.uns.ftn.informatika.spring.security.service.UserService;
 import rs.ac.uns.ftn.informatika.spring.security.view.ActionAndBenefitDTO;
 import rs.ac.uns.ftn.informatika.spring.security.view.EditPharmacyView;
+import java.time.LocalTime;
+import java.util.HashSet;
+import java.util.Set;
+import rs.ac.uns.ftn.informatika.spring.security.model.Dermatologist;
+import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacist;
+import rs.ac.uns.ftn.informatika.spring.security.model.WorkingDay;
+import rs.ac.uns.ftn.informatika.spring.security.model.WorkingTime;
+import rs.ac.uns.ftn.informatika.spring.security.repository.DermatologistRepository;
+import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacistRepository;
 import rs.ac.uns.ftn.informatika.spring.security.view.WorkingDayDTO;
 
 @Service
@@ -100,6 +98,7 @@ public class PharmacyServiceImpl implements PharmacyService{
 	public List<Pharmacy> findAll() {
 		List<Pharmacy> result = pharmacyRepository.findAll();
 		return result;
+
 	}
 	public Set<Dermatologist> getDermatologistsByPharmacyAdmin(String email) {
 		PharmacyAdmin pa = pharmacyAdminService.findPharmacyAdminByUser(userService.findByEmail(email));
@@ -252,20 +251,21 @@ public class PharmacyServiceImpl implements PharmacyService{
 
 	}
 
-
-
-	/*@Override
+	@Override
 	public Collection<Pharmacy> searchPharmacy(String p) {
-	   ArrayList<Pharmacy> pharmacies = new ArrayList<>();
-	   for(Pharmacy pharamacy : pharmacyRepository.findAll()){
-		   if(pharamacy.getName().equalsIgnoreCase(p)) {
-			   pharmacies.add(pharamacy);
-		   }
-		   else if(pharamacy.getAddress().equalsIgnoreCase(p)){
-			   pharmacies.add(pharamacy);
-		   }
-	   }
-        return pharmacies;
-	}*/
+			   ArrayList<Pharmacy> pharmacies = new ArrayList<>();
+			   for(Pharmacy pharamacy : pharmacyRepository.findAll()){
+				   if(pharamacy.getName().toLowerCase().contains(p.toLowerCase())) {
+					   pharmacies.add(pharamacy);
+				   }
+				   else if(pharamacy.getAddress().getCity().toLowerCase().contains(p.toLowerCase())){
+					   pharmacies.add(pharamacy);
+				   }
+				   else if(pharamacy.getAddress().getStreet().toLowerCase().contains(p.toLowerCase())){
+					   pharmacies.add(pharamacy);
+				   }
+			   }
+		        return pharmacies;
+		}
 
 }

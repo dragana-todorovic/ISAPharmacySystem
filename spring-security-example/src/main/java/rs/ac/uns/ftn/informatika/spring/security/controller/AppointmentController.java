@@ -7,6 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,6 +26,13 @@ public class AppointmentController {
 	@PreAuthorize("hasRole('ROLE_PATIENT')  || hasRole('ROLE_DERMATOLOGIST')")
 	public  List<DermatologistAppointment> loadAll() {
 		return this.appointmentService.findAll();
+	}
+	
+	@GetMapping("/getAllByPharmacyId/{id}")
+	@PreAuthorize("hasRole('ROLE_PATIENT')  || hasRole('ROLE_DERMATOLOGIST')")
+	public  List<DermatologistAppointment> getAllByPharmacyId(@PathVariable(name="id") Long id) {
+		System.out.println("pogodjena metoda");
+		return null;
 	}
 	
 

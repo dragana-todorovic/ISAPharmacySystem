@@ -22,10 +22,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import rs.ac.uns.ftn.informatika.spring.security.model.Dermatologist;
 import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicineWithQuantity;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacist;
+
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
 import rs.ac.uns.ftn.informatika.spring.security.model.User;
@@ -61,8 +63,13 @@ public class PharmacyController {
 	@GetMapping("/getAll")
 	@PreAuthorize("hasRole('ROLE_PATIENT')")
 	public List<Pharmacy> getAll() {
-		System.out.println("Pogodjena medota");
 		return this.pharmacyService.findAll();
+		
+	}
+	@GetMapping("/getPharmacyById/{id}")
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	public Optional<Pharmacy> getPharamcyById(@PathVariable(name="id") Long id) {
+		return this.pharmacyService.findById(id);
 		
 	}
 	

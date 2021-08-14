@@ -113,18 +113,12 @@ li.dropdown {
   </li>
   <li><a href="#news">Penals</a></li>
   <li><a href="#news">Complaints</a></li>
-  <li class="dropdown" >
-    <a href="javascript:void(0)" class="dropbtn">Schedule</a>
-    <div class="dropdown-content">
-      <a id="dermatology_appointment_scedule" href="#">Schedule dermatologist</a>
-      <a href="#">Schedule consulting with pharmacist</a>
-    </div>
-   </li>
-  <li class="dropdown">
+    <a href="javascript:void(0)" class="dropbtn">Schedule consulting with pharmacist</a>
+	<li class="dropdown">
     <a href="javascript:void(0)" class="dropbtn">Pharamices</a>
     <div class="dropdown-content">
       <a href="#">My pharamices</a>
-      <a href="#">All pharamices</a>
+      <a href="#" id="all_pharmacies">All pharamices</a>
     </div>
   </li>
     <li class="dropdown">
@@ -160,8 +154,8 @@ li.dropdown {
   <div class="ui two column very relaxed grid">
     <div class="column">
 	        <h5 id="category"  class="border rounded px-2 py-1 text-center" ></h5>
-         <h5 style="font-weight: bold" class="border rounded px-2 py-1 text-center" >Actions and benefits</h5>
           <h5 id="mypoints" style="font-weight: bold" class="border rounded px-2 py-1 text-center" ></h5>
+	      <h5 id="actions_and_benefits" style="font-weight: bold" class="border rounded px-2 py-1 text-center" ></h5>
         <div class="ui two column very relaxed grid">
         <div class="column">
       <form class="border rounded px-2 py-1 text-left">
@@ -259,9 +253,39 @@ li.dropdown {
 
 
   </div></div>
-  <!-- DERMATOLOGY APPOINTMENT-->
+  <!-- PhHARMACY DETAILS-->
+  <div  style="padding:10px 100px 50px 0px;" class="cloumn" hidden="true" id="pharmacy-details">
+  <div class="ui two column very relaxed grid">
+    <div class="column">
+	        <h5 id="pharmacy-name"  class="border rounded px-2 py-1 text-center" ></h5>
+          <h5 id="pharmacy-description" style="font-weight: bold" class="border rounded px-2 py-1 text-center" ></h5>
+           <h5 id="pharmacy-city" style="font-weight: bold" class="border rounded px-2 py-1 text-center" ></h5>
+            <h5 id="pharmacy-address" style="font-weight: bold" class="border rounded px-2 py-1 text-center" ></h5>
+      <p class="invalid_1" id="id_p_log"></p>
+    </div>
+    <div class="column">
+    	<td><button id="appointments_derm"  class="ui primary basic button">Show available appointments at dermatologists</button>
+      <p class="invalid_1" id="id_p_log"></p>
+    </div>
+  </div>
+</div>
+  <!-- SHOW ALL PHARMACIES-->
+  <div class="ui list" id="pharmacies_for_derm_appointments" hidden="true" style="padding:100px 300px 500px 300px;" class="cloumn">
+ 	<table class="ui celled table">
+  <thead>
+    <tr>
+	<tr><th>Name</th>
+		 <th>City</th>
+		  <th>Street</th>
+		 <th>Description</th>
+		 <th></th>
+    </tr>
+  </thead>
+  <tbody id="pharmacies_tableBody">
+  </tbody>
+</table>
+</div>
 <div class="ui list" id="pharmacies_for_derm_appointments" hidden="true" style="padding:100px 300px 500px 300px;" class="cloumn">
- <h3 style="color:black;font-weight: bold" >Choose pharmacy:</h3>
  	<table class="ui celled table">
   <thead>
     <tr>
