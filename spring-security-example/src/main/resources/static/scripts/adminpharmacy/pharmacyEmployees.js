@@ -38,8 +38,7 @@ $(document).ready(function(e){
 				      url: '/pharmacy/getAllDermatologist/' + email,
 				      method: 'GET',
 				      contentType: 'application/json',
-				      success: function(data){	 
-				    	  console.log(data)
+				      success: function(data){
 				    	  showDermatologists(data);
 				      },
 				      error: function(){
@@ -221,7 +220,6 @@ $("#firstNameSearch").keyup(function () {
        
         $("#table tbody tr").each(function () {
             var firstName = ($('td:eq(0)', this).text()).toLowerCase();
-            console.log(firstName)
             if (firstName.includes(firstNameSearch) || firstNameSearch == "") {
                 $(this).show()
             } else {

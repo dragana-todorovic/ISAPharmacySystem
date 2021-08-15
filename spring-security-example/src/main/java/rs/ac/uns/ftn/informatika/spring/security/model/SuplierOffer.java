@@ -13,8 +13,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name="SUPLIEROFFER")
+
 public class SuplierOffer {
 	
 	@Id
@@ -29,4 +32,44 @@ public class SuplierOffer {
 	
 	@Column(name = "deleveryTime", nullable = false)
 	private LocalDateTime deleveryTime;
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public MedicineOrder getMedicineOrder() {
+		return medicineOrder;
+	}
+
+	public void setMedicineOrder(MedicineOrder medicineOrder) {
+		this.medicineOrder = medicineOrder;
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
+	public LocalDateTime getDeleveryTime() {
+		return deleveryTime;
+	}
+
+	public void setDeleveryTime(LocalDateTime deleveryTime) {
+		this.deleveryTime = deleveryTime;
+	}
+
+	@Override
+	public String toString() {
+		return "SuplierOffer [id=" + id + ", medicineOrder=" + medicineOrder + ", price=" + price + ", deleveryTime="
+				+ deleveryTime + "]";
+	}
+	
+	
 }

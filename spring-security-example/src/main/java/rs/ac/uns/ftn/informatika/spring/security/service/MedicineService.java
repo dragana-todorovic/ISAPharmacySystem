@@ -2,6 +2,7 @@ package rs.ac.uns.ftn.informatika.spring.security.service;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import rs.ac.uns.ftn.informatika.spring.security.model.Dermatologist;
@@ -18,6 +19,7 @@ public interface MedicineService {
 	Set<MedicineWithQuantity> getMedicinesByPharmacy (String email);
 
 	Medicine findByName(String name);
+	Optional<Medicine> findById(Long id);
 
 	Set<Medicine> getAllMedicinesExceptExisted (String email);
 	
