@@ -14,6 +14,12 @@ $(document).ready(function() {
 		     });
 
 	});
+		$('a#schedule_consulting').click(function(){
+			
+		$('#pharmacies_for_derm_appointments').attr('hidden',true);
+		$('#shedule_consulting').attr('hidden',false);
+
+	});
 	 $('#pharmacies_tableBody').on('click','button',function(event){
 			trid = $(event.target).closest('tr').attr('id');
 			customAjax({
