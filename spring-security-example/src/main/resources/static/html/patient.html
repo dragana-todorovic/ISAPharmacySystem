@@ -292,26 +292,51 @@ li.dropdown {
     margin-right:auto; margin-top: 40px;">
 		        <thead>
 		            <tr class="success">
-		                <th colspan="2" class = "text-info" style= "text-align:center;">Holiday request</th>
+		                <th colspan="2" class = "text-info" style= "text-align:center;">Choose date and time for consulting with pharmacist</th>
 		            </tr>
 		        </thead>
 		        <tbody>
 		            <tr>
-		                <td>Start date:</td>		
-						<td><input type="text" id="datepickerStartDate"></td>		                
+		                <td>Date:</td>		
+						<td><input type="date" id="date"></td>		                
 		            </tr>
 		            <tr>
-		                <td>End date:</td>
-						<td><input type="text" id="datepickerEndDate"></td>
-		                
-		            </tr>
-		           
+		                <td>Choose time:</td>
+						<td><select id="time" class="ui dropdown">
+							  <option value="">8:00</option>
+							  <option value="1">8:30</option>
+							  <option value="0">9:00</option>
+							  <option value="0">9:30</option>
+							  <option value="0">10:00</option>
+							  <option value="0">10:30</option>
+							  <option value="0">11:00</option>
+							  <option value="0">11:30</option>
+							  <option value="0">12:00</option>
+							  <option value="0">12:30</option>
+							  <option value="0">13:00</option>
+							  <option value="0">13:30</option>
+							  <option value="0">14:00</option>
+							  <option value="0">14:30</option>
+							  <option value="0">15:00</option>
+							  <option value="0">15:30</option>
+							  <option value="0">16:00</option>
+							  <option value="0">16:30</option>
+							  <option value="0">17:00</option>
+							  <option value="0">17:30</option>
+							  <option value="0">18:00</option>
+							  <option value="0">18:30</option>
+							  <option value="0">19:00</option>
+							  <option value="0">19:30</option>
+							  <option value="0">20:00</option>
+							  <option value="0">20:30</option>
+							</select></td>        
+		            </tr> 
 		        </tbody>
 		        <tfoot class="full-width">
     <tr>
       <th></th>
       <th colspan="2">     
-          <input id = "sendRequest" class="ui right floated teal basic button" type = "button" value = "Send request"></input>
+          <input id = "pharamciesForConsulting" class="ui right floated teal basic button" type = "button" value = "Next"></input>
 		  
        
       </th>

@@ -50,6 +50,12 @@ $(document).ready(function() {
 	    		}
 	    	});	
 	})
+	
+	$('#pharamciesForConsulting').on('click',function(){
+		console.log($('#date').val())
+		console.log($("#time :selected").text())
+	})
+	
 function showPharmacies(data){
 	$('#pharmacy-details').attr('hidden',true);
 	let temp='';
