@@ -91,20 +91,19 @@ public class PatientController {
 	@PreAuthorize("hasRole('ROLE_PATIENT')")
 	public List<Medicine> getAllMedicine(@PathVariable(name="id") String id)   {
 		List<Medicine> allergies= this.medicineService.findAll();
+		List<Medicine> newall=new ArrayList<Medicine>();
 		User existUser = this.userService.findByUsername(id);
 		ArrayList<String> result = this.patientService.findPatientsAllergies(existUser.getId());
 			for(String a: result) {
-				System.out.println("alergije"+a);
 				for(Medicine al: allergies) {
-					System.out.println("Svi lekovi"+al.getName());
-					if(al.getName().equalsIgnoreCase(a)) {
-						System.out.println("brisemo iz svih"+al.getName());
-						allergies.remove(al);
+					if(!al.getName().equalsIgnoreCase(a)) {
+						newall.add(al);
 						//continue;
 					}
 			}
+				
 		}
-		return allergies;
+		return newall;
 	}
 	
 	@PostMapping("/removeAllergie/{id}")
