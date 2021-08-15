@@ -63,8 +63,10 @@ let actionandbenefit = function() {
 			    </tr>
 			  </tfoot>
 					    </table> <p id="er"> </p>`);
+	 var today = new Date();
 	 $('#rangestart').calendar({
 		  type: 'date',
+		  minDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1),
 		  endCalendar: $('#rangeend')
 		});
 		$('#rangeend').calendar({

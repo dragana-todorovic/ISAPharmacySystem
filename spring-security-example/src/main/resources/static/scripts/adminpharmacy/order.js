@@ -1,4 +1,5 @@
 var email = localStorage.getItem('email')
+
 $(document).ready(function(e){ 
 	
 	$("#orders").click(function () {
@@ -20,10 +21,36 @@ $(document).ready(function(e){
 
 });
 
+let getAllMedicines;
+customAjax({
+    url: '/medicine/getAllMedicine',
+    method: 'GET',
+    contentType: 'application/json',
+    success: function(data){
+  	  console.log(data)
+  	  getAllMedicines = data
+    },
+    error: function(){
+    }
+
+});
+
+
 
 let showOrders = function(data) {
 	
-		
+	let sviLijekovi = '';
+	for (i in getAllMedicines) {
+		sviLijekovi += `<tr style="display: table;
+    width: 100%;
+    table-layout: fixed;"><td><div class="ui checkbox">
+  <input type="checkbox" id = "`+getAllMedicines[i].id+`" name="lijek">
+  <label>`+getAllMedicines[i].name+`</label></td><td>
+    <div class="ui input small left icon">
+     <input type="number" min="1" value="1" placeholder="Quantity..." id="quantity`+getAllMedicines[i].id+`">
+</div>
+</td></tr>`
+	}
 	
 	let temp='';
 	for (i in data){
@@ -41,6 +68,10 @@ let showOrders = function(data) {
 		<td>`+
 		data[i].timeLimit+`</td>
 		<td>${lijekovi}</td>
+		<td><button id = "`+data[i].id+`" name="prikaziPonude" class="ui secondary button">
+		<i class="eye icon"></i>
+		Show offers
+		</button></td>
 					   
 	`;
 	}
@@ -54,7 +85,7 @@ let showOrders = function(data) {
     table-layout: fixed;
      width: calc( 100% - 1em )">
      <tr>
-     <th colspan="4">
+     <th colspan="5">
     <div class="ui selection dropdown">
   <input type="hidden" name="filter" id= "filterStatus">
   <i class="dropdown icon"></i>
@@ -76,6 +107,7 @@ $('.ui.dropdown')
 	    <th>Status</th>
 	    <th>Time limit</th>
 		<th>Medicines</th>
+		<th>Offers</th>
 	  
 	  </tr></thead><tbody style="display: block;
     height: 500px;
@@ -92,9 +124,104 @@ $('.ui.dropdown')
 			      </th>
 			    </tr>
 			  </tfoot>
-	</table>`);
-	$('#tabelaPonuda').html(temp)
+	</table>
 	
+	
+	
+	
+ <div id="modalniZaNovuPonudu" class="ui modal">
+  <i class="close icon"></i>
+  <div class="header">
+	Create order
+  </div>
+  <div class="content">
+
+    <table class="ui basic large table" style="width:100%; margin-left:auto; 
+			    margin-right:auto; margin-top: 40px;display:block">
+    <tbody style="display: block;
+    height: 300px;
+    overflow: auto;">
+    
+    	`+sviLijekovi+`
+    	
+					        </tbody>
+					        
+					    </table>
+					    <table>
+					    <tr><td>
+					    <form class="ui fluid form">
+  <div class="two field">
+    	<div class="ui calendar" id="date">
+          <div class="ui input left icon">
+            <i class="calendar icon"></i>
+            <input type="text" placeholder="Date of order" id="dateOfOrder">
+           
+          </div></div>
+        </div></td><td>
+         <div class="ui input left icon">
+     <div class="ui input left icon">
+      <input type="time" value="07:30:00" placeholder="Time" id = "timeOfOrder">
+       <div class="ui left pointing label">
+      Please enter deadline
+    </div>
+  </div></div>
+  </td></tr>
+					    </table>
+  </div>
+  <div class="actions">
+    <div class="ui black deny button">
+      Nope
+    </div>
+      <input class="ui right floated positive button" type = "button" value = "Add" id="addOrder"></input>
+			 
+     
+  </div>
+</div>
+
+
+<div id="modalniZaPrikazPonuda" class="ui modal">
+  <i class="close icon"></i>
+  <div class="header">
+	All offers
+  </div>
+  <div class="content">
+
+    	<table class="ui black table">
+  <thead>
+    <tr><th>Delevery time</th>
+    <th>Price</th>
+    <th></th>
+  </tr></thead><tbody id="offersTabela">
+
+  </tbody>
+</table>
+  </div>
+</div>
+	
+	
+	<div id="errorDelete" class="ui modal">
+	  <i class="close icon"></i>
+	  <div class="header">
+		Error
+	  </div>
+	  <div class="content">
+	  <div class="ui negative message">
+  <div class="header">
+    We're sorry, you cannot accept that offer.
+  </div>
+  <p>Delevery time hasn't pass!
+</p></div>
+	  </div>
+	</div>
+	`);
+	
+	$('#tabelaPonuda').html(temp)
+	var today = new Date();
+	 $('#date').calendar({
+		  type: 'date',
+		  initialDate:  new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1),
+		  minDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1)
+		});
 	$('#filterStatus').change(function () { //filter po tipu ap
 		if ($(this).val() == "Without filter") {
             $("#tabelaPonuda td.col1").parent().show();
@@ -107,4 +234,113 @@ $('.ui.dropdown')
             $("#tabelaPonuda td.col1:contains('" + $(this).val() + "')").parent().show();
         }
 	});
+	
+	$('#addNew').click(function() {
+		 $('#modalniZaNovuPonudu')
+		  .modal('show')
+	})
+	
+	$('#addOrder').click(function() {
+		var date = formatDate($('#dateOfOrder').val())
+		var time = $('#timeOfOrder').val()
+		var medicines = []
+		console.log(medicines)
+		$('input[name="lijek"]:checked').each(function () {
+			console.log("usao")
+    		var medicineId = this.id;
+    		var quantity = $("#quantity"+this.id).val();
+    		
+    		obj = {
+    			medicineId:medicineId,
+    			quantity:quantity
+    			}
+    		medicines.push(obj)
+    		
+    	
+    	});
+		console.log(medicines)
+		customAjax({
+    	    url: '/medicineOrder/addMedicineToOffer/' + email,
+    	    method: 'POST',
+    	    data: JSON.stringify({medicines:medicines,date:date,time:time}),
+    	    contentType: 'application/json',
+    	    success: function(){
+    	    	alert("Success")
+    	    	location.href = "adminpharmacy.html"
+    	    },
+    	    error: function(){
+    	    	alert("Failed")
+    	    }
+
+    	});
+	})
+	
+	$("button[name=prikaziPonude]").click(function() {
+		var id = this.id;
+		 customAjax({
+		      url: '/medicineOrder/getAllOffersByOrder/' + id,
+		      method: 'GET',
+		      contentType: 'application/json',
+		      success: function(data){
+		    	  prikaziPonude(data)
+		    	  $('#modalniZaPrikazPonuda')
+				  .modal('show')
+				  
+		    	  
+		      },
+		      error: function(){
+		      }
+
+	 });
+	});
+}
+
+let prikaziPonude = function(data) {
+	let temp = '';
+	for(i in data) {
+		temp += `<tr>
+		<td>`+data[i].deleveryTime+`</td>
+		<td>`+data[i].price+`</td>
+		<td><button id = "`+data[i].id+`" name="prihvatiPonudu" class="ui positive button">
+		<i class="check icon"></i>
+		Accept
+		</button>
+		</td>
+		</tr>`;
+	}
+	$('#offersTabela').html(temp)
+	
+	$("button[name=prihvatiPonudu]").click(function() {
+		var id = this.id;
+		console.log(id)
+		customAjax({
+		      url: '/medicineOrder/acceptOffer/' + id + '/' + email,
+		      method: 'POST',
+		      contentType: 'application/json',
+		      success: function(){
+		    	  alert("Success accept!")
+		    	  location.href = "adminpharmacy.html"
+		    	  
+		      },
+		      error: function(){
+		    	  $('#errorDelete')
+				  .modal('show')
+		      }
+
+	 });
+	});
+}
+
+function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [year, month, day].join('/');
 }

@@ -107,7 +107,6 @@ INSERT INTO MEDICINEPRICE (id, price,start_date,end_date, medicine_id) VALUES (3
 
 --medicine with quantity
 INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (20, 1);
-INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (30, 1);
 INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (50, 2);
 INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (100, 3);
 INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (30, 4);
@@ -116,6 +115,9 @@ INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (28, 6);
 INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (3, 6);
 
 
+--za offers 
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (55, 1);
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (44, 4);
 --pharmacy medicine prices
 INSERT INTO pharmacy_medicine_prices (pharmacy_id, medicine_prices_id) VALUES (1, 1);
 INSERT INTO pharmacy_medicine_prices (pharmacy_id, medicine_prices_id) VALUES (1, 3);
@@ -215,9 +217,9 @@ INSERT INTO medicine_ratings(medicine_id,ratings_id) VALUES (1,4);
 INSERT INTO medicine_ratings(medicine_id,ratings_id) VALUES (2,3);
 
 --medicine order
-INSERT INTO medicineorder(id,status,time_limit) VALUES (1,0,'2017-10-01 21:58:58.508-07');
-INSERT INTO medicineorder(id,status,time_limit) VALUES (2,1,'2017-10-29 21:58:58.508-07');
-INSERT INTO medicineorder(id,status,time_limit) VALUES (3,0,'2017-12-04 21:58:58.508-07');
+INSERT INTO medicineorder(status,time_limit) VALUES (0,'2017-10-01 21:58:58.508-07');
+INSERT INTO medicineorder(status,time_limit) VALUES (1,'2017-10-29 21:58:58.508-07');
+INSERT INTO medicineorder(status,time_limit) VALUES (0,'2017-12-04 21:58:58.508-07');
 
 --pharmacy medicine order
 INSERT INTO pharmacy_medicine_orders(pharmacy_id, medicine_orders_id) VALUES (2,1);
@@ -226,12 +228,12 @@ INSERT INTO pharmacy_medicine_orders(pharmacy_id, medicine_orders_id) VALUES (1,
 
 
 --medicine order medicines
-INSERT INTO medicineorder_medicines(medicine_order_id,medicines_id) VALUES (1,1);
+INSERT INTO medicineorder_medicines(medicine_order_id,medicines_id) VALUES (1,8);
 INSERT INTO medicineorder_medicines(medicine_order_id,medicines_id) VALUES (2,2);
 INSERT INTO medicineorder_medicines(medicine_order_id,medicines_id) VALUES (3,3);
 INSERT INTO medicineorder_medicines(medicine_order_id,medicines_id) VALUES (2,1);
 INSERT INTO medicineorder_medicines(medicine_order_id,medicines_id) VALUES (2,3);
-INSERT INTO medicineorder_medicines(medicine_order_id,medicines_id) VALUES (1,4);
+INSERT INTO medicineorder_medicines(medicine_order_id,medicines_id) VALUES (1,9);
 
 --medicine reservation
 INSERT INTO medicinereservation(id,due_to,status,medicine_with_quantity_id,patient_id) VALUES (1,'2017-12-04 21:58:58.508-07',0,1,1);
@@ -258,8 +260,8 @@ INSERT INTO patients_pharmacy_complaints(patient_id,pharmacy_complaints_id) VALU
 INSERT INTO requestformedicineavailability(id,created_at,medicine_with_quantity_id) VALUES (1,'2021-07-04 21:58:58.508-07',1);
 
 --suplier offer 
-INSERT INTO suplieroffer(id,delevery_time,price,medicine_order_id) VALUES (1,'2017-10-01 21:58:58.508-07',500,1);
-INSERT INTO suplieroffer(id,delevery_time,price,medicine_order_id) VALUES (2,'2017-10-01 21:58:58.508-07',500,2);
+INSERT INTO suplieroffer(delevery_time,price,medicine_order_id) VALUES ('2017-10-01 21:58:58.508-07',500,1);
+INSERT INTO suplieroffer(delevery_time,price,medicine_order_id) VALUES ('2021-10-10 21:58:58.508-07',500,1);
 
 --suplier offers 
 INSERT INTO suplier_offers(suplier_id,offers_id) VALUES (1,1);
