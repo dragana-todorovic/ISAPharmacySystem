@@ -54,6 +54,7 @@ $(document).ready(function(e){
 		      method: 'GET',
 		      contentType: 'application/json',
 		      success: function(data){	
+		    	  console.log(data)
 		    	  showPharmacists(data);
 		      },
 		      error: function(){
@@ -104,8 +105,15 @@ let showDermatologists = function(data) {
 	
 	let temp='';
 	for (i in data){
+		var apoteke = [];
+		
+		for(l in data[i].workingTimes) {
+			apoteke[l] = data[i].workingTimes[l].pharmacy.name + "\n";
+		}
+	
 		temp+=`<tr><td class="firstname">`+
-		data[i].user.firstName+`</td><td class="soba">`+data[i].user.lastName+`</td><td></td><td></td>								   
+		data[i].user.firstName+`</td><td class="soba">`+data[i].user.lastName+`</td><td></td>
+		<td>${apoteke}</td>								   
 		
 		<td>
 			<button id = "`+data[i].id+`" name="obrisiDermatologa" class="ui red button">

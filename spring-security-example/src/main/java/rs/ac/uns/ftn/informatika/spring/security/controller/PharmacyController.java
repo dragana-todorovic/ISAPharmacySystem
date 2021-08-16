@@ -1,9 +1,13 @@
 package rs.ac.uns.ftn.informatika.spring.security.controller;
 
 import java.security.Principal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -25,19 +29,27 @@ import org.springframework.web.bind.annotation.RestController;
 
 import rs.ac.uns.ftn.informatika.spring.security.model.Dermatologist;
 import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
+import rs.ac.uns.ftn.informatika.spring.security.model.MedicinePrice;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicineWithQuantity;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacist;
 
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
+import rs.ac.uns.ftn.informatika.spring.security.model.PriceList;
 import rs.ac.uns.ftn.informatika.spring.security.model.User;
 import rs.ac.uns.ftn.informatika.spring.security.model.WorkingDay;
+import rs.ac.uns.ftn.informatika.spring.security.repository.MedicinePriceRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacyAdminRepository;
 import rs.ac.uns.ftn.informatika.spring.security.service.MedicineService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyAdminService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyService;
+import rs.ac.uns.ftn.informatika.spring.security.service.PriceListService;
 import rs.ac.uns.ftn.informatika.spring.security.service.UserService;
 import rs.ac.uns.ftn.informatika.spring.security.view.EditPharmacyView;
+import rs.ac.uns.ftn.informatika.spring.security.view.MedicineForOrderView;
+import rs.ac.uns.ftn.informatika.spring.security.view.MedicinePriceDTO;
+import rs.ac.uns.ftn.informatika.spring.security.view.NewOrderDTO;
+import rs.ac.uns.ftn.informatika.spring.security.view.PriceListDTO;
 import rs.ac.uns.ftn.informatika.spring.security.view.UserRegisterView;
 import rs.ac.uns.ftn.informatika.spring.security.view.WorkingTimeIntervalDTO;
 
@@ -51,6 +63,10 @@ public class PharmacyController {
 	private PharmacyService pharmacyService;
 	@Autowired
 	private MedicineService medicineService;
+	@Autowired
+	private PriceListService priceListService;
+	@Autowired
+	private MedicinePriceRepository medicinePriceRepository;
 	
 	@PostMapping("/getPharmacyByAdmin")
 	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
@@ -231,6 +247,46 @@ public class PharmacyController {
 			@PathVariable(name="workingDay") String workingDay,@RequestBody WorkingTimeIntervalDTO wd) {
 		System.out.println(wd);
 		this.pharmacyService.addWorkingTimeForPharmacist(id, email, workingDay, wd);
+		return new ResponseEntity<>(HttpStatus.OK);
+		
+	}
+	
+	
+	@GetMapping("/getMedicinePriceList/{email}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public List<PriceList> getMedicinePriceList(@PathVariable(name="email") String email) {
+		return this.priceListService.findPriceListByPharmacy(email);
+	}
+	
+
+	@GetMapping("/getListMedicines/{id}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public Set<MedicinePrice> getMedicinePrice(@PathVariable(name="id") String id) {
+		return this.priceListService.findMedicinePricesByPriceListId(Long.parseLong(id));
+	}
+	
+	
+	@PostMapping("/addMedicinePriceToPriceList/{email}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public ResponseEntity<?> add(@PathVariable(name="email") String email,
+			@RequestBody PriceListDTO priceList) {
+		
+		
+		LocalDate date = LocalDate.parse(priceList.getDate());
+		
+		Set<MedicinePrice> medicinePrices = new HashSet<MedicinePrice>();
+		
+		for(MedicinePriceDTO m : priceList.getMedicines()) {
+			MedicinePrice mp = new MedicinePrice();
+			mp.setMedicine(this.medicineService.findById(Long.parseLong(m.getMedicineId())).get());
+			mp.setPrice(Double.parseDouble(m.getPrice()));
+			medicinePrices.add(mp);
+			this.medicinePriceRepository.save(mp);
+			
+		}
+		this.priceListService.createNewPriceList(email, medicinePrices, date);
+		
+		
 		return new ResponseEntity<>(HttpStatus.OK);
 		
 	}

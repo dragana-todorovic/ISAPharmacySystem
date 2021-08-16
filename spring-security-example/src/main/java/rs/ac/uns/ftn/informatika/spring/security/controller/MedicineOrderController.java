@@ -84,7 +84,7 @@ public class MedicineOrderController {
 			@RequestBody NewOrderDTO newOrder) {
 		
 		
-		String date = newOrder.getDate().replace('/', '-');
+		String date = newOrder.getDate();
 		LocalDate datePart = LocalDate.parse(date);
 		LocalTime timePart = LocalTime.parse(newOrder.getTime());
 		LocalDateTime dt = LocalDateTime.of(datePart, timePart);
