@@ -77,7 +77,7 @@ public class PharmacyController {
 		
 	}
 	@GetMapping("/getAll")
-	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	@PreAuthorize("hasRole('ROLE_PATIENT') || hasRole('ADMIN_PHARMACY')")
 	public List<Pharmacy> getAll() {
 		return this.pharmacyService.findAll();
 		

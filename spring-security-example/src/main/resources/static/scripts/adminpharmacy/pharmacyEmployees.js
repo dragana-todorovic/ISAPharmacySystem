@@ -27,6 +27,20 @@ let izaberiDermatologa;
 	    error: function(){
 	    }
 	});
+	
+	let sveApoteke;
+	customAjax({
+	    url: '/pharmacy/getAll',
+	    method: 'GET',
+	    contentType: 'application/json',
+	    success: function(data){
+	    	sveApoteke = data
+	  	  console.log(sveApoteke)
+	    },
+	    error: function(){
+	    }
+	});
+
 
 
 
@@ -80,6 +94,11 @@ let showWorkingDays = function(data) {
 
 let showDermatologists = function(data) {
 	
+	  var t = ``;
+	    for (ap2 in sveApoteke) {
+	        t += (`<input type="checkbox" id="${sveApoteke[ap2].id}" name="apoteke" value="${sveApoteke[ap2].name}">${sveApoteke[ap2].name}</input></br>`);
+	    }
+	
 	let radnoVrijeme = '';
 	for (i in days) {
 		radnoVrijeme += `<tr><td><div class="ui checkbox">
@@ -110,10 +129,17 @@ let showDermatologists = function(data) {
 		for(l in data[i].workingTimes) {
 			apoteke[l] = data[i].workingTimes[l].pharmacy.name + "\n";
 		}
+		
+		var pomocna = 0
+		var averageRating = 0
+		for(m in data[i].ratings) {
+			pomocna = pomocna + data[i].ratings[m].rating;
+		}
+		averageRating = pomocna/(data[i].ratings.length)
 	
 		temp+=`<tr><td class="firstname">`+
-		data[i].user.firstName+`</td><td class="soba">`+data[i].user.lastName+`</td><td></td>
-		<td>${apoteke}</td>								   
+		data[i].user.firstName+`</td><td class="soba">`+data[i].user.lastName+`</td><td class="ocjena">${averageRating}</td>
+		<td class="ap">${apoteke}</td>								   
 		
 		<td>
 			<button id = "`+data[i].id+`" name="obrisiDermatologa" class="ui red button">
@@ -128,6 +154,21 @@ let showDermatologists = function(data) {
 			    margin-right:auto; margin-top: 40px;">
 			    
 	  <thead>
+	  <tr> <th colspan="5">
+	  Filter by rating:
+	  <div class="ui input left">
+               <input type="number" name="filter" placeholder = "Od..." id="odOcjena" min="0" style="width:80px;"/></div>
+               <div class="ui input left">
+               <input type="number" name="filter" id="doOcjena" placeholder = "Do..." min="0" style="width:80px;"/></div>
+           </th>
+           </tr><tr>
+           <th colspan="5">
+             <div id="filterApoteke">
+    </br><b>Filtriraj po apoteci:</b><br/>
+        ${t}
+    </div>
+           </th>
+            </tr>
 	  <tr>
 			<th colspan="5">
 			 <div class="ui input left">
@@ -253,6 +294,36 @@ $("#firstNameSearch").keyup(function () {
 let idSelected;
 $('#tabelaDermatologa').html(temp)
 
+$("#filterApoteke").click(function () {
+	        var imaCekiranih = false;
+	        $('input[name="apoteke"]:checked').each(function () {
+	            $("#tabelaDermatologa td.ap:not(:contains('" + $(this).val() + "'))").parent().hide();
+	            $("#tabelaDermatologa td.ap:contains('" + $(this).val() + "')").parent().show();
+	            imaCekiranih = true;
+	        });
+	        if (!imaCekiranih)
+	            $("#tabelaDermatologa td.ap:contains('" + $(this).val() + "')").parent().show();
+	    });
+
+ $("#showData").on('change paste keyup','[name=filter]',function (event) {
+        var odc=$("#odOcjena").val();
+        var doc=$("#doOcjena").val();
+        console.log(odc)
+        console.log(doc)
+       if(odc==""){
+      		var ocjenaOd=$("#tabelaDermatologa td.ocjena").parent();
+    	}else {
+    		var ocjenaOd=$("#tabelaDermatologa td.ocjena").filter(function() { return $(this).text()-odc>=0}).parent();
+    	}
+    	if(doc==""){
+    		var ocjenaDo=$("#tabelaDermatologa td.ocjena").parent();
+    	}else {
+    		var ocjenaDo=$("#tabelaDermatologa td.ocjena").filter(function() {return $(this).text()-doc<=0}).parent();
+    	}
+    	ocjenaOd.filter(ocjenaDo).show();
+        $("#tabelaDermatologa td.ocjena").parent().not(ocjenaOd.filter(ocjenaDo)).hide();
+    });
+
 
 $("button[name=obrisiDermatologa]").click(function() {
 	idSelected = this.id
@@ -356,13 +427,22 @@ let showPharmacists = function(data) {
 	
 	let pharmacistCombo = ''
 		  for (i in izaberiFarmaceuta) {
-			  pharmacistCombo += `<div class="item" data-value="` + izaberiFarmaceuta[i].id + `">` + izaberiFarmaceuta[i].user.firstName + ` `+  izaberiDermatologa[i].user.lastName + `</div>`
+			  pharmacistCombo += `<div class="item" data-value="` + izaberiFarmaceuta[i].id + `">` + izaberiFarmaceuta[i].user.firstName + ` `+  izaberiFarmaceuta[i].user.lastName + `</div>`
 	      }
 	
 	let temp='';
 	for (i in data){
+		
+		
+		var pomocna = 0
+		var averageRating = 0
+		for(m in data[i].ratings) {
+			pomocna = pomocna + data[i].ratings[m].rating;
+		}
+		averageRating = pomocna/(data[i].ratings.length)
+		
 		temp+=`<tr><td class="firstname">`+
-		data[i].user.firstName+`</td><td class="soba">`+data[i].user.lastName+`</td><td></td><td></td>								   
+		data[i].user.firstName+`</td><td class="soba">`+data[i].user.lastName+`</td><td class="ocjena">${averageRating}</td><td>${data[i].workingTimes.pharmacy.name}</td>								   
 		
 		<td>
 			<button id = "`+data[i].id+`" name="obrisiDermatologa" class="ui red button">
@@ -377,6 +457,13 @@ let showPharmacists = function(data) {
 			    margin-right:auto; margin-top: 40px;">
 			    
 	  <thead>
+	  <tr> <th colspan="5">
+	  Filter by rating:
+	  <div class="ui input left">
+               <input type="number" name="filter" placeholder = "Od..." id="odOcjena" min="0" style="width:80px;"/></div>
+               <div class="ui input left">
+               <input type="number" name="filter" id="doOcjena" placeholder = "Do..." min="0" style="width:80px;"/></div>
+           </th> </tr>
 	  <tr>
 			<th colspan="5">
 			 <div class="ui input left">
@@ -488,6 +575,26 @@ let idSelected;
 $('#tabelaFarmaceuta').html(temp)
 
 
+ $("#showData").on('change paste keyup','[name=filter]',function (event) {
+        var odc=$("#odOcjena").val();
+        var doc=$("#doOcjena").val();
+        console.log(odc)
+        console.log(doc)
+       if(odc==""){
+      		var ocjenaOd=$("#tabelaFarmaceuta td.ocjena").parent();
+    	}else {
+    		var ocjenaOd=$("#tabelaFarmaceuta td.ocjena").filter(function() { return $(this).text()-odc>=0}).parent();
+    	}
+    	if(doc==""){
+    		var ocjenaDo=$("#tabelaFarmaceuta td.ocjena").parent();
+    	}else {
+    		var ocjenaDo=$("#tabelaFarmaceuta td.ocjena").filter(function() {return $(this).text()-doc<=0}).parent();
+    	}
+    	ocjenaOd.filter(ocjenaDo).show();
+        $("#tabelaFarmaceuta td.ocjena").parent().not(ocjenaOd.filter(ocjenaDo)).hide();
+    });
+
+
 $("button[name=obrisiDermatologa]").click(function() {
 	idSelected = this.id
 	customAjax({
@@ -520,7 +627,7 @@ $('#end').calendar({
 	});
 
 $("#addDermatologist").click(function() {
-	var dermatologistId = $('#pharmacistCombo').val()
+	var dermatologistId = $('#dermatologistCombo').val()
 	 
 	customAjax({
 	    url: '/pharmacy/addPharmacistInPharmacy/' + email + '/' + dermatologistId,

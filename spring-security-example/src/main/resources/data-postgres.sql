@@ -96,6 +96,12 @@ INSERT INTO RATING (id, rating) VALUES (5,5);
 INSERT INTO dermatologist_ratings (dermatologist_id, ratings_id) VALUES (1,1);
 INSERT INTO dermatologist_ratings (dermatologist_id, ratings_id) VALUES (1,2);
 INSERT INTO dermatologist_ratings (dermatologist_id, ratings_id) VALUES (1,5);
+INSERT INTO dermatologist_ratings (dermatologist_id, ratings_id) VALUES (2,2);
+INSERT INTO dermatologist_ratings (dermatologist_id, ratings_id) VALUES (2,3);
+INSERT INTO dermatologist_ratings (dermatologist_id, ratings_id) VALUES (2,5);
+INSERT INTO dermatologist_ratings (dermatologist_id, ratings_id) VALUES (3,3);
+INSERT INTO dermatologist_ratings (dermatologist_id, ratings_id) VALUES (3,5);
+INSERT INTO dermatologist_ratings (dermatologist_id, ratings_id) VALUES (3,4);
 
 --medicine price
 INSERT INTO MEDICINEPRICE ( price, medicine_id) VALUES ( 200, 1);
