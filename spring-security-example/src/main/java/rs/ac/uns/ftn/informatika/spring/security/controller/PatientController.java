@@ -18,10 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import rs.ac.uns.ftn.informatika.spring.security.model.*;
-import rs.ac.uns.ftn.informatika.spring.security.service.LoyaltyScaleService;
-import rs.ac.uns.ftn.informatika.spring.security.service.MedicineService;
-import rs.ac.uns.ftn.informatika.spring.security.service.PatientService;
-import rs.ac.uns.ftn.informatika.spring.security.service.UserService;
+import rs.ac.uns.ftn.informatika.spring.security.service.*;
+import rs.ac.uns.ftn.informatika.spring.security.view.LoyaltyProgramView;
 import rs.ac.uns.ftn.informatika.spring.security.view.LoyaltyScaleView;
 import rs.ac.uns.ftn.informatika.spring.security.view.UserRegisterView;
 
@@ -40,6 +38,9 @@ public class PatientController {
 
 	@Autowired
 	private LoyaltyScaleService loyaltyScaleService;
+
+	@Autowired
+	private LoyaltyProgramService loyaltyProgramService;
 
 	@GetMapping("/getAll")
 	@PreAuthorize("hasRole('ROLE_PHARMACIST')  || hasRole('ROLE_DERMATOLOGIST')")
@@ -159,4 +160,17 @@ public class PatientController {
 		return this.loyaltyScaleService.findAll();
 	}
 
+	@GetMapping("/getLoyaltyProgram")
+	@PreAuthorize("hasRole('ADMIN_SYSTEM')")
+	public List<LoyaltyProgram> getLoyaltyProgram()   {
+		return this.loyaltyProgramService.findAll();
+	}
+
+	@PostMapping("/saveLoyaltyProgram")
+	@PreAuthorize("hasRole('ADMIN_SYSTEM')")
+	public ResponseEntity<?> saveLoyaltyProgram(@RequestBody LoyaltyProgramView loyaltyProgramView) {
+		// pronadjem po kategoriji i posaljem dva podatka za cuvanje  i setovanje
+		this.loyaltyProgramService.editLoyaltyProgram(loyaltyProgramView);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
 }
