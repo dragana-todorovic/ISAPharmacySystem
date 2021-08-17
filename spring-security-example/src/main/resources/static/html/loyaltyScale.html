@@ -49,7 +49,6 @@ li.dropdown {
 }
     .container_1 {
     height: 100vh;
-    background: url('../images/medicine-generic-banner.jpg') no-repeat center center/cover;
     color: black;
 }
 .dropdown-content a {
@@ -106,12 +105,12 @@ div.container4 h2 {
     transform: translate(-50%, -50%) }
 </style>
 </head>
-<body>
+<body  style="background:skyblue">
 <div class="container_1">
     <ul style="background:skyblue">
         <li><a href=""><i class="home icon" style="color:white"></i></a></li>
 
-        <li><a id="users_complaints" href="#">Users Complaints</a></li>
+        <li><a id="users_complaints" href="answerComplaint.html">Users Complaints</a></li>
         <li><a id="loyalty_program" href="loyaltyScale.html">Loyalty Program</a></li>
         <li><a id="add_medicine" href="addMedicine.html">Add Medicine</a></li>
         <li  class="dropdown" >
@@ -147,6 +146,18 @@ div.container4 h2 {
             </tr>
             </thead>
             <tbody id="loyaltyTable">
+            </tbody>
+        </table>
+        <table class="ui large table" style="width:50%; margin-left:auto;
+			    margin-right:auto; margin-top: 40px;" >
+            <thead>
+            <th colspan="4" class = "text-info" style= "text-align:center;">Loyalty Program Points</th>
+            <tr class="success">
+                <th>Appointment Points</th>
+                <th>Advising Points</th>
+            </tr>
+            </thead>
+            <tbody id="loyaltyProgramTable">
             </tbody>
         </table>
         <table class="ui large table" style="width:50%; margin-left:auto;
@@ -205,6 +216,33 @@ div.container4 h2 {
             </tr>
             </tfoot>
         </table> <p id="er"> </p>
+
+        <table class="ui large table" style="width:50%; margin-left:auto;
+			    margin-right:auto; margin-top: 40px;">
+            <thead>
+            <tr class="success">
+                <th colspan="2" class = "text-info" style= "text-align:center;">Define Loyalty Program and Points User Can Get</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Points User Can Get After Appointment :</td>
+                <td class="ui input small"> <input type="number" id="txtAppointmentPoints"/></td>
+            </tr>
+            <tr>
+                <td>Points User Can Get After Advising :</td>
+                <td class="ui input small"> <input type="number" id="txtAdvisingDiscount"/></td>
+            </tr>
+            </tbody>
+            <tfoot class="full-width">
+            <tr>
+                <th></th>
+                <th colspan="2">
+                    <input id = "submitLoyaltyProgram" class="ui right floated positive basic button" type = "button" value = "Submit"></input>
+                </th>
+            </tr>
+            </tfoot>
+        </table>
     </div>
 </div>
 </body>
