@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import rs.ac.uns.ftn.informatika.spring.security.model.Dermatologist;
+import rs.ac.uns.ftn.informatika.spring.security.model.HolidayRequest;
 import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicinePrice;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicineWithQuantity;
@@ -48,10 +49,11 @@ import rs.ac.uns.ftn.informatika.spring.security.service.UserService;
 import rs.ac.uns.ftn.informatika.spring.security.view.EditPharmacyView;
 import rs.ac.uns.ftn.informatika.spring.security.view.MedicineForOrderView;
 import rs.ac.uns.ftn.informatika.spring.security.view.MedicinePriceDTO;
+import rs.ac.uns.ftn.informatika.spring.security.view.NewDermatologistDTO;
 import rs.ac.uns.ftn.informatika.spring.security.view.NewOrderDTO;
+import rs.ac.uns.ftn.informatika.spring.security.view.NewPharmacistDTO;
 import rs.ac.uns.ftn.informatika.spring.security.view.PriceListDTO;
 import rs.ac.uns.ftn.informatika.spring.security.view.UserRegisterView;
-import rs.ac.uns.ftn.informatika.spring.security.view.WorkingTimeIntervalDTO;
 
 @RestController
 @RequestMapping(value = "/pharmacy", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -112,17 +114,6 @@ public class PharmacyController {
 		
 	}
 	
-
-	@PostMapping("/addWorkingDayForDermatologist/{id}/{email}")
-	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
-	public ResponseEntity<?> addWorkingTime(@PathVariable(name="id") String id,
-			@PathVariable(name="email") String email,@RequestBody WorkingTimeIntervalDTO workingDay) {
-	//	this.pharmacyService.addWorkingTimeForDermatologist(id, email, workingDay);
-		
-		return new ResponseEntity<>(HttpStatus.OK);
-		
-	}
-	
 	@GetMapping("/getAllWorkingTimes/{id}/{email}")
 	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
 	public Set<WorkingDay> getAllWorkingtimes(@PathVariable(name="id") String id,
@@ -164,8 +155,11 @@ public class PharmacyController {
 	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
 	public ResponseEntity<?> deletePharmacist(@PathVariable(name="id") String id,
 			@PathVariable(name="email") String email) {
-		this.pharmacyService.deletePharmacistFromPharmacy(id, email);
+		if(this.pharmacyService.deletePharmacistFromPharmacy(id, email)) {
 		return new ResponseEntity<>(HttpStatus.OK);
+	} else {
+		return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+	}
 		
 	}
 	
@@ -213,35 +207,32 @@ public class PharmacyController {
 	}
 	
 	
-	@PostMapping("/addDermatologistInPharmacy/{email}/{id}")
+	@PostMapping("/addDermatologistInPharmacy/{email}")
 	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
-	public ResponseEntity<?> addDermatologistInPharmacy(@PathVariable(name="email") String email,@PathVariable(name="id") String id) {
-		this.pharmacyService.addDermatologistInPharmacy(email, Long.parseLong(id));
+	public ResponseEntity<?> addDermatologistInPharmacy(@PathVariable(name="email") String email,@RequestBody NewDermatologistDTO newDermatologist) {
+		System.out.println(newDermatologist);
+		if(this.pharmacyService.addDermatologistInPharmacy(email, newDermatologist)) {
+			return new ResponseEntity<>(HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+		}
 		
+		
+		
+		
+	}
+	
+	@PostMapping("/addPharmacistInPharmacy/{email}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public ResponseEntity<?> addPharmacistInPharmacy(@PathVariable(name="email") String email,@RequestBody NewPharmacistDTO newPharmacist) {
+		this.pharmacyService.addPharmacistInPharmacy(email, newPharmacist);
+		System.out.println("$$$$$$$$$$$$" + newPharmacist);
 		return new ResponseEntity<>(HttpStatus.OK);
 		
 	}
 	
-	@PostMapping("/addPharmacistInPharmacy/{email}/{id}")
-	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
-	public ResponseEntity<?> addPharmacistInPharmacy(@PathVariable(name="email") String email,@PathVariable(name="id") String id) {
-		this.pharmacyService.addPharmacistInPharmacy(email, Long.parseLong(id));
-		
-		return new ResponseEntity<>(HttpStatus.OK);
-		
-	}
 	
-	@PostMapping("/addWorkingDayDermatologist/{id}/{email}/{workingDay}")
-	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
-	public ResponseEntity<?> addWorkingDayDermatologist(@PathVariable(name="id") String id,@PathVariable(name="email") String email,
-			@PathVariable(name="workingDay") String workingDay,@RequestBody WorkingTimeIntervalDTO wd) {
-		System.out.println(wd);
-		this.pharmacyService.addWorkingTimeForDermatologist(id, email, workingDay, wd);
-		return new ResponseEntity<>(HttpStatus.OK);
-		
-	}
-	
-	@PostMapping("/addWorkingDayPharmacist/{id}/{email}/{workingDay}")
+	/*@PostMapping("/addWorkingDayPharmacist/{id}/{email}/{workingDay}")
 	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
 	public ResponseEntity<?> addWorkingDayPharmacist(@PathVariable(name="id") String id,@PathVariable(name="email") String email,
 			@PathVariable(name="workingDay") String workingDay,@RequestBody WorkingTimeIntervalDTO wd) {
@@ -249,7 +240,7 @@ public class PharmacyController {
 		this.pharmacyService.addWorkingTimeForPharmacist(id, email, workingDay, wd);
 		return new ResponseEntity<>(HttpStatus.OK);
 		
-	}
+	}*/
 	
 	
 	@GetMapping("/getMedicinePriceList/{email}")
@@ -289,6 +280,25 @@ public class PharmacyController {
 		
 		return new ResponseEntity<>(HttpStatus.OK);
 		
+	}
+	
+	@GetMapping("/getHolidayRequests/{id}/{email}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public Set<HolidayRequest> getHolidayRequests(@PathVariable(name="id") String id,@PathVariable(name="email") String email) {
+		return this.pharmacyService.getHolidayRequestsByPharmacy(Long.parseLong(id),email);
+	}
+	
+	@PostMapping("/acceptHolidayRequest/{id}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public ResponseEntity<?> acceptHolidayRequest(@PathVariable(name="id") String id) {
+		this.pharmacyService.acceptHolidayRequest(Long.parseLong(id));
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	@PostMapping("/declineHolidayRequest/{id}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public ResponseEntity<?> declineHolidayRequest(@PathVariable(name="id") String id) {
+		this.pharmacyService.declineHolidayRequest(Long.parseLong(id));
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }
 	

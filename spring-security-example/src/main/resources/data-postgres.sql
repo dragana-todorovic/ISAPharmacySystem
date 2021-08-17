@@ -185,10 +185,14 @@ INSERT INTO patients_dermatologist_complaints(patient_id,dermatologist_complaint
 
 
 --holiday request
-INSERT INTO holidayrequest(id,start_date,end_date,status) VALUES (1,'2017-10-01 21:58:58.508-07','2017-12-01 21:58:58.508-07',0);
+INSERT INTO holidayrequest(start_date,end_date,status) VALUES ('2021-08-08 21:58:58.508-07','2021-12-12 21:58:58.508-07',0);
+INSERT INTO holidayrequest(start_date,end_date,status) VALUES ('2021-10-10 21:58:58.508-07','2021-12-12 21:58:58.508-07',0);
+INSERT INTO holidayrequest(start_date,end_date,status) VALUES ('2021-07-07 21:58:58.508-07','2021-12-12 21:58:58.508-07',0);
 
 --dermatologist holiday request
 INSERT INTO dermatologist_holiday_requests(dermatologist_id,holiday_requests_id) VALUES (1,1);
+INSERT INTO dermatologist_holiday_requests(dermatologist_id,holiday_requests_id) VALUES (2,2);
+INSERT INTO dermatologist_holiday_requests(dermatologist_id,holiday_requests_id) VALUES (3,3);
 
 --working days
 INSERT INTO workingday (day,end_time,start_time) VALUES (0,'13:00:00.000000', '08:00:00.000000');
@@ -197,9 +201,11 @@ INSERT INTO workingday (day,end_time,start_time) VALUES (2,'13:00:00.000000', '0
 INSERT INTO workingday (day,end_time,start_time) VALUES (3,'13:00:00.000000', '08:00:00.000000');
 INSERT INTO workingday (day,end_time,start_time) VALUES (4,'13:00:00.000000', '08:00:00.000000');
 INSERT INTO workingday (day,end_time,start_time) VALUES (5,'13:00:00.000000', '08:00:00.000000');
-
+INSERT INTO workingday (day,end_time,start_time) VALUES (4,'13:00:00.000000', '08:30:00.000000');
+INSERT INTO workingday (day,end_time,start_time) VALUES (5,'13:00:00.000000', '08:30:00.000000');
 --working time
 INSERT INTO workingtime (pharmacy_id) VALUES (2);
+INSERT INTO workingtime (pharmacy_id) VALUES (1);
 INSERT INTO workingtime (pharmacy_id) VALUES (1);
 
 --working time with working days
@@ -210,11 +216,14 @@ INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (
 INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (2,5);
 INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (2,6);
 
+INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (3,7);
+INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (3,8);
+
 
 --dermatologist working time
 INSERT INTO dermatologist_working_times (dermatologist_id, working_times_id) VALUES (1,1); 
 INSERT INTO dermatologist_working_times (dermatologist_id, working_times_id) VALUES (1,2); 
-
+INSERT INTO dermatologist_working_times (dermatologist_id, working_times_id) VALUES (2,3); 
 
 --pharmacist
 INSERT INTO PHARMACIST (user_id,working_time_id) VALUES (8,1);
@@ -306,3 +315,7 @@ INSERT INTO therapy(id,duration,medicine_id) VALUES (2,6,2);
 INSERT INTO loyaltyscale(id,category,needed_points,discount) VALUES (1,0,0,0);
 INSERT INTO loyaltyscale(id,category,needed_points,discount) VALUES (2,1,20,10);
 INSERT INTO loyaltyscale(id,category,needed_points,discount) VALUES (3,2,60,30);
+
+--pharmacist consulting
+INSERT INTO pharmacistcounseling(description,duration,start_date_time,patient_id,pharmacist_id,therapy_id) VALUES ('opis 1',30,'2021-08-08 21:58:58.508-07',1,1,1);
+

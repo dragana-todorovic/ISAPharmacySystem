@@ -9,28 +9,37 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import rs.ac.uns.ftn.informatika.spring.security.model.ActionAndBenefit;
 import rs.ac.uns.ftn.informatika.spring.security.model.Address;
+import rs.ac.uns.ftn.informatika.spring.security.model.Authority;
 import rs.ac.uns.ftn.informatika.spring.security.model.Patient;
 
 import rs.ac.uns.ftn.informatika.spring.security.model.Dermatologist;
 import rs.ac.uns.ftn.informatika.spring.security.model.DermatologistAppointment;
+import rs.ac.uns.ftn.informatika.spring.security.model.HolidayRequest;
+import rs.ac.uns.ftn.informatika.spring.security.model.HolidayRequestStatus;
 import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicineWithQuantity;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacist;
-
+import rs.ac.uns.ftn.informatika.spring.security.model.PharmacistCounseling;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
+import rs.ac.uns.ftn.informatika.spring.security.model.User;
 import rs.ac.uns.ftn.informatika.spring.security.repository.ActionAndBenefitRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.DermatologistAppointmentRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacyRepository;
+import rs.ac.uns.ftn.informatika.spring.security.service.AuthorityService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyAdminService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyService;
 import rs.ac.uns.ftn.informatika.spring.security.service.UserService;
 import rs.ac.uns.ftn.informatika.spring.security.view.ActionAndBenefitDTO;
 import rs.ac.uns.ftn.informatika.spring.security.view.EditPharmacyView;
+import rs.ac.uns.ftn.informatika.spring.security.view.NewDermatologistDTO;
+import rs.ac.uns.ftn.informatika.spring.security.view.NewPharmacistDTO;
+import rs.ac.uns.ftn.informatika.spring.security.view.WorkingDayDTO;
 
 import java.time.LocalTime;
 import java.util.HashSet;
@@ -40,9 +49,9 @@ import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacist;
 import rs.ac.uns.ftn.informatika.spring.security.model.WorkingDay;
 import rs.ac.uns.ftn.informatika.spring.security.model.WorkingTime;
 import rs.ac.uns.ftn.informatika.spring.security.repository.DermatologistRepository;
+import rs.ac.uns.ftn.informatika.spring.security.repository.HolidayRequestRepository;
+import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacistCounselingRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacistRepository;
-
-import rs.ac.uns.ftn.informatika.spring.security.view.WorkingTimeIntervalDTO;
 
 
 @Service
@@ -50,6 +59,9 @@ public class PharmacyServiceImpl implements PharmacyService{
 
 	@Autowired
 	private PharmacyRepository pharmacyRepository;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
 	@Autowired
 	private DermatologistRepository dermatologistRepository;
@@ -67,7 +79,16 @@ public class PharmacyServiceImpl implements PharmacyService{
 	private PharmacyAdminService pharmacyAdminService;
 	
 	@Autowired
+	private AuthorityService authService;
+	
+	@Autowired
 	private DermatologistAppointmentRepository dermatologistAppoitmentRepository;
+	
+	@Autowired
+	private PharmacistCounselingRepository pharmacistConselingRepository;
+	
+	@Autowired
+	private HolidayRequestRepository holidayRequestRepository;
 	
 	@Override
 	public Optional<Pharmacy> findById(Long id) {
@@ -136,46 +157,30 @@ public class PharmacyServiceImpl implements PharmacyService{
 		
 	}
 
-	@Override
-	public void addWorkingTimeForDermatologist(String dermatologistId, String email, String wd, WorkingTimeIntervalDTO workingDay) {
+	
 		
-		Dermatologist dermatologist = this.dermatologistRepository.findById(Long.parseLong(dermatologistId)).get();
-		
-		PharmacyAdmin pa = pharmacyAdminService.findPharmacyAdminByUser(userService.findByEmail(email));
-		
-		Pharmacy p = pa.getPharmacy();
-		
-		WorkingDay workingD = new WorkingDay();
-		if(wd.equals("MONDAY")) {
-			workingD.setDay(DayOfWeek.MONDAY);
-		} else if (wd.equals("TUESDAY")) {
-			workingD.setDay(DayOfWeek.TUESDAY);
-		} else if (wd.equals("WEDNESDAY")) {
-			workingD.setDay(DayOfWeek.WEDNESDAY);
-		} else if (wd.equals("THURSDAY")) {
-			workingD.setDay(DayOfWeek.THURSDAY);
-		} else if (wd.equals("FRIDAY")) {
-			workingD.setDay(DayOfWeek.FRIDAY);
-		} else if (wd.equals("SATURDAY")) {
-			workingD.setDay(DayOfWeek.SATURDAY);
-		} else {
-			workingD.setDay(DayOfWeek.SUNDAY);
-		}
-		
-		workingD.setStartTime(LocalTime.parse(workingDay.getStartTime()));
-		workingD.setEndTime(LocalTime.parse(workingDay.getEndTime()));
-		
-		//treba dodati uslov ako je prazno
-		
-		for(WorkingTime t : dermatologist.getWorkingTimes()) {
-			if(t.getPharmacy().equals(p)) {
-				t.getWorkingDays().add(workingD);
+		/*for(WorkingTime workingTime : dermatologist.getWorkingTimes()) {
+			if(!workingTime.getPharmacy().equals(p)) {
+				for(WorkingDay workD : workingTime.getWorkingDays()) {
+					if(workD.getDay().toString().equals(wd)) {
+						if(workD.getStartTime().isAfter(LocalTime.parse(workingDay.getStartTime())) 
+							&& workD.getStartTime().isAfter(LocalTime.parse(workingDay.getEndTime()))) {
+							isOk = true;
+						} else if(workD.getStartTime().isBefore(LocalTime.parse(workingDay.getStartTime())) 
+								&& workD.getStartTime().isBefore(LocalTime.parse(workingDay.getEndTime()))) {
+							isOk = true;
+						} else {
+							isOk = false;
+						}
+					} 
+					if(!isOk) {
+						return false;
+					}
+				}
 			}
-		}
-		this.dermatologistRepository.save(dermatologist);
+		}*/
 		
-	}
-
+	
 	@Override
 	public Set<WorkingDay> getWorkingDayForDermatolog(String id, String email) {
 		Dermatologist dermatologist = this.dermatologistRepository.findById(Long.parseLong(id)).get();
@@ -244,7 +249,7 @@ public class PharmacyServiceImpl implements PharmacyService{
 		return result;
 	}
 
-	@Override
+	/*@Override
 	public void addWorkingTimeForPharmacist(String dermatologistId, String email, String wd, WorkingTimeIntervalDTO workingDay) {
 		Pharmacist pharmacist = this.pharmacistRepository.findById(Long.parseLong(dermatologistId)).get();
 
@@ -279,7 +284,7 @@ public class PharmacyServiceImpl implements PharmacyService{
 		this.pharmacistRepository.save(pharmacist);
 		//treba dodati uslov ako je prazno
 		
-	}
+	}*/
 
 	@Override
 	public Set<WorkingDay> getWorkingDayForPharmacist(String id, String email) {
@@ -298,11 +303,27 @@ public class PharmacyServiceImpl implements PharmacyService{
 	}
 
 	@Override
-	public void deletePharmacistFromPharmacy(String id, String email) {
+	public Boolean deletePharmacistFromPharmacy(String id, String email) {
 		Pharmacist pharmacist = this.pharmacistRepository.findById(Long.parseLong(id)).get();
 
 		PharmacyAdmin pa = pharmacyAdminService.findPharmacyAdminByUser(userService.findByEmail(email));
 		Pharmacy p = pa.getPharmacy();
+		
+		
+
+		List<PharmacistCounseling> consulting = this.pharmacistConselingRepository.findAll();
+		
+		for(PharmacistCounseling da : consulting) {
+			if(da.getPharmacist().equals(pharmacist)) {
+					if(pharmacist.getWorkingTimes().getPharmacy().equals(p)) {
+						if(da.getStartDateTime().isAfter(LocalDateTime.now())) {
+							return false;
+						}
+					}
+			}
+		}
+		
+		
 		
 		WorkingTime pharacistWorkingTime = pharmacist.getWorkingTimes();
 		if(pharacistWorkingTime.getPharmacy().equals(p)) {
@@ -310,6 +331,7 @@ public class PharmacyServiceImpl implements PharmacyService{
 		}
 		
 		this.pharmacistRepository.save(pharmacist);
+		return true;
 
 	}
 
@@ -344,24 +366,148 @@ public class PharmacyServiceImpl implements PharmacyService{
 
 
 	@Override
-	public void addDermatologistInPharmacy(String email, Long id) {
-		Dermatologist dermatologist = this.dermatologistRepository.findById(id).get();
+	public Boolean addDermatologistInPharmacy(String email, NewDermatologistDTO newDermatologist) {
+		Dermatologist dermatologist = this.dermatologistRepository.findById(Long.parseLong(newDermatologist.getDermatologistId())).get();
 
 		PharmacyAdmin pa = pharmacyAdminService.findPharmacyAdminByUser(userService.findByEmail(email));
-		Pharmacy p = pa.getPharmacy();
+		Pharmacy p = pa.getPharmacy(); 
+		//da li se radno vrijeme poklapa sa drugim apotekama
+	/*	Boolean isOk = false;
+		for(WorkingTime workingTime : dermatologist.getWorkingTimes()) {
+			if(!workingTime.getPharmacy().equals(p)) {
+				for(WorkingDay workD : workingTime.getWorkingDays()) {
+					for(WorkingDayDTO wd : newDermatologist.getWorkingTimes())
+						if(workD.getDay().toString().equals(wd.getDay())) {
+							if(workD.getStartTime().isAfter(LocalTime.parse(wd.getStartTime())) 
+								&& workD.getStartTime().isAfter(LocalTime.parse(wd.getEndTime()))) {
+								isOk = true;
+							} else if(workD.getStartTime().isBefore(LocalTime.parse(wd.getStartTime())) 
+									&& workD.getStartTime().isBefore(LocalTime.parse(wd.getEndTime()))) {
+								isOk = true;
+							} else {
+								isOk = false;
+							}
+						} 
+						if(!isOk) {
+							return false;
+						}
+					}
+				}
+			}	*/	
 		
 		WorkingTime wt = new WorkingTime();
 		wt.setPharmacy(p);
 		
+		for(WorkingDayDTO wd : newDermatologist.getWorkingTimes()) {
+			WorkingDay workingD = new WorkingDay();
+			if(wd.getDay().equals("MONDAY")) {
+				workingD.setDay(DayOfWeek.MONDAY);
+			} else if (wd.getDay().equals("TUESDAY")) {
+				workingD.setDay(DayOfWeek.TUESDAY);
+			} else if (wd.getDay().equals("WEDNESDAY")) {
+				workingD.setDay(DayOfWeek.WEDNESDAY);
+			} else if (wd.getDay().equals("THURSDAY")) {
+				workingD.setDay(DayOfWeek.THURSDAY);
+			} else if (wd.getDay().equals("FRIDAY")) {
+				workingD.setDay(DayOfWeek.FRIDAY);
+			} else if (wd.getDay().equals("SATURDAY")) {
+				workingD.setDay(DayOfWeek.SATURDAY);
+			} else {
+				workingD.setDay(DayOfWeek.SUNDAY);
+			}
+			
+			workingD.setStartTime(LocalTime.parse(wd.getStartTime()));
+			workingD.setEndTime(LocalTime.parse(wd.getEndTime()));
+			
+			wt.getWorkingDays().add(workingD);
+		}
 		dermatologist.getWorkingTimes().add(wt);
 		
 		this.dermatologistRepository.save(dermatologist);
+		return true;
+
+	}
+	
+	
+	@Override
+	public Boolean editDermatologistInPharmacy(String email, NewDermatologistDTO newDermatologist) {
+		Dermatologist dermatologist = this.dermatologistRepository.findById(Long.parseLong(newDermatologist.getDermatologistId())).get();
+
+		PharmacyAdmin pa = pharmacyAdminService.findPharmacyAdminByUser(userService.findByEmail(email));
+		Pharmacy p = pa.getPharmacy(); 
+		//da li se radno vrijeme poklapa sa drugim apotekama
+	/*	Boolean isOk = false;
+		for(WorkingTime workingTime : dermatologist.getWorkingTimes()) {
+			if(!workingTime.getPharmacy().equals(p)) {
+				for(WorkingDay workD : workingTime.getWorkingDays()) {
+					for(WorkingDayDTO wd : newDermatologist.getWorkingTimes())
+						if(workD.getDay().toString().equals(wd.getDay())) {
+							if(workD.getStartTime().isAfter(LocalTime.parse(wd.getStartTime())) 
+								&& workD.getStartTime().isAfter(LocalTime.parse(wd.getEndTime()))) {
+								isOk = true;
+							} else if(workD.getStartTime().isBefore(LocalTime.parse(wd.getStartTime())) 
+									&& workD.getStartTime().isBefore(LocalTime.parse(wd.getEndTime()))) {
+								isOk = true;
+							} else {
+								isOk = false;
+							}
+						} 
+						if(!isOk) {
+							return false;
+						}
+					}
+				}
+			}	*/	
+		Set<WorkingDay> daysList = new HashSet<WorkingDay>();
 		
+		for(WorkingDayDTO wd : newDermatologist.getWorkingTimes()) {
+			WorkingDay workingD = new WorkingDay();
+			if(wd.getDay().equals("MONDAY")) {
+				workingD.setDay(DayOfWeek.MONDAY);
+			} else if (wd.getDay().equals("TUESDAY")) {
+				workingD.setDay(DayOfWeek.TUESDAY);
+			} else if (wd.getDay().equals("WEDNESDAY")) {
+				workingD.setDay(DayOfWeek.WEDNESDAY);
+			} else if (wd.getDay().equals("THURSDAY")) {
+				workingD.setDay(DayOfWeek.THURSDAY);
+			} else if (wd.getDay().equals("FRIDAY")) {
+				workingD.setDay(DayOfWeek.FRIDAY);
+			} else if (wd.getDay().equals("SATURDAY")) {
+				workingD.setDay(DayOfWeek.SATURDAY);
+			} else {
+				workingD.setDay(DayOfWeek.SUNDAY);
+			}
+			
+			workingD.setStartTime(LocalTime.parse(wd.getStartTime()));
+			workingD.setEndTime(LocalTime.parse(wd.getEndTime()));
+			
+			daysList.add(workingD);
+			
+		}
+		for(WorkingTime t : dermatologist.getWorkingTimes()) {
+			if(t.getPharmacy().equals(p)) {
+				t.setWorkingDays(daysList);
+			}
+		}
+		
+		this.dermatologistRepository.save(dermatologist);
+		return true;
+
 	}
 	
 	@Override
-	public void addPharmacistInPharmacy(String email, Long id) {
-		Pharmacist pharmacist = this.pharmacistRepository.findById(id).get();
+	public void addPharmacistInPharmacy(String email, NewPharmacistDTO newpharmacist) {
+		User user = new User();
+		user.setFirstName(newpharmacist.getFirstName());
+		user.setLastName(newpharmacist.getLastName());
+		user.setEmail(newpharmacist.getEmail());
+		user.setPassword(passwordEncoder.encode(newpharmacist.getPassword()));
+		user.setUsername(newpharmacist.getEmail());
+		user.setEnabled(true);
+		List<Authority> auth = authService.findByname("ROLE_PHARMACIST");
+		user.setAuthorities(auth);
+		Pharmacist pharmacist = new Pharmacist();
+		pharmacist.setUser(user);
 
 		PharmacyAdmin pa = pharmacyAdminService.findPharmacyAdminByUser(userService.findByEmail(email));
 		Pharmacy p = pa.getPharmacy();
@@ -390,6 +536,36 @@ public class PharmacyServiceImpl implements PharmacyService{
 			   }
 		        return pharmacies;
 		}
+
+	@Override
+	public Set<HolidayRequest> getHolidayRequestsByPharmacy(long id,String email) {
+		Dermatologist dermatologist = this.dermatologistRepository.findById(id).get();
+
+		PharmacyAdmin pa = pharmacyAdminService.findPharmacyAdminByUser(userService.findByEmail(email));
+		Pharmacy p = pa.getPharmacy(); 
+		
+		Set<HolidayRequest> holidayRequests = new HashSet<HolidayRequest>();
+		
+			//treba promijeniti da budee pharmacy iz holidayrequest kada maja doda
+		
+		return dermatologist.getHolidayRequests();
+	}
+
+	@Override
+	public void acceptHolidayRequest(long id) {
+		HolidayRequest holidayRequest = this.holidayRequestRepository.findById(id).get();
+		holidayRequest.setStatus(HolidayRequestStatus.ACCEPT);
+		this.holidayRequestRepository.save(holidayRequest);
+		
+	}
+
+	@Override
+	public void declineHolidayRequest(long id) {
+		HolidayRequest holidayRequest = this.holidayRequestRepository.findById(id).get();
+		holidayRequest.setStatus(HolidayRequestStatus.DENIED);
+		this.holidayRequestRepository.save(holidayRequest);
+		
+	}
 }
 
 
