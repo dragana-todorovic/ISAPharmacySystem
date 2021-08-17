@@ -178,7 +178,7 @@ INSERT INTO pharmacy_actions_and_benefits(pharmacy_id,actions_and_benefits_id) V
 
 
 --dermatologist complaint
-INSERT INTO dermatologist_complaint(id,content,dermatologist_id) VALUES (1,'Nije ljubazan',1);
+INSERT INTO dermatologist_complaint(id,content,dermatologist_id,patient_id, is_answered) VALUES (1,'Nije ljubazan',1,1, false);
 
 --patient dermatologist complaint
 INSERT INTO patients_dermatologist_complaints(patient_id,dermatologist_complaints_id) VALUES (1,1);
@@ -285,13 +285,15 @@ INSERT INTO pharmacy_medicine_reservations(pharmacy_id,medicine_reservations_id)
 INSERT INTO pharmacy_medicine_reservations(pharmacy_id,medicine_reservations_id) VALUES (1,2);
 
 --pharmacist complaint
-INSERT INTO pharmacist_complaint(id,content,pharmacist_id) VALUES (1,'Skup',1);
+INSERT INTO pharmacist_complaint(id,content,pharmacist_id,patient_id, is_answered) VALUES (1,'Skup',1, 1,false);
 
+--VRV OBRISATI
 --patients pharmacist complaint
 INSERT INTO patients_pharmacist_complaints(patient_id,pharmacist_complaints_id) VALUES (1,1);
 
 --pharmacy complaint
-INSERT INTO pharmacy_complaint(id,content,pharmacy_id) VALUES (1,'Lose osoblje',1);
+INSERT INTO pharmacy_complaint(id,content,pharmacy_id,patient_id, is_answered) VALUES (1,'Lose osoblje',1,1, false);
+INSERT INTO pharmacy_complaint(id,content,pharmacy_id,patient_id, is_answered) VALUES (2,'Los pristup pacijentu.',1,2, false);
 
 --patients phamracy complaint
 INSERT INTO patients_pharmacy_complaints(patient_id,pharmacy_complaints_id) VALUES (1,1);
@@ -316,6 +318,10 @@ INSERT INTO loyaltyscale(id,category,needed_points,discount) VALUES (1,0,0,0);
 INSERT INTO loyaltyscale(id,category,needed_points,discount) VALUES (2,1,20,10);
 INSERT INTO loyaltyscale(id,category,needed_points,discount) VALUES (3,2,60,30);
 
+
 --pharmacist consulting
 INSERT INTO pharmacistcounseling(description,duration,start_date_time,patient_id,pharmacist_id,therapy_id) VALUES ('opis 1',30,'2021-08-08 21:58:58.508-07',1,1,1);
+
+
+INSERT INTO loyaltyprogram(id,appointment_points,advising_points) VALUES (1,5,3);
 

@@ -1,25 +1,22 @@
+function drawComplaintTable(data) {
+    let table = '';
+    for (i in data) {
+        let disabled;
+        if(data[i].answered){
+            disabled = true
+        }
 
-function drawLoyaltyTable(data) {
-    let table = '';
-    for (i in data) {
         table += `<tr >
-            <td><b>`+ data[i].category + `</b></td>
-			<td>`+ data[i].neededPoints + `</td>
-            <td>`+ data[i].disccount + `</td>
+			<td>`+ data[i].userName + `</td>
+			<td>`+ data[i].type + `</td>
+			<td>`+ data[i].complainedOnName + `</td>
+			<td>`+ data[i].content + `</td>
+            <td ><input name="medicinesButton" id="`+ data[i].userName + `"  type = 'button' style = "background-color:coral" class="btn btn-primary" value="Medicines" ></input ></td >
 			</tr>`;
     }
-    $('#loyaltyTable').html(table);
+    $('#complaintTable').html(table);
 }
-function drawLoyaltyProgramTable(data) {
-    let table = '';
-    for (i in data) {
-        table += `<tr >
-			<td>`+ data[i].appointmentPoints + `</td>
-            <td>`+ data[i].advisingPoints + `</td>
-			</tr>`;
-    }
-    $('#loyaltyProgramTable').html(table);
-}
+var userEmail;
 $(document).ready(function(e){
 	var email = localStorage.getItem('email')
     $("#profileInfo").click(function () {
@@ -33,69 +30,14 @@ $(document).ready(function(e){
           }
         });
     });
+   $('#submitSendAnswer').click(function(){
+            let answer=$('#txtAnswer').val()
+            let emailToSend = userEmail;
+            let emailFromSending = email;
+//if success modal.style.display = "none";
+//$('#txtAnswer').value() = ''
 
-    customAjax({
-          url: '/patient/getLoyalty',
-          method: 'GET',
-          contentType: 'application/json',
-            success: function(data){
-                drawLoyaltyTable(data)
-           },
-          error: function(){
-          }
-    });
-
-    customAjax({
-          url: '/patient/getLoyaltyProgram',
-          method: 'GET',
-          contentType: 'application/json',
-            success: function(data){
-                drawLoyaltyProgramTable(data)
-           },
-          error: function(){
-          }
-    });
-    $('#submitLoyalty').click(function(){
-        let regularNeededPoints=$('#txtRegularNeededPoints').val()
-        let regularDiscount=$('#txtRegularDiscount').val()
-        let silverNeededPoints=$('#txtSilverNeededPoints').val()
-        let silverDiscount=$('#txtSilverDiscount').val()
-        let goldNeededPoints=$('#txtGoldNeededPoints').val()
-        let goldDiscount=$('#txtGoldDiscount').val()
-
-        obj = JSON.stringify({
-            regularNeededPoints:regularNeededPoints,
-            regularDiscount:regularDiscount,
-            silverNeededPoints:silverNeededPoints,
-            silverDiscount:silverDiscount,
-            goldNeededPoints:goldNeededPoints,
-            goldDiscount:goldDiscount
-        });
-        console.log(obj)
-        customAjax({
-              url: '/patient/saveLoyaltyScale',
-              method: 'POST',
-              data:obj,
-              contentType: 'application/json',
-                success: function(){
-                    alert("Sucess defined loyalty scale.")
-                    location.href = "loyaltyScale.html";
-               },
-              error: function(){
-                alert('Error by defining loyalty scale.');
-              }
-        });
-    });
-
-    $('#submitLoyaltyProgram').click(function(){
-            let appointmentPoints=$('#txtAppointmentPoints').val()
-            let advisingDiscount=$('#txtAdvisingDiscount').val()
-
-            obj = JSON.stringify({
-                appointmentPoints:appointmentPoints,
-                advisingPoints:advisingDiscount,
-            });
-            customAjax({
+         /*   customAjax({
                   url: '/patient/saveLoyaltyProgram',
                   method: 'POST',
                   data:obj,
@@ -107,8 +49,34 @@ $(document).ready(function(e){
                   error: function(){
                     alert('Error by defining loyalty prorgam.');
                   }
-            });
+            });*/
         });
+    customAjax({
+      url: '/complaint/getAllComplaint',
+      method: 'GET',
+        contentType: 'application/json',
+        success: function (data) {
+            drawComplaintTable(data);
+        },
+        error: function (message) {
+            //alert("Failed")
+        }
+    })
+    var modalMedicines = document.getElementById('modal-medicines')
+    var spanMedicine = document.getElementsByClassName("closeMedicine")[0];
+      spanMedicine.onclick = function () {
+            modalMedicines.style.display = "none";
+        }
+
+    window.onclick = function (event) {
+        if (event.target == modalMedicines) {
+            modalMedicines.style.display = "none";
+        }
+    }
+      $('#complaintTable').on('click', 'input:button[name=medicinesButton]', function (event) {
+            modalMedicines.style.display = "block";
+            userEmail = this.id;
+      })
 
 	$('#logout').click(function(){
 		localStorage.removeItem('jwt')
