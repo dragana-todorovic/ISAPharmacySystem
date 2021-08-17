@@ -178,11 +178,10 @@ INSERT INTO pharmacy_actions_and_benefits(pharmacy_id,actions_and_benefits_id) V
 
 
 --dermatologist complaint
-INSERT INTO dermatologist_complaint(id,content,dermatologist_id,patient_id, is_answered) VALUES (1,'Nije ljubazan',1,1, false);
+INSERT INTO dermatologist_complaint(id,content,dermatologist_id,patient_id,is_answered) VALUES (1,'Nije ljubazan',1,1,false);
 
 --patient dermatologist complaint
 INSERT INTO patients_dermatologist_complaints(patient_id,dermatologist_complaints_id) VALUES (1,1);
-
 
 --holiday request
 INSERT INTO holidayrequest(start_date,end_date,status) VALUES ('2021-08-08 21:58:58.508-07','2021-12-12 21:58:58.508-07',0);
