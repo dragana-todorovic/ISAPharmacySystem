@@ -455,6 +455,12 @@ let showPharmacyBasicInfo = function(pharmacy){
 }
 
 let editPharmacy = function (pharmacy) {
+	let averageRating = 0;
+	let pomocna =0
+	for(i in pharmacy.ratings) {
+		pomocna = pomocna + pharmacy.ratings[i].rating;
+	}
+	averageRating = pomocna/(pharmacy.ratings.length)
 	console.log(pharmacy)
 	 $("#showData").html(`<table class="ui basic large table" style="width:50%; margin-left:auto;
 			    margin-right:auto; margin-top: 40px;">
@@ -479,6 +485,11 @@ let editPharmacy = function (pharmacy) {
 					            <tr>
 					                <td>Description:</td>
 					                <td class="ui input"> <input type="text" id="txtDescription" value="`+ ((pharmacy.description != null) ? pharmacy.description:`` ) + `"/></td>
+
+					            </tr>
+					             <tr>
+					                <td>Average rating:</td>
+					                <td class="ui input"> <input type="text" disabled="true" id="txtRating" value="`+ averageRating+ `"/></td>
 
 					            </tr>
 

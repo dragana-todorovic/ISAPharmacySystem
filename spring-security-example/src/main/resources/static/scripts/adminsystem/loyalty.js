@@ -9,7 +9,16 @@ function drawLoyaltyTable(data) {
 			</tr>`;
     }
     $('#loyaltyTable').html(table);
-
+}
+function drawLoyaltyProgramTable(data) {
+    let table = '';
+    for (i in data) {
+        table += `<tr >
+			<td>`+ data[i].appointmentPoints + `</td>
+            <td>`+ data[i].advisingPoints + `</td>
+			</tr>`;
+    }
+    $('#loyaltyProgramTable').html(table);
 }
 $(document).ready(function(e){
 	var email = localStorage.getItem('email')
@@ -26,15 +35,26 @@ $(document).ready(function(e){
     });
 
     customAjax({
-              url: '/patient/getLoyalty',
-              method: 'GET',
-              contentType: 'application/json',
-                success: function(data){
-                    drawLoyaltyTable(data)
-               },
-              error: function(){
-              }
-        });
+          url: '/patient/getLoyalty',
+          method: 'GET',
+          contentType: 'application/json',
+            success: function(data){
+                drawLoyaltyTable(data)
+           },
+          error: function(){
+          }
+    });
+
+    customAjax({
+          url: '/patient/getLoyaltyProgram',
+          method: 'GET',
+          contentType: 'application/json',
+            success: function(data){
+                drawLoyaltyProgramTable(data)
+           },
+          error: function(){
+          }
+    });
     $('#submitLoyalty').click(function(){
         let regularNeededPoints=$('#txtRegularNeededPoints').val()
         let regularDiscount=$('#txtRegularDiscount').val()
@@ -65,7 +85,30 @@ $(document).ready(function(e){
                 alert('Error by defining loyalty scale.');
               }
         });
- });
+    });
+
+    $('#submitLoyaltyProgram').click(function(){
+            let appointmentPoints=$('#txtAppointmentPoints').val()
+            let advisingDiscount=$('#txtAdvisingDiscount').val()
+
+            obj = JSON.stringify({
+                appointmentPoints:appointmentPoints,
+                advisingPoints:advisingDiscount,
+            });
+            customAjax({
+                  url: '/patient/saveLoyaltyProgram',
+                  method: 'POST',
+                  data:obj,
+                  contentType: 'application/json',
+                    success: function(){
+                        alert("Sucess defined loyalty Program.")
+                        location.href = "loyaltyScale.html";
+                   },
+                  error: function(){
+                    alert('Error by defining loyalty prorgam.');
+                  }
+            });
+        });
 
 	$('#logout').click(function(){
 		localStorage.removeItem('jwt')

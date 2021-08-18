@@ -1,9 +1,13 @@
 package rs.ac.uns.ftn.informatika.spring.security.controller;
 
 import java.security.Principal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -24,23 +28,36 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import rs.ac.uns.ftn.informatika.spring.security.model.Dermatologist;
+import rs.ac.uns.ftn.informatika.spring.security.model.HolidayRequest;
 import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
+import rs.ac.uns.ftn.informatika.spring.security.model.MedicinePrice;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicineWithQuantity;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacist;
 
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
+import rs.ac.uns.ftn.informatika.spring.security.model.PriceList;
 import rs.ac.uns.ftn.informatika.spring.security.model.User;
 import rs.ac.uns.ftn.informatika.spring.security.model.WorkingDay;
+import rs.ac.uns.ftn.informatika.spring.security.repository.MedicinePriceRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacyAdminRepository;
 import rs.ac.uns.ftn.informatika.spring.security.service.MedicineService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyAdminService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyService;
+import rs.ac.uns.ftn.informatika.spring.security.service.PriceListService;
 import rs.ac.uns.ftn.informatika.spring.security.service.UserService;
 import rs.ac.uns.ftn.informatika.spring.security.view.EditPharmacyView;
+
 import rs.ac.uns.ftn.informatika.spring.security.view.PharmacyWithMedicationView;
+
+import rs.ac.uns.ftn.informatika.spring.security.view.MedicineForOrderView;
+import rs.ac.uns.ftn.informatika.spring.security.view.MedicinePriceDTO;
+import rs.ac.uns.ftn.informatika.spring.security.view.NewDermatologistDTO;
+import rs.ac.uns.ftn.informatika.spring.security.view.NewOrderDTO;
+import rs.ac.uns.ftn.informatika.spring.security.view.NewPharmacistDTO;
+import rs.ac.uns.ftn.informatika.spring.security.view.PriceListDTO;
+
 import rs.ac.uns.ftn.informatika.spring.security.view.UserRegisterView;
-import rs.ac.uns.ftn.informatika.spring.security.view.WorkingTimeIntervalDTO;
 
 @RestController
 @RequestMapping(value = "/pharmacy", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -52,6 +69,10 @@ public class PharmacyController {
 	private PharmacyService pharmacyService;
 	@Autowired
 	private MedicineService medicineService;
+	@Autowired
+	private PriceListService priceListService;
+	@Autowired
+	private MedicinePriceRepository medicinePriceRepository;
 	
 	@PostMapping("/getPharmacyByAdmin")
 	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
@@ -62,7 +83,7 @@ public class PharmacyController {
 		
 	}
 	@GetMapping("/getAll")
-	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	@PreAuthorize("hasRole('ROLE_PATIENT') || hasRole('ADMIN_PHARMACY')")
 	public List<Pharmacy> getAll() {
 		return this.pharmacyService.findAll();
 		
@@ -94,17 +115,6 @@ public class PharmacyController {
 	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
 	public Set<Dermatologist> getDermatologsts(@PathVariable(name="email") String email) {
 		return this.pharmacyService.getDermatologistsByPharmacyAdmin(email);
-		
-	}
-	
-
-	@PostMapping("/addWorkingDayForDermatologist/{id}/{email}")
-	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
-	public ResponseEntity<?> addWorkingTime(@PathVariable(name="id") String id,
-			@PathVariable(name="email") String email,@RequestBody WorkingTimeIntervalDTO workingDay) {
-	//	this.pharmacyService.addWorkingTimeForDermatologist(id, email, workingDay);
-		
-		return new ResponseEntity<>(HttpStatus.OK);
 		
 	}
 	
@@ -149,8 +159,11 @@ public class PharmacyController {
 	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
 	public ResponseEntity<?> deletePharmacist(@PathVariable(name="id") String id,
 			@PathVariable(name="email") String email) {
-		this.pharmacyService.deletePharmacistFromPharmacy(id, email);
+		if(this.pharmacyService.deletePharmacistFromPharmacy(id, email)) {
 		return new ResponseEntity<>(HttpStatus.OK);
+	} else {
+		return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+	}
 		
 	}
 	
@@ -198,35 +211,32 @@ public class PharmacyController {
 	}
 	
 	
-	@PostMapping("/addDermatologistInPharmacy/{email}/{id}")
+	@PostMapping("/addDermatologistInPharmacy/{email}")
 	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
-	public ResponseEntity<?> addDermatologistInPharmacy(@PathVariable(name="email") String email,@PathVariable(name="id") String id) {
-		this.pharmacyService.addDermatologistInPharmacy(email, Long.parseLong(id));
+	public ResponseEntity<?> addDermatologistInPharmacy(@PathVariable(name="email") String email,@RequestBody NewDermatologistDTO newDermatologist) {
+		System.out.println(newDermatologist);
+		if(this.pharmacyService.addDermatologistInPharmacy(email, newDermatologist)) {
+			return new ResponseEntity<>(HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+		}
 		
+		
+		
+		
+	}
+	
+	@PostMapping("/addPharmacistInPharmacy/{email}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public ResponseEntity<?> addPharmacistInPharmacy(@PathVariable(name="email") String email,@RequestBody NewPharmacistDTO newPharmacist) {
+		this.pharmacyService.addPharmacistInPharmacy(email, newPharmacist);
+		System.out.println("$$$$$$$$$$$$" + newPharmacist);
 		return new ResponseEntity<>(HttpStatus.OK);
 		
 	}
 	
-	@PostMapping("/addPharmacistInPharmacy/{email}/{id}")
-	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
-	public ResponseEntity<?> addPharmacistInPharmacy(@PathVariable(name="email") String email,@PathVariable(name="id") String id) {
-		this.pharmacyService.addPharmacistInPharmacy(email, Long.parseLong(id));
-		
-		return new ResponseEntity<>(HttpStatus.OK);
-		
-	}
 	
-	@PostMapping("/addWorkingDayDermatologist/{id}/{email}/{workingDay}")
-	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
-	public ResponseEntity<?> addWorkingDayDermatologist(@PathVariable(name="id") String id,@PathVariable(name="email") String email,
-			@PathVariable(name="workingDay") String workingDay,@RequestBody WorkingTimeIntervalDTO wd) {
-		System.out.println(wd);
-		this.pharmacyService.addWorkingTimeForDermatologist(id, email, workingDay, wd);
-		return new ResponseEntity<>(HttpStatus.OK);
-		
-	}
-	
-	@PostMapping("/addWorkingDayPharmacist/{id}/{email}/{workingDay}")
+	/*@PostMapping("/addWorkingDayPharmacist/{id}/{email}/{workingDay}")
 	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
 	public ResponseEntity<?> addWorkingDayPharmacist(@PathVariable(name="id") String id,@PathVariable(name="email") String email,
 			@PathVariable(name="workingDay") String workingDay,@RequestBody WorkingTimeIntervalDTO wd) {
@@ -234,14 +244,74 @@ public class PharmacyController {
 		this.pharmacyService.addWorkingTimeForPharmacist(id, email, workingDay, wd);
 		return new ResponseEntity<>(HttpStatus.OK);
 		
+	}*/
+	
+	
+	@GetMapping("/getMedicinePriceList/{email}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public List<PriceList> getMedicinePriceList(@PathVariable(name="email") String email) {
+		return this.priceListService.findPriceListByPharmacy(email);
 	}
 	
+
+	@GetMapping("/getListMedicines/{id}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public Set<MedicinePrice> getMedicinePrice(@PathVariable(name="id") String id) {
+		return this.priceListService.findMedicinePricesByPriceListId(Long.parseLong(id));
+	}
+	
+	
+	@PostMapping("/addMedicinePriceToPriceList/{email}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public ResponseEntity<?> add(@PathVariable(name="email") String email,
+			@RequestBody PriceListDTO priceList) {
+		
+		
+		LocalDate date = LocalDate.parse(priceList.getDate());
+		
+		Set<MedicinePrice> medicinePrices = new HashSet<MedicinePrice>();
+		
+		for(MedicinePriceDTO m : priceList.getMedicines()) {
+			MedicinePrice mp = new MedicinePrice();
+			mp.setMedicine(this.medicineService.findById(Long.parseLong(m.getMedicineId())).get());
+			mp.setPrice(Double.parseDouble(m.getPrice()));
+			medicinePrices.add(mp);
+			this.medicinePriceRepository.save(mp);
+			
+		}
+		this.priceListService.createNewPriceList(email, medicinePrices, date);
+		
+		
+		return new ResponseEntity<>(HttpStatus.OK);
+		
+	}
+	
+
 	@GetMapping(value = "/getPharamcyWithMedicine/{let}",produces = MediaType.APPLICATION_JSON_VALUE)
 	public Collection<PharmacyWithMedicationView> getPharamcyWithMedicine(@PathVariable("let") Long let) {
 		return pharmacyService.getPharamciesWithMedication(let);
 	}
 	
 	
+
+	@GetMapping("/getHolidayRequests/{id}/{email}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public Set<HolidayRequest> getHolidayRequests(@PathVariable(name="id") String id,@PathVariable(name="email") String email) {
+		return this.pharmacyService.getHolidayRequestsByPharmacy(Long.parseLong(id),email);
+	}
 	
+	@PostMapping("/acceptHolidayRequest/{id}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public ResponseEntity<?> acceptHolidayRequest(@PathVariable(name="id") String id) {
+		this.pharmacyService.acceptHolidayRequest(Long.parseLong(id));
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	@PostMapping("/declineHolidayRequest/{id}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public ResponseEntity<?> declineHolidayRequest(@PathVariable(name="id") String id) {
+		this.pharmacyService.declineHolidayRequest(Long.parseLong(id));
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
 }
 	

@@ -32,14 +32,11 @@ public class Pharmacy {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<MedicineWithQuantity> medicineWithQuantity = new HashSet<MedicineWithQuantity>();
     
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<Rating> ratings = new HashSet<Rating>();
     
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<MedicinePrice> medicinePrices = new HashSet<MedicinePrice>();
-    
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<AppoitmentPrice> appoitmentPrices = new HashSet<AppoitmentPrice>();
+    private Set<PriceList> priceList = new HashSet<PriceList>();
     
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<MedicineReservation> medicineReservations = new HashSet<MedicineReservation>();
@@ -104,21 +101,6 @@ public class Pharmacy {
 		this.ratings = ratings;
 	}
 
-	public Set<MedicinePrice> getMedicinePrices() {
-		return medicinePrices;
-	}
-
-	public void setMedicinePrices(Set<MedicinePrice> medicinePrices) {
-		this.medicinePrices = medicinePrices;
-	}
-
-	public Set<AppoitmentPrice> getAppoitmentPrices() {
-		return appoitmentPrices;
-	}
-
-	public void setAppoitmentPrices(Set<AppoitmentPrice> appoitmentPrices) {
-		this.appoitmentPrices = appoitmentPrices;
-	}
 
 	public Set<MedicineReservation> getMedicineReservations() {
 		return medicineReservations;
@@ -142,5 +124,13 @@ public class Pharmacy {
 
 	public void setActionsAndBenefits(Set<ActionAndBenefit> actionsAndBenefits) {
 		this.actionsAndBenefits = actionsAndBenefits;
+	}
+
+	public Set<PriceList> getPriceList() {
+		return priceList;
+	}
+
+	public void setPriceList(Set<PriceList> priceList) {
+		this.priceList = priceList;
 	}
 }

@@ -1,6 +1,7 @@
 package rs.ac.uns.ftn.informatika.spring.security.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,7 +15,11 @@ public interface MedicineRepository  extends JpaRepository<Medicine, Long>{
 
 	List<Medicine> findAll();
 	Medicine findByName(String name);
+
 	Medicine findMedicineById(Long id);
+
+	Optional<Medicine> findById(Long id);
+
 
 	@Query(nativeQuery = true, value = "select * from medicine \n" +
 			 "where medicine.name= :name")

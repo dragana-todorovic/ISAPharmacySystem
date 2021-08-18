@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -149,6 +150,7 @@ public class MedicineServiceImpl implements MedicineService{
 	}
 
 	@Override
+
 	public Medicine findById(Long id) {
 		return medicineRepository.findMedicineById(id);
 	}
@@ -178,6 +180,11 @@ public class MedicineServiceImpl implements MedicineService{
 		
 	
 		
+
+	public Optional<Medicine> findById(Long id) {
+		// TODO Auto-generated method stub
+		return medicineRepository.findById(id);
+
 	}
 
 }

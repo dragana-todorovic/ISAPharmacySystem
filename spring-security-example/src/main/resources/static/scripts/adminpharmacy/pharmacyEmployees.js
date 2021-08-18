@@ -27,6 +27,20 @@ let izaberiDermatologa;
 	    error: function(){
 	    }
 	});
+	
+	let sveApoteke;
+	customAjax({
+	    url: '/pharmacy/getAll',
+	    method: 'GET',
+	    contentType: 'application/json',
+	    success: function(data){
+	    	sveApoteke = data
+	  	  console.log(sveApoteke)
+	    },
+	    error: function(){
+	    }
+	});
+
 
 
 
@@ -34,11 +48,12 @@ let izaberiDermatologa;
 $(document).ready(function(e){ 
 	
 	$("#dermatologist").click(function () {
+		console.log("USAO")
 		    	  customAjax({
 				      url: '/pharmacy/getAllDermatologist/' + email,
 				      method: 'GET',
 				      contentType: 'application/json',
-				      success: function(data){	 
+				      success: function(data){
 				    	  console.log(data)
 				    	  showDermatologists(data);
 				      },
@@ -55,6 +70,7 @@ $(document).ready(function(e){
 		      method: 'GET',
 		      contentType: 'application/json',
 		      success: function(data){	
+		    	  console.log(data)
 		    	  showPharmacists(data);
 		      },
 		      error: function(){
@@ -79,6 +95,11 @@ let showWorkingDays = function(data) {
 }
 
 let showDermatologists = function(data) {
+	
+	  var t = ``;
+	    for (ap2 in sveApoteke) {
+	        t += (`<input type="checkbox" id="${sveApoteke[ap2].id}" name="apoteke" value="${sveApoteke[ap2].name}">${sveApoteke[ap2].name}</input></br>`);
+	    }
 	
 	let radnoVrijeme = '';
 	for (i in days) {
@@ -105,13 +126,32 @@ let showDermatologists = function(data) {
 	
 	let temp='';
 	for (i in data){
+		var apoteke = [];
+		
+		for(l in data[i].workingTimes) {
+			apoteke[l] = data[i].workingTimes[l].pharmacy.name + "\n";
+		}
+		
+		var pomocna = 0
+		var averageRating = 0
+		for(m in data[i].ratings) {
+			pomocna = pomocna + data[i].ratings[m].rating;
+		}
+		averageRating = pomocna/(data[i].ratings.length)
+	
 		temp+=`<tr><td class="firstname">`+
-		data[i].user.firstName+`</td><td class="soba">`+data[i].user.lastName+`</td><td></td><td></td>								   
+		data[i].user.firstName+`</td><td class="soba">`+data[i].user.lastName+`</td><td class="ocjena">${averageRating}</td>
+		<td class="ap">${apoteke}</td>								   
 		
 		<td>
 			<button id = "`+data[i].id+`" name="obrisiDermatologa" class="ui red button">
 		<i class="close icon"></i>
 		Delete
+		</button>
+		<br>
+			<button id = "`+data[i].id+`" name="prikaziZahjeve" class="ui secondary button">
+		<i class="eye icon"></i>
+		Show vacation requests
 		</button>
 		</td>`;
 	}
@@ -121,6 +161,21 @@ let showDermatologists = function(data) {
 			    margin-right:auto; margin-top: 40px;">
 			    
 	  <thead>
+	  <tr> <th colspan="5">
+	  Filter by rating:
+	  <div class="ui input left">
+               <input type="number" name="filter" placeholder = "Od..." id="odOcjena" min="0" style="width:80px;"/></div>
+               <div class="ui input left">
+               <input type="number" name="filter" id="doOcjena" placeholder = "Do..." min="0" style="width:80px;"/></div>
+           </th>
+           </tr><tr>
+           <th colspan="5">
+             <div id="filterApoteke">
+    </br><b>Filtriraj po apoteci:</b><br/>
+        ${t}
+    </div>
+           </th>
+            </tr>
 	  <tr>
 			<th colspan="5">
 			 <div class="ui input left">
@@ -139,7 +194,7 @@ let showDermatologists = function(data) {
 	    <th>Last name</th>
 	    <th>Avarage rating</th>
 	    <th>Pharmacies</th>
-	    <th>Delete dermatologist</th>
+	    <th>Options</th>
 	  </tr></thead><tbody id="tabelaDermatologa">
 	  </tbody>
 	  <tfoot class="full-width">
@@ -213,6 +268,28 @@ $('.ui.dropdown')
 </p></div>
 	  </div>
 	</div>
+	
+	
+	
+<div id="modalniZaPrikazZahtjeva" class="ui modal">
+  <i class="close icon"></i>
+  <div class="header">
+	All requests
+  </div>
+  <div class="content">
+
+    	<table class="ui black table">
+  <thead>
+    <tr><th>Start date</th>
+    <th>End date</th>
+    <th>Status</th>
+    <th>Options</th>
+  </tr></thead><tbody id="zahtjeviTabela">
+
+  </tbody>
+</table>
+  </div>
+</div>
 
 `)
 
@@ -221,7 +298,6 @@ $("#firstNameSearch").keyup(function () {
        
         $("#table tbody tr").each(function () {
             var firstName = ($('td:eq(0)', this).text()).toLowerCase();
-            console.log(firstName)
             if (firstName.includes(firstNameSearch) || firstNameSearch == "") {
                 $(this).show()
             } else {
@@ -247,6 +323,36 @@ $("#firstNameSearch").keyup(function () {
 let idSelected;
 $('#tabelaDermatologa').html(temp)
 
+$("#filterApoteke").click(function () {
+	        var imaCekiranih = false;
+	        $('input[name="apoteke"]:checked').each(function () {
+	            $("#tabelaDermatologa td.ap:not(:contains('" + $(this).val() + "'))").parent().hide();
+	            $("#tabelaDermatologa td.ap:contains('" + $(this).val() + "')").parent().show();
+	            imaCekiranih = true;
+	        });
+	        if (!imaCekiranih)
+	            $("#tabelaDermatologa td.ap:contains('" + $(this).val() + "')").parent().show();
+	    });
+
+ $("#showData").on('change paste keyup','[name=filter]',function (event) {
+        var odc=$("#odOcjena").val();
+        var doc=$("#doOcjena").val();
+        console.log(odc)
+        console.log(doc)
+       if(odc==""){
+      		var ocjenaOd=$("#tabelaDermatologa td.ocjena").parent();
+    	}else {
+    		var ocjenaOd=$("#tabelaDermatologa td.ocjena").filter(function() { return $(this).text()-odc>=0}).parent();
+    	}
+    	if(doc==""){
+    		var ocjenaDo=$("#tabelaDermatologa td.ocjena").parent();
+    	}else {
+    		var ocjenaDo=$("#tabelaDermatologa td.ocjena").filter(function() {return $(this).text()-doc<=0}).parent();
+    	}
+    	ocjenaOd.filter(ocjenaDo).show();
+        $("#tabelaDermatologa td.ocjena").parent().not(ocjenaOd.filter(ocjenaDo)).hide();
+    });
+
 
 $("button[name=obrisiDermatologa]").click(function() {
 	idSelected = this.id
@@ -262,6 +368,24 @@ $("button[name=obrisiDermatologa]").click(function() {
 			    	  $('#errorDelete')
 					  .modal('show')
 					
+			      }
+	    });
+	
+ });
+
+$("button[name=prikaziZahjeve]").click(function() {
+	idSelected = this.id
+	customAjax({
+	      url: '/pharmacy/getHolidayRequests/' + idSelected + '/' + email,
+	      method: 'GET',
+		  contentType: 'application/json',
+		        success: function(data){
+					 showRequests(data)
+					  $('#modalniZaPrikazZahtjeva')
+					  .modal('show')
+					  
+				},
+			      error: function(){
 			      }
 	    });
 	
@@ -283,41 +407,29 @@ $('#end').calendar({
 
 $("#addDermatologist").click(function() {
 	var dermatologistId = $('#dermatologistCombo').val()
-	 
+	var workingTimes = []
+	$('input[name="radniDan"]:checked').each(function () {
+		var day = String(this.id);
+		console.log(this.id)
+		var startTime = $("#start"+this.id).val();
+		var endTime = $("#end"+this.id).val();
+		obj = {
+			day:day,
+			startTime:startTime,
+			endTime:endTime
+			}
+		workingTimes.push(obj)
+		
+	})
+	console.log(workingTimes)
 	customAjax({
-	    url: '/pharmacy/addDermatologistInPharmacy/' + email + '/' + dermatologistId,
+	    url: '/pharmacy/addDermatologistInPharmacy/' + email,
 	    method: 'POST',
+	    data: JSON.stringify({dermatologistId:dermatologistId,workingTimes:workingTimes}),
 	    contentType: 'application/json',
 	    success: function(){
-	    	$('input[name="radniDan"]:checked').each(function () {
-	    		//var workingDay = document.getElementById(this.id);
-	    		var workingDay = this.id;
-	    		var startTime = $("#start"+this.id).val();
-	    		var endTime = $("#end"+this.id).val();
-	    		obj = JSON.stringify({
-	    			startTime:startTime,
-	    			endTime:endTime
-	    			});
-	    		console.log(obj);
-	    		customAjax({
-		    	    url: '/pharmacy/addWorkingDayDermatologist/' + dermatologistId + '/' + email + '/' + workingDay,
-		    	    method: 'POST',
-		    	    data : obj,
-		    	    contentType: 'application/json',
-		    	    success: function(){
-		    	    	
-		    	    },
-		    	    error: function(){
-		    	    	console.log(obj)
-		    	    	console.log(data)
-		    	    	alert("Failed")
-		    	    }
-
-		    	});
-	    	
-	    	});
-		      alert("Success added dermatologist in pharmacy")
-				  location.href = "adminpharmacy.html"
+	    	alert("Success added dermatologist in pharmacy!")
+	    	 location.href = "adminpharmacy.html"
 	    },
 	    error: function(){
 	    	alert("Failed")
@@ -348,15 +460,20 @@ let showPharmacists = function(data) {
 </td></tr>`
 	}
 	
-	let pharmacistCombo = ''
-		  for (i in izaberiFarmaceuta) {
-			  pharmacistCombo += `<div class="item" data-value="` + izaberiFarmaceuta[i].id + `">` + izaberiFarmaceuta[i].user.firstName + ` `+  izaberiDermatologa[i].user.lastName + `</div>`
-	      }
 	
 	let temp='';
 	for (i in data){
+		
+		
+		var pomocna = 0
+		var averageRating = 0
+		for(m in data[i].ratings) {
+			pomocna = pomocna + data[i].ratings[m].rating;
+		}
+		averageRating = pomocna/(data[i].ratings.length)
+		
 		temp+=`<tr><td class="firstname">`+
-		data[i].user.firstName+`</td><td class="soba">`+data[i].user.lastName+`</td><td></td><td></td>								   
+		data[i].user.firstName+`</td><td class="soba">`+data[i].user.lastName+`</td><td class="ocjena">${averageRating}</td><td>${data[i].workingTimes.pharmacy.name}</td>								   
 		
 		<td>
 			<button id = "`+data[i].id+`" name="obrisiDermatologa" class="ui red button">
@@ -371,6 +488,13 @@ let showPharmacists = function(data) {
 			    margin-right:auto; margin-top: 40px;">
 			    
 	  <thead>
+	  <tr> <th colspan="5">
+	  Filter by rating:
+	  <div class="ui input left">
+               <input type="number" name="filter" placeholder = "Od..." id="odOcjena" min="0" style="width:80px;"/></div>
+               <div class="ui input left">
+               <input type="number" name="filter" id="doOcjena" placeholder = "Do..." min="0" style="width:80px;"/></div>
+           </th> </tr>
 	  <tr>
 			<th colspan="5">
 			 <div class="ui input left">
@@ -396,7 +520,7 @@ let showPharmacists = function(data) {
 			    <tr>
 			      <th></th>
 			      <th colspan="4">
-					   <input id = "addNew" class="ui right floated teal button" type = "button" value = "Add new dermatologist"></input>
+					   <input id = "addNew" class="ui right floated teal button" type = "button" value = "Add new pharmacist"></input>
 			    
 			      </th>
 			    </tr>
@@ -417,22 +541,25 @@ let showPharmacists = function(data) {
     <table class="ui basic large table" style="width:100%; margin-left:auto; 
 			    margin-right:auto; margin-top: 40px;">
     <tbody>
-    
-    <tr>
-			 <td class="ui input"> <div class="ui selection dropdown">
-  <input type="hidden" id="dermatologistCombo">
-  <i class="dropdown icon"></i>
-  <div class="default text">Choose dermatologist...</div>
-  <div class="menu">
-  `+pharmacistCombo+`
-  </div>
-</div>
-<script>
-$('.ui.dropdown')
-  .dropdown()
-;
-</script></td>
-    </tr>	
+	 <tr>
+    <td colspan="3"><div class="ui fluid input"><input type="text" id="txtFirstName" placeholder="Enter pharmacist's first name..."/>
+    </div></td>
+</tr>
+ <tr>
+    <td colspan="3"><div class="ui fluid input"><input type="text" id="txtLastName" placeholder="Enter pharmacist's last name..."/>
+    </div></td>
+</tr>
+ <tr>
+    <td colspan="3"><div class="ui fluid input"><input type="text" id="txtEmail" placeholder="Enter pharmacist's email..."/>
+    </div></td>
+</tr>
+ <tr>
+    <td colspan="3"><div class="ui fluid input"><input type="text" id="txtPassword" placeholder="Enter pharmacist's password..."/>
+    </div></td>
+</tr>
+
+
+
     	`+radnoVrijeme+`
 					        </tbody>
 					        
@@ -482,6 +609,26 @@ let idSelected;
 $('#tabelaFarmaceuta').html(temp)
 
 
+ $("#showData").on('change paste keyup','[name=filter]',function (event) {
+        var odc=$("#odOcjena").val();
+        var doc=$("#doOcjena").val();
+        console.log(odc)
+        console.log(doc)
+       if(odc==""){
+      		var ocjenaOd=$("#tabelaFarmaceuta td.ocjena").parent();
+    	}else {
+    		var ocjenaOd=$("#tabelaFarmaceuta td.ocjena").filter(function() { return $(this).text()-odc>=0}).parent();
+    	}
+    	if(doc==""){
+    		var ocjenaDo=$("#tabelaFarmaceuta td.ocjena").parent();
+    	}else {
+    		var ocjenaDo=$("#tabelaFarmaceuta td.ocjena").filter(function() {return $(this).text()-doc<=0}).parent();
+    	}
+    	ocjenaOd.filter(ocjenaDo).show();
+        $("#tabelaFarmaceuta td.ocjena").parent().not(ocjenaOd.filter(ocjenaDo)).hide();
+    });
+
+
 $("button[name=obrisiDermatologa]").click(function() {
 	idSelected = this.id
 	customAjax({
@@ -514,41 +661,31 @@ $('#end').calendar({
 	});
 
 $("#addDermatologist").click(function() {
-	var dermatologistId = $('#pharmacistCombo').val()
-	 
+	var firstName = $('#txtFirstName').val();
+	var lastName = $('#txtLastName').val();
+	var pharmacistEmail = $('#txtEmail').val();
+	var password = $('#txtPassword').val();
+	var workingTimes = []
+	$('input[name="radniDan"]:checked').each(function () {
+		var day = String(this.id);
+		console.log(this.id)
+		var startTime = $("#start"+this.id).val();
+		var endTime = $("#end"+this.id).val();
+		obj = {
+			day:day,
+			startTime:startTime,
+			endTime:endTime
+			}
+		workingTimes.push(obj)
+		
+	})
 	customAjax({
-	    url: '/pharmacy/addPharmacistInPharmacy/' + email + '/' + dermatologistId,
+	    url: '/pharmacy/addPharmacistInPharmacy/' + email,
 	    method: 'POST',
+	    data:JSON.stringify({firstName:firstName,lastName:lastName,email:pharmacistEmail,password:password,workingTimes:workingTimes}),
 	    contentType: 'application/json',
 	    success: function(){
-	    	$('input[name="radniDan"]:checked').each(function () {
-	    		//var workingDay = document.getElementById(this.id);
-	    		var workingDay = this.id;
-	    		var startTime = $("#start"+this.id).val();
-	    		var endTime = $("#end"+this.id).val();
-	    		obj = JSON.stringify({
-	    			startTime:startTime,
-	    			endTime:endTime
-	    			});
-	    		console.log(obj);
-	    		customAjax({
-		    	    url: '/pharmacy/addWorkingDayPharmacist/' + dermatologistId + '/' + email + '/' + workingDay,
-		    	    method: 'POST',
-		    	    data : obj,
-		    	    contentType: 'application/json',
-		    	    success: function(){
-		    	    	
-		    	    },
-		    	    error: function(){
-		    	    	console.log(obj)
-		    	    	console.log(data)
-		    	    	alert("Failed")
-		    	    }
-
-		    	});
-	    	
-	    	});
-		      alert("Success added dermatologist in pharmacy")
+	    		alert("Success added pharmacist in pharmacy!")
 				  location.href = "adminpharmacy.html"
 	    },
 	    error: function(){
