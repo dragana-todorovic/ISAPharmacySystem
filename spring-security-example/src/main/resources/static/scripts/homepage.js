@@ -61,6 +61,7 @@ function showMedicine(data){
 			<td>`+data[i].producer+`</td>
 			<td>`+data[i].withprescription+`</td>
 			<td>`+data[i].notes+`</td>
+			
 			</tr>`;
 	}
 	$('#medicine_table').html(temp);

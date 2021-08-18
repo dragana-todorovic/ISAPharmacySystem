@@ -22,6 +22,7 @@ import rs.ac.uns.ftn.informatika.spring.security.model.DermatologistAppointment;
 import rs.ac.uns.ftn.informatika.spring.security.model.HolidayRequest;
 import rs.ac.uns.ftn.informatika.spring.security.model.HolidayRequestStatus;
 import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
+import rs.ac.uns.ftn.informatika.spring.security.model.MedicineReservation;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicineWithQuantity;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacist;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacistCounseling;
@@ -37,9 +38,14 @@ import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyService;
 import rs.ac.uns.ftn.informatika.spring.security.service.UserService;
 import rs.ac.uns.ftn.informatika.spring.security.view.ActionAndBenefitDTO;
 import rs.ac.uns.ftn.informatika.spring.security.view.EditPharmacyView;
+
+import rs.ac.uns.ftn.informatika.spring.security.view.MedicineReservationView;
+import rs.ac.uns.ftn.informatika.spring.security.view.PharmacyWithMedicationView;
+
 import rs.ac.uns.ftn.informatika.spring.security.view.NewDermatologistDTO;
 import rs.ac.uns.ftn.informatika.spring.security.view.NewPharmacistDTO;
 import rs.ac.uns.ftn.informatika.spring.security.view.WorkingDayDTO;
+
 
 import java.time.LocalTime;
 import java.util.HashSet;
@@ -48,6 +54,7 @@ import rs.ac.uns.ftn.informatika.spring.security.model.Dermatologist;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacist;
 import rs.ac.uns.ftn.informatika.spring.security.model.WorkingDay;
 import rs.ac.uns.ftn.informatika.spring.security.model.WorkingTime;
+import rs.ac.uns.ftn.informatika.spring.security.model.DTO.MedicineReservationDTO;
 import rs.ac.uns.ftn.informatika.spring.security.repository.DermatologistRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.HolidayRequestRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacistCounselingRepository;
@@ -538,6 +545,33 @@ public class PharmacyServiceImpl implements PharmacyService{
 		}
 
 	@Override
+
+	public Collection<PharmacyWithMedicationView> getPharamciesWithMedication(Long id) {
+		ArrayList<PharmacyWithMedicationView> pharmacies = new ArrayList <PharmacyWithMedicationView>();
+		for (Pharmacy pharmacy : pharmacyRepository.findAll()) {
+			for (MedicineWithQuantity medi : pharmacy.getMedicineWithQuantity()) {
+				if (medi.getMedicine().getId()==id) {
+					PharmacyWithMedicationView ph = new PharmacyWithMedicationView(pharmacy.getName(),pharmacy.getAddress().getStreet(),pharmacy.getAddress().getCity(),pharmacy.getId());
+					pharmacies.add(ph);
+				}
+			}
+		}
+		return pharmacies;
+	}
+
+	@Override
+	public Collection<MedicineReservationView> getReservationsByPatientsEmail(String email) {
+		ArrayList<MedicineReservationView> reservations = new ArrayList<MedicineReservationView>();
+		for(Pharmacy ph:findAll()) {
+			for(MedicineReservation mR:ph.getMedicineReservations()) {
+				if(mR.getPatient().getUser().getEmail().equals(email)) {
+					MedicineReservationView myRes=new MedicineReservationView(mR.getMedicineWithQuantity().getMedicine().getName(),ph.getName(),ph.getAddress().getCity(),ph.getAddress().getStreet(),mR.getDueTo(),mR.getMedicineWithQuantity().getQuantity());
+					reservations.add(myRes);
+				}
+			}
+		}
+		return reservations;
+  }
 	public Set<HolidayRequest> getHolidayRequestsByPharmacy(long id,String email) {
 		Dermatologist dermatologist = this.dermatologistRepository.findById(id).get();
 

@@ -47,12 +47,16 @@ import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PriceListService;
 import rs.ac.uns.ftn.informatika.spring.security.service.UserService;
 import rs.ac.uns.ftn.informatika.spring.security.view.EditPharmacyView;
+
+import rs.ac.uns.ftn.informatika.spring.security.view.PharmacyWithMedicationView;
+
 import rs.ac.uns.ftn.informatika.spring.security.view.MedicineForOrderView;
 import rs.ac.uns.ftn.informatika.spring.security.view.MedicinePriceDTO;
 import rs.ac.uns.ftn.informatika.spring.security.view.NewDermatologistDTO;
 import rs.ac.uns.ftn.informatika.spring.security.view.NewOrderDTO;
 import rs.ac.uns.ftn.informatika.spring.security.view.NewPharmacistDTO;
 import rs.ac.uns.ftn.informatika.spring.security.view.PriceListDTO;
+
 import rs.ac.uns.ftn.informatika.spring.security.view.UserRegisterView;
 
 @RestController
@@ -282,6 +286,14 @@ public class PharmacyController {
 		
 	}
 	
+
+	@GetMapping(value = "/getPharamcyWithMedicine/{let}",produces = MediaType.APPLICATION_JSON_VALUE)
+	public Collection<PharmacyWithMedicationView> getPharamcyWithMedicine(@PathVariable("let") Long let) {
+		return pharmacyService.getPharamciesWithMedication(let);
+	}
+	
+	
+
 	@GetMapping("/getHolidayRequests/{id}/{email}")
 	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
 	public Set<HolidayRequest> getHolidayRequests(@PathVariable(name="id") String id,@PathVariable(name="email") String email) {
@@ -300,5 +312,6 @@ public class PharmacyController {
 		this.pharmacyService.declineHolidayRequest(Long.parseLong(id));
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
+
 }
 	

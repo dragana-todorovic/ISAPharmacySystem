@@ -275,9 +275,9 @@ INSERT INTO medicineorder_medicines(medicine_order_id,medicines_id) VALUES (2,3)
 INSERT INTO medicineorder_medicines(medicine_order_id,medicines_id) VALUES (1,9);
 
 --medicine reservation
-INSERT INTO medicinereservation(id,due_to,status,medicine_with_quantity_id,patient_id) VALUES (1,'2017-12-04 21:58:58.508-07',0,1,1);
-INSERT INTO medicinereservation(id,due_to,status,medicine_with_quantity_id,patient_id) VALUES (2,'2017-10-04 21:58:58.508-07',0,4,1);
-INSERT INTO medicinereservation(id,due_to,status,medicine_with_quantity_id,patient_id) VALUES (3,'2017-12-04 21:58:58.508-07',0,1,2);
+INSERT INTO medicinereservation(due_to,status,medicine_with_quantity_id,patient_id) VALUES ('2017-12-04 21:58:58.508-07',0,1,1);
+INSERT INTO medicinereservation(due_to,status,medicine_with_quantity_id,patient_id) VALUES ('2017-10-04 21:58:58.508-07',0,4,1);
+INSERT INTO medicinereservation(due_to,status,medicine_with_quantity_id,patient_id) VALUES ('2017-12-04 21:58:58.508-07',0,1,2);
 
 --pharmacy medicine reservations
 INSERT INTO pharmacy_medicine_reservations(pharmacy_id,medicine_reservations_id) VALUES (2,1);
