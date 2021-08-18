@@ -98,8 +98,6 @@ public class AuthenticationController {
 	// Endpoint za registraciju novog korisnika
 	@PostMapping("/register")
 	public ResponseEntity<User> addUser(@RequestBody UserRegisterView userRequest, UriComponentsBuilder ucBuilder) {
-		System.out.println(userRequest);
-		System.out.println(userRequest.getPhone());
 		User existUser = this.userService.findByUsername(userRequest.getUsername());
 		User existUserByEmail = this.userService.findByEmail(userRequest.getEmail());
 		if (existUserByEmail != null) {
