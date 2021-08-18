@@ -25,7 +25,7 @@ public interface MedicineService {
 	
 	void saveReservation(MedicineReservationDTO medicineReservationDto);
 
-	Optional<Medicine> findById(Long id);
+	
 
 
 	Set<Medicine> getAllMedicinesExceptExisted (String email);

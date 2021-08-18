@@ -1,4 +1,6 @@
 var email = localStorage.getItem('email')
+
+let radnoVrijemeSelektovanog;
 const days = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY","SATURDAY","SUNDAY"];
 
 
@@ -149,6 +151,11 @@ let showDermatologists = function(data) {
 		Delete
 		</button>
 		<br>
+		<button id = "`+data[i].id+`" name="izmijeniDermatologa" class="ui button">
+		<i class="edit icon"></i>
+		Edit
+		</button>
+		</td><td>
 			<button id = "`+data[i].id+`" name="prikaziZahjeve" class="ui secondary button">
 		<i class="eye icon"></i>
 		Show vacation requests
@@ -161,7 +168,7 @@ let showDermatologists = function(data) {
 			    margin-right:auto; margin-top: 40px;">
 			    
 	  <thead>
-	  <tr> <th colspan="5">
+	  <tr> <th colspan="6">
 	  Filter by rating:
 	  <div class="ui input left">
                <input type="number" name="filter" placeholder = "Od..." id="odOcjena" min="0" style="width:80px;"/></div>
@@ -169,7 +176,7 @@ let showDermatologists = function(data) {
                <input type="number" name="filter" id="doOcjena" placeholder = "Do..." min="0" style="width:80px;"/></div>
            </th>
            </tr><tr>
-           <th colspan="5">
+           <th colspan="6">
              <div id="filterApoteke">
     </br><b>Filtriraj po apoteci:</b><br/>
         ${t}
@@ -177,7 +184,7 @@ let showDermatologists = function(data) {
            </th>
             </tr>
 	  <tr>
-			<th colspan="5">
+			<th colspan="6">
 			 <div class="ui input left">
       <input type="text" placeholder="Search by first name..." id="firstNameSearch">
     </div>
@@ -195,12 +202,13 @@ let showDermatologists = function(data) {
 	    <th>Avarage rating</th>
 	    <th>Pharmacies</th>
 	    <th>Options</th>
+	     <th>Vaction requests</th>
 	  </tr></thead><tbody id="tabelaDermatologa">
 	  </tbody>
 	  <tfoot class="full-width">
 			    <tr>
 			      <th></th>
-			      <th colspan="4">
+			      <th colspan="6">
 					   <input id = "addNew" class="ui right floated teal button" type = "button" value = "Add new dermatologist"></input>
 			    
 			      </th>
@@ -252,6 +260,34 @@ $('.ui.dropdown')
      
   </div>
 </div>
+
+
+ <div id="modalniZaIzmjenuDermatologa" class="ui modal">
+  <i class="close icon"></i>
+  <div class="header">
+	Edit dermatologist
+  </div>
+  <div class="content">
+
+    <table class="ui basic large table" style="width:100%; margin-left:auto; 
+			    margin-right:auto; margin-top: 40px;">
+    <tbody id = "editTable">
+					        </tbody>
+					        
+					    </table>
+  </div>
+  <div class="actions">
+    <div class="ui black deny button">
+      Nope
+    </div>
+      <input class="ui right floated positive button" type = "button" value = "Edit" id="editDermatologist"></input>
+			 
+     
+  </div>
+</div>
+
+
+
 
 
 <div id="errorDelete" class="ui modal">
@@ -390,6 +426,28 @@ $("button[name=prikaziZahjeve]").click(function() {
 	    });
 	
  });
+
+$("button[name=izmijeniDermatologa]").click(function() {
+	idSelected = this.id	
+		        	customAjax({
+		      	      url: '/pharmacy/getDermatologistWorkingTimes/' + idSelected + '/' + email,
+		      	      method: 'GET',
+		      		  contentType: 'application/json',
+		      		        success: function(data){
+		      		        	editDermatologist(data)
+		      					  
+		      				},
+		      			      error: function(){
+		      			      }
+		      	    });
+		        		
+					 
+					  $('#modalniZaIzmjenuDermatologa')
+					  .modal('show')
+					  
+	
+ });
+
 
 $('#addNew').click(function() {
 	 $('#modalniZaNovogDermatologa')
@@ -696,6 +754,53 @@ $("#addDermatologist").click(function() {
 });
 }
 
+let editDermatologist = function(dani) {
+	let radnoVrijeme = '';
+	let pomocna = days;
+		for(i in dani.workingDays) {
+				radnoVrijeme += `<tr><td><div class="ui checkbox">
+					  <input type="checkbox" id = "`+dani.workingDays[i].day+`" name="radniDan" checked>
+					  <label>`+dani.workingDays[i].day+`</label></td><td>
+					    <div class="ui input left icon">
+					     <div class="ui input left icon">
+					      <input type="time" value="07:30:00" placeholder="Time" id = "start`+dani.workingDays[i].day+`">
+					  </div>
+					</div></td><td>
+					    <div class="ui input left icon">
+					      <div class="ui input left icon">
+					      <input type="time" value="16:00:00" placeholder="Time" id = "end`+dani.workingDays[i].day+`">
+					  </div>
+					</div>
+					</td></tr>`
+					for(k in days) {
+						if(days[k] == dani.workingDays[i].day) {
+							pomocna.splice(k, 1); 
+						}
+					}
+					      
+			}
+	for(i in pomocna) {
+		radnoVrijeme += `<tr><td><div class="ui checkbox">
+			  <input type="checkbox" id = "`+pomocna[i]+`" name="radniDan">
+			  <label>`+pomocna[i]+`</label></td><td>
+			    <div class="ui input left icon">
+			     <div class="ui input left icon">
+			      <input type="time" value="07:30:00" placeholder="Time" id = "start`+pomocna[i]+`">
+			  </div>
+			</div></td><td>
+			    <div class="ui input left icon">
+			      <div class="ui input left icon">
+			      <input type="time" value="16:00:00" placeholder="Time" id = "end`+pomocna[i]+`">
+			  </div>
+			</div>
+			</td></tr>`;
+	}
+			
+	console.log(pomocna)
+	
+	$('#editTable').html(radnoVrijeme)
+	
+}
 
 
 
