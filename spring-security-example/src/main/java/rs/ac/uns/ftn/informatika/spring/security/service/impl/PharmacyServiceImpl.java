@@ -566,6 +566,23 @@ public class PharmacyServiceImpl implements PharmacyService{
 		this.holidayRequestRepository.save(holidayRequest);
 		
 	}
+
+	@Override
+	public WorkingTime getDermatologistWorkingTimes(long id, String email) {
+		Dermatologist dermatologist = this.dermatologistRepository.findById(id).get();
+
+		PharmacyAdmin pa = pharmacyAdminService.findPharmacyAdminByUser(userService.findByEmail(email));
+		Pharmacy p = pa.getPharmacy(); 
+		
+		for(WorkingTime wt : dermatologist.getWorkingTimes()) {
+			if(wt.getPharmacy().equals(p)) {
+				return wt;
+			}
+		}
+		return null;
+		
+		
+	}
 }
 
 

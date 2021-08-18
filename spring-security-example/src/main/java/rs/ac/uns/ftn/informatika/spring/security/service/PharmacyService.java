@@ -31,6 +31,7 @@ import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
 import rs.ac.uns.ftn.informatika.spring.security.model.User;
 import rs.ac.uns.ftn.informatika.spring.security.model.WorkingDay;
+import rs.ac.uns.ftn.informatika.spring.security.model.WorkingTime;
 import rs.ac.uns.ftn.informatika.spring.security.view.ActionAndBenefitDTO;
 import rs.ac.uns.ftn.informatika.spring.security.view.EditPharmacyView;
 
@@ -67,4 +68,5 @@ public interface PharmacyService {
 	Set<HolidayRequest> getHolidayRequestsByPharmacy(long id, String email);
 	void acceptHolidayRequest(long id);
 	void declineHolidayRequest(long id);
+	WorkingTime getDermatologistWorkingTimes(long id, String email);
 }
