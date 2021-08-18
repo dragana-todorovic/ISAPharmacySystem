@@ -38,6 +38,7 @@ import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyAdminService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyService;
 import rs.ac.uns.ftn.informatika.spring.security.service.UserService;
 import rs.ac.uns.ftn.informatika.spring.security.view.EditPharmacyView;
+import rs.ac.uns.ftn.informatika.spring.security.view.PharmacyWithMedicationView;
 import rs.ac.uns.ftn.informatika.spring.security.view.UserRegisterView;
 import rs.ac.uns.ftn.informatika.spring.security.view.WorkingTimeIntervalDTO;
 
@@ -234,5 +235,13 @@ public class PharmacyController {
 		return new ResponseEntity<>(HttpStatus.OK);
 		
 	}
+	
+	@GetMapping(value = "/getPharamcyWithMedicine/{let}",produces = MediaType.APPLICATION_JSON_VALUE)
+	public Collection<PharmacyWithMedicationView> getPharamcyWithMedicine(@PathVariable("let") Long let) {
+		return pharmacyService.getPharamciesWithMedication(let);
+	}
+	
+	
+	
 }
 	
