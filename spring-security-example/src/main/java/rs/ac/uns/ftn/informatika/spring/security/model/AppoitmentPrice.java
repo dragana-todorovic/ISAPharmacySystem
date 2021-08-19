@@ -24,4 +24,28 @@ public class AppoitmentPrice {
 	 @Column(name = "price", nullable = false)
 	private double price;
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public DermatologistAppointment getAppoitment() {
+		return appoitment;
+	}
+
+	public void setAppoitment(DermatologistAppointment appoitment) {
+		this.appoitment = appoitment;
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
 }

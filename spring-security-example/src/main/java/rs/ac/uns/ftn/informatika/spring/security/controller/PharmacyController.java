@@ -379,6 +379,8 @@ public class PharmacyController {
 	public List<StatisticDTO> getMedicineConsumptionByQuarter(@PathVariable(name="email") String email) {
 		return this.statisticService.getMedicineConsumptionQuarter(email);
 	}
+	
+	
 
 }
 
