@@ -299,6 +299,47 @@ $(document).ready(function(e){
 	});
 
 	})
+	
+	$("#medicineConsumption").click(function() {
+		 customAjax({
+		      url: '/pharmacy/getMedicineConsumptionByYear/' + email,
+		      method: 'GET',
+		      async: false,
+		      contentType: 'application/json',
+		      success: function(data){
+		    	 
+		    	  console.log(data)
+		      },
+		      error: function(){
+		      }
+		 });
+		 
+		 customAjax({
+		      url: '/pharmacy/getMedicineConsumptionByMonth/' + email,
+		      method: 'GET',
+		      async: false,
+		      contentType: 'application/json',
+		      success: function(data){
+		    	 
+		    	  console.log(data)
+		      },
+		      error: function(){
+		      }
+		 });
+		 
+		customAjax({
+		      url: '/pharmacy/getMedicineConsumptionByQuarter/' + email,
+		      method: 'GET',
+		      async: false,
+		      contentType: 'application/json',
+		      success: function(data){
+		    	 
+		    	  console.log(data)
+		      },
+		      error: function(){
+		      }
+		 });
+	});
 
 
 });

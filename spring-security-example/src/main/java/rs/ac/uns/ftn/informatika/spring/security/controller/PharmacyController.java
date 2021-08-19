@@ -361,6 +361,24 @@ public class PharmacyController {
 	public List<StatisticDTO> getPharmacistConselingByQuarter(@PathVariable(name="email") String email) {
 		return this.statisticService.getPharmacistConselingByQuarter(email);
 	}
+	
+	@GetMapping("/getMedicineConsumptionByYear/{email}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public List<StatisticDTO> getMedicineConsumptionByYear(@PathVariable(name="email") String email) {
+		return this.statisticService.getMedicineConsumptionByYear(email);
+	}
+	
+	@GetMapping("/getMedicineConsumptionByMonth/{email}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public List<StatisticDTO> getMedicineConsumptionByMonth(@PathVariable(name="email") String email) {
+		return this.statisticService.getMedicineConsumptionByMonth(email);
+	}
+	
+	@GetMapping("/getMedicineConsumptionByQuarter/{email}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public List<StatisticDTO> getMedicineConsumptionByQuarter(@PathVariable(name="email") String email) {
+		return this.statisticService.getMedicineConsumptionQuarter(email);
+	}
 
 }
 

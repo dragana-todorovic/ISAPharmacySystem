@@ -18,4 +18,10 @@ public interface StatisticService {
 
 	List<StatisticDTO> getPharmacistConselingByQuarter(String email);
 
+	List<StatisticDTO> getMedicineConsumptionByYear(String email);
+
+	List<StatisticDTO> getMedicineConsumptionByMonth(String email);
+
+	List<StatisticDTO> getMedicineConsumptionQuarter(String email);
+
 }
