@@ -193,19 +193,19 @@ public class StatisticServiceImpl implements StatisticService{
 		Collections.sort(allDates);
 		
 		List<String> quarter = new ArrayList<String>(); 
-		int current = 1;
+		String current = "";
 		for(LocalDateTime l : allDates) {
 			if(l.getMonthValue() > 0 && l.getMonthValue() < 4) {
-				current = 1;
+				current = "First quarter";
 			} else if (l.getMonthValue() > 3 && l.getMonthValue() < 7) {
-				current = 2;
+				current = "Second quarter";
 			} else if (l.getMonthValue() > 6 && l.getMonthValue() < 10) {
-				current = 3;
+				current = "Third quarter";
 			} else if (l.getMonthValue() > 9 && l.getMonthValue() <= 12) {
-				current = 4;
+				current = "Fourth quarter";
 			}
-			if(!quarter.contains(String.valueOf(current) + "/" + l.getYear())) {
-				quarter.add(String.valueOf(current) + "/" + l.getYear());
+			if(!quarter.contains(current + "/" + l.getYear())) {
+				quarter.add(current + "/" + l.getYear());
 			}
 			
 		}
@@ -214,22 +214,22 @@ public class StatisticServiceImpl implements StatisticService{
 		for(String q : quarter) {
 			StatisticDTO statistic = new StatisticDTO();
 			statistic.setTime(q.toString());
-			if(q.split("/")[0].equals("1")) {
+			if(q.split("/")[0].equals("First quarter")) {
 				statistic.setData((int)result.stream().filter(r -> r.getStartDateTime().getYear() == Integer.parseInt(q.split("/")[1]) && 
 						r.getStartDateTime().getMonthValue() > 0 && r.getStartDateTime().getMonthValue() < 4
 						
 						).count());
-			} else if(q.split("/")[0].equals("2")) {
+			} else if(q.split("/")[0].equals("Second quarter")) {
 				statistic.setData((int)result.stream().filter(r -> r.getStartDateTime().getYear() == Integer.parseInt(q.split("/")[1]) && 
 						r.getStartDateTime().getMonthValue() > 3 && r.getStartDateTime().getMonthValue() < 7
 						
 						).count());
-			} else if(q.split("/")[0].equals("3")) {
+			} else if(q.split("/")[0].equals("Third quarter")) {
 				statistic.setData((int)result.stream().filter(r -> r.getStartDateTime().getYear() == Integer.parseInt(q.split("/")[1]) && 
 						r.getStartDateTime().getMonthValue() > 6 && r.getStartDateTime().getMonthValue() < 10
 						
 						).count());
-			} else if(q.split("/")[0].equals("4")) {
+			} else if(q.split("/")[0].equals("Fourth quarter")) {
 				statistic.setData((int)result.stream().filter(r -> r.getStartDateTime().getYear() == Integer.parseInt(q.split("/")[1]) && 
 						r.getStartDateTime().getMonthValue() > 9 && r.getStartDateTime().getMonthValue() <= 12
 						
@@ -372,19 +372,19 @@ public class StatisticServiceImpl implements StatisticService{
 		Collections.sort(allDates);
 		
 		List<String> quarter = new ArrayList<String>(); 
-		int current = 1;
+		String current = "";
 		for(LocalDateTime l : allDates) {
 			if(l.getMonthValue() > 0 && l.getMonthValue() < 4) {
-				current = 1;
+				current = "First quarter";
 			} else if (l.getMonthValue() > 3 && l.getMonthValue() < 7) {
-				current = 2;
+				current = "Second quarter";
 			} else if (l.getMonthValue() > 6 && l.getMonthValue() < 10) {
-				current = 3;
+				current = "Third quarter";
 			} else if (l.getMonthValue() > 9 && l.getMonthValue() <= 12) {
-				current = 4;
+				current = "Fourth quarter";
 			}
-			if(!quarter.contains(String.valueOf(current) + "/" + l.getYear())) {
-				quarter.add(String.valueOf(current) + "/" + l.getYear());
+			if(!quarter.contains(current + "/" + l.getYear())) {
+				quarter.add(current + "/" + l.getYear());
 			}
 			
 		}
@@ -393,22 +393,22 @@ public class StatisticServiceImpl implements StatisticService{
 		for(String q : quarter) {
 			StatisticDTO statistic = new StatisticDTO();
 			statistic.setTime(q.toString());
-			if(q.split("/")[0].equals("1")) {
+			if(q.split("/")[0].equals("First quarter")) {
 				statistic.setData((int)result.stream().filter(r -> r.getStartDateTime().getYear() == Integer.parseInt(q.split("/")[1]) && 
 						r.getStartDateTime().getMonthValue() > 0 && r.getStartDateTime().getMonthValue() < 4
 						
 						).count());
-			} else if(q.split("/")[0].equals("2")) {
+			} else if(q.split("/")[0].equals("Second quarter")) {
 				statistic.setData((int)result.stream().filter(r -> r.getStartDateTime().getYear() == Integer.parseInt(q.split("/")[1]) && 
 						r.getStartDateTime().getMonthValue() > 3 && r.getStartDateTime().getMonthValue() < 7
 						
 						).count());
-			} else if(q.split("/")[0].equals("3")) {
+			} else if(q.split("/")[0].equals("Third quarter")) {
 				statistic.setData((int)result.stream().filter(r -> r.getStartDateTime().getYear() == Integer.parseInt(q.split("/")[1]) && 
 						r.getStartDateTime().getMonthValue() > 6 && r.getStartDateTime().getMonthValue() < 10
 						
 						).count());
-			} else if(q.split("/")[0].equals("4")) {
+			} else if(q.split("/")[0].equals("Fourth quarter")) {
 				statistic.setData((int)result.stream().filter(r -> r.getStartDateTime().getYear() == Integer.parseInt(q.split("/")[1]) && 
 						r.getStartDateTime().getMonthValue() > 9 && r.getStartDateTime().getMonthValue() <= 12
 						
@@ -549,19 +549,19 @@ public class StatisticServiceImpl implements StatisticService{
 		Collections.sort(allDates);
 		
 		List<String> quarter = new ArrayList<String>(); 
-		int current = 1;
+		String current = "";
 		for(LocalDate l : allDates) {
 			if(l.getMonthValue() > 0 && l.getMonthValue() < 4) {
-				current = 1;
+				current = "First quarter";
 			} else if (l.getMonthValue() > 3 && l.getMonthValue() < 7) {
-				current = 2;
+				current = "Second quarter";
 			} else if (l.getMonthValue() > 6 && l.getMonthValue() < 10) {
-				current = 3;
+				current = "Third quarter";
 			} else if (l.getMonthValue() > 9 && l.getMonthValue() <= 12) {
-				current = 4;
+				current = "Fourth quarter";
 			}
-			if(!quarter.contains(String.valueOf(current) + "/" + l.getYear())) {
-				quarter.add(String.valueOf(current) + "/" + l.getYear());
+			if(!quarter.contains(current + "/" + l.getYear())) {
+				quarter.add(current + "/" + l.getYear());
 			}
 			
 		}
@@ -571,19 +571,19 @@ public class StatisticServiceImpl implements StatisticService{
 			StatisticDTO statistic = new StatisticDTO();
 			int quantity = 0;
 			for(MedicineReservation mr : result) {
-				if(q.split("/")[0].equals("1") && mr.getDueTo().getYear() == Integer.parseInt(q.split("/")[1]) && 
+				if(q.split("/")[0].equals("First quarter") && mr.getDueTo().getYear() == Integer.parseInt(q.split("/")[1]) && 
 						mr.getDueTo().getMonthValue() > 0 && mr.getDueTo().getMonthValue() < 4) {
 					quantity += mr.getMedicineWithQuantity().getQuantity();
 				}
-				else if(q.split("/")[0].equals("2") && mr.getDueTo().getYear() == Integer.parseInt(q.split("/")[1]) && 
+				else if(q.split("/")[0].equals("Second quarter") && mr.getDueTo().getYear() == Integer.parseInt(q.split("/")[1]) && 
 						mr.getDueTo().getMonthValue() > 3 && mr.getDueTo().getMonthValue() < 7) {
 					quantity += mr.getMedicineWithQuantity().getQuantity();
 				}
-				else if(q.split("/")[0].equals("3") && mr.getDueTo().getYear() == Integer.parseInt(q.split("/")[1]) && 
+				else if(q.split("/")[0].equals("Third quarter") && mr.getDueTo().getYear() == Integer.parseInt(q.split("/")[1]) && 
 						mr.getDueTo().getMonthValue() > 6 && mr.getDueTo().getMonthValue() < 10) {
 					quantity += mr.getMedicineWithQuantity().getQuantity();
 				}
-				else if(q.split("/")[0].equals("4") && mr.getDueTo().getYear() == Integer.parseInt(q.split("/")[1]) && 
+				else if(q.split("/")[0].equals("Fourth quarter") && mr.getDueTo().getYear() == Integer.parseInt(q.split("/")[1]) && 
 						mr.getDueTo().getMonthValue() > 9 && mr.getDueTo().getMonthValue() <= 12) {
 					quantity += mr.getMedicineWithQuantity().getQuantity();
 				}
