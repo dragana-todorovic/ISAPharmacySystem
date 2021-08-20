@@ -13,14 +13,17 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import rs.ac.uns.ftn.informatika.spring.security.model.AppoitmentPrice;
 import rs.ac.uns.ftn.informatika.spring.security.model.Dermatologist;
 import rs.ac.uns.ftn.informatika.spring.security.model.DermatologistAppointment;
 import rs.ac.uns.ftn.informatika.spring.security.model.HolidayRequest;
 import rs.ac.uns.ftn.informatika.spring.security.model.HolidayRequestStatus;
 import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
+import rs.ac.uns.ftn.informatika.spring.security.model.MedicineWithQuantity;
 import rs.ac.uns.ftn.informatika.spring.security.model.Patient;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacistCounseling;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
+import rs.ac.uns.ftn.informatika.spring.security.model.RequestForMedicineAvailability;
 import rs.ac.uns.ftn.informatika.spring.security.model.Therapy;
 import rs.ac.uns.ftn.informatika.spring.security.model.User;
 import rs.ac.uns.ftn.informatika.spring.security.model.WorkingDay;
@@ -28,11 +31,14 @@ import rs.ac.uns.ftn.informatika.spring.security.model.WorkingTime;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.AppointmentDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.HolidayRequestDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.MyPatientDTO;
+import rs.ac.uns.ftn.informatika.spring.security.repository.AppointmentPriceRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.DermatologistAppointmentRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.DermatologistRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.HolidayRequestRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.MedicineRepository;
+import rs.ac.uns.ftn.informatika.spring.security.repository.MedicineWithQuantityRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PatientRepository;
+import rs.ac.uns.ftn.informatika.spring.security.repository.RequestForMedicineAvailabilityRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.UserRepository;
 import rs.ac.uns.ftn.informatika.spring.security.service.DermatologistAppointmentService;
 import rs.ac.uns.ftn.informatika.spring.security.service.DermatologistService;
@@ -44,9 +50,15 @@ public class DermatologistServiceImpl implements DermatologistService{
 	@Autowired
 	private DermatologistRepository dermatologistRepository;
 	@Autowired
+	private MedicineWithQuantityRepository medicineWithQuantityRepository;
+	@Autowired
+	private AppointmentPriceRepository appointmentPriceRepository;
+	@Autowired
 	private DermatologistAppointmentService dermatologistAppointmentService;
 	@Autowired
 	private HolidayRequestRepository holidayRequestRepository;
+	@Autowired
+	private RequestForMedicineAvailabilityRepository requestForMedicineAvailabilityRepository;
 	@Autowired
 	private DermatologistAppointmentRepository dermatologistAppointmentRepository;
 	@Autowired
@@ -158,7 +170,32 @@ public class DermatologistServiceImpl implements DermatologistService{
 		System.out.println("NULLLLLLLLLLLLLLLLLLLLLLLLLLL");
 		return null;
 	}
-
+	//startDate za provjeru da li je taj dan 
+		//startDateTime za provjeru vremena
+		//moram provjeriti i za start i za end, jer ako pregled traje pola sata moram vidjeti da li je pregled ukljucen u radno vrijeme
+		@Override
+		public Boolean isMedicineAvailable(Pharmacy pharmacy, String medicineId) {
+			Set<MedicineWithQuantity> medicines = pharmacy.getMedicineWithQuantity();
+			for(MedicineWithQuantity mq:medicines) {
+				System.out.println("Quantity"+mq.getMedicine().getName()+mq.getQuantity());
+			}
+			for(MedicineWithQuantity mq: medicines) {
+				
+				if(mq.getMedicine().getId().equals(Long.parseLong(medicineId)) ) {
+					if(mq.getQuantity()==0) {
+						RequestForMedicineAvailability rq = new RequestForMedicineAvailability();
+						rq.setCreatedAt(LocalDateTime.now());
+						rq.setMedicineWithQuantity(mq);
+						rq.setPharmacy(pharmacy);
+						requestForMedicineAvailabilityRepository.save(rq);
+						
+						return false;
+					}
+					return true;
+				}
+			}
+			return false;
+		}
 	@Override
 	public List<Medicine> getMedicines() {
 		List<Medicine> result = medicineRepository.findAll();
@@ -166,22 +203,41 @@ public class DermatologistServiceImpl implements DermatologistService{
 	}
 
 	@Override
-	public void saveAppointment(AppointmentDTO appointmantDTO) {
+	public void saveAppointment(AppointmentDTO appointmantDTO,Pharmacy pharmacy) {
+		System.out.println("AppointmentDTO"+appointmantDTO.getPatientId());
+		LocalDateTime startDateTime=LocalDateTime.parse(appointmantDTO.getStartDate());
 		try{
 			for(DermatologistAppointment d:dermatologistAppointmentRepository.findAll()) {
-				if(d.getDermatologist().getUser().getEmail().equals(appointmantDTO.getDermatologistEmail()) && d.getPatient().getUser().getEmail().equals(appointmantDTO.getPatientEmail())) {
+				if(d.getDermatologist().getUser().getEmail().equals(appointmantDTO.getDermatologistEmail()) && d.getPatient().getUser().getEmail().equals(appointmantDTO.getPatientEmail()) && d.getStartDateTime().equals(startDateTime)) {
 					d.setDescription(appointmantDTO.getDiagnosis());
 					d.setStartDateTime(LocalDateTime.now());
 					
 					System.out.println("Medicineee namee"+appointmantDTO.getMedicineName());
 					if(appointmantDTO.getMedicineName()!="") {
 					Therapy therapy = new Therapy();
-					therapy.setMedicine(medicineRepository.findByName(appointmantDTO.getMedicineName()));
+					System.out.println("Ispod medicine"+medicineRepository.findById(Long.parseLong(appointmantDTO.getMedicineName().split(",sifra ")[1])).get().getName());
+					therapy.setMedicine(medicineRepository.findById(Long.parseLong(appointmantDTO.getMedicineName().split(",sifra ")[1])).get());
+					therapy.setDuration(Integer.parseInt(appointmantDTO.getTherapyDuration()));
 					d.setTherapy(therapy);
 					}
 					
-					d.setDuration(Integer.parseInt(appointmantDTO.getDuration()));
 					dermatologistAppointmentRepository.save(d);
+					AppoitmentPrice price = new AppoitmentPrice();
+					price.setAppoitment(d);
+					price.setPrice(Double.parseDouble(appointmantDTO.getPrice()));
+					appointmentPriceRepository.save(price);
+					Medicine  prescribedMedicine = medicineRepository.findById(Long.parseLong(appointmantDTO.getMedicineName().split(",sifra ")[1])).get();
+					
+					
+					for(MedicineWithQuantity m:pharmacy.getMedicineWithQuantity()) {
+						if(m.getMedicine().getId().equals(prescribedMedicine.getId())) {
+							m.setQuantity(m.getQuantity() - 1);
+							medicineWithQuantityRepository.save(m);
+							return;
+						}
+					}
+					
+					
 				}
 			}
 	
@@ -316,4 +372,6 @@ public class DermatologistServiceImpl implements DermatologistService{
 	
 		return true;
 	}
+
+
 }

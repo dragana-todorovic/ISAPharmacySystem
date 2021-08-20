@@ -6,19 +6,24 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import rs.ac.uns.ftn.informatika.spring.security.model.AppoitmentPrice;
 import rs.ac.uns.ftn.informatika.spring.security.model.Dermatologist;
 import rs.ac.uns.ftn.informatika.spring.security.model.DermatologistAppointment;
 import rs.ac.uns.ftn.informatika.spring.security.model.HolidayRequest;
 import rs.ac.uns.ftn.informatika.spring.security.model.HolidayRequestStatus;
 import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
+import rs.ac.uns.ftn.informatika.spring.security.model.MedicineWithQuantity;
 import rs.ac.uns.ftn.informatika.spring.security.model.Patient;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacist;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacistCounseling;
+import rs.ac.uns.ftn.informatika.spring.security.model.PharmacistCounselingPrice;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
+import rs.ac.uns.ftn.informatika.spring.security.model.RequestForMedicineAvailability;
 import rs.ac.uns.ftn.informatika.spring.security.model.Therapy;
 import rs.ac.uns.ftn.informatika.spring.security.model.User;
 import rs.ac.uns.ftn.informatika.spring.security.model.WorkingDay;
@@ -26,11 +31,15 @@ import rs.ac.uns.ftn.informatika.spring.security.model.WorkingTime;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.AppointmentDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.HolidayRequestDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.MyPatientDTO;
+import rs.ac.uns.ftn.informatika.spring.security.repository.AppointmentPriceRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.DermatologistRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.HolidayRequestRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.MedicineRepository;
+import rs.ac.uns.ftn.informatika.spring.security.repository.MedicineWithQuantityRepository;
+import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacistCounselingPriceRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacistCounselingRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacistRepository;
+import rs.ac.uns.ftn.informatika.spring.security.repository.RequestForMedicineAvailabilityRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.UserRepository;
 import rs.ac.uns.ftn.informatika.spring.security.service.DermatologistAppointmentService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacistCounselingService;
@@ -44,13 +53,21 @@ public class PharmacistServiceImpl implements PharmacistService {
 	@Autowired
 	private HolidayRequestRepository holidayRequestRepository;
 	@Autowired
+	private AppointmentPriceRepository appointmentPriceRepository;
+	@Autowired
+	private PharmacistCounselingPriceRepository pharmacistCounselingPriceRepository;
+	@Autowired
 	private PharmacistCounselingService pharmacistCounselingService;
+	@Autowired
+	private RequestForMedicineAvailabilityRepository requestForMedicineAvailabilityRepository;
 	@Autowired
 	private MedicineRepository medicineRepository;
 	@Autowired
 	private PharmacistCounselingRepository pharmacistCounselingRepository;
 	@Autowired
 	private DermatologistAppointmentService  dermatologistAppointmentService;
+	@Autowired
+	private MedicineWithQuantityRepository  medicineWithQuantityRepository;
 	@Autowired
 	private UserRepository userRepository;
 	@Override
@@ -161,6 +178,52 @@ public class PharmacistServiceImpl implements PharmacistService {
 		return null;
 	}
 	@Override
+	public void saveAppointment(AppointmentDTO appointmantDTO,Pharmacy pharmacy) {
+		System.out.println("AppointmentDTO"+appointmantDTO.getPatientId());
+		LocalDateTime startDateTime=LocalDateTime.parse(appointmantDTO.getStartDate());
+		try{
+			for(PharmacistCounseling d:pharmacistCounselingRepository.findAll()) {
+				if(d.getPharmacist().getUser().getEmail().equals(appointmantDTO.getDermatologistEmail()) && d.getPatient().getUser().getEmail().equals(appointmantDTO.getPatientEmail()) && d.getStartDateTime().equals(startDateTime)) {
+					d.setDescription(appointmantDTO.getDiagnosis());
+					d.setStartDateTime(LocalDateTime.now());
+					
+					System.out.println("Medicineee namee"+appointmantDTO.getMedicineName());
+					if(appointmantDTO.getMedicineName()!="") {
+					Therapy therapy = new Therapy();
+					System.out.println("Ispod medicine"+medicineRepository.findById(Long.parseLong(appointmantDTO.getMedicineName().split(",sifra ")[1])).get().getName());
+					therapy.setMedicine(medicineRepository.findById(Long.parseLong(appointmantDTO.getMedicineName().split(",sifra ")[1])).get());
+					therapy.setDuration(Integer.parseInt(appointmantDTO.getTherapyDuration()));
+					d.setTherapy(therapy);
+					}
+					
+					pharmacistCounselingRepository.save(d);
+					System.out.println("DDDDDDDDDDDDDD"+d);
+					System.out.println("DDDDDDDDDDDDDDDDDDDD"+d.getId());
+					PharmacistCounselingPrice price = new PharmacistCounselingPrice();
+					price.setPrice(Double.parseDouble(appointmantDTO.getPrice()));
+					price.setCounseling(d);
+					pharmacistCounselingPriceRepository.save(price);
+			
+					Medicine  prescribedMedicine = medicineRepository.findById(Long.parseLong(appointmantDTO.getMedicineName().split(",sifra ")[1])).get();
+					
+					
+					for(MedicineWithQuantity m:pharmacy.getMedicineWithQuantity()) {
+						if(m.getMedicine().getId().equals(prescribedMedicine.getId())) {
+							m.setQuantity(m.getQuantity() - 1);
+							medicineWithQuantityRepository.save(m);
+							return;
+						}
+					}
+					
+					
+				}
+			}
+	
+		}catch (Exception e) {
+			return;
+		}
+		}
+	@Override
 	public void saveAppointment(AppointmentDTO appointmantDTO) {
 		try{
 			for(PharmacistCounseling d:pharmacistCounselingService.findAll()) {
@@ -175,7 +238,7 @@ public class PharmacistServiceImpl implements PharmacistService {
 					d.setTherapy(therapy);
 					}
 					
-					d.setDuration(Integer.parseInt(appointmantDTO.getDuration()));
+					
 					pharmacistCounselingRepository.save(d);
 				}
 			}
@@ -293,6 +356,29 @@ public class PharmacistServiceImpl implements PharmacistService {
 		
 	
 		return true;
+	}
+	@Override
+	public Boolean isMedicineAvailable(Pharmacy pharmacy, String medicineId) {
+		Set<MedicineWithQuantity> medicines = pharmacy.getMedicineWithQuantity();
+		for(MedicineWithQuantity mq:medicines) {
+			System.out.println("****************Quantity"+mq.getMedicine().getName()+mq.getQuantity());
+		}
+		for(MedicineWithQuantity mq: medicines) {
+			
+			if(mq.getMedicine().getId().equals(Long.parseLong(medicineId)) ) {
+				if(mq.getQuantity()==0) {
+					RequestForMedicineAvailability rq = new RequestForMedicineAvailability();
+					rq.setCreatedAt(LocalDateTime.now());
+					rq.setMedicineWithQuantity(mq);
+					rq.setPharmacy(pharmacy);
+					requestForMedicineAvailabilityRepository.save(rq);
+					
+					return false;
+				}
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	

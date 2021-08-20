@@ -50,6 +50,11 @@ public class PatientServiceImpl implements PatientService {
 		Patient p = patientRepository.findPatientById(id);
 		return p;
 	}
+	public void giveOnePenalForPatient(Patient p) {
+		System.out.println("Usao u penaleee");
+		p.setPenal(p.getPenal()+1);		
+		patientRepository.save(p);
+	}
 
 
 

@@ -27,7 +27,7 @@ INSERT INTO MEDICINE(code,name,shape,type,content,producer,withprescription,note
 
 
 INSERT INTO medicine_substitute_medicine_codes(medicine_id, substitute_medicine_codes) VALUES(1,'12333');
-INSERT INTO medicine_substitute_medicine_codes(medicine_id, substitute_medicine_codes) VALUES(2,'1234');
+INSERT INTO medicine_substitute_medicine_codes(medicine_id, substitute_medicine_codes) VALUES(1,'Code3');
 
 
 -- role
@@ -215,10 +215,10 @@ INSERT INTO workingday (day,end_time,start_time) VALUES (0,'14:00:00.000000', '0
 INSERT INTO workingday (day,end_time,start_time) VALUES (1,'14:00:00.000000', '08:00:00.000000');
 INSERT INTO workingday (day,end_time,start_time) VALUES (2,'14:00:00.000000', '08:00:00.000000');
 INSERT INTO workingday (day,end_time,start_time) VALUES (3,'14:00:00.000000', '08:00:00.000000');
-INSERT INTO workingday (day,end_time,start_time) VALUES (4,'14:00:00.000000', '08:00:00.000000');
+INSERT INTO workingday (day,end_time,start_time) VALUES (4,'19:00:00.000000', '08:00:00.000000');
 INSERT INTO workingday (day,end_time,start_time) VALUES (5,'14:00:00.000000', '08:00:00.000000');
 INSERT INTO workingday (day,end_time,start_time) VALUES (6,'14:00:00.000000', '08:00:00.000000');
-INSERT INTO workingday (day,end_time,start_time) VALUES (7,'14:00:00.000000', '08:00:00.000000');
+
 --working time
 INSERT INTO workingtime (pharmacy_id) VALUES (2);
 INSERT INTO workingtime (pharmacy_id) VALUES (1);
@@ -228,14 +228,11 @@ INSERT INTO workingtime (pharmacy_id) VALUES (1);
 INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (1,1);
 INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (1,2);
 INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (1,3);
-INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (1,4);
+INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (2,4);
 INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (2,5);
 INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (2,6);
 
 INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (3,7);
-INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (3,8);
-
-
 --dermatologist working time
 INSERT INTO dermatologist_working_times (dermatologist_id, working_times_id) VALUES (1,1); 
 INSERT INTO dermatologist_working_times (dermatologist_id, working_times_id) VALUES (1,2); 
@@ -337,8 +334,8 @@ INSERT INTO suplier_offers(suplier_id,offers_id) VALUES (1,1);
 INSERT INTO suplier_offers(suplier_id,offers_id) VALUES (1,2);
 
 --theraphy
-INSERT INTO therapy(id,duration,medicine_id) VALUES (1,4,1);
-INSERT INTO therapy(id,duration,medicine_id) VALUES (2,6,2);
+INSERT INTO therapy(duration,medicine_id) VALUES (4,1);
+INSERT INTO therapy(duration,medicine_id) VALUES (6,2);
 
 --loyalty scale
 INSERT INTO loyaltyscale(id,category,needed_points,discount) VALUES (1,0,0,0);
@@ -347,7 +344,7 @@ INSERT INTO loyaltyscale(id,category,needed_points,discount) VALUES (3,2,60,30);
 
 
 --pharmacist consulting
-INSERT INTO pharmacistcounseling(description,duration,start_date_time,patient_id,pharmacist_id,therapy_id) VALUES ('opis 1',30,'2021-08-08 21:58:58.508-07',1,1,1);
+INSERT INTO pharmacistcounseling(description,duration,start_date_time,patient_id,pharmacist_id,therapy_id) VALUES ('opis 1',30,'2021-08-21 10:58:58.508-07',1,1,1);
 INSERT INTO pharmacistcounseling(description,duration,start_date_time,patient_id,pharmacist_id,therapy_id) VALUES ('opis 2',30,'2021-07-15 21:58:58.508-07',1,1,1);
 INSERT INTO pharmacistcounseling(description,duration,start_date_time,patient_id,pharmacist_id,therapy_id) VALUES ('opis 3',30,'2020-01-05 21:58:58.508-07',1,1,1);
 INSERT INTO pharmacistcounseling(description,duration,start_date_time,patient_id,pharmacist_id,therapy_id) VALUES ('opis 4',30,'2020-02-15 21:58:58.508-07',1,1,1);
