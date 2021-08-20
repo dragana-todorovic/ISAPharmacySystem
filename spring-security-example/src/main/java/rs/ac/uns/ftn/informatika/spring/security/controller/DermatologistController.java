@@ -379,6 +379,18 @@ public class DermatologistController {
 		this.dermatologistService.saveAppointment(appointmentDTO,pharmacy);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
+	@GetMapping("/getAllPatientsForSearch")
+	@PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
+	public List<User> getAllPatientsForSearch() {
+		List<Patient> result = patientService.findAll();
+		List<User> users = new ArrayList<User>();
+		for(Patient p:result) {
+			System.out.println("User"+p.getUser());
+			users.add(p.getUser());
+		}
+		return users;
+		
+	}
 	
 	
 	

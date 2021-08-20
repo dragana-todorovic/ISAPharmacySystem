@@ -371,4 +371,16 @@ public class PharmacistController {
 		return null;
 		
 	}
+	@GetMapping("/getAllPatientsForSearch")
+	@PreAuthorize("hasRole('ROLE_PHARMACIST')")
+	public List<User> getAllPatientsForSearch() {
+		List<Patient> result = patientService.findAll();
+		List<User> users = new ArrayList<User>();
+		for(Patient p:result) {
+			System.out.println("User"+p.getUser());
+			users.add(p.getUser());
+		}
+		return users;
+		
+	}
 }
