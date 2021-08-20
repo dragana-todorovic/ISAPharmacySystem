@@ -379,28 +379,29 @@ public class PharmacyServiceImpl implements PharmacyService{
 		PharmacyAdmin pa = pharmacyAdminService.findPharmacyAdminByUser(userService.findByEmail(email));
 		Pharmacy p = pa.getPharmacy(); 
 		//da li se radno vrijeme poklapa sa drugim apotekama
-	/*	Boolean isOk = false;
-		for(WorkingTime workingTime : dermatologist.getWorkingTimes()) {
-			if(!workingTime.getPharmacy().equals(p)) {
-				for(WorkingDay workD : workingTime.getWorkingDays()) {
-					for(WorkingDayDTO wd : newDermatologist.getWorkingTimes())
+		for(WorkingTime workingtime : dermatologist.getWorkingTimes()) {
+			if(!workingtime.getPharmacy().equals(p)) {
+				for(WorkingDay workD : workingtime.getWorkingDays()) {
+					for(WorkingDayDTO wd : newDermatologist.getWorkingTimes()) {
 						if(workD.getDay().toString().equals(wd.getDay())) {
-							if(workD.getStartTime().isAfter(LocalTime.parse(wd.getStartTime())) 
-								&& workD.getStartTime().isAfter(LocalTime.parse(wd.getEndTime()))) {
-								isOk = true;
-							} else if(workD.getStartTime().isBefore(LocalTime.parse(wd.getStartTime())) 
-									&& workD.getStartTime().isBefore(LocalTime.parse(wd.getEndTime()))) {
-								isOk = true;
-							} else {
-								isOk = false;
+							if(LocalTime.parse(wd.getStartTime()).isAfter(workD.getStartTime()) &&
+									LocalTime.parse(wd.getStartTime()).isBefore(workD.getEndTime())) {
+								return false;
 							}
-						} 
-						if(!isOk) {
-							return false;
+							if(LocalTime.parse(wd.getEndTime()).isAfter(workD.getStartTime()) &&
+									LocalTime.parse(wd.getEndTime()).isBefore(workD.getEndTime())) {
+								return false;
+							}
+							if(LocalTime.parse(wd.getStartTime()).isBefore(workD.getStartTime()) &&
+									LocalTime.parse(wd.getEndTime()).isAfter(workD.getEndTime())) {
+								return false;
+							}
+							
 						}
-					}
 				}
-			}	*/	
+				}
+			}
+		}
 		
 		WorkingTime wt = new WorkingTime();
 		wt.setPharmacy(p);

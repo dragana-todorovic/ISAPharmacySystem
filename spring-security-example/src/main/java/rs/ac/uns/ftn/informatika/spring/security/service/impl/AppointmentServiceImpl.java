@@ -104,12 +104,12 @@ public class AppointmentServiceImpl implements AppointmentService{
 		int duration = Integer.parseInt(predefinedAppointment.getDuration());
 		
 		if(timePart.isBefore(workingDay.getStartTime()) || timePart.plusMinutes(duration).isBefore(workingDay.getStartTime())) {
-			System.out.println("USAOOOOOO 3");
+	
 			System.out.println(timePart.plusMinutes(duration));
 			return false;
 		}
 		if(timePart.isAfter(workingDay.getEndTime()) || timePart.plusMinutes(duration).isAfter(workingDay.getEndTime())) {
-			System.out.println("USAOOOOOO 4");
+			
 			return false;
 		}
 		
@@ -129,11 +129,11 @@ public class AppointmentServiceImpl implements AppointmentService{
 				int duration1 = d.getDuration();
 				int duration2 = Integer.parseInt(predefinedAppointment.getDuration());
 				if(timePart.isAfter(time) && timePart.isBefore(time.plusMinutes(duration1))) {
-					System.out.println("USAOOOOOO 0");
+			
 					return false;
 				}
 				if(timePart.plusMinutes(duration2).isAfter(time) && timePart.plusMinutes(duration2).isBefore(time.plusMinutes(duration1))) {
-					System.out.println("USAOOOOOO 1");
+					
 					return false;
 				}
 				

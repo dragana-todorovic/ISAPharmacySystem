@@ -327,6 +327,21 @@ $('.ui.dropdown')
   </div>
 </div>
 
+<div id="errorAdd" class="ui modal">
+	  <i class="close icon"></i>
+	  <div class="header">
+		Error
+	  </div>
+	  <div class="content">
+	  <div class="ui negative message">
+  <div class="header">
+    We're sorry, you cannot add that dermatologist.
+  </div>
+  <p>That dermatologist has already work in another pharmacy!
+</p></div>
+	  </div>
+	</div>
+
 `)
 
 $("#firstNameSearch").keyup(function () {
@@ -490,7 +505,8 @@ $("#addDermatologist").click(function() {
 	    	 location.href = "adminpharmacy.html"
 	    },
 	    error: function(){
-	    	alert("Failed")
+	    	 $('#errorAdd')
+			  .modal('show')
 	    }
 
 	});
