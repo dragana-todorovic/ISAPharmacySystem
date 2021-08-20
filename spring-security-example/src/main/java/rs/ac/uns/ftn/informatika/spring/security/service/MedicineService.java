@@ -21,6 +21,7 @@ public interface MedicineService {
 	Set<MedicineWithQuantity> getMedicinesByPharmacy (String email);
 	Medicine findById(Long id);
 	Medicine findByName(String name);
+	Medicine findByCode(String code);
 
 	
 	void saveReservation(MedicineReservationDTO medicineReservationDto);

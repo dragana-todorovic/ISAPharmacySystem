@@ -20,6 +20,8 @@ public interface PharmacistService {
 	List<MyPatientDTO> myPatients(String email);
 	List<MyPatientDTO> getPatientsForAppointment(String email);
 	List<Medicine> getMedicines();
+	Boolean isMedicineAvailable(Pharmacy pharmacy, String medicineId);
 	void saveAppointment(AppointmentDTO appointmantDTO);
+	void saveAppointment(AppointmentDTO appointmantDTO,Pharmacy pharmacy);
 	Boolean isAppointmentAvailableForScheduling(Pharmacist pharmacist,Patient patient,Integer duration,Pharmacy pharmacy,LocalDate startDate, LocalDateTime startDateTime,LocalDateTime endDateTime); 
 }
