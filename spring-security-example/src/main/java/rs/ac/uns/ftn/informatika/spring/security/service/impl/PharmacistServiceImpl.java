@@ -1,7 +1,9 @@
 package rs.ac.uns.ftn.informatika.spring.security.service.impl;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,10 +15,14 @@ import rs.ac.uns.ftn.informatika.spring.security.model.DermatologistAppointment;
 import rs.ac.uns.ftn.informatika.spring.security.model.HolidayRequest;
 import rs.ac.uns.ftn.informatika.spring.security.model.HolidayRequestStatus;
 import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
+import rs.ac.uns.ftn.informatika.spring.security.model.Patient;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacist;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacistCounseling;
+import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.Therapy;
 import rs.ac.uns.ftn.informatika.spring.security.model.User;
+import rs.ac.uns.ftn.informatika.spring.security.model.WorkingDay;
+import rs.ac.uns.ftn.informatika.spring.security.model.WorkingTime;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.AppointmentDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.HolidayRequestDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.MyPatientDTO;
@@ -43,6 +49,8 @@ public class PharmacistServiceImpl implements PharmacistService {
 	private MedicineRepository medicineRepository;
 	@Autowired
 	private PharmacistCounselingRepository pharmacistCounselingRepository;
+	@Autowired
+	private DermatologistAppointmentService  dermatologistAppointmentService;
 	@Autowired
 	private UserRepository userRepository;
 	@Override
@@ -176,6 +184,118 @@ public class PharmacistServiceImpl implements PharmacistService {
 			return;
 		}
 		}
+	@Override
+	public Boolean isAppointmentAvailableForScheduling(Pharmacist pharmacist,Patient patient,Integer duration,Pharmacy pharmacy,LocalDate startDate, LocalDateTime startDateTime,LocalDateTime endDateTime) {
+		if(!isPharmacistWorkingTime(pharmacist,duration, pharmacy,startDate, startDateTime)) 
+				{return false;}
+		if(!isPharmacistWorkingTime(pharmacist,duration, pharmacy,startDate, endDateTime)){
+					return false;
+			}
+		if(!isPharmacistAvailable(pharmacist, duration, startDateTime)) {
+			return false;
+		}
+		if(!isPatientAvailable(patient, duration, startDateTime)) {
+			return false;
+		}
+		
+		return true;
+	}
+	private Boolean isPharmacistAvailable(Pharmacist pharmacist,Integer duration, LocalDateTime startDateTime) {
+		System.out.println("Dermatologist id"+pharmacist.getId());
+		List<PharmacistCounseling> appointments = pharmacistCounselingService.findById(pharmacist.getId());
+		System.out.println("Apointments################+++++++++++++"+appointments.size());
+		for(PharmacistCounseling da:appointments) {
+			if (da.getStartDateTime().toLocalDate().equals(startDateTime.toLocalDate())) {
+				if (isTimeFine(startDateTime.toLocalTime(), duration, da.getStartDateTime().toLocalTime(),
+						da.getStartDateTime().toLocalTime().plusMinutes(da.getDuration())))
+				{
+					return false;}
+			}
+		}
+		return true;
+		
+	}
+	private Boolean isPatientAvailable(Patient patient,Integer duration, LocalDateTime startDateTime) {
+		if(patient==null) {
+			System.out.println("Usao u null");
+			return true;
+		}
+		System.out.println("Usao u patient available");
+		List<PharmacistCounseling> counselings = pharmacistCounselingService.findByPatientId(patient.getId());
+		
+		for(PharmacistCounseling da:counselings) {
+			System.out.println("Counseling" + da);
+			if (da.getStartDateTime().toLocalDate().equals(startDateTime.toLocalDate())) {
+				if (isTimeFine(startDateTime.toLocalTime(), duration, da.getStartDateTime().toLocalTime(),
+						da.getStartDateTime().toLocalTime().plusMinutes(da.getDuration())))
+					return false;
+			}
+		}
+		
+		
+		List<DermatologistAppointment> appointments = dermatologistAppointmentService.findByPatientId(patient.getId());
+		for(DermatologistAppointment da:appointments) {
+			if (da.getStartDateTime().toLocalDate().equals(startDateTime.toLocalDate())) {
+				if (isTimeFine(startDateTime.toLocalTime(), duration, da.getStartDateTime().toLocalTime(),
+						da.getStartDateTime().toLocalTime().plusMinutes(da.getDuration())))
+					return false;
+			}
+		}
+		return true;
+		
+	}
+	private Boolean isTimeFine(LocalTime time, int duration, LocalTime startTime, LocalTime endTime){
+		if (!time.isBefore(startTime) && !time.plusMinutes(duration).isAfter(endTime))
+			return true;
+		if (time.isAfter(startTime) && time.isBefore(endTime))
+			return true;
+		if (time.plusMinutes(duration).isAfter(startTime) && time.plusMinutes(duration).isBefore(endTime))
+			return true;
+		if (time.equals(startTime))
+			return true;
+		return false;
+		
+	}
+	private Boolean isPharmacistWorkingTime(Pharmacist pharmacist,Integer duration,Pharmacy pharmacy,LocalDate startDate,LocalDateTime startDateTime) {
+		Boolean isPharmacistWorking = false;
+		DayOfWeek day = startDateTime.getDayOfWeek();
+		System.out.println("Usao u funkciju");
+		System.out.println("Dermatolog"+pharmacist);
+		System.out.println("Pharmacy"+pharmacy);
+		System.out.println("Start date"+startDate);
+		System.out.println("Start date time"+startDateTime);
+		System.out.println(pharmacist.getWorkingTimes());
+		if(pharmacist.getWorkingTimes().getWorkingDays().isEmpty()) {
+			return false;
+		}
+		
+
+		for(WorkingDay work:pharmacist.getWorkingTimes().getWorkingDays()) {
+			if(work.getDay().equals(day)) {				
+					isPharmacistWorking = true;	
+			}
+			if(!isTimeFine(startDateTime.toLocalTime(), duration, work.getStartTime(), work.getEndTime())) {
+				return false;
+			}
+		}
+	
+		
+		if(!isPharmacistWorking) {
+			return false;
+		}
+		
+		for(HolidayRequest hol: pharmacist.getHolidayRequests()) {
+			System.out.println("Holiday"+pharmacist.getHolidayRequests());
+			if(!startDate.isBefore(hol.getStartDate()) && !startDate.isAfter(hol.getEndDate()) && hol.getStatus().equals(HolidayRequestStatus.ACCEPT)){
+				return false;
+			}
+		}
+		
+	
+		return true;
+	}
+	
+	
 }
 
 

@@ -1,5 +1,6 @@
 package rs.ac.uns.ftn.informatika.spring.security.service;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -86,5 +87,6 @@ public interface PharmacyService {
 	void acceptHolidayRequest(long id);
 	void declineHolidayRequest(long id);
 	WorkingTime getDermatologistWorkingTimes(long id, String email);
+	Pharmacy getPharmacyByDermatologistAndStartDate(Dermatologist d,LocalDateTime start);
 
 }
