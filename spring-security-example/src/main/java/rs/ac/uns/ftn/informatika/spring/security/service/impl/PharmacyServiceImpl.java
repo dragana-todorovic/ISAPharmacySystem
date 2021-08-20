@@ -617,7 +617,33 @@ public class PharmacyServiceImpl implements PharmacyService{
 		
 		
 	}
-
+	@Override
+	public Pharmacy getPharmacyByDermatologistAndStartDate(Dermatologist d, LocalDateTime start) {
+		LocalDate pom = start.toLocalDate();
+		LocalTime pomTime = start.toLocalTime();
+		Pharmacy pharm;
+		for(WorkingTime t:d.getWorkingTimes()) {
+			for(WorkingDay day:t.getWorkingDays()) {
+				System.out.println("Working time"+t);
+				System.out.println("Working day" + day);
+				if(day.getStartTime().equals(pomTime) && day.getDay().equals(pom.getDayOfWeek())) {
+					System.out.println("Usao u if za apoteku");
+					pharm = t.getPharmacy();
+					return pharm;
+				}
+				else if(pom.getDayOfWeek().equals(day.getDay()) ) {
+					System.out.println("Usao u else if");
+					System.out.println(pomTime);
+					System.out.println(day.getStartTime());
+					System.out.println(day.getEndTime());
+					if(pomTime.isAfter(day.getStartTime()) && pomTime.isBefore(day.getEndTime()) ) {
+					pharm = t.getPharmacy();
+					return pharm;}
+				}
+			}
+		}
+		return null;
+	}
 }
 
 

@@ -1,6 +1,9 @@
 package rs.ac.uns.ftn.informatika.spring.security.controller;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -20,14 +23,18 @@ import org.springframework.web.bind.annotation.RestController;
 import rs.ac.uns.ftn.informatika.spring.security.model.DermatologistAppointment;
 import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
 import rs.ac.uns.ftn.informatika.spring.security.model.Patient;
+import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacist;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacistCounseling;
+import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.User;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.AppointmentDTO;
+import rs.ac.uns.ftn.informatika.spring.security.model.DTO.CounselingDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.HolidayRequestDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.MyPatientDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.StartDateTimeDTO;
 import rs.ac.uns.ftn.informatika.spring.security.service.DermatologistAppointmentService;
 import rs.ac.uns.ftn.informatika.spring.security.service.DermatologistService;
+import rs.ac.uns.ftn.informatika.spring.security.service.EmailService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PatientService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacistCounselingService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacistService;
@@ -43,6 +50,8 @@ public class PharmacistController {
 	private PatientService patientService;
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private EmailService emailService;
 	@Autowired
 	private PharmacistCounselingService pharmacistCounselingService;
 	
@@ -147,4 +156,68 @@ public class PharmacistController {
 		this.pharmacistService.saveAppointment(appointmentDTO);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
+	@GetMapping("/getAllPatients")
+	@PreAuthorize("hasRole('ROLE_PHARMACIST')")
+	public List<String> getAllPatients() {
+		List<Patient> patients = patientService.findAll();
+		List<String> result= new ArrayList<String>();
+		for(Patient p :patients) {
+			result.add(p.getUser().getEmail());
+		}
+		return result;
+		
+	}
+	@RequestMapping(value = "/scheduleAnAppointment" , method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> scheduleAnAppointment(@RequestBody CounselingDTO dto)  {
+		String startDate;
+		startDate = dto.getStartDate().replace('/', '-');	
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
+		DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		String start = LocalDate.parse(startDate, formatter).format(formatter2);
+		LocalDate datePart = LocalDate.parse(start);
+		LocalTime timePart = LocalTime.parse(dto.getStartTime());
+		LocalDateTime dt = LocalDateTime.of(datePart, timePart);
+		if(dt.isBefore(LocalDateTime.now())) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		Pharmacist pharmacist=null;
+		LocalDate startDateDPharmacist=dt.toLocalDate();
+		
+		for(Pharmacist d: pharmacistService.findAll()) {
+			if(d.getUser().getEmail().equals(dto.getPharmacistEmail())) {
+				pharmacist= d;
+			}
+			}
+		Patient patient=null;	
+		for(Patient p:patientService.findAll()) {
+			System.out.println("Email pacijenta"+p.getUser().getEmail());
+			if(p.getUser().getEmail().equals(dto.getPatientEmail())) {
+				patient = p;
+			}
+		}
+		//AKO JE PHARMACY NULL ZNACI DA NE RADI TRENUTNO U NJOJ
+		Pharmacy pharmacy=pharmacist.getWorkingTimes().getPharmacy();
+		if(pharmacy==null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	
+		 if(pharmacistService.isAppointmentAvailableForScheduling(pharmacist,patient,Integer.parseInt(dto.getDuration()), pharmacy, datePart, dt, dt.plusMinutes(Integer.parseInt((dto.getDuration()))))) {
+			 System.out.println("Datum je u redu");
+			 try {
+				 
+				 emailService.sendEmailForRecoveryOfAccount(dto.getPatientEmail());
+				 System.out.println("Mejl je poslat");
+				 pharmacistCounselingService.saveAppointment(dto, patient, dt);
+				 
+			 }catch (Exception e){
+		            e.printStackTrace();
+		        }
+		 }else {
+			 System.out.println("Datum NIIIIIJEEE OK");
+			 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		 }
+		
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
 }

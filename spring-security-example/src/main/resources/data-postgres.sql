@@ -5,7 +5,7 @@ INSERT INTO USERS (username, password, first_name, last_name, email,country, cit
 INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('user2@example.com', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', 'Marko', 'Markovic', 'user2@example.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
 INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('user3@example.com', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', 'Marko', 'Markovic', 'userr@example.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
 INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('user@example.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.Lrd4j8amcljStog3n4APU5EX3bGJIUK', 'Marko', 'Markovic', 'user@example.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
-INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('patient@example.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.Lrd4j8amcljStog3n4APU5EX3bGJIUK', 'Nikola', 'Nikolic', 'patient@example.com','Republika Srbija', 'Nis', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
+INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('maja.tepavcevic133@gmail.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.Lrd4j8amcljStog3n4APU5EX3bGJIUK', 'Nikola', 'Nikolic', 'maja.tepavcevic133@gmail.com','Republika Srbija', 'Nis', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
 INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('dermatologist@example.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.Lrd4j8amcljStog3n4APU5EX3bGJIUK', 'Marko', 'Markovic', 'dermatologist@example.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
 INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('pharmacist@example.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.Lrd4j8amcljStog3n4APU5EX3bGJIUK', 'Jovan', 'Jovanovic', 'pharmacist@example.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
 INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('adminpharmacyr@example.com', '$2y$10$Dz4zbJOWPOfxHsjy2QgDk.SoBDiwsiQ3.2Vgxw0hhNfoDO4rZZB5i', 'Dragana', 'Todorovic', 'adminpharmacyr@example.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
@@ -95,6 +95,7 @@ INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_i
 INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id, patient_id) VALUES (30,'2019-04-05 21:58:58.508-07','opis1',1,1);
 INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id, patient_id) VALUES (30,'2019-05-16 21:58:58.508-07','opis2',1,2);
 INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id, patient_id) VALUES (30,'2021-08-23 08:00:00.508-07','opis2',1,2);
+INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id, patient_id) VALUES (3,'2021-08-20 12:55:00.508-07','opis2',1,2);
 --appoitment price
 INSERT INTO APPOITMENTPRICE (price,appoitment_id) VALUES (400,1);
 INSERT INTO APPOITMENTPRICE (price,appoitment_id) VALUES (500,2);
@@ -200,9 +201,9 @@ INSERT INTO dermatologist_complaint(id,content,dermatologist_id,patient_id,is_an
 INSERT INTO patients_dermatologist_complaints(patient_id,dermatologist_complaints_id) VALUES (1,1);
 
 --holiday request
-INSERT INTO holidayrequest(start_date,end_date,status) VALUES ('2021-08-08 21:58:58.508-07','2021-12-12 21:58:58.508-07',0);
-INSERT INTO holidayrequest(start_date,end_date,status) VALUES ('2021-10-10 21:58:58.508-07','2021-12-12 21:58:58.508-07',0);
-INSERT INTO holidayrequest(start_date,end_date,status) VALUES ('2021-07-07 21:58:58.508-07','2021-12-12 21:58:58.508-07',0);
+INSERT INTO holidayrequest(pharmacy_id,start_date,end_date,status) VALUES (2,'2021-08-25 21:58:58.508-07','2021-12-27 21:58:58.508-07',0);
+INSERT INTO holidayrequest(pharmacy_id,start_date,end_date,status) VALUES (2,'2021-10-10 21:58:58.508-07','2021-12-12 21:58:58.508-07',0);
+INSERT INTO holidayrequest(pharmacy_id,start_date,end_date,status) VALUES (2,'2021-07-07 21:58:58.508-07','2021-12-12 21:58:58.508-07',0);
 
 --dermatologist holiday request
 INSERT INTO dermatologist_holiday_requests(dermatologist_id,holiday_requests_id) VALUES (1,1);
@@ -210,14 +211,14 @@ INSERT INTO dermatologist_holiday_requests(dermatologist_id,holiday_requests_id)
 INSERT INTO dermatologist_holiday_requests(dermatologist_id,holiday_requests_id) VALUES (3,3);
 
 --working days
-INSERT INTO workingday (day,end_time,start_time) VALUES (0,'13:00:00.000000', '08:00:00.000000');
-INSERT INTO workingday (day,end_time,start_time) VALUES (1,'13:00:00.000000', '08:00:00.000000');
-INSERT INTO workingday (day,end_time,start_time) VALUES (2,'13:00:00.000000', '08:00:00.000000');
-INSERT INTO workingday (day,end_time,start_time) VALUES (3,'13:00:00.000000', '08:00:00.000000');
-INSERT INTO workingday (day,end_time,start_time) VALUES (4,'13:00:00.000000', '08:00:00.000000');
-INSERT INTO workingday (day,end_time,start_time) VALUES (5,'13:00:00.000000', '08:00:00.000000');
-INSERT INTO workingday (day,end_time,start_time) VALUES (4,'13:00:00.000000', '08:30:00.000000');
-INSERT INTO workingday (day,end_time,start_time) VALUES (5,'13:00:00.000000', '08:30:00.000000');
+INSERT INTO workingday (day,end_time,start_time) VALUES (0,'14:00:00.000000', '08:00:00.000000');
+INSERT INTO workingday (day,end_time,start_time) VALUES (1,'14:00:00.000000', '08:00:00.000000');
+INSERT INTO workingday (day,end_time,start_time) VALUES (2,'14:00:00.000000', '08:00:00.000000');
+INSERT INTO workingday (day,end_time,start_time) VALUES (3,'14:00:00.000000', '08:00:00.000000');
+INSERT INTO workingday (day,end_time,start_time) VALUES (4,'14:00:00.000000', '08:00:00.000000');
+INSERT INTO workingday (day,end_time,start_time) VALUES (5,'14:00:00.000000', '08:00:00.000000');
+INSERT INTO workingday (day,end_time,start_time) VALUES (6,'14:00:00.000000', '08:00:00.000000');
+INSERT INTO workingday (day,end_time,start_time) VALUES (7,'14:00:00.000000', '08:00:00.000000');
 --working time
 INSERT INTO workingtime (pharmacy_id) VALUES (2);
 INSERT INTO workingtime (pharmacy_id) VALUES (1);

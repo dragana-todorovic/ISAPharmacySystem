@@ -1,6 +1,9 @@
 package rs.ac.uns.ftn.informatika.spring.security.controller;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,12 +34,16 @@ import rs.ac.uns.ftn.informatika.spring.security.model.DermatologistAppointment;
 import rs.ac.uns.ftn.informatika.spring.security.model.DermatologistComplaint;
 import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
 import rs.ac.uns.ftn.informatika.spring.security.model.Patient;
+import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.User;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.AppointmentDTO;
+import rs.ac.uns.ftn.informatika.spring.security.model.DTO.AppointmentScheduleDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.HolidayRequestDTO;
 import rs.ac.uns.ftn.informatika.spring.security.service.DermatologistAppointmentService;
 import rs.ac.uns.ftn.informatika.spring.security.service.DermatologistService;
+import rs.ac.uns.ftn.informatika.spring.security.service.EmailService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PatientService;
+import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyService;
 import rs.ac.uns.ftn.informatika.spring.security.service.UserService;
 
 @RestController
@@ -49,6 +56,10 @@ public class DermatologistController {
 	private UserService userService;
 	@Autowired
 	private PatientService patientService;
+	@Autowired
+	private PharmacyService pharmacyService;
+	@Autowired
+	private EmailService emailService;
 	@Autowired
 	private DermatologistAppointmentService dermatologistAppointmentService;
 	
@@ -151,6 +162,71 @@ public class DermatologistController {
 	public ResponseEntity<?> saveAppointment(@RequestBody AppointmentDTO appointmentDTO) {
 		System.out.println("Appointmant"+ appointmentDTO.getPatientEmail()+appointmentDTO.getPatientId());
 		this.dermatologistService.saveAppointment(appointmentDTO);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	@GetMapping("/getAllPatients")
+	@PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
+	public List<String> getAllPatients() {
+		List<Patient> patients = patientService.findAll();
+		List<String> result= new ArrayList<String>();
+		for(Patient p :patients) {
+			result.add(p.getUser().getEmail());
+		}
+		return result;
+		
+	}
+	@RequestMapping(value = "/scheduleAnAppointment" , method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> scheduleAnAppointment(@RequestBody AppointmentScheduleDTO dto)  {
+		String startDate;
+		startDate = dto.getStartDate().replace('/', '-');	
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
+		DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		String start = LocalDate.parse(startDate, formatter).format(formatter2);
+		LocalDate datePart = LocalDate.parse(start);
+		LocalTime timePart = LocalTime.parse(dto.getStartTime());
+		LocalDateTime dt = LocalDateTime.of(datePart, timePart);
+		if(dt.isBefore(LocalDateTime.now())) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		Dermatologist dermatologist=null;
+		LocalDate startDateDermatologist=dt.toLocalDate();
+		
+		for(Dermatologist d: dermatologistService.findAll()) {
+			if(d.getUser().getEmail().equals(dto.getDermatologistEmail())) {
+				dermatologist= d;
+			}
+			}
+		Patient patient=null;	
+		for(Patient p:patientService.findAll()) {
+			System.out.println("Email pacijenta"+p.getUser().getEmail());
+			if(p.getUser().getEmail().equals(dto.getPatientEmail())) {
+				patient = p;
+			}
+		}
+		//AKO JE PHARMACY NULL ZNACI DA NE RADI TRENUTNO U NJOJ
+		Pharmacy pharmacy=pharmacyService.getPharmacyByDermatologistAndStartDate(dermatologist, LocalDateTime.now());
+		if(pharmacy==null) {
+			System.out.println("Apoteka je null");
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		System.out.println("Local date"+startDateDermatologist);
+		System.out.println("Pharmacy"+pharmacy);
+		 if(dermatologistService.isAppointmentAvailableForScheduling(dermatologist,patient,Integer.parseInt(dto.getDuration()), pharmacy, datePart, dt, dt.plusMinutes(Integer.parseInt((dto.getDuration()))))) {
+			 System.out.println("Datum je u redu");
+			 try {
+				 
+				 emailService.sendEmailForRecoveryOfAccount(dto.getPatientEmail());
+				 System.out.println("Mejl je poslat");
+				 dermatologistAppointmentService.saveAppointment(dto, patient, dt);
+				 
+			 }catch (Exception e){
+		            e.printStackTrace();
+		        }
+		 }else {
+			 System.out.println("Datum NIIIIIJEEE OK");
+			 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		 }
+		
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	

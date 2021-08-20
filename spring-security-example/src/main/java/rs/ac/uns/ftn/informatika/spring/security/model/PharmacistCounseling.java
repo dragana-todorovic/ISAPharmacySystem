@@ -34,7 +34,7 @@ public class PharmacistCounseling {
 	@Column(name = "duration", nullable = false)
 	private int duration;
 	
-	@Column(name = "description", nullable = false)
+	@Column(name = "description", nullable = true)
 	private String description;
 	
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
