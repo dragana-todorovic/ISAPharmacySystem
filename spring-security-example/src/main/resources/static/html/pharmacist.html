@@ -18,6 +18,7 @@
 <script src="../scripts/pharmacist/myPatients.js"></script>
 <script src="../scripts/pharmacist/startAppointment.js"></script>
 <script src="../scripts/pharmacist/scheduleAnAppointment.js"></script>
+<script src="../scripts/pharmacist/allPatients.js"></script>
 <script src="../scripts/jwt.js"></script>  
 
 <title>Pharmacist Homepage</title>
@@ -58,9 +59,9 @@ li.dropdown {
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
 }
-    .container_1 {
+   .container_1 {
     height: 100vh;
-    background: url('../images/medicine-generic-banner.jpg') no-repeat center center/cover;
+    background: url('../images/pharmacy.jpg') no-repeat center center/cover;
     color: black;
 }
 .dropdown-content a {
@@ -121,6 +122,7 @@ div.container4 h2 {
 <div class="container_1">
 <ul style="background:skyblue">
  <li><a href=""><i class="home icon" style="color:white"></i></a></li>
+   <li><a id="allPatients" ><i >All patients</i></a></li>
   <li><a id="myPatients" ><i >My patients</i></a></li>
    <li><a id="scheduleAnAppointment" ><i >Schedule an appointment</i></a></li>
   <li><a id="startAppointment" ><i >Start an appointment</i></a></li>
