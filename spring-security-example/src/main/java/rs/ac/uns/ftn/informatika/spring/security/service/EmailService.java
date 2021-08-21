@@ -5,5 +5,9 @@ import org.springframework.mail.MailException;
 public interface EmailService {
 	public void sendEmailForRecoveryOfAccount(String email) throws MailException, MessagingException;
 
+
 	void sendEmail(String email, String subject, String content) throws MailException, MessagingException;
+
+	
+
 }

@@ -13,12 +13,14 @@ import rs.ac.uns.ftn.informatika.spring.security.model.DTO.AppointmentDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.CounselingDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.HolidayRequestDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.MyPatientDTO;
+import rs.ac.uns.ftn.informatika.spring.security.model.MedicineReservation;
 
 public interface PharmacistService {
 	void saveHolidayRequest(HolidayRequestDTO holidayRequest);
 	List<Pharmacist> findAll ();
 	List<MyPatientDTO> myPatients(String email);
 	List<MyPatientDTO> getPatientsForAppointment(String email);
+	List<MedicineReservation>searchReservedMedicnes(String resNumber,Pharmacy pharmacy);
 	List<Medicine> getMedicines();
 	Boolean isMedicineAvailable(Pharmacy pharmacy, String medicineId);
 	void saveAppointment(AppointmentDTO appointmantDTO);

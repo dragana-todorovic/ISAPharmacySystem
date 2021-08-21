@@ -3,8 +3,10 @@ package rs.ac.uns.ftn.informatika.spring.security.controller;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -24,6 +26,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import rs.ac.uns.ftn.informatika.spring.security.model.DermatologistAppointment;
 import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
+import rs.ac.uns.ftn.informatika.spring.security.model.MedicineReservation;
+import rs.ac.uns.ftn.informatika.spring.security.model.MedicineReservationStatus;
 import rs.ac.uns.ftn.informatika.spring.security.model.Patient;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacist;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacistCounseling;
@@ -35,7 +39,9 @@ import rs.ac.uns.ftn.informatika.spring.security.model.DTO.HolidayRequestDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.MyPatientDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.StartDateTimeDTO;
 import rs.ac.uns.ftn.informatika.spring.security.repository.MedicineRepository;
+import rs.ac.uns.ftn.informatika.spring.security.repository.MedicineReservationRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacistCounselingRepository;
+import rs.ac.uns.ftn.informatika.spring.security.repository.UserRepository;
 import rs.ac.uns.ftn.informatika.spring.security.service.DermatologistAppointmentService;
 import rs.ac.uns.ftn.informatika.spring.security.service.DermatologistService;
 import rs.ac.uns.ftn.informatika.spring.security.service.EmailService;
@@ -62,6 +68,8 @@ public class PharmacistController {
 	private PharmacistCounselingRepository pharmacistCounselingRepository;
 	@Autowired
 	private PharmacistCounselingService pharmacistCounselingService;
+	@Autowired
+	private MedicineReservationRepository medicineReservationRepository;
 	
 	@RequestMapping(value = "/holidayRequest" , method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> requestHoliday(@RequestBody HolidayRequestDTO holidayRequest) {
@@ -126,6 +134,20 @@ public class PharmacistController {
 		return null;
 		
 	}
+	@GetMapping(value = "/searchReservedMedicines/{resNumber}/{email}",produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_PHARMACIST')")
+	public List<MedicineReservation> searchMedicine(@PathVariable("resNumber") String resNumber,@PathVariable("email") String email) {
+		System.out.println("Usao u rezervaciju");
+		Pharmacist pharmacist =null;
+		for(Pharmacist p: pharmacistService.findAll()) {
+			if(p.getUser().getEmail().equals(email)) {
+				pharmacist=p;
+			}
+		}
+		Pharmacy pharmacy = pharmacist.getWorkingTimes().getPharmacy();
+		//System.out.println(pharmacistService.searchReservedMedicnes(resNumber,pharmacy).size());
+		return pharmacistService.searchReservedMedicnes(resNumber,pharmacy);
+	}
 	@GetMapping("/getMyPatients/{email}")
 	@PreAuthorize("hasRole('ROLE_PHARMACIST')")
 	public List<MyPatientDTO> getMyPatients(@PathVariable String email) {
@@ -163,6 +185,29 @@ public class PharmacistController {
 		return myPatientsDtos;
 		
 	}
+	@GetMapping("/takeReservedMedicine/{id}")
+	public ResponseEntity<?> takeReservedMedicine(@PathVariable String id) {
+		System.out.println("ID"+id);
+		String pom = id.substring(8,id.length());
+       	Long ID = Long.parseLong(pom);
+       	MedicineReservation reservation = medicineReservationRepository.findById(ID).get();
+       	reservation.setStatus(MedicineReservationStatus.TAKEN);
+       	reservation.getMedicineWithQuantity().setQuantity(reservation.getMedicineWithQuantity().getQuantity()-1);
+       	LocalDateTime dt = LocalDateTime.of(reservation.getDueTo(), reservation.getDueToTime());
+       	if(LocalDateTime.now().isBefore(dt.minus(Period.ofDays(1)))) {
+        try {
+			 
+			 emailService.sendEmail(reservation.getPatient().getUser().getEmail(),"Reservation","Raservation has been taken.");
+			 System.out.println("Mejl je poslat");
+			medicineReservationRepository.save(reservation);
+			 
+		 }catch (Exception e){
+	            e.printStackTrace();
+	        }
+		return new ResponseEntity<>(HttpStatus.OK);
+	}else {
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	}}
 	@RequestMapping(value = "/saveAppointment" , method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_PHARMACIST')")
 	public ResponseEntity<?> saveAppointment(@RequestBody AppointmentDTO appointmentDTO) {
@@ -229,7 +274,7 @@ public class PharmacistController {
 			 System.out.println("Datum je u redu");
 			 try {
 				 
-				 emailService.sendEmailForRecoveryOfAccount(dto.getPatientEmail());
+				 emailService.sendEmail(dto.getPatientEmail(),"Counseling","You have successfully scheduled an counseling");
 				 System.out.println("Mejl je poslat");
 				 pharmacistCounselingService.saveAppointment(dto, patient, dt);
 				 

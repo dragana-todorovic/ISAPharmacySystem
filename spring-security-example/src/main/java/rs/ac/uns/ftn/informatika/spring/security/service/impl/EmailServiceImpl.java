@@ -51,9 +51,10 @@ public class EmailServiceImpl implements EmailService   {
 		   // Send message
 		   Transport.send(message);
 	}
-	
+
 	@Override
-	public void sendEmail(String email,String subject, String content) throws MailException, MessagingException {
+	public void sendEmail(String email,String subject,String content) throws MailException, MessagingException {
+
 		
 		Properties props = new Properties();
 	      props.put("mail.smtp.auth", "true");
@@ -71,6 +72,7 @@ public class EmailServiceImpl implements EmailService   {
 		message.setFrom(new InternetAddress("notificationsnotifications22@gmail.com"));
 		message.setRecipients(Message.RecipientType.TO,
 	              InternetAddress.parse(email));
+
 
 		   // Set Subject: header field
 		   message.setSubject(subject);
