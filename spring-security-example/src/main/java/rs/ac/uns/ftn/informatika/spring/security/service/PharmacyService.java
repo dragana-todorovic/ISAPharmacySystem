@@ -99,13 +99,6 @@ public interface PharmacyService {
 	Pharmacy save(Pharmacy pharmacy);
 
 
-
-	Set<Pharmacist> getAllPharmacistsExpectAlreadyExisted(String email);
-	Boolean editDermatologistInPharmacy(String email, NewDermatologistDTO newDermatologist);
-	
-	Set<HolidayRequest> getHolidayRequestsByPharmacy(long id, String email);
-	void acceptHolidayRequest(long id);
-	void declineHolidayRequest(long id);
 	WorkingTime getDermatologistWorkingTimes(long id, String email);
 	Pharmacy getPharmacyByDermatologistAndStartDate(Dermatologist d,LocalDateTime start);
 

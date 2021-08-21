@@ -267,6 +267,7 @@ public class DermatologistServiceImpl implements DermatologistService{
 		
 		return true;
 	}
+
 	private Boolean isDermatologistAvailable(Dermatologist dermatologist,Integer duration, LocalDateTime startDateTime) {
 		System.out.println("Dermatologist id"+dermatologist.getId());
 		List<DermatologistAppointment> appointments = dermatologistAppointmentService.findById(dermatologist.getId());
@@ -282,6 +283,7 @@ public class DermatologistServiceImpl implements DermatologistService{
 		return true;
 		
 	}
+
 	private Boolean isPatientAvailable(Patient patient,Integer duration, LocalDateTime startDateTime) {
 		if(patient==null) {
 			System.out.println("Usao u null");
