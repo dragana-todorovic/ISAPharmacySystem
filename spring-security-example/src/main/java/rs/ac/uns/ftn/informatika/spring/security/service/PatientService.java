@@ -16,6 +16,7 @@ public interface PatientService {
 	Patient findPatientByUser(User user);
 	Patient savePatient(Patient patient);
 	Patient findPatientById(Long id);
+	void giveOnePenalForPatient(Patient p);
 	
 
 }

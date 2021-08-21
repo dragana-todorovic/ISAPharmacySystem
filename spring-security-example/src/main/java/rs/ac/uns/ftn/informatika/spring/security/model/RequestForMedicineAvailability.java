@@ -27,4 +27,40 @@ public class RequestForMedicineAvailability {
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private MedicineWithQuantity medicineWithQuantity;
+	
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Pharmacy pharmacy;
+
+	public Pharmacy getPharmacy() {
+		return pharmacy;
+	}
+
+	public void setPharmacy(Pharmacy pharmacy) {
+		this.pharmacy = pharmacy;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public MedicineWithQuantity getMedicineWithQuantity() {
+		return medicineWithQuantity;
+	}
+
+	public void setMedicineWithQuantity(MedicineWithQuantity medicineWithQuantity) {
+		this.medicineWithQuantity = medicineWithQuantity;
+	}
+	
 }

@@ -8,9 +8,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
 
 public interface PharmacyRepository extends JpaRepository<Pharmacy, Long>  {
 	Optional<Pharmacy> findById(Long id);	
+	Pharmacy findPharmacyById(Long id);
 }

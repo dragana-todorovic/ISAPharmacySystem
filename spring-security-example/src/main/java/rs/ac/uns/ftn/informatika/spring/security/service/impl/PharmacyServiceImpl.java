@@ -22,6 +22,7 @@ import rs.ac.uns.ftn.informatika.spring.security.model.DermatologistAppointment;
 import rs.ac.uns.ftn.informatika.spring.security.model.HolidayRequest;
 import rs.ac.uns.ftn.informatika.spring.security.model.HolidayRequestStatus;
 import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
+import rs.ac.uns.ftn.informatika.spring.security.model.MedicineReservation;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicineWithQuantity;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacist;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacistCounseling;
@@ -37,9 +38,14 @@ import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyService;
 import rs.ac.uns.ftn.informatika.spring.security.service.UserService;
 import rs.ac.uns.ftn.informatika.spring.security.view.ActionAndBenefitDTO;
 import rs.ac.uns.ftn.informatika.spring.security.view.EditPharmacyView;
+
+import rs.ac.uns.ftn.informatika.spring.security.view.MedicineReservationView;
+import rs.ac.uns.ftn.informatika.spring.security.view.PharmacyWithMedicationView;
+
 import rs.ac.uns.ftn.informatika.spring.security.view.NewDermatologistDTO;
 import rs.ac.uns.ftn.informatika.spring.security.view.NewPharmacistDTO;
 import rs.ac.uns.ftn.informatika.spring.security.view.WorkingDayDTO;
+
 
 import java.time.LocalTime;
 import java.util.HashSet;
@@ -48,6 +54,7 @@ import rs.ac.uns.ftn.informatika.spring.security.model.Dermatologist;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacist;
 import rs.ac.uns.ftn.informatika.spring.security.model.WorkingDay;
 import rs.ac.uns.ftn.informatika.spring.security.model.WorkingTime;
+import rs.ac.uns.ftn.informatika.spring.security.model.DTO.MedicineReservationDTO;
 import rs.ac.uns.ftn.informatika.spring.security.repository.DermatologistRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.HolidayRequestRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacistCounselingRepository;
@@ -372,28 +379,29 @@ public class PharmacyServiceImpl implements PharmacyService{
 		PharmacyAdmin pa = pharmacyAdminService.findPharmacyAdminByUser(userService.findByEmail(email));
 		Pharmacy p = pa.getPharmacy(); 
 		//da li se radno vrijeme poklapa sa drugim apotekama
-	/*	Boolean isOk = false;
-		for(WorkingTime workingTime : dermatologist.getWorkingTimes()) {
-			if(!workingTime.getPharmacy().equals(p)) {
-				for(WorkingDay workD : workingTime.getWorkingDays()) {
-					for(WorkingDayDTO wd : newDermatologist.getWorkingTimes())
+		for(WorkingTime workingtime : dermatologist.getWorkingTimes()) {
+			if(!workingtime.getPharmacy().equals(p)) {
+				for(WorkingDay workD : workingtime.getWorkingDays()) {
+					for(WorkingDayDTO wd : newDermatologist.getWorkingTimes()) {
 						if(workD.getDay().toString().equals(wd.getDay())) {
-							if(workD.getStartTime().isAfter(LocalTime.parse(wd.getStartTime())) 
-								&& workD.getStartTime().isAfter(LocalTime.parse(wd.getEndTime()))) {
-								isOk = true;
-							} else if(workD.getStartTime().isBefore(LocalTime.parse(wd.getStartTime())) 
-									&& workD.getStartTime().isBefore(LocalTime.parse(wd.getEndTime()))) {
-								isOk = true;
-							} else {
-								isOk = false;
+							if(LocalTime.parse(wd.getStartTime()).isAfter(workD.getStartTime()) &&
+									LocalTime.parse(wd.getStartTime()).isBefore(workD.getEndTime())) {
+								return false;
 							}
-						} 
-						if(!isOk) {
-							return false;
+							if(LocalTime.parse(wd.getEndTime()).isAfter(workD.getStartTime()) &&
+									LocalTime.parse(wd.getEndTime()).isBefore(workD.getEndTime())) {
+								return false;
+							}
+							if(LocalTime.parse(wd.getStartTime()).isBefore(workD.getStartTime()) &&
+									LocalTime.parse(wd.getEndTime()).isAfter(workD.getEndTime())) {
+								return false;
+							}
+							
 						}
-					}
 				}
-			}	*/	
+				}
+			}
+		}
 		
 		WorkingTime wt = new WorkingTime();
 		wt.setPharmacy(p);
@@ -538,6 +546,33 @@ public class PharmacyServiceImpl implements PharmacyService{
 		}
 
 	@Override
+
+	public Collection<PharmacyWithMedicationView> getPharamciesWithMedication(Long id) {
+		ArrayList<PharmacyWithMedicationView> pharmacies = new ArrayList <PharmacyWithMedicationView>();
+		for (Pharmacy pharmacy : pharmacyRepository.findAll()) {
+			for (MedicineWithQuantity medi : pharmacy.getMedicineWithQuantity()) {
+				if (medi.getMedicine().getId()==id) {
+					PharmacyWithMedicationView ph = new PharmacyWithMedicationView(pharmacy.getName(),pharmacy.getAddress().getStreet(),pharmacy.getAddress().getCity(),pharmacy.getId());
+					pharmacies.add(ph);
+				}
+			}
+		}
+		return pharmacies;
+	}
+
+	@Override
+	public Collection<MedicineReservationView> getReservationsByPatientsEmail(String email) {
+		ArrayList<MedicineReservationView> reservations = new ArrayList<MedicineReservationView>();
+		for(Pharmacy ph:findAll()) {
+			for(MedicineReservation mR:ph.getMedicineReservations()) {
+				if(mR.getPatient().getUser().getEmail().equals(email)) {
+					MedicineReservationView myRes=new MedicineReservationView(mR.getMedicineWithQuantity().getMedicine().getName(),ph.getName(),ph.getAddress().getCity(),ph.getAddress().getStreet(),mR.getDueTo(),mR.getMedicineWithQuantity().getQuantity());
+					reservations.add(myRes);
+				}
+			}
+		}
+		return reservations;
+  }
 	public Set<HolidayRequest> getHolidayRequestsByPharmacy(long id,String email) {
 		Dermatologist dermatologist = this.dermatologistRepository.findById(id).get();
 
@@ -571,6 +606,50 @@ public class PharmacyServiceImpl implements PharmacyService{
 	public Pharmacy save(Pharmacy pharmacy) {
 		Pharmacy newPharm = this.pharmacyRepository.save(pharmacy);
 		return newPharm;
+  }
+  @Override
+	public WorkingTime getDermatologistWorkingTimes(long id, String email) {
+		Dermatologist dermatologist = this.dermatologistRepository.findById(id).get();
+
+		PharmacyAdmin pa = pharmacyAdminService.findPharmacyAdminByUser(userService.findByEmail(email));
+		Pharmacy p = pa.getPharmacy(); 
+		
+		for(WorkingTime wt : dermatologist.getWorkingTimes()) {
+			if(wt.getPharmacy().equals(p)) {
+				return wt;
+			}
+		}
+		return null;
+		
+		
+	}
+	@Override
+	public Pharmacy getPharmacyByDermatologistAndStartDate(Dermatologist d, LocalDateTime start) {
+		LocalDate pom = start.toLocalDate();
+		LocalTime pomTime = start.toLocalTime();
+		Pharmacy pharm;
+		for(WorkingTime t:d.getWorkingTimes()) {
+			for(WorkingDay day:t.getWorkingDays()) {
+				System.out.println("Working time"+t);
+				System.out.println("Working day" + day);
+				if(day.getStartTime().equals(pomTime) && day.getDay().equals(pom.getDayOfWeek())) {
+					System.out.println("Usao u if za apoteku");
+					pharm = t.getPharmacy();
+					return pharm;
+				}
+				else if(pom.getDayOfWeek().equals(day.getDay()) ) {
+					System.out.println("Usao u else if");
+					System.out.println(pomTime);
+					System.out.println(day.getStartTime());
+					System.out.println(day.getEndTime());
+					if(pomTime.isAfter(day.getStartTime()) && pomTime.isBefore(day.getEndTime()) ) {
+					pharm = t.getPharmacy();
+					return pharm;}
+				}
+			}
+		}
+		return null;
+
 	}
 }
 

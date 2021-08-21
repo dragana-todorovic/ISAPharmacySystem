@@ -1,5 +1,6 @@
 package rs.ac.uns.ftn.informatika.spring.security.service.impl;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -10,7 +11,6 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import rs.ac.uns.ftn.informatika.spring.security.model.Dermatologist;
 import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicineReservation;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicineReservationStatus;
@@ -18,13 +18,16 @@ import rs.ac.uns.ftn.informatika.spring.security.model.MedicineWithQuantity;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
 import rs.ac.uns.ftn.informatika.spring.security.model.User;
+import rs.ac.uns.ftn.informatika.spring.security.model.DTO.MedicineReservationDTO;
 import rs.ac.uns.ftn.informatika.spring.security.repository.MedicineRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.MedicineReservationRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.MedicineWithQuantityRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacyRepository;
 import rs.ac.uns.ftn.informatika.spring.security.service.MedicineService;
+import rs.ac.uns.ftn.informatika.spring.security.service.PatientService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyAdminService;
 import rs.ac.uns.ftn.informatika.spring.security.service.UserService;
+import rs.ac.uns.ftn.informatika.spring.security.view.MedicineReservationView;
 
 @Service
 public class MedicineServiceImpl implements MedicineService{
@@ -40,6 +43,9 @@ public class MedicineServiceImpl implements MedicineService{
 	private MedicineWithQuantityRepository medicineWithQuantityRepository;
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private PatientService patientService;
 	
 	@Autowired
 	private PharmacyAdminService pharmacyAdminService;
@@ -75,7 +81,6 @@ public class MedicineServiceImpl implements MedicineService{
 		return p.getMedicineWithQuantity();
 	}
 	public Medicine findByName(String name) {
-		System.out.println("Usao u servis");
 		Medicine m = medicineRepository.findByName(name);
 		return m;
 
@@ -145,9 +150,40 @@ public class MedicineServiceImpl implements MedicineService{
 	}
 
 	@Override
-	public Optional<Medicine> findById(Long id) {
-		// TODO Auto-generated method stub
-		return medicineRepository.findById(id);
+	public Medicine findById(Long id) {
+		return medicineRepository.findMedicineById(id);
 	}
+
+	@Override
+	public void saveReservation(MedicineReservationDTO medicineReservationDto) {
+
+		 User user = this.userService.findByUsername(medicineReservationDto.getPatientEmail());
+		 MedicineWithQuantity med = new MedicineWithQuantity();
+		 
+		 Medicine medicine=findById(medicineReservationDto.getMedicineId());
+		 
+		 med.setMedicine(medicine);
+		 med.setQuantity(medicineReservationDto.getQuantity());
+		 
+		 LocalDate localDueToDate = LocalDate.parse(medicineReservationDto.getDueTo());
+		 
+		 MedicineReservation mR=new MedicineReservation();
+		 mR.setDueTo(localDueToDate);
+		 mR.setMedicineWithQuantity(med);
+		 mR.setPatient(patientService.findPatientByUser(user));
+		 mR.setStatus(MedicineReservationStatus.RESERVED);
+		 
+		 Pharmacy pharmacy=pharmacyRepository.findPharmacyById(medicineReservationDto.getPharmacyId());
+		 pharmacy.getMedicineReservations().add(mR);
+		 this.pharmacyRepository.save(pharmacy);
+	}
+	@Override
+	public Medicine findByCode(String code) {
+		Medicine m = medicineRepository.findByCode(code);
+		return m;
+	}
+	
+		
+
 
 }

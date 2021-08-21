@@ -39,20 +39,26 @@ import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
 import rs.ac.uns.ftn.informatika.spring.security.model.PriceList;
 import rs.ac.uns.ftn.informatika.spring.security.model.User;
 import rs.ac.uns.ftn.informatika.spring.security.model.WorkingDay;
+import rs.ac.uns.ftn.informatika.spring.security.model.WorkingTime;
 import rs.ac.uns.ftn.informatika.spring.security.repository.MedicinePriceRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacyAdminRepository;
 import rs.ac.uns.ftn.informatika.spring.security.service.MedicineService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyAdminService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PriceListService;
+import rs.ac.uns.ftn.informatika.spring.security.service.StatisticService;
 import rs.ac.uns.ftn.informatika.spring.security.service.UserService;
 import rs.ac.uns.ftn.informatika.spring.security.view.EditPharmacyView;
+
+import rs.ac.uns.ftn.informatika.spring.security.view.PharmacyWithMedicationView;
+
 import rs.ac.uns.ftn.informatika.spring.security.view.MedicineForOrderView;
 import rs.ac.uns.ftn.informatika.spring.security.view.MedicinePriceDTO;
 import rs.ac.uns.ftn.informatika.spring.security.view.NewDermatologistDTO;
 import rs.ac.uns.ftn.informatika.spring.security.view.NewOrderDTO;
 import rs.ac.uns.ftn.informatika.spring.security.view.NewPharmacistDTO;
 import rs.ac.uns.ftn.informatika.spring.security.view.PriceListDTO;
+import rs.ac.uns.ftn.informatika.spring.security.view.StatisticDTO;
 import rs.ac.uns.ftn.informatika.spring.security.view.UserRegisterView;
 
 @RestController
@@ -68,6 +74,8 @@ public class PharmacyController {
 	@Autowired
 	private PriceListService priceListService;
 	@Autowired
+	private StatisticService statisticService;
+	@Autowired
 	private MedicinePriceRepository medicinePriceRepository;
 	
 	@PostMapping("/getPharmacyByAdmin")
@@ -79,7 +87,7 @@ public class PharmacyController {
 		
 	}
 	@GetMapping("/getAll")
-	@PreAuthorize("hasRole('ROLE_PATIENT') || hasRole('ADMIN_PHARMACY') || hasRole('ADMIN_SYSTEM')")
+  @PreAuthorize("hasRole('ROLE_PATIENT') || hasRole('ADMIN_PHARMACY') || hasRole('ADMIN_SYSTEM')")
 	public List<Pharmacy> getAll() {
 		return this.pharmacyService.findAll();
 		
@@ -269,7 +277,7 @@ public class PharmacyController {
 		
 		for(MedicinePriceDTO m : priceList.getMedicines()) {
 			MedicinePrice mp = new MedicinePrice();
-			mp.setMedicine(this.medicineService.findById(Long.parseLong(m.getMedicineId())).get());
+			mp.setMedicine(this.medicineService.findById(Long.parseLong(m.getMedicineId())));
 			mp.setPrice(Double.parseDouble(m.getPrice()));
 			medicinePrices.add(mp);
 			this.medicinePriceRepository.save(mp);
@@ -282,6 +290,14 @@ public class PharmacyController {
 		
 	}
 	
+
+	@GetMapping(value = "/getPharamcyWithMedicine/{let}",produces = MediaType.APPLICATION_JSON_VALUE)
+	public Collection<PharmacyWithMedicationView> getPharamcyWithMedicine(@PathVariable("let") Long let) {
+		return pharmacyService.getPharamciesWithMedication(let);
+	}
+	
+	
+
 	@GetMapping("/getHolidayRequests/{id}/{email}")
 	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
 	public Set<HolidayRequest> getHolidayRequests(@PathVariable(name="id") String id,@PathVariable(name="email") String email) {
@@ -300,5 +316,70 @@ public class PharmacyController {
 		this.pharmacyService.declineHolidayRequest(Long.parseLong(id));
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-}
 	
+
+	
+	@GetMapping("/getDermatologistWorkingTimes/{id}/{email}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public WorkingTime getDermatologistWorkingTimes(@PathVariable(name="id") String id,@PathVariable(name="email") String email) {
+		return this.pharmacyService.getDermatologistWorkingTimes(Long.parseLong(id), email);
+	}
+	
+	@GetMapping("/getDermatologistAppointmentByYear/{email}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public List<StatisticDTO> getDermatologistAppointmentByYear(@PathVariable(name="email") String email) {
+		return this.statisticService.getDermatologistAppoitmentByYear(email);
+	}
+	
+	@GetMapping("/getDermatologistAppointmentByMonth/{email}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public List<StatisticDTO> getDermatologistAppointmentByMonth(@PathVariable(name="email") String email) {
+		return this.statisticService.getDermatologistAppoitmentByMounth(email);
+	}
+	
+	@GetMapping("/getDermatologistAppointmentByQuarter/{email}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public List<StatisticDTO> getDermatologistAppointmentByQuarter(@PathVariable(name="email") String email) {
+		return this.statisticService.getDermatologistAppoitmentByQuarter(email);
+	}
+	
+	@GetMapping("/getPharmacistConselingByYear/{email}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public List<StatisticDTO> getPharmacistConselingByYear(@PathVariable(name="email") String email) {
+		return this.statisticService.getPharmacistConselingByYear(email);
+	}
+	
+	@GetMapping("/getPharmacistConselingtByMonth/{email}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public List<StatisticDTO> getPharmacistConselingByMonth(@PathVariable(name="email") String email) {
+		return this.statisticService.getPharmacistConselingByMounth(email);
+	}
+	
+	@GetMapping("/getPharmacistConselingByQuarter/{email}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public List<StatisticDTO> getPharmacistConselingByQuarter(@PathVariable(name="email") String email) {
+		return this.statisticService.getPharmacistConselingByQuarter(email);
+	}
+	
+	@GetMapping("/getMedicineConsumptionByYear/{email}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public List<StatisticDTO> getMedicineConsumptionByYear(@PathVariable(name="email") String email) {
+		return this.statisticService.getMedicineConsumptionByYear(email);
+	}
+	
+	@GetMapping("/getMedicineConsumptionByMonth/{email}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public List<StatisticDTO> getMedicineConsumptionByMonth(@PathVariable(name="email") String email) {
+		return this.statisticService.getMedicineConsumptionByMonth(email);
+	}
+	
+	@GetMapping("/getMedicineConsumptionByQuarter/{email}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public List<StatisticDTO> getMedicineConsumptionByQuarter(@PathVariable(name="email") String email) {
+		return this.statisticService.getMedicineConsumptionQuarter(email);
+	}
+	
+	
+
+}
+

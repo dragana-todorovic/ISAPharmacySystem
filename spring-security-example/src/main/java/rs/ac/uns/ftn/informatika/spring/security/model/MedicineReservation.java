@@ -1,5 +1,6 @@
 package rs.ac.uns.ftn.informatika.spring.security.model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import javax.persistence.CascadeType;
@@ -29,7 +30,7 @@ public class MedicineReservation {
 	private MedicineWithQuantity medicineWithQuantity;
 	
 	@Column(name = "dueTo", nullable = false)
-	private LocalDateTime dueTo;
+	private LocalDate dueTo;
 	
 	@Column(name = "status", nullable = false)
 	private MedicineReservationStatus status;
@@ -58,12 +59,12 @@ public class MedicineReservation {
 		this.medicineWithQuantity = medicineWithQuantity;
 	}
 
-	public LocalDateTime getDueTo() {
+	public LocalDate getDueTo() {
 		return dueTo;
 	}
 
-	public void setDueTo(LocalDateTime dueTo) {
-		this.dueTo = dueTo;
+	public void setDueTo(LocalDate localDueToDate) {
+		this.dueTo = localDueToDate;
 	}
 
 	public MedicineReservationStatus getStatus() {

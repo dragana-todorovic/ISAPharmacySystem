@@ -97,6 +97,7 @@ public class MedicineOrderServiceImpl implements MedicineOrderService {
 		} else {
 		
 		MedicineOrder mo = so.getMedicineOrder();
+		mo.setStatus(MedicineOrderStatus.PROCESSED);
 		
 		List<SuplierOffer> allOffersExceptAccepted = new ArrayList<SuplierOffer>();
 		for(SuplierOffer suplierOffer : this.suplierOfferRepository.findOffersByOrder(mo.getId())) {

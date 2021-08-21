@@ -67,13 +67,16 @@ let showOrders = function(data) {
 		<td class="col1">`+data[i].status+`</td>	
 		<td>`+
 		data[i].timeLimit+`</td>
-		<td>${lijekovi}</td>
-		<td><button id = "`+data[i].id+`" name="prikaziPonude" class="ui secondary button">
+		<td>${lijekovi}</td>`;
+		if(data[i].status == "ON_HOLD") {
+		temp += `<td><button id = "`+data[i].id+`" name="prikaziPonude" class="ui secondary button">
 		<i class="eye icon"></i>
 		Show offers
-		</button></td>
-					   
-	`;
+		</button></td>`
+		}else {
+		temp+=`<td></td>`
+		}
+		
 	}
 	temp+=`</tr>`
 		

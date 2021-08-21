@@ -18,7 +18,15 @@ import javax.persistence.Table;
 @Entity
 @Table(name="PATIENTS")
 public class Patient {
-	 @Id
+	 public int getPenal() {
+		return penal;
+	}
+
+	public void setPenal(int penal) {
+		this.penal = penal;
+	}
+
+	@Id
 	 @Column(name = "id")
 	 @GeneratedValue(strategy = GenerationType.IDENTITY)
 	  private Long id;
