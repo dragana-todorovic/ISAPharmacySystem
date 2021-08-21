@@ -327,6 +327,24 @@ $('.ui.dropdown')
   </div>
 </div>
 
+<div id="modalniZaOdbijanje" class="ui modal">
+  <i class="close icon"></i>
+  <div class="header">
+	Reason why you deline that request
+  </div>
+  <div class="content">
+
+    	 <div class="ui input left">
+      <textArea placeholder="Reason..." id="reason"></textArea>
+    </div>
+     <div class="actions">
+      <input class="ui right floated positive button" type = "button" value = "Send" id="decline"></input>
+			 
+     
+  </div>
+  </div>
+</div>
+
 <div id="errorAdd" class="ui modal">
 	  <i class="close icon"></i>
 	  <div class="header">
@@ -431,7 +449,7 @@ $("button[name=prikaziZahjeve]").click(function() {
 	      method: 'GET',
 		  contentType: 'application/json',
 		        success: function(data){
-					 showRequests(data)
+					 showRequests(idSelected,data)
 					  $('#modalniZaPrikazZahtjeva')
 					  .modal('show')
 					  
@@ -554,6 +572,12 @@ let showPharmacists = function(data) {
 		<i class="close icon"></i>
 		Delete
 		</button>
+		</td>
+		<td>
+			<button id = "`+data[i].id+`" name="prikaziZahjeve" class="ui secondary button">
+		<i class="eye icon"></i>
+		Show vacation requests
+		</button>
 		</td>`;
 	}
 	temp+=`</tr>`
@@ -588,6 +612,7 @@ let showPharmacists = function(data) {
 	    <th>Avarage rating</th>
 	    <th>Pharmacies</th>
 	    <th>Delete pharmacist</th>
+	     <th>Vaction requests</th>
 	  </tr></thead><tbody id="tabelaFarmaceuta">
 	  </tbody>
 	  <tfoot class="full-width">
@@ -646,6 +671,46 @@ let showPharmacists = function(data) {
       <input class="ui right floated positive button" type = "button" value = "Add" id="addDermatologist"></input>
 			 
      
+  </div>
+</div>
+
+
+	
+<div id="modalniZaPrikazZahtjeva" class="ui modal">
+  <i class="close icon"></i>
+  <div class="header">
+	All requests
+  </div>
+  <div class="content">
+
+    	<table class="ui black table">
+  <thead>
+    <tr><th>Start date</th>
+    <th>End date</th>
+    <th>Status</th>
+    <th>Options</th>
+  </tr></thead><tbody id="zahtjeviTabela">
+
+  </tbody>
+</table>
+  </div>
+</div>
+
+<div id="modalniZaOdbijanje" class="ui modal">
+  <i class="close icon"></i>
+  <div class="header">
+	Reason why you deline that request
+  </div>
+  <div class="content">
+
+    	 <div class="ui input left">
+      <textArea placeholder="Reason..." id="reason"></textArea>
+    </div>
+     <div class="actions">
+      <input class="ui right floated positive button" type = "button" value = "Send" id="decline"></input>
+			 
+     
+  </div>
   </div>
 </div>
 
@@ -768,6 +833,25 @@ $("#addDermatologist").click(function() {
 
 	});
 });
+
+
+$("button[name=prikaziZahjeve]").click(function() {
+	idSelected = this.id
+	customAjax({
+	      url: '/pharmacy/getHolidayRequestsP/' + idSelected + '/' + email,
+	      method: 'GET',
+		  contentType: 'application/json',
+		        success: function(data){
+					 showRequestsP(idSelected,data)
+					  $('#modalniZaPrikazZahtjeva')
+					  .modal('show')
+					  
+				},
+			      error: function(){
+			      }
+	    });
+	
+ });
 }
 
 let editDermatologist = function(dani) {

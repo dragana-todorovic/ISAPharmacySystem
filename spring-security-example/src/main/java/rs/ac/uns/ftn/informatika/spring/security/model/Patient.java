@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -15,8 +16,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name="PATIENTS")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Patient {
 	 @Id
 	 @Column(name = "id")
@@ -34,9 +38,9 @@ public class Patient {
 	
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	private Set<Medicine> allergiesMedicine = new HashSet<Medicine>();
-	
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-	private Set<Pharmacy> patientSubscriptions = new HashSet<Pharmacy>();
+	 //aporeke na koje je pretplacen
+	@ElementCollection
+	private Set<Long> subscribePharmacyIds = new HashSet<Long>();
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	private Set<DermatologistComplaint> dermatologistComplaints = new HashSet<DermatologistComplaint>();
@@ -105,6 +109,14 @@ public class Patient {
 
 	public Patient() {
 		super();
+	}
+
+	public Set<Long> getPatientSubscriptions() {
+		return subscribePharmacyIds;
+	}
+
+	public void setPatientSubscriptions(Set<Long> patientSubscriptions) {
+		this.subscribePharmacyIds = patientSubscriptions;
 	}
 	 
 	

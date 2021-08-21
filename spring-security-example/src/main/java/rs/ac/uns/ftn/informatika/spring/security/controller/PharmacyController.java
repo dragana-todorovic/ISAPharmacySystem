@@ -305,20 +305,44 @@ public class PharmacyController {
 		return this.pharmacyService.getHolidayRequestsByPharmacy(Long.parseLong(id),email);
 	}
 	
-	@PostMapping("/acceptHolidayRequest/{id}")
+	@PostMapping("/acceptHolidayRequest/{id}/{dermatologistId}")
 	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
-	public ResponseEntity<?> acceptHolidayRequest(@PathVariable(name="id") String id) {
-		this.pharmacyService.acceptHolidayRequest(Long.parseLong(id));
+	public ResponseEntity<?> acceptHolidayRequest(@PathVariable(name="id") String id,
+			@PathVariable(name="dermatologistId") String dermatologistId) {
+		this.pharmacyService.acceptHolidayRequest(Long.parseLong(id), Long.parseLong(dermatologistId));
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-	@PostMapping("/declineHolidayRequest/{id}")
+	@PostMapping("/declineHolidayRequest/{id}/{dermatologistId}/{reason}")
 	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
-	public ResponseEntity<?> declineHolidayRequest(@PathVariable(name="id") String id) {
-		this.pharmacyService.declineHolidayRequest(Long.parseLong(id));
+	public ResponseEntity<?> declineHolidayRequest(@PathVariable(name="id") String id,
+			@PathVariable(name="dermatologistId") String dermatologistId,
+			@PathVariable(name="reason") String reason) {
+		this.pharmacyService.declineHolidayRequest(Long.parseLong(id), Long.parseLong(dermatologistId),reason);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-
+	
+	@GetMapping("/getHolidayRequestsP/{id}/{email}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public Set<HolidayRequest> getHolidayRequestsP(@PathVariable(name="id") String id,@PathVariable(name="email") String email) {
+		return this.pharmacyService.getHolidayRequestsByPharmacyP(Long.parseLong(id),email);
+	}
+	
+	@PostMapping("/acceptHolidayRequestP/{id}/{pharmacistId}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public ResponseEntity<?> acceptHolidayRequestP(@PathVariable(name="id") String id,
+			@PathVariable(name="pharmacistId") String pharmacistId) {
+		this.pharmacyService.acceptHolidayRequestP(Long.parseLong(id), Long.parseLong(pharmacistId));
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	@PostMapping("/declineHolidayRequestP/{id}/{pharmacistId}/{reason}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public ResponseEntity<?> declineHolidayRequestP(@PathVariable(name="id") String id,
+			@PathVariable(name="pharmacistId") String pharmacistId,
+			@PathVariable(name="reason") String reason) {
+		this.pharmacyService.declineHolidayRequestP(Long.parseLong(id),Long.parseLong(pharmacistId), reason);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
 	
 	@GetMapping("/getDermatologistWorkingTimes/{id}/{email}")
 	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
