@@ -90,16 +90,21 @@ public interface PharmacyService {
 	Boolean addDermatologistInPharmacy(String email, NewDermatologistDTO newDermatologist);
 	void addPharmacistInPharmacy(String email, NewPharmacistDTO newPharmacist);
 
+	
+	Pharmacy save(Pharmacy pharmacy);
+
+
 	Set<Pharmacist> getAllPharmacistsExpectAlreadyExisted(String email);
 	Boolean editDermatologistInPharmacy(String email, NewDermatologistDTO newDermatologist);
 	
 	Set<HolidayRequest> getHolidayRequestsByPharmacy(long id, String email);
-	void acceptHolidayRequest(long id);
-	void declineHolidayRequest(long id);
-	Pharmacy save(Pharmacy pharmacy);
-
+	void acceptHolidayRequest(long id, long dermatologistId);
+	void declineHolidayRequest(long id, long dermatologistId, String reason);
 
 	WorkingTime getDermatologistWorkingTimes(long id, String email);
 	Pharmacy getPharmacyByDermatologistAndStartDate(Dermatologist d,LocalDateTime start);
+	Set<HolidayRequest> getHolidayRequestsByPharmacyP(long parseLong, String email);
+	void acceptHolidayRequestP(long parseLong, long pharmacistId);
+	void declineHolidayRequestP(long parseLong, long pharmacistId, String reason);
 
 }

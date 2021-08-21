@@ -12,6 +12,8 @@ INSERT INTO USERS (username, password, first_name, last_name, email, country, ci
 INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('pharmacist1@example.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.Lrd4j8amcljStog3n4APU5EX3bGJIUK', 'Ivana', 'Ivanovic', 'pharmacist1@example.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
 INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('dermatologist1@example.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.Lrd4j8amcljStog3n4APU5EX3bGJIUK', 'Maja', 'Markovic', 'dermatologist1@example.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
 INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('dermatologist2@example.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.Lrd4j8amcljStog3n4APU5EX3bGJIUK', 'Jovana', 'Jovancic', 'dermatologist2@example.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
+INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('dragana123600@gmail.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.Lrd4j8amcljStog3n4APU5EX3bGJIUK', 'Jovana', 'Jovancic', 'dragana123600@gmail.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
+INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('suplier@gmail.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.Lrd4j8amcljStog3n4APU5EX3bGJIUK', 'Jovana', 'Jovancic', 'suplier@gmail.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
 
 --medicine
 
@@ -44,13 +46,15 @@ INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (2, 1);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (3, 1);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (4, 2);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (5, 3);
-INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (6, 7);
+INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (6, 3);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (7, 5);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (9, 6);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (8, 4);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (10, 4);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (11, 5);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (12, 5);
+INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (13, 7);
+INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (14, 7);
 --patient
 INSERT INTO PATIENTS (id,user_id,points,category,penal,point) VALUES (1,5,10,0,0,0);
 INSERT INTO PATIENTS (id,user_id,points,category,penal,point) VALUES (2,6,100,0,0,0);
@@ -58,9 +62,15 @@ INSERT INTO patients_allergies_medicine(patient_id, allergies_medicine_id) value
 INSERT INTO patients_allergies_medicine(patient_id, allergies_medicine_id) values (2,2);
 
 --suplier 
+
+INSERT INTO suplier(user_id) VALUES (13);
+INSERT INTO suplier(user_id) VALUES (14);
 INSERT INTO suplier(user_id) VALUES (6);
+
 --system admin
 INSERT INTO systemadmin(user_id) VALUES (1);
+
+
 
 INSERT INTO ADDRESS (street,city) VALUES ('Bulevar oslobodjenja 4', 'Novi Sad');
 INSERT INTO ADDRESS (street,city) VALUES ('Kralja Petra 20', 'Beograd');
@@ -73,6 +83,9 @@ INSERT INTO PHARMACY (name, description, address_id) VALUES ('Benu', 'Opis Benu'
 INSERT INTO PHARMACYADMIN ( pharmacy_id, user_id) VALUES (2,9);
 
 
+
+INSERT INTO patient_subscribe_pharmacy_ids(patient_id,subscribe_pharmacy_ids) VALUES (1,2);
+INSERT INTO patient_subscribe_pharmacy_ids(patient_id,subscribe_pharmacy_ids) VALUES (2,2);
 --dermatologist 
 INSERT INTO DERMATOLOGIST ( user_id) VALUES (7);
 INSERT INTO DERMATOLOGIST ( user_id) VALUES (11);
@@ -219,7 +232,11 @@ INSERT INTO workingday (day,end_time,start_time) VALUES (2,'14:00:00.000000', '0
 INSERT INTO workingday (day,end_time,start_time) VALUES (3,'14:00:00.000000', '08:00:00.000000');
 INSERT INTO workingday (day,end_time,start_time) VALUES (4,'19:00:00.000000', '08:00:00.000000');
 INSERT INTO workingday (day,end_time,start_time) VALUES (5,'14:00:00.000000', '08:00:00.000000');
+
 INSERT INTO workingday (day,end_time,start_time) VALUES (6,'14:00:00.000000', '08:00:00.000000');
+
+INSERT INTO workingday (day,end_time,start_time) VALUES (4,'14:00:00.000000', '08:00:00.000000');
+INSERT INTO workingday (day,end_time,start_time) VALUES (5,'14:00:00.000000', '08:00:00.000000');
 
 --working time
 INSERT INTO workingtime (pharmacy_id) VALUES (2);
@@ -329,11 +346,11 @@ INSERT INTO requestformedicineavailability(id,created_at,medicine_with_quantity_
 
 --suplier offer 
 INSERT INTO suplieroffer(delevery_time,price,medicine_order_id) VALUES ('2017-10-01 21:58:58.508-07',500,1);
-INSERT INTO suplieroffer(delevery_time,price,medicine_order_id) VALUES ('2021-10-10 21:58:58.508-07',500,1);
+INSERT INTO suplieroffer(delevery_time,price,medicine_order_id) VALUES ('2021-08-08 21:58:58.508-07',500,1);
 
 --suplier offers 
 INSERT INTO suplier_offers(suplier_id,offers_id) VALUES (1,1);
-INSERT INTO suplier_offers(suplier_id,offers_id) VALUES (1,2);
+INSERT INTO suplier_offers(suplier_id,offers_id) VALUES (2,2);
 
 --theraphy
 INSERT INTO therapy(duration,medicine_id) VALUES (4,1);

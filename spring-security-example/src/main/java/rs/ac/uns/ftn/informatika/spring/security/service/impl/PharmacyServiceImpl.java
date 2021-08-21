@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +34,7 @@ import rs.ac.uns.ftn.informatika.spring.security.repository.ActionAndBenefitRepo
 import rs.ac.uns.ftn.informatika.spring.security.repository.DermatologistAppointmentRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacyRepository;
 import rs.ac.uns.ftn.informatika.spring.security.service.AuthorityService;
+import rs.ac.uns.ftn.informatika.spring.security.service.EmailService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyAdminService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyService;
 import rs.ac.uns.ftn.informatika.spring.security.service.UserService;
@@ -50,6 +52,9 @@ import rs.ac.uns.ftn.informatika.spring.security.view.WorkingDayDTO;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.mail.MessagingException;
+
 import rs.ac.uns.ftn.informatika.spring.security.model.Dermatologist;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacist;
 import rs.ac.uns.ftn.informatika.spring.security.model.WorkingDay;
@@ -57,6 +62,7 @@ import rs.ac.uns.ftn.informatika.spring.security.model.WorkingTime;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.MedicineReservationDTO;
 import rs.ac.uns.ftn.informatika.spring.security.repository.DermatologistRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.HolidayRequestRepository;
+import rs.ac.uns.ftn.informatika.spring.security.repository.PatientRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacistCounselingRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacistRepository;
 
@@ -81,6 +87,12 @@ public class PharmacyServiceImpl implements PharmacyService{
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private PatientRepository patientRepository;
+	
+	@Autowired
+	private EmailService emailService;
 	
 	@Autowired
 	private PharmacyAdminService pharmacyAdminService;
@@ -130,6 +142,24 @@ public class PharmacyServiceImpl implements PharmacyService{
 		
 		Pharmacy pharmacy =pa.getPharmacy();
 		pharmacy.getActionsAndBenefits().add(ab);
+		
+	List<Patient> patients = this.patientRepository.findAll();
+		for(Patient p : patients) {
+			for(Long ph : p.getPatientSubscriptions()) {
+				if(pa.getPharmacy().getId().equals(ph)) {
+					try {
+						emailService.sendEmail(p.getUser().getEmail(), "Action and benefits", actionAndBenefit.getDescription());
+					} catch (MailException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (MessagingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+		
 		
 		this.pharmacyRepository.save(pharmacy);
 		
@@ -580,25 +610,49 @@ public class PharmacyServiceImpl implements PharmacyService{
 		Pharmacy p = pa.getPharmacy(); 
 		
 		Set<HolidayRequest> holidayRequests = new HashSet<HolidayRequest>();
-		
-			//treba promijeniti da budee pharmacy iz holidayrequest kada maja doda
-		
-		return dermatologist.getHolidayRequests();
+		for(HolidayRequest hr : dermatologist.getHolidayRequests()) {
+			if(hr.getPharmacy().equals(p)) {
+				holidayRequests.add(hr);
+			}
+		}
+		return holidayRequests;
 	}
 
 	@Override
-	public void acceptHolidayRequest(long id) {
+	public void acceptHolidayRequest(long id,long dermatologistId) {
+		Dermatologist dermatologist = this.dermatologistRepository.findById(dermatologistId).get();
 		HolidayRequest holidayRequest = this.holidayRequestRepository.findById(id).get();
-		holidayRequest.setStatus(HolidayRequestStatus.ACCEPT);
-		this.holidayRequestRepository.save(holidayRequest);
+		for(HolidayRequest hr : dermatologist.getHolidayRequests()) {
+			if(hr.equals(holidayRequest)) {
+				hr.setStatus(HolidayRequestStatus.ACCEPT);
+			}
+		}
+		try {
+			this.emailService.sendEmail(dermatologist.getUser().getEmail(), "Vaction request", "Request was accepted");
+		} catch (MailException | MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		this.dermatologistRepository.save(dermatologist);
 		
 	}
 
 	@Override
-	public void declineHolidayRequest(long id) {
+	public void declineHolidayRequest(long id,long dermatologistId, String reason) {
+		Dermatologist dermatologist = this.dermatologistRepository.findById(dermatologistId).get();
 		HolidayRequest holidayRequest = this.holidayRequestRepository.findById(id).get();
-		holidayRequest.setStatus(HolidayRequestStatus.DENIED);
-		this.holidayRequestRepository.save(holidayRequest);
+		for(HolidayRequest hr : dermatologist.getHolidayRequests()) {
+			if(hr.equals(holidayRequest)) {
+				hr.setStatus(HolidayRequestStatus.DENIED);
+			}
+		}
+		try {
+			this.emailService.sendEmail(dermatologist.getUser().getEmail(), "Vaction request", "Request was declined\n" + reason);
+		} catch (MailException | MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		this.dermatologistRepository.save(dermatologist);
 		
 	}
 
@@ -650,6 +704,61 @@ public class PharmacyServiceImpl implements PharmacyService{
 		}
 		return null;
 
+	}
+
+	@Override
+	public Set<HolidayRequest> getHolidayRequestsByPharmacyP(long id, String email) {
+		Pharmacist pharmacist = this.pharmacistRepository.findById(id).get();
+
+		PharmacyAdmin pa = pharmacyAdminService.findPharmacyAdminByUser(userService.findByEmail(email));
+		Pharmacy p = pa.getPharmacy(); 
+		
+		Set<HolidayRequest> holidayRequests = new HashSet<HolidayRequest>();
+		for(HolidayRequest hr : pharmacist.getHolidayRequests()) {
+			if(hr.getPharmacy().equals(p)) {
+				holidayRequests.add(hr);
+			}
+		}
+		
+		
+		return holidayRequests;
+	}
+
+	@Override
+	public void acceptHolidayRequestP(long id, long pharmacistId) {
+		Pharmacist pharmacist = this.pharmacistRepository.findById(pharmacistId).get();
+		HolidayRequest holidayRequest = this.holidayRequestRepository.findById(id).get();
+		for(HolidayRequest hr : pharmacist.getHolidayRequests()) {
+			if(hr.equals(holidayRequest)) {
+				hr.setStatus(HolidayRequestStatus.ACCEPT);
+			}
+		}
+		try {
+			this.emailService.sendEmail(pharmacist.getUser().getEmail(), "Vaction request", "Request was accepted");
+		} catch (MailException | MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		this.pharmacistRepository.save(pharmacist);
+		
+	}
+
+	@Override
+	public void declineHolidayRequestP(long id, long pharmacistId, String reason) {
+		Pharmacist pharmacist = this.pharmacistRepository.findById(pharmacistId).get();
+		HolidayRequest holidayRequest = this.holidayRequestRepository.findById(id).get();
+		for(HolidayRequest hr : pharmacist.getHolidayRequests()) {
+			if(hr.equals(holidayRequest)) {
+				hr.setStatus(HolidayRequestStatus.DENIED);
+			}
+		}
+		try {
+			this.emailService.sendEmail(pharmacist.getUser().getEmail(), "Vaction request", "Request was declined\n" + reason);
+		} catch (MailException | MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		this.pharmacistRepository.save(pharmacist);
 	}
 }
 
