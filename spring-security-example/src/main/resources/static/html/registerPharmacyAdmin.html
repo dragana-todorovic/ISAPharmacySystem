@@ -140,7 +140,7 @@ div.container4 h2 {
 			    margin-right:auto; margin-top: 40px;">
             <thead>
             <tr class="success">
-                <th colspan="2" class = "text-info" style= "text-align:center;">Register New System Admin</th>
+                <th colspan="2" class = "text-info" style= "text-align:center;">Register New Pharmacy Admin</th>
             </tr>
             </thead>
             <tbody>
@@ -178,12 +178,27 @@ div.container4 h2 {
                 <td>Phone Number:</td>
                 <td class="ui input small"> <input type="number" id="txtNumber" /></td>
             </tr>
+            <tr>
+                <td>Select the Pharmacy to be the Pharmacy Administrator:</td>
+                <td class="ui input small">
+                    <table  id="txtSubstituteMedicineCodes" >
+                        <thead>
+                        <tr class="success">
+                            <th></th>
+                            <th>Name</th>
+                        </tr>
+                        </thead>
+                        <tbody id="pharmacyTable">
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
             </tbody>
             <tfoot class="full-width">
             <tr>
                 <th></th>
                 <th colspan="2">
-                    <input id = "submitRegisterSystemAdmin" class="ui right floated positive basic button" type = "button" value = "Submit"></input>
+                    <input id = "submitRegisterPharmacyAdmin" class="ui right floated positive basic button" type = "button" value = "Submit"></input>
 
                 </th>
             </tr>

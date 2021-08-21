@@ -9,10 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import rs.ac.uns.ftn.informatika.spring.security.model.ActionAndBenefit;
-import rs.ac.uns.ftn.informatika.spring.security.model.Authority;
-import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
-import rs.ac.uns.ftn.informatika.spring.security.model.User;
+import rs.ac.uns.ftn.informatika.spring.security.model.*;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacyAdminRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.UserRepository;
 import rs.ac.uns.ftn.informatika.spring.security.service.AuthorityService;
@@ -40,8 +37,11 @@ public class PharmacyAdminServiceImpl implements PharmacyAdminService {
 		return null;
 	}
 
-
-	
+	@Override
+	public PharmacyAdmin save(PharmacyAdmin pharmacyAdmin) {
+		PharmacyAdmin pharmacyAdmin1 = this.pharmacyAdminRepository.save(pharmacyAdmin);
+		return pharmacyAdmin1;
+	}
 
 
 }

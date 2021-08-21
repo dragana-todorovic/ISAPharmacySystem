@@ -58,7 +58,9 @@ INSERT INTO patients_allergies_medicine(patient_id, allergies_medicine_id) value
 INSERT INTO patients_allergies_medicine(patient_id, allergies_medicine_id) values (2,2);
 
 --suplier 
-INSERT INTO suplier(id,user_id) VALUES (1,6);
+INSERT INTO suplier(user_id) VALUES (6);
+--system admin
+INSERT INTO systemadmin(user_id) VALUES (1);
 
 INSERT INTO ADDRESS (street,city) VALUES ('Bulevar oslobodjenja 4', 'Novi Sad');
 INSERT INTO ADDRESS (street,city) VALUES ('Kralja Petra 20', 'Beograd');
@@ -68,13 +70,13 @@ INSERT INTO PHARMACY (name, description, address_id) VALUES ('Benu', 'Opis Benu'
 
 --pharmacyadmin
 
-INSERT INTO PHARMACYADMIN (id, pharmacy_id, user_id) VALUES (1,2,9);
+INSERT INTO PHARMACYADMIN ( pharmacy_id, user_id) VALUES (2,9);
 
 
 --dermatologist 
-INSERT INTO DERMATOLOGIST (id, user_id) VALUES (1,7);
-INSERT INTO DERMATOLOGIST (id, user_id) VALUES (2,11);
-INSERT INTO DERMATOLOGIST (id, user_id) VALUES (3,12);
+INSERT INTO DERMATOLOGIST ( user_id) VALUES (7);
+INSERT INTO DERMATOLOGIST ( user_id) VALUES (11);
+INSERT INTO DERMATOLOGIST (user_id) VALUES (12);
 --appoitment
 INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id, patient_id) VALUES (30,'2021-01-01 21:58:58.508-07','opis1',1,1);
 INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id, patient_id) VALUES (30,'2021-02-02 21:58:58.508-07','opis2',1,2);

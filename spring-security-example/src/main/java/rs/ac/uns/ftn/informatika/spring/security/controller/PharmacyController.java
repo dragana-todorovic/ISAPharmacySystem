@@ -1,4 +1,3 @@
-
 package rs.ac.uns.ftn.informatika.spring.security.controller;
 
 import java.security.Principal;
@@ -88,7 +87,7 @@ public class PharmacyController {
 		
 	}
 	@GetMapping("/getAll")
-	@PreAuthorize("hasRole('ROLE_PATIENT') || hasRole('ADMIN_PHARMACY')")
+  @PreAuthorize("hasRole('ROLE_PATIENT') || hasRole('ADMIN_PHARMACY') || hasRole('ADMIN_SYSTEM')")
 	public List<Pharmacy> getAll() {
 		return this.pharmacyService.findAll();
 		

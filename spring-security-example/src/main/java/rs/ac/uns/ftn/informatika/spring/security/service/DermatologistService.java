@@ -20,7 +20,11 @@ public interface DermatologistService {
 	List<MyPatientDTO> myPatients(String email);
 	List<MyPatientDTO> getPatientsForAppointment(String email);
 	List<Medicine> getMedicines();
+	void saveAppointment(AppointmentDTO appointmantDTO);
+	Dermatologist save(Dermatologist dermatologist);
+
 	Boolean isMedicineAvailable(Pharmacy pharmacy, String medicineId);
 	void saveAppointment(AppointmentDTO appointmantDTO,Pharmacy pharmacy);
 	Boolean isAppointmentAvailableForScheduling(Dermatologist dermatologist,Patient patient,Integer duration,Pharmacy pharmacy,LocalDate startDate, LocalDateTime startDateTime,LocalDateTime endDateTime);
+
 }

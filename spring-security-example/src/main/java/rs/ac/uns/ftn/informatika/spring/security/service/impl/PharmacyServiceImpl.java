@@ -603,6 +603,11 @@ public class PharmacyServiceImpl implements PharmacyService{
 	}
 
 	@Override
+	public Pharmacy save(Pharmacy pharmacy) {
+		Pharmacy newPharm = this.pharmacyRepository.save(pharmacy);
+		return newPharm;
+  }
+  @Override
 	public WorkingTime getDermatologistWorkingTimes(long id, String email) {
 		Dermatologist dermatologist = this.dermatologistRepository.findById(id).get();
 
@@ -644,6 +649,7 @@ public class PharmacyServiceImpl implements PharmacyService{
 			}
 		}
 		return null;
+
 	}
 }
 

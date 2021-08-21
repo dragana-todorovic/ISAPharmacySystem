@@ -71,9 +71,7 @@ public class AuthenticationController {
 	@PostMapping("/login")
 	public ResponseEntity<UserTokenState> createAuthenticationToken( JwtAuthenticationRequest authenticationRequest,
 																	 HttpServletResponse response) {
-		System.out.println("login");
 		// sa fronta kao username prosledjujem email - authenticationRequest.getUsername()
-
 		Authentication authentication = authenticationManager
 				.authenticate( new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(),
 						authenticationRequest.getPassword()));
@@ -83,11 +81,7 @@ public class AuthenticationController {
 
 		// Kreiraj token za tog korisnika
 		User user = (User) authentication.getPrincipal();
-		System.out.println(this.authorityService.findAuthorityIdByUserId(user.getId()) + "   lallalalal");
-
-
 		String userRole = this.authorityService.findAuthorityIdByUserId(user.getId());
-		System.out.println(userRole);
 		
 		String jwt = tokenUtils.generateToken(user.getId(),user.getEmail(),userRole);
 		int expiresIn = tokenUtils.getExpiredIn();
@@ -120,7 +114,7 @@ public class AuthenticationController {
 	public Collection<Medicine> searchMedicine(@PathVariable("let") String let) {
 		return medicineService.searchMedicine(let);
 	}
-
+/*
 	@PostMapping("/registerAdminSystem")
 	public ResponseEntity<User> registerAdminSystem(@RequestBody UserRegisterView userRequest, UriComponentsBuilder ucBuilder) {
 		User existUser = this.userService.findByUsername(userRequest.getEmail());
@@ -130,11 +124,11 @@ public class AuthenticationController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
-		User user = this.userService.saveUserAdminSystem(userRequest);
+	//	User user = this.userService.saveUserAdminSystem(userRequest);
 		HttpHeaders headers = new HttpHeaders();
 		headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
 		return new ResponseEntity<>(user, HttpStatus.CREATED);
-	}
+	}*/
 
 	@GetMapping(value = "/checkEmail/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> checkEmail(@PathVariable("email") String email) {

@@ -245,6 +245,12 @@ public class DermatologistServiceImpl implements DermatologistService{
 			return;
 		}
 		}
+
+	@Override
+	public Dermatologist save(Dermatologist dermatologist) {
+		Dermatologist newDerm = this.dermatologistRepository.save(dermatologist);
+		return newDerm;
+	}
 	@Override
 	public Boolean isAppointmentAvailableForScheduling(Dermatologist dermatologist,Patient patient,Integer duration,Pharmacy pharmacy,LocalDate startDate, LocalDateTime startDateTime,LocalDateTime endDateTime) {
 		if(!isDermatologistWorkingTime(dermatologist,duration, pharmacy,startDate, startDateTime)) 
