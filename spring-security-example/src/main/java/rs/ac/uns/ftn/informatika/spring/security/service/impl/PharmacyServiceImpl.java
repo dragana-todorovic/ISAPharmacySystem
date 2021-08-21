@@ -566,6 +566,12 @@ public class PharmacyServiceImpl implements PharmacyService{
 		this.holidayRequestRepository.save(holidayRequest);
 		
 	}
+
+	@Override
+	public Pharmacy save(Pharmacy pharmacy) {
+		Pharmacy newPharm = this.pharmacyRepository.save(pharmacy);
+		return newPharm;
+	}
 }
 
 

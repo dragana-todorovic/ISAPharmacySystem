@@ -1,12 +1,6 @@
 package rs.ac.uns.ftn.informatika.spring.security.view;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import javax.persistence.Column;
-import java.sql.Timestamp;
-
-public class RegisterView {
-
+public class RegisterPharmacyAdminView {
     private String password;
     private String firstName;
     private String lastName;
@@ -15,12 +9,12 @@ public class RegisterView {
     private String city;
     private String address;
     private String phoneNumber;
+    private String pharmacyId;
 
-    public RegisterView() {
+    public RegisterPharmacyAdminView() {
     }
 
-    public RegisterView( String password, String firstName, String lastName, String email, String country, String city, String address, String phoneNumber) {
-
+    public RegisterPharmacyAdminView(String password, String firstName, String lastName, String email, String country, String city, String address, String phoneNumber, String pharmacyId) {
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -29,7 +23,18 @@ public class RegisterView {
         this.city = city;
         this.address = address;
         this.phoneNumber = phoneNumber;
+        this.pharmacyId = pharmacyId;
     }
+
+    public String getPharmacyId() {
+        return pharmacyId;
+    }
+
+    public void setPharmacyId(String pharmacyId) {
+        this.pharmacyId = pharmacyId;
+    }
+
+
 
     public String getPassword() {
         return password;

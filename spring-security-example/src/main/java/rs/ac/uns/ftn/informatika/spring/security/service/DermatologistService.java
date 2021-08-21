@@ -17,4 +17,5 @@ public interface DermatologistService {
 	List<MyPatientDTO> getPatientsForAppointment(String email);
 	List<Medicine> getMedicines();
 	void saveAppointment(AppointmentDTO appointmantDTO);
+	Dermatologist save(Dermatologist dermatologist);
 }

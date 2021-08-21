@@ -4,11 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-import rs.ac.uns.ftn.informatika.spring.security.model.ActionAndBenefit;
-import rs.ac.uns.ftn.informatika.spring.security.model.Patient;
-import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
-import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
-import rs.ac.uns.ftn.informatika.spring.security.model.User;
+import rs.ac.uns.ftn.informatika.spring.security.model.*;
 import rs.ac.uns.ftn.informatika.spring.security.view.ActionAndBenefitDTO;
 import rs.ac.uns.ftn.informatika.spring.security.view.EditPharmacyView;
 import rs.ac.uns.ftn.informatika.spring.security.view.NewDermatologistDTO;
@@ -23,14 +19,9 @@ import rs.ac.uns.ftn.informatika.spring.security.model.ActionAndBenefit;
 
 import rs.ac.uns.ftn.informatika.spring.security.model.Patient;
 
-import rs.ac.uns.ftn.informatika.spring.security.model.Dermatologist;
-import rs.ac.uns.ftn.informatika.spring.security.model.HolidayRequest;
-import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacist;
-
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
 import rs.ac.uns.ftn.informatika.spring.security.model.User;
-import rs.ac.uns.ftn.informatika.spring.security.model.WorkingDay;
 import rs.ac.uns.ftn.informatika.spring.security.view.ActionAndBenefitDTO;
 import rs.ac.uns.ftn.informatika.spring.security.view.EditPharmacyView;
 
@@ -67,4 +58,5 @@ public interface PharmacyService {
 	Set<HolidayRequest> getHolidayRequestsByPharmacy(long id, String email);
 	void acceptHolidayRequest(long id);
 	void declineHolidayRequest(long id);
+	Pharmacy save(Pharmacy pharmacy);
 }

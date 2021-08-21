@@ -180,4 +180,10 @@ public class DermatologistServiceImpl implements DermatologistService{
 			return;
 		}
 		}
+
+	@Override
+	public Dermatologist save(Dermatologist dermatologist) {
+		Dermatologist newDerm = this.dermatologistRepository.save(dermatologist);
+		return newDerm;
+	}
 }

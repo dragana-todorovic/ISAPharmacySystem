@@ -1,3 +1,17 @@
+function drawPharmacyTable(data) {
+    let table = '';
+    for (i in data) {
+        table += `<tr id="myform">
+			<td >
+                    <input type="radio" name = "medicinesButton" id="` + data[i].id + `" value="` + data[i].id + `">
+			</td>
+			<td>`+ data[i].name + `</td>
+			</tr>`;
+    }
+    $('#pharmacyTable').html(table);
+
+}
+var pharmacyIdd ='';
 $(document).ready(function(e){
 	var email = localStorage.getItem('email')
     $("#profileInfo").click(function () {
@@ -12,45 +26,194 @@ $(document).ready(function(e){
         });
     });
 
+     customAjax({
+          url: '/pharmacy/getAll',
+          method: 'GET',
+          contentType: 'application/json',
+            success: function(data){
+                drawPharmacyTable(data)
+           },
+          error: function(){
+          }
+        });
+
+
+    $('input[name="medicinesButton"]:checked').each(function() {
+        pharmacyIdd = this.value;
+     });
+
+      $('#submitRegisterPharmacyAdmin').click(function(){
+            let password=$('#txtPassword').val()
+             let firstName=$('#txtFirstName').val()
+             let lastName=$('#txtLastName').val()
+             let email1=$('#txtEmail').val()
+             let country=$('#txtCountry').val()
+             let city=$('#txtCity').val()
+             let address=$('#txtAddress').val()
+             let phoneNumber=$('#txtNumber').val()
+             let pharmacyId =  $("#myform input[type='radio']:checked").val();
+         obj = JSON.stringify({
+             password:password,
+             firstName : firstName,
+             lastName :lastName,
+             email :email1,
+             country : country,
+             city :city,
+             address : address,
+             phoneNumber:phoneNumber,
+             pharmacyId : pharmacyId
+         });
+        console.log(pharmacyId)
+         customAjax({
+               url: '/register/pharmacyAdmin',
+               method: 'POST',
+               data:obj,
+               contentType: 'application/json',
+                 success: function(){
+                     alert("Sucess register new pharmacy admin.")
+                     location.href = "adminsystem.html";
+                },
+               error: function(){
+                      alert("Dermatologist with that email already exists.")
+                      location.href = "registerPharmacyAdmin.html";
+               }
+         });
+     });
     $('#submitRegisterDermatologist').click(function(){
-        let username=$('#txtUsername').val()
+     let password=$('#txtPassword').val()
+            let firstName=$('#txtFirstName').val()
+            let lastName=$('#txtLastName').val()
+            let email1=$('#txtEmail').val()
+            let country=$('#txtCountry').val()
+            let city=$('#txtCity').val()
+            let address=$('#txtAddress').val()
+            let phoneNumber=$('#txtNumber').val()
+        obj = JSON.stringify({
+            password:password,
+            firstName : firstName,
+            lastName :lastName,
+            email :email1,
+            country : country,
+            city :city,
+            address : address,
+            phoneNumber:phoneNumber
+        });
+
+        customAjax({
+              url: '/register/dermatologist',
+              method: 'POST',
+              data:obj,
+              contentType: 'application/json',
+                success: function(){
+                    alert("Sucess register new dermatologist.")
+                    location.href = "adminsystem.html";
+               },
+              error: function(){
+                     alert("Dermatologist with that email already exists.")
+                     location.href = "registerDermatologist.html";
+              }
+        });
+    });
+
+
+    $('#submitRegisterPharmacy').click(function(){
+        let name=$('#txtName').val()
+        let street=$('#txtStreet').val()
+        let city = $('#txtCity').val()
+        let description=$('#txtDescription').val()
+
+        obj = JSON.stringify({
+            name:name,
+            street:street,
+            city:city,
+            description: description,
+        });
+        console.log(obj)
+        customAjax({
+              url: '/register/pharmacy',
+              method: 'POST',
+              data:obj,
+              contentType: 'application/json',
+                success: function(){
+                    alert("Sucess register new Pharmacy.")
+                    location.href = "adminsystem.html";
+               },
+              error: function(){
+                     alert("Error by registering New Pharmacy.")
+                     location.href = "registerPharmacy.html";
+              }
+        });
+    });
+    $('#submitRegisterSystemAdmin').click(function(){
         let password=$('#txtPassword').val()
         let firstName=$('#txtFirstName').val()
         let lastName=$('#txtLastName').val()
-        let email=$('#txtEmail').val()
+        let email1=$('#txtEmail').val()
         let country=$('#txtCountry').val()
         let city=$('#txtCity').val()
         let address=$('#txtAddress').val()
         let phoneNumber=$('#txtNumber').val()
-
         obj = JSON.stringify({
-            username:username,
             password:password,
             firstName : firstName,
             lastName :lastName,
-            email :email,
+            email :email1,
             country : country,
             city :city,
             address : address,
             phoneNumber:phoneNumber
         });
         console.log(obj)
-
-      /*  customAjax({
-              url: '/medicine/addNewMedicine',
+        customAjax({
+              url: '/register/systemAdmin',
               method: 'POST',
               data:obj,
               contentType: 'application/json',
                 success: function(){
-                    alert("Sucess added medicine.")
+                    alert("Sucess register new System Admin.")
                     location.href = "adminsystem.html";
                },
               error: function(){
-                alert('Error by adding medicine');
+                     alert("System Admin with that email already exists.")
+                     location.href = "registerAdminSystem.html";
               }
-        });*/
- });
-
+        });
+    });
+    $('#submitRegisterSupplier').click(function(){
+     let password=$('#txtPassword').val()
+            let firstName=$('#txtFirstName').val()
+            let lastName=$('#txtLastName').val()
+            let email1=$('#txtEmail').val()
+            let country=$('#txtCountry').val()
+            let city=$('#txtCity').val()
+            let address=$('#txtAddress').val()
+            let phoneNumber=$('#txtNumber').val()
+        obj = JSON.stringify({
+            password:password,
+            firstName : firstName,
+            lastName :lastName,
+            email :email1,
+            country : country,
+            city :city,
+            address : address,
+            phoneNumber:phoneNumber
+        });
+        console.log(obj)
+        customAjax({
+              url: '/register/supplier',
+              method: 'POST',
+              data:obj,
+              contentType: 'application/json',
+                success: function(){
+                    alert("Sucess register new supplier.")
+                    location.href = "adminsystem.html";
+               },
+              error: function(){
+                     alert("Supplier with that email already exists.")
+                     location.href = "registerSupplier.html";
+              }
+        });
+    });
 	$('#logout').click(function(){
 		localStorage.removeItem('jwt')
 		location.href = "login.html";
