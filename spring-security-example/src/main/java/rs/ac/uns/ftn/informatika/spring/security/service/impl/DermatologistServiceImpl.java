@@ -342,8 +342,13 @@ public class DermatologistServiceImpl implements DermatologistService{
 		System.out.println("Working time"+workingTime);
 		System.out.println("Working day"+workingTime.getWorkingDays());
 		for(WorkingDay d:workingTime.getWorkingDays()) {
+			System.out.println(d.getDay());
 			if(d.getDay().equals(day)) {
+				
 				isDermatologistWorking = true;
+				System.out.println(startDateTime.toLocalTime());
+				System.out.println(d.getEndTime());
+				System.out.println(d.getStartTime());
 				if(!isTimeFine(startDateTime.toLocalTime(), duration, d.getStartTime(), d.getEndTime())) {
 					System.out.println("+++++++++++Usao u false");
 					return false;

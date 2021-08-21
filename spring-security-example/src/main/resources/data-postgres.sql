@@ -201,7 +201,7 @@ INSERT INTO dermatologist_complaint(id,content,dermatologist_id,patient_id,is_an
 INSERT INTO patients_dermatologist_complaints(patient_id,dermatologist_complaints_id) VALUES (1,1);
 
 --holiday request
-INSERT INTO holidayrequest(pharmacy_id,start_date,end_date,status) VALUES (2,'2021-08-25 21:58:58.508-07','2021-12-27 21:58:58.508-07',0);
+INSERT INTO holidayrequest(pharmacy_id,start_date,end_date,status) VALUES (2,'2021-08-29 21:58:58.508-07','2021-12-30 21:58:58.508-07',0);
 INSERT INTO holidayrequest(pharmacy_id,start_date,end_date,status) VALUES (2,'2021-10-10 21:58:58.508-07','2021-12-12 21:58:58.508-07',0);
 INSERT INTO holidayrequest(pharmacy_id,start_date,end_date,status) VALUES (2,'2021-07-07 21:58:58.508-07','2021-12-12 21:58:58.508-07',0);
 
@@ -289,16 +289,16 @@ INSERT INTO medicineorder_medicines(medicine_order_id,medicines_id) VALUES (2,3)
 INSERT INTO medicineorder_medicines(medicine_order_id,medicines_id) VALUES (1,9);
 
 --medicine reservation
-INSERT INTO medicinereservation(due_to,status,medicine_with_quantity_id,patient_id) VALUES ('2017-12-04 21:58:58.508-07',0,1,1);
-INSERT INTO medicinereservation(due_to,status,medicine_with_quantity_id,patient_id) VALUES ('2017-10-04 21:58:58.508-07',0,4,1);
-INSERT INTO medicinereservation(due_to,status,medicine_with_quantity_id,patient_id) VALUES ('2017-12-04 21:58:58.508-07',0,1,2);
-INSERT INTO medicinereservation(due_to,status,medicine_with_quantity_id,patient_id) VALUES ('2017-12-04 21:58:58.508-07',0,1,1);
-INSERT INTO medicinereservation(due_to,status,medicine_with_quantity_id,patient_id) VALUES ('2017-10-04 21:58:58.508-07',2,4,1);
-INSERT INTO medicinereservation(due_to,status,medicine_with_quantity_id,patient_id) VALUES ('2021-08-04 21:58:58.508-07',2,1,2);
-INSERT INTO medicinereservation(due_to,status,medicine_with_quantity_id,patient_id) VALUES ('2018-08-04 21:58:58.508-07',2,4,1);
-INSERT INTO medicinereservation(due_to,status,medicine_with_quantity_id,patient_id) VALUES ('2018-12-04 21:58:58.508-07',2,1,2);
-INSERT INTO medicinereservation(due_to,status,medicine_with_quantity_id,patient_id) VALUES ('2018-12-06 21:58:58.508-07',2,1,2);
-INSERT INTO medicinereservation(due_to,status,medicine_with_quantity_id,patient_id) VALUES ('2021-08-15 21:58:58.508-07',2,3,2);
+INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id) VALUES ('rez1','2021-12-04','14:00:00.000000',0,1,1);
+INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id) VALUES (2,'2017-10-04','14:00:00.000000',0,4,1);
+INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id) VALUES (3,'2017-12-04','14:00:00.000000',0,1,2);
+INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id) VALUES ('rezervacija','2017-12-04','14:00:00.000000',0,1,1);
+INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id) VALUES ('Rez','2021-08-22','14:00:00.000000',0,4,1);
+INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id) VALUES (11,'2021-08-04','14:00:00.000000',2,1,2);
+INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id) VALUES ('REZERV','2018-08-04','14:00:00.000000',0,4,2);
+INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id) VALUES (12,'2018-12-04','14:00:00.000000',2,1,2);
+INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id) VALUES (6,'2018-12-06','14:00:00.000000',2,1,2);
+INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id) VALUES (7,'2021-08-15','14:00:00.000000',2,3,2);
 --pharmacy medicine reservations
 INSERT INTO pharmacy_medicine_reservations(pharmacy_id,medicine_reservations_id) VALUES (2,1);
 INSERT INTO pharmacy_medicine_reservations(pharmacy_id,medicine_reservations_id) VALUES (1,2);

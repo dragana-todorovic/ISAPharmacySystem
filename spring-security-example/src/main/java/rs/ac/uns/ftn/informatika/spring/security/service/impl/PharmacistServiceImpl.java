@@ -17,6 +17,8 @@ import rs.ac.uns.ftn.informatika.spring.security.model.DermatologistAppointment;
 import rs.ac.uns.ftn.informatika.spring.security.model.HolidayRequest;
 import rs.ac.uns.ftn.informatika.spring.security.model.HolidayRequestStatus;
 import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
+import rs.ac.uns.ftn.informatika.spring.security.model.MedicineReservation;
+import rs.ac.uns.ftn.informatika.spring.security.model.MedicineReservationStatus;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicineWithQuantity;
 import rs.ac.uns.ftn.informatika.spring.security.model.Patient;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacist;
@@ -379,6 +381,19 @@ public class PharmacistServiceImpl implements PharmacistService {
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public List<MedicineReservation>searchReservedMedicnes(String resNumber,Pharmacy pharmacy){
+		List<MedicineReservation>result = new ArrayList<MedicineReservation>();
+		for(MedicineReservation m:pharmacy.getMedicineReservations()) {
+			LocalDateTime dt = LocalDateTime.of(m.getDueTo(), m.getDueToTime());
+			if(m.getNumberOfReservation().toLowerCase().contains(resNumber.toLowerCase()) && m.getStatus().equals(MedicineReservationStatus.RESERVED) && dt.isAfter(LocalDateTime.now()) ) {
+				System.out.println("Rezervacija"+m.getNumberOfReservation());
+				result.add(m);				
+			}
+		}
+		return result;
 	}
 	
 	

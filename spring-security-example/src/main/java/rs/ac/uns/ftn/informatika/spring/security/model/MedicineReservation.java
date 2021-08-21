@@ -2,6 +2,7 @@ package rs.ac.uns.ftn.informatika.spring.security.model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -23,6 +24,9 @@ public class MedicineReservation {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	 @Column(name = "numberOfReservation",nullable = false,unique = true)
+	 private String numberOfReservation;
+	
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Patient patient;
 	
@@ -32,8 +36,20 @@ public class MedicineReservation {
 	@Column(name = "dueTo", nullable = false)
 	private LocalDate dueTo;
 	
+	@Column(name = "dueToTime", nullable = false)
+	private LocalTime dueToTime;
+	
 	@Column(name = "status", nullable = false)
 	private MedicineReservationStatus status;
+	
+
+	public LocalTime getDueToTime() {
+		return dueToTime;
+	}
+
+	public void setDueToTime(LocalTime dueToTime) {
+		this.dueToTime = dueToTime;
+	}
 
 	public Long getId() {
 		return id;
@@ -74,4 +90,13 @@ public class MedicineReservation {
 	public void setStatus(MedicineReservationStatus status) {
 		this.status = status;
 	}
+
+	public String getNumberOfReservation() {
+		return numberOfReservation;
+	}
+
+	public void setNumberOfReservation(String numberOfReservation) {
+		this.numberOfReservation = numberOfReservation;
+	}
+	
 }

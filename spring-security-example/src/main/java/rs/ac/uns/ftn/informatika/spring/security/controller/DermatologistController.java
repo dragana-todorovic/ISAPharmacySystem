@@ -222,7 +222,7 @@ public class DermatologistController {
 			 System.out.println("Datum je u redu");
 			 try {
 				 
-				 emailService.sendEmailForRecoveryOfAccount(dto.getPatientEmail());
+				 emailService.sendEmail(dto.getPatientEmail(),"Appointment","You have successfully scheduled an appointment");
 				 System.out.println("Mejl je poslat");
 				 dermatologistAppointmentService.saveAppointment(dto, patient, dt);
 				 

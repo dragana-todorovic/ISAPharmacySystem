@@ -12,6 +12,8 @@ import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacist;
 public interface PharmacistRepository extends JpaRepository<Pharmacist, Long>{
 	List<Pharmacist> findAll();
 	Optional<Pharmacist> findById(Long id);	
+	
+	
 }
 
 
