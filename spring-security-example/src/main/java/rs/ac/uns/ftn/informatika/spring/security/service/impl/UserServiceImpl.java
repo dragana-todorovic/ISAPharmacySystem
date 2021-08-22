@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import rs.ac.uns.ftn.informatika.spring.security.model.Authority;
 import rs.ac.uns.ftn.informatika.spring.security.model.User;
+import rs.ac.uns.ftn.informatika.spring.security.view.RegisterPharmacyAdminView;
+import rs.ac.uns.ftn.informatika.spring.security.view.RegisterView;
 import rs.ac.uns.ftn.informatika.spring.security.view.UserRegisterView;
 import rs.ac.uns.ftn.informatika.spring.security.repository.UserRepository;
 import rs.ac.uns.ftn.informatika.spring.security.service.AuthorityService;
@@ -52,17 +54,17 @@ public class UserServiceImpl implements UserService {
 		return result;
 	}
 	@Override
-	public User saveUserAdminSystem(UserRegisterView userRequest) {
+	public User saveUserAdminSystem(RegisterView userRequest) {
 		User u = new User();
 		u.setEmail(userRequest.getEmail());
 		u.setUsername(userRequest.getEmail());
 		u.setPassword(passwordEncoder.encode(userRequest.getPassword()));
-		u.setFirstName(userRequest.getFirstname());
-		u.setLastName(userRequest.getLastname());
+		u.setFirstName(userRequest.getFirstName());
+		u.setLastName(userRequest.getLastName());
 		u.setCountry(userRequest.getCountry());
 		u.setCity(userRequest.getCity());
 		u.setAddress(userRequest.getAddress());
-		u.setPhone(userRequest.getPhone());
+		u.setPhone(userRequest.getPhoneNumber());
 		u.setEnabled(true);
 
 		List<Authority> auth = authService.findByname("ROLE_ADMIN_SYSTEM");
@@ -71,6 +73,67 @@ public class UserServiceImpl implements UserService {
 		u = this.userRepository.save(u);
 		return u;
 	}
+
+	@Override
+	public User saveUserSupplier(RegisterView userRequest) {
+		User u = new User();
+		u.setEmail(userRequest.getEmail());
+		u.setUsername(userRequest.getEmail());
+		u.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+		u.setFirstName(userRequest.getFirstName());
+		u.setLastName(userRequest.getLastName());
+		u.setCountry(userRequest.getCountry());
+		u.setCity(userRequest.getCity());
+		u.setAddress(userRequest.getAddress());
+		u.setPhone(userRequest.getPhoneNumber());
+		u.setEnabled(true);
+
+		List<Authority> auth = authService.findByname("ROLE_SUPPLIER");
+		u.setAuthorities(auth);
+		u = this.userRepository.save(u);
+		return u;
+	}
+
+	@Override
+	public User saveUserPharmacyAdmin(RegisterPharmacyAdminView userRequest) {
+		User u = new User();
+		u.setEmail(userRequest.getEmail());
+		u.setUsername(userRequest.getEmail());
+		u.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+		u.setFirstName(userRequest.getFirstName());
+		u.setLastName(userRequest.getLastName());
+		u.setCountry(userRequest.getCountry());
+		u.setCity(userRequest.getCity());
+		u.setAddress(userRequest.getAddress());
+		u.setPhone(userRequest.getPhoneNumber());
+		u.setEnabled(true);
+
+		List<Authority> auth = authService.findByname("ROLE_ADMIN_PHARMACY");
+		u.setAuthorities(auth);
+		u = this.userRepository.save(u);
+		return u;
+	}
+
+	@Override
+	public User saveUserDermatologist(RegisterView userRequest) {
+		User u = new User();
+		u.setEmail(userRequest.getEmail());
+		u.setUsername(userRequest.getEmail());
+		u.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+		u.setFirstName(userRequest.getFirstName());
+		u.setLastName(userRequest.getLastName());
+		u.setCountry(userRequest.getCountry());
+		u.setCity(userRequest.getCity());
+		u.setAddress(userRequest.getAddress());
+		u.setPhone(userRequest.getPhoneNumber());
+		u.setEnabled(true);
+
+		List<Authority> auth = authService.findByname("ROLE_DERMATOLOGIST");
+		u.setAuthorities(auth);
+		u = this.userRepository.save(u);
+		return u;
+	}
+
 	@Override
 	public User save(UserRegisterView userRequest) {	
 		User u = new User();
@@ -86,10 +149,8 @@ public class UserServiceImpl implements UserService {
 		u.setAddress(userRequest.getAddress());
 		u.setPhone(userRequest.getPhone());
 		u.setEnabled(true);
-		
-		
+
 		List<Authority> auth = authService.findByname("ROLE_USER");
-		// u primeru se registruju samo obicni korisnici i u skladu sa tim im se i dodeljuje samo rola USER
 		u.setAuthorities(auth);
 		
 		u = this.userRepository.save(u);

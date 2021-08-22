@@ -24,8 +24,6 @@ public class PriceList {
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<MedicinePrice> medicinePriceList = new HashSet<MedicinePrice>();
 	
-	/*@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Set<AppoitmentPrice> appoitmentPriceList = new HashSet<AppoitmentPrice>();*/
 	
 	@Column(name = "start_date", nullable = false)
 	private LocalDate startDate;
@@ -53,6 +51,8 @@ public class PriceList {
 	public void setStartDate(LocalDate startDate) {
 		this.startDate = startDate;
 	}
+
+
 	
 	
 	

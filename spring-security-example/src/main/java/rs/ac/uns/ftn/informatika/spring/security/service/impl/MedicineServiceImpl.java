@@ -150,7 +150,6 @@ public class MedicineServiceImpl implements MedicineService{
 	}
 
 	@Override
-
 	public Medicine findById(Long id) {
 		return medicineRepository.findMedicineById(id);
 	}
@@ -178,5 +177,13 @@ public class MedicineServiceImpl implements MedicineService{
 		 pharmacy.getMedicineReservations().add(mR);
 		 this.pharmacyRepository.save(pharmacy);
 	}
+
+	@Override
+	public Medicine findByCode(String code) {
+		Medicine m = medicineRepository.findByCode(code);
+		return m;
+	}
+	
+
 
 }

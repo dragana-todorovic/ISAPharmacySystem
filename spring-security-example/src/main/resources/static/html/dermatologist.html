@@ -17,6 +17,8 @@
 <script src="../scripts/dermatologist/holidayRequest.js"></script>
 <script src="../scripts/dermatologist/myPatients.js"></script>
 <script src="../scripts/dermatologist/startAppointment.js"></script>
+<script src="../scripts/dermatologist/scheduleAnAppointment.js"></script>
+<script src="../scripts/dermatologist/allPatients.js"></script>
 <script src="../scripts/jwt.js"></script> 
  
 
@@ -60,8 +62,7 @@ li.dropdown {
 }
     .container_1 {
     height: 100vh;
-   
-    background: url('../images/medicine-generic-banner.jpg') no-repeat center center/cover;
+    background: url('../images/pharmacy.jpg') no-repeat center center/cover;
     color: black;
 }
 .dropdown-content a {
@@ -122,7 +123,9 @@ div.container4 h2 {
 <div class="container_1">
 <ul style="background:skyblue">
  <li><a href=""><i class="home icon" style="color:white"></i></a></li>
- <li><a id="myPatients" ><i >My patients</i></a></li>
+  <li><a id="allPatients" ><i >All patients</i></a></li>
+ <li><a id="myPatients" ><i >My patients who I reviewed</i></a></li>
+  <li><a id="scheduleAnAppointment" ><i >Schedule an appointment</i></a></li>
  <li><a id="startAppointment" ><i >Start an appointment</i></a></li>
  <li><a id="holidayRequest" ><i >Holiday request</i></a></li>
   <li class="dropdown" style="float:right;">

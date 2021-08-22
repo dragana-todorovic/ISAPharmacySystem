@@ -7,7 +7,6 @@ import java.sql.Timestamp;
 
 public class RegisterView {
 
-    private String username;
     private String password;
     private String firstName;
     private String lastName;
@@ -20,8 +19,8 @@ public class RegisterView {
     public RegisterView() {
     }
 
-    public RegisterView(String username, String password, String firstName, String lastName, String email, String country, String city, String address, String phoneNumber) {
-        this.username = username;
+    public RegisterView( String password, String firstName, String lastName, String email, String country, String city, String address, String phoneNumber) {
+
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -30,14 +29,6 @@ public class RegisterView {
         this.city = city;
         this.address = address;
         this.phoneNumber = phoneNumber;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getPassword() {

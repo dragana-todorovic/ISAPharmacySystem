@@ -5,7 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import javax.mail.MessagingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailException;
 import org.springframework.stereotype.Service;
 
 import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
@@ -14,12 +17,15 @@ import rs.ac.uns.ftn.informatika.spring.security.model.MedicineOrderStatus;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicineWithQuantity;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
+import rs.ac.uns.ftn.informatika.spring.security.model.Suplier;
 import rs.ac.uns.ftn.informatika.spring.security.model.SuplierOffer;
 import rs.ac.uns.ftn.informatika.spring.security.repository.LoyaltyScaleRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.MedicineOrderRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.MedicineWithQuantityRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacyRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.SuplierOfferRepository;
+import rs.ac.uns.ftn.informatika.spring.security.repository.SuplierRepository;
+import rs.ac.uns.ftn.informatika.spring.security.service.EmailService;
 import rs.ac.uns.ftn.informatika.spring.security.service.MedicineOrderService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PatientService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyAdminService;
@@ -36,12 +42,19 @@ public class MedicineOrderServiceImpl implements MedicineOrderService {
 	
 	@Autowired
 	private PharmacyRepository pharmacyRepository;
+	
+
+	@Autowired
+	private EmailService emailService;
+		
 		
 	  @Autowired
 	   private MedicineOrderRepository medicineOrderRepository;
 	  
 	  @Autowired
 		private SuplierOfferRepository suplierOfferRepository;
+	  @Autowired
+	  private SuplierRepository suplierRepository;
 		
 	  
 	  @Autowired
@@ -88,6 +101,8 @@ public class MedicineOrderServiceImpl implements MedicineOrderService {
 		PharmacyAdmin pa = pharmacyAdminService.findPharmacyAdminByUser(userService.findByEmail(email));
 		Pharmacy p = pa.getPharmacy();
 		
+		List<Suplier> supliers = this.suplierRepository.findAll();
+		
 		SuplierOffer so = this.suplierOfferRepository.findById(id).get();
 		
 		
@@ -97,6 +112,7 @@ public class MedicineOrderServiceImpl implements MedicineOrderService {
 		} else {
 		
 		MedicineOrder mo = so.getMedicineOrder();
+		mo.setStatus(MedicineOrderStatus.PROCESSED);
 		
 		List<SuplierOffer> allOffersExceptAccepted = new ArrayList<SuplierOffer>();
 		for(SuplierOffer suplierOffer : this.suplierOfferRepository.findOffersByOrder(mo.getId())) {
@@ -105,7 +121,6 @@ public class MedicineOrderServiceImpl implements MedicineOrderService {
 			}
 		}
 		
-		System.out.println("*****************" + allOffersExceptAccepted);
 		
 		for(MedicineWithQuantity mq : mo.getMedicines()) {
 			for(MedicineWithQuantity mwq : p.getMedicineWithQuantity()) {
@@ -119,6 +134,31 @@ public class MedicineOrderServiceImpl implements MedicineOrderService {
 			soDelete.setMedicineOrder(null);
 			this.suplierOfferRepository.save(soDelete);
 		}
+		
+		for(Suplier s : supliers) {
+			for(SuplierOffer soffer : s.getOffers()) {
+				if(soffer.equals(so)) {
+					try {
+						this.emailService.sendEmail(s.getUser().getEmail(), "Accept offer", "Your offer is accepted");
+					} catch (MailException | MessagingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				} else {
+					for(SuplierOffer su : allOffersExceptAccepted) {
+						if(soffer.equals(su)) {
+							try {
+								this.emailService.sendEmail(s.getUser().getEmail(), "Decline offer", "Your offer is declined");
+							} catch (MailException | MessagingException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+					}
+				}
+			}
+		}
+		
 		
 		this.pharmacyRepository.save(p);
 		return true;
