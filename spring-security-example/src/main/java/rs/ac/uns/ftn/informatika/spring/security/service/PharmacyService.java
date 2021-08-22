@@ -75,6 +75,7 @@ public interface PharmacyService {
 	Boolean deleteDermatologistFromPharmacy(String id, String email);
 	Set<Pharmacist> getPharmacistssByPharmacyAdmin (String email);
 
+
 	
 	Collection<PharmacyWithMedicationView> getPharamciesWithMedication(Long id);
 	Collection<MedicineReservationView> getReservationsByPatientsEmail(String email);

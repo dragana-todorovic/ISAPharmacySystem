@@ -93,6 +93,7 @@ public class MedicineOrderController {
 		
 		for(MedicineForOrderView m : newOrder.getMedicines()) {
 			MedicineWithQuantity mq = new MedicineWithQuantity();
+
 			mq.setMedicine(this.medicineService.findById(Long.parseLong(m.getMedicineId())));
 			mq.setQuantity(Integer.parseInt(m.getQuantity()));
 			medicinesWithQuantity.add(mq);
