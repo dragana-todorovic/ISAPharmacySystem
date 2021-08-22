@@ -92,7 +92,7 @@ INSERT INTO DERMATOLOGIST ( user_id) VALUES (11);
 INSERT INTO DERMATOLOGIST (user_id) VALUES (12);
 --appoitment
 INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id, patient_id) VALUES (30,'2021-01-01 21:58:58.508-07','opis1',1,1);
-INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id, patient_id) VALUES (30,'2021-02-02 21:58:58.508-07','opis2',1,2);
+INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id, patient_id) VALUES (30,'2021-01-01 21:58:58.508-07','opis2',1,2);
 INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id, patient_id) VALUES (30,'2021-03-01 21:58:58.508-07','opis1',1,1);
 INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id, patient_id) VALUES (30,'2020-02-02 21:58:58.508-07','opis2',1,2);
 INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id, patient_id) VALUES (30,'2020-01-01 21:58:58.508-07','opis1',1,1);
@@ -114,6 +114,11 @@ INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_i
 --appoitment price
 INSERT INTO APPOITMENTPRICE (price,appoitment_id) VALUES (400,1);
 INSERT INTO APPOITMENTPRICE (price,appoitment_id) VALUES (500,2);
+INSERT INTO APPOITMENTPRICE (price,appoitment_id) VALUES (400,3);
+INSERT INTO APPOITMENTPRICE (price,appoitment_id) VALUES (500,4);
+INSERT INTO APPOITMENTPRICE (price,appoitment_id) VALUES (400,5);
+INSERT INTO APPOITMENTPRICE (price,appoitment_id) VALUES (500,6);
+
 
 
 
@@ -170,7 +175,7 @@ INSERT INTO pharmacy_medicine_with_quantity (pharmacy_id, medicine_with_quantity
 
 
 --price list
-INSERT INTO pricelist(start_date) VALUES ('2021-10-10 21:58:58.508-07');
+INSERT INTO pricelist(start_date) VALUES ('2021-07-07 21:58:58.508-07');
 INSERT INTO pricelist(start_date) VALUES ('2021-08-08 21:58:58.508-07');
 
 
@@ -364,11 +369,18 @@ INSERT INTO loyaltyscale(id,category,needed_points,discount) VALUES (3,2,60,30);
 
 --pharmacist consulting
 INSERT INTO pharmacistcounseling(description,duration,start_date_time,patient_id,pharmacist_id,therapy_id) VALUES ('opis 1',30,'2021-08-21 10:58:58.508-07',1,1,1);
-INSERT INTO pharmacistcounseling(description,duration,start_date_time,patient_id,pharmacist_id,therapy_id) VALUES ('opis 2',30,'2021-07-15 21:58:58.508-07',1,1,1);
+INSERT INTO pharmacistcounseling(description,duration,start_date_time,patient_id,pharmacist_id,therapy_id) VALUES ('opis 2',30,'2021-08-21 21:58:58.508-07',1,1,1);
 INSERT INTO pharmacistcounseling(description,duration,start_date_time,patient_id,pharmacist_id,therapy_id) VALUES ('opis 3',30,'2020-01-05 21:58:58.508-07',1,1,1);
 INSERT INTO pharmacistcounseling(description,duration,start_date_time,patient_id,pharmacist_id,therapy_id) VALUES ('opis 4',30,'2020-02-15 21:58:58.508-07',1,1,1);
 INSERT INTO pharmacistcounseling(description,duration,start_date_time,patient_id,pharmacist_id,therapy_id) VALUES ('opis 5',30,'2020-12-15 21:58:58.508-07',1,1,1);
 INSERT INTO pharmacistcounseling(description,duration,start_date_time,patient_id,pharmacist_id,therapy_id) VALUES ('opis 6',30,'2020-01-01 21:58:58.508-07',1,1,1);
+
+INSERT INTO pharmacistcounselingprice(price,counseling_id) VALUES (200,1);
+INSERT INTO pharmacistcounselingprice(price,counseling_id) VALUES (350,2);
+INSERT INTO pharmacistcounselingprice(price,counseling_id) VALUES (480,3);
+INSERT INTO pharmacistcounselingprice(price,counseling_id) VALUES (600,4);
+INSERT INTO pharmacistcounselingprice(price,counseling_id) VALUES (1000,5);
+INSERT INTO pharmacistcounselingprice(price,counseling_id) VALUES (870,6);
 
 INSERT INTO loyaltyprogram(id,appointment_points,advising_points) VALUES (1,5,3);
 

@@ -7,6 +7,7 @@ import java.time.chrono.ChronoLocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -14,20 +15,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.sun.xml.bind.v2.schemagen.xmlschema.Appinfo;
+
+import rs.ac.uns.ftn.informatika.spring.security.model.AppoitmentPrice;
 import rs.ac.uns.ftn.informatika.spring.security.model.DermatologistAppointment;
+import rs.ac.uns.ftn.informatika.spring.security.model.MedicinePrice;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicineReservation;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicineReservationStatus;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacistCounseling;
+import rs.ac.uns.ftn.informatika.spring.security.model.PharmacistCounselingPrice;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
+import rs.ac.uns.ftn.informatika.spring.security.model.PriceList;
 import rs.ac.uns.ftn.informatika.spring.security.model.WorkingTime;
 import rs.ac.uns.ftn.informatika.spring.security.repository.ActionAndBenefitRepository;
+import rs.ac.uns.ftn.informatika.spring.security.repository.AppointmentPriceRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.DermatologistAppointmentRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.DermatologistRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.MedicineReservationRepository;
+import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacistCounselingPriceRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacistCounselingRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacistRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacyRepository;
+import rs.ac.uns.ftn.informatika.spring.security.repository.PriceListRepository;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyAdminService;
 import rs.ac.uns.ftn.informatika.spring.security.service.StatisticService;
 import rs.ac.uns.ftn.informatika.spring.security.service.UserService;
@@ -43,7 +53,9 @@ public class StatisticServiceImpl implements StatisticService{
 	@Autowired
 	private DermatologistRepository dermatologistRepository;
 	
-
+	@Autowired
+	private AppointmentPriceRepository appointmentPriceRespository;
+	
 	@Autowired
 	private DermatologistAppointmentRepository dermatologistAppointmentRepository;
 	
@@ -51,7 +63,13 @@ public class StatisticServiceImpl implements StatisticService{
 	private PharmacistCounselingRepository pharmacistConselingRepository;
 	
 	@Autowired
+	private PharmacistCounselingPriceRepository pharmacistConselingPriceRepository;
+	
+	@Autowired
 	private PharmacistRepository pharmacistRepository;
+	
+	@Autowired
+	private PriceListRepository priceListRepository;
 	
 	@Autowired
 	private MedicineReservationRepository medicineReservationRepository;
@@ -595,6 +613,210 @@ public class StatisticServiceImpl implements StatisticService{
 		}
 	
 		return statisticsPerQuarter;
+		
+	}
+	
+	@Override
+	public List<StatisticDTO> getPharmacyIncome(String email,LocalDate from, LocalDate to) {
+		List<StatisticDTO> statisticsPerMonth = new ArrayList<StatisticDTO>();
+		PharmacyAdmin pa = pharmacyAdminService.findPharmacyAdminByUser(userService.findByEmail(email));
+		Pharmacy p = pa.getPharmacy();
+		
+		List<DermatologistAppointment> allAppoimtments = this.dermatologistAppointmentRepository.findAll();
+		List<AppoitmentPrice> allPrices = this.appointmentPriceRespository.findAll();
+		List<AppoitmentPrice> appointmentPrices = new ArrayList<AppoitmentPrice>();
+		for(DermatologistAppointment da : allAppoimtments) {
+			if(da.getStartDateTime().isBefore(LocalDateTime.now())) {
+				for(WorkingTime wt : da.getDermatologist().getWorkingTimes()) {
+					if(wt.getPharmacy().equals(p)) {
+						for(AppoitmentPrice ap : allPrices) {
+							if(ap.getAppoitment().equals(da)) {
+								appointmentPrices.add(ap);
+							}
+						}
+						}
+				}
+			}
+		}
+		System.out.println(appointmentPrices);
+		List<LocalDate> allDates = new ArrayList<LocalDate>();
+		for(AppoitmentPrice a : appointmentPrices) {
+			if(a.getAppoitment().getStartDateTime().toLocalDate().isAfter(from) &&
+					a.getAppoitment().getStartDateTime().toLocalDate().isBefore(to)) {
+			allDates.add(a.getAppoitment().getStartDateTime().toLocalDate());
+			}
+		}
+		
+		Collections.sort(allDates);
+		
+		List<String> days = new ArrayList<String>(); 
+		
+		for(LocalDate l : allDates) {
+			if(!days.contains(String.valueOf(l.getDayOfMonth()) + "." + String.valueOf(l.getMonthValue()) + "." + l.getYear())) {
+				days.add(String.valueOf(l.getDayOfMonth()) + "." + String.valueOf(l.getMonthValue()) + "." + l.getYear());
+			}
+			
+		}
+
+		Collections.sort(days);
+		for(String day : days) {
+			System.out.println(day);
+			StatisticDTO statistic = new StatisticDTO();
+			int income = 0;
+			for(AppoitmentPrice ap : appointmentPrices) {
+				if(ap.getAppoitment().getStartDateTime().getYear() == Integer.parseInt(day.split("\\.")[2]) && 
+						ap.getAppoitment().getStartDateTime().getMonthValue() == Integer.parseInt(day.split("\\.")[1]) &&
+						ap.getAppoitment().getStartDateTime().getDayOfMonth() == Integer.parseInt(day.split("\\.")[0])) {
+					income += ap.getPrice();
+				}
+			}
+			statistic.setTime(day.toString());
+			statistic.setData((int)income);
+			statisticsPerMonth.add(statistic);
+		}
+		return statisticsPerMonth;
+		
+	}
+	
+	@Override
+	public List<StatisticDTO> getPharmacyIncomeFromPharmacistCouseling(String email,LocalDate from, LocalDate to) {
+		List<StatisticDTO> statisticsPerMonth = new ArrayList<StatisticDTO>();
+		PharmacyAdmin pa = pharmacyAdminService.findPharmacyAdminByUser(userService.findByEmail(email));
+		Pharmacy p = pa.getPharmacy();
+		
+		List<PharmacistCounseling> allAppoimtments = this.pharmacistConselingRepository.findAll();
+		List<PharmacistCounselingPrice> allPrices = this.pharmacistConselingPriceRepository.findAll();
+		List<PharmacistCounselingPrice> appointmentPrices = new ArrayList<PharmacistCounselingPrice>();
+		for(PharmacistCounseling da : allAppoimtments) {
+			if(da.getStartDateTime().isBefore(LocalDateTime.now())) {
+			{
+					if(da.getPharmacist().getWorkingTimes().getPharmacy().equals(p)) {
+						for(PharmacistCounselingPrice ap : allPrices) {
+							if(ap.getCounseling().equals(da)) {
+								appointmentPrices.add(ap);
+							}
+						}
+						}
+				}
+			}
+		}
+		System.out.println(appointmentPrices);
+		List<LocalDate> allDates = new ArrayList<LocalDate>();
+		for(PharmacistCounselingPrice a : appointmentPrices) {
+			if(a.getCounseling().getStartDateTime().toLocalDate().isAfter(from) &&
+					a.getCounseling().getStartDateTime().toLocalDate().isBefore(to)) {
+			allDates.add(a.getCounseling().getStartDateTime().toLocalDate());
+			}
+		}
+		
+		Collections.sort(allDates);
+		
+		List<String> days = new ArrayList<String>(); 
+		
+		for(LocalDate l : allDates) {
+			if(!days.contains(String.valueOf(l.getDayOfMonth()) + "." + String.valueOf(l.getMonthValue()) + "." + l.getYear())) {
+				days.add(String.valueOf(l.getDayOfMonth()) + "." + String.valueOf(l.getMonthValue()) + "." + l.getYear());
+			}
+			
+		}
+
+		Collections.sort(days);
+		for(String day : days) {
+			System.out.println(day);
+			StatisticDTO statistic = new StatisticDTO();
+			int income = 0;
+			for(PharmacistCounselingPrice ap : appointmentPrices) {
+				if(ap.getCounseling().getStartDateTime().getYear() == Integer.parseInt(day.split("\\.")[2]) && 
+						ap.getCounseling().getStartDateTime().getMonthValue() == Integer.parseInt(day.split("\\.")[1]) &&
+						ap.getCounseling().getStartDateTime().getDayOfMonth() == Integer.parseInt(day.split("\\.")[0])) {
+					income += ap.getPrice();
+				}
+			}
+			statistic.setTime(day.toString());
+			statistic.setData((int)income);
+			statisticsPerMonth.add(statistic);
+		}
+		return statisticsPerMonth;
+		
+	}
+	
+	
+	@Override
+	public List<StatisticDTO> getPharmacyIncomeFromMedicineConsumption(String email,LocalDate from, LocalDate to) {
+		List<StatisticDTO> statisticsPerMonth = new ArrayList<StatisticDTO>();
+		PharmacyAdmin pa = pharmacyAdminService.findPharmacyAdminByUser(userService.findByEmail(email));
+		Pharmacy p = pa.getPharmacy();
+		
+		Set<MedicineReservation> medicineReservations = p.getMedicineReservations();
+		Set<PriceList> allPrices = p.getPriceList();
+		Set<MedicinePrice> appointmentPrices = new HashSet<MedicinePrice>();
+	/*	for(MedicineReservation r : medicineReservations) {
+			if(r.getDueTo().isBefore(LocalDate.now()) && r.getStatus().equals(MedicineReservationStatus.TAKEN)) {
+			{
+					for(PriceList ap : allPrices) {
+						if(ap.getStartDate().isBefore(LocalDate.now()))
+						for(MedicinePrice mp : ap.getMedicinePriceList()) {
+							if(mp.getMedicine().equals(r.getMedicineWithQuantity().getMedicine())) {
+								
+							}
+						if(ap.get) {
+							appointmentPrices.add(ap);
+						}
+					}
+					}
+				}
+			}
+		}*/
+		System.out.println(appointmentPrices);
+		List<LocalDate> allDates = new ArrayList<LocalDate>();
+		for(PriceList a : allPrices) {
+			if(a.getStartDate().isBefore(LocalDate.now()) && a.getStartDate().isAfter(from) &&
+					a.getStartDate().isBefore(to)) {
+			allDates.add(a.getStartDate());
+			}
+		}
+		
+		Collections.sort(allDates);
+		System.out.println(allDates);
+		
+		List<String> days = new ArrayList<String>(); 
+		
+		for(LocalDate l : allDates) {
+			if(!days.contains(String.valueOf(l.getDayOfMonth()) + "." + String.valueOf(l.getMonthValue()) + "." + l.getYear())) {
+				days.add(String.valueOf(l.getDayOfMonth()) + "." + String.valueOf(l.getMonthValue()) + "." + l.getYear());
+			}
+			
+		}
+		System.out.println("daysss " + days);
+		//Collections.sort(days);
+		for(String day : days) {
+			System.out.println("REZERVSCIJE" + medicineReservations);
+			System.out.println("day" + day);
+			StatisticDTO statistic = new StatisticDTO();
+			int income = 0;
+			for(MedicineReservation r : medicineReservations) {
+				if(r.getDueTo().isBefore(LocalDate.now()) && r.getStatus().equals(MedicineReservationStatus.TAKEN)) {
+						for(PriceList ap : allPrices) {
+							if(ap.getStartDate().isBefore(LocalDate.now()) && ap.getStartDate().isBefore(r.getDueTo())) {
+								for(MedicinePrice mp : ap.getMedicinePriceList()) {
+									if(mp.getMedicine().equals(r.getMedicineWithQuantity().getMedicine())) {
+										if(ap.getStartDate().getYear() == Integer.parseInt(day.split("\\.")[2]) && 
+												ap.getStartDate().getMonthValue() == Integer.parseInt(day.split("\\.")[1]) &&
+														ap.getStartDate().getDayOfMonth() == Integer.parseInt(day.split("\\.")[0])) {
+											income += mp.getPrice() * r.getMedicineWithQuantity().getQuantity();
+										}
+									}
+								}
+							}
+					}
+			}
+				}
+		
+			statistic.setTime(day.toString());
+			statistic.setData((int)income);
+			statisticsPerMonth.add(statistic);
+		}
+		return statisticsPerMonth;
 		
 	}
 

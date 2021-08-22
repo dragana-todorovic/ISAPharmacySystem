@@ -183,6 +183,25 @@ public class MedicineServiceImpl implements MedicineService{
 		return m;
 	}
 	
+	@Override
+	public void editMedicineWithQuatityInPharmacy(String email, long id, int quantity) {
+		PharmacyAdmin pa = pharmacyAdminService.findPharmacyAdminByUser(userService.findByEmail(email));
+		
+		Pharmacy pharmacy = pa.getPharmacy();
+		
+	//	MedicineWithQuantity medicineWithQuantity = this.medicineWithQuantityRepository.findByMedicineId(id);
+		MedicineWithQuantity medicineWithQuantity = this.medicineWithQuantityRepository.findById(id).get();
+
+		for(MedicineWithQuantity mq : pharmacy.getMedicineWithQuantity()) {
+			if(mq.equals(medicineWithQuantity)) {
+				mq.setQuantity(quantity);
+			}
+		}
+		
+		this.pharmacyRepository.save(pharmacy);
+		
+	}
+	
 		
 
 

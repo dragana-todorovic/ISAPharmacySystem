@@ -1,5 +1,6 @@
 package rs.ac.uns.ftn.informatika.spring.security.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import rs.ac.uns.ftn.informatika.spring.security.view.StatisticDTO;
@@ -23,5 +24,11 @@ public interface StatisticService {
 	List<StatisticDTO> getMedicineConsumptionByMonth(String email);
 
 	List<StatisticDTO> getMedicineConsumptionQuarter(String email);
+
+	List<StatisticDTO> getPharmacyIncome(String email, LocalDate from, LocalDate to);
+
+	List<StatisticDTO> getPharmacyIncomeFromPharmacistCouseling(String email, LocalDate from, LocalDate to);
+
+	List<StatisticDTO> getPharmacyIncomeFromMedicineConsumption(String email, LocalDate from, LocalDate to);
 
 }

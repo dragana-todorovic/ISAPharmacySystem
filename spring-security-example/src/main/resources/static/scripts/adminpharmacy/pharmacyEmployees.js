@@ -150,11 +150,6 @@ let showDermatologists = function(data) {
 		<i class="close icon"></i>
 		Delete
 		</button>
-		<br>
-		<button id = "`+data[i].id+`" name="izmijeniDermatologa" class="ui button">
-		<i class="edit icon"></i>
-		Edit
-		</button>
 		</td><td>
 			<button id = "`+data[i].id+`" name="prikaziZahjeve" class="ui secondary button">
 		<i class="eye icon"></i>
@@ -260,32 +255,6 @@ $('.ui.dropdown')
      
   </div>
 </div>
-
-
- <div id="modalniZaIzmjenuDermatologa" class="ui modal">
-  <i class="close icon"></i>
-  <div class="header">
-	Edit dermatologist
-  </div>
-  <div class="content">
-
-    <table class="ui basic large table" style="width:100%; margin-left:auto; 
-			    margin-right:auto; margin-top: 40px;">
-    <tbody id = "editTable">
-					        </tbody>
-					        
-					    </table>
-  </div>
-  <div class="actions">
-    <div class="ui black deny button">
-      Nope
-    </div>
-      <input class="ui right floated positive button" type = "button" value = "Edit" id="editDermatologist"></input>
-			 
-     
-  </div>
-</div>
-
 
 
 
@@ -854,53 +823,6 @@ $("button[name=prikaziZahjeve]").click(function() {
  });
 }
 
-let editDermatologist = function(dani) {
-	let radnoVrijeme = '';
-	let pomocna = days;
-		for(i in dani.workingDays) {
-				radnoVrijeme += `<tr><td><div class="ui checkbox">
-					  <input type="checkbox" id = "`+dani.workingDays[i].day+`" name="radniDan" checked>
-					  <label>`+dani.workingDays[i].day+`</label></td><td>
-					    <div class="ui input left icon">
-					     <div class="ui input left icon">
-					      <input type="time" value="07:30:00" placeholder="Time" id = "start`+dani.workingDays[i].day+`">
-					  </div>
-					</div></td><td>
-					    <div class="ui input left icon">
-					      <div class="ui input left icon">
-					      <input type="time" value="16:00:00" placeholder="Time" id = "end`+dani.workingDays[i].day+`">
-					  </div>
-					</div>
-					</td></tr>`
-					for(k in days) {
-						if(days[k] == dani.workingDays[i].day) {
-							pomocna.splice(k, 1); 
-						}
-					}
-					      
-			}
-	for(i in pomocna) {
-		radnoVrijeme += `<tr><td><div class="ui checkbox">
-			  <input type="checkbox" id = "`+pomocna[i]+`" name="radniDan">
-			  <label>`+pomocna[i]+`</label></td><td>
-			    <div class="ui input left icon">
-			     <div class="ui input left icon">
-			      <input type="time" value="07:30:00" placeholder="Time" id = "start`+pomocna[i]+`">
-			  </div>
-			</div></td><td>
-			    <div class="ui input left icon">
-			      <div class="ui input left icon">
-			      <input type="time" value="16:00:00" placeholder="Time" id = "end`+pomocna[i]+`">
-			  </div>
-			</div>
-			</td></tr>`;
-	}
-			
-	console.log(pomocna)
-	
-	$('#editTable').html(radnoVrijeme)
-	
-}
 
 
 

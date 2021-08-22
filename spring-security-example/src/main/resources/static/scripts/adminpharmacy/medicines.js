@@ -124,7 +124,7 @@ let showMedicines = function(data) {
 				 <tr>
 						        	
 						                <td>Medicine:</td>
-						                <td> <td class="ui input"> <div class="ui selection dropdown">
+						                <td class="ui input"> <div class="ui selection dropdown">
   <input type="hidden" id="medicineComboAdd">
   <i class="dropdown icon"></i>
   <div class="default text">Choose medicine from codebook...</div>
@@ -140,7 +140,7 @@ $('.ui.dropdown')
 						            </tr>
 						            <tr>
 						            <td>Quantity:</td>
-						            <td><td class="ui input"> <input type="number" id="txtQuantityAdd"/></td>
+						            <td class="ui input"> <input type="number" id="txtQuantityAdd"/></td>
 
 						            </tr>
 						           
@@ -159,6 +159,36 @@ $('.ui.dropdown')
 	  </div>
 	</div>
 	
+	<div id="modalniZaIzmjenuLijeka" class="ui modal">
+	  <i class="close icon"></i>
+	  <div class="header">
+		Edit medicine
+	  </div>
+	 <div class="content">
+
+	    <table class="ui basic large table" style="width:50%; margin-left:auto; 
+				    margin-right:auto; margin-top: 40px;">
+	    <tbody>
+						            <tr>
+						            <td>Quantity:</td>
+						           <td class="ui input"> <input type="number" id="txtQuantityEdit"></td>
+
+						            </tr>
+						           
+						           
+						        </tbody>
+						        
+						    </table>
+	  </div>
+	  <div class="actions">
+	    <div class="ui black deny button">
+	      Nope
+	    </div>
+	      <input class="ui right floated positive button" type = "button" value = "Edit medicine" id="editMedicine"></input>
+				 
+	     
+	  </div>
+	</div>
 	
 	<div id="errorDelete" class="ui modal">
 	  <i class="close icon"></i>
@@ -241,7 +271,38 @@ $('.ui.dropdown')
 		    });
 		
 	 });
+	
+	$("button[name=izmijeniLijek]").click(function() {
+		idSelected = this.id
+		 $('#modalniZaIzmjenuLijeka')
+		  .modal('show')
+		  editMedicine(idSelected)
+		
+	 });
+	
+	let editMedicine = function(idSelected) {
+		
+		$('#editMedicine').click(function() {
+			var quantity = $('#txtQuantityEdit').val()
+			console.log(quantity)
+			customAjax({
+			    url: '/pharmacy/editMedicineWithQuantityInPharmacy/' + email + '/' + idSelected + '/' + quantity,
+			    method: 'POST',
+			    contentType: 'application/json',
+			    success: function(){
+			      alert("Success edit medicine")
+					  location.href = "adminpharmacy.html"
+			    },
+			    error: function(){
+			    	alert("Failed")
+			    }
+
+			});
+		})
+	}
 }
+
+
 
 /*let refreshujTabeluZaLijekove = function(){
 	customAjax({
