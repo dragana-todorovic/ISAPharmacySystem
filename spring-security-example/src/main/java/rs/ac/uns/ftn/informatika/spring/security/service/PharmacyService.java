@@ -59,9 +59,9 @@ public interface PharmacyService {
 	Boolean deleteDermatologistFromPharmacy(String id, String email);
 	Set<Pharmacist> getPharmacistssByPharmacyAdmin (String email);
 
-	void addWorkingTimeForPharmacist(String dermatologistId, String email, String wd, WorkingTimeIntervalDTO workingDay);
-	Set<WorkingDay> getWorkingDayForPharmacist(String id, String email);
-	void deletePharmacistFromPharmacy(String id, String email);
+	//void addWorkingTimeForPharmacist(String dermatologistId, String email, String wd, WorkingTimeIntervalDTO workingDay);
+//	Set<WorkingDay> getWorkingDayForPharmacist(String id, String email);
+	//void deletePharmacistFromPharmacy(String id, String email);
 	
 	Collection<PharmacyWithMedicationView> getPharamciesWithMedication(Long id);
 	Collection<MedicineReservationView> getReservationsByPatientsEmail(String email);

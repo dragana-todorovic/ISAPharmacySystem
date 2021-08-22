@@ -117,8 +117,10 @@ $(document).ready(function() {
 		})
 
 function showReservedMedicine(data){
+	console.log(new Date());
 	let temp='';
 	for (i in data){
+		console.log(data[i].dueTo)	
 		temp+=`<tr id="`+data[i].id+`">
 			<td>`+data[i].medicineName+`</td>
 			<td>`+data[i].quanity+`</td>
@@ -126,6 +128,8 @@ function showReservedMedicine(data){
 			<td>`+data[i].pharmacyName+`</td>
 			<td>`+data[i].pharmacyStreet+`</td>
 			<td>`+data[i].pharmacyCity+`</td>	
+			<td><button id="cancel-reservation" class="ui primary basic button">Cancel reservation</button>
+      			</td>
 			</tr>`;
 	}
 	$('#reserved_medicine_table').html(temp);

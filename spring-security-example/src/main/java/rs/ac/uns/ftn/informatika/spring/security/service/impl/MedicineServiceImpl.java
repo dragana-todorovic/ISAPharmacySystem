@@ -177,14 +177,6 @@ public class MedicineServiceImpl implements MedicineService{
 		 Pharmacy pharmacy=pharmacyRepository.findPharmacyById(medicineReservationDto.getPharmacyId());
 		 pharmacy.getMedicineReservations().add(mR);
 		 this.pharmacyRepository.save(pharmacy);
-		
-	
-		
-
-	public Optional<Medicine> findById(Long id) {
-		// TODO Auto-generated method stub
-		return medicineRepository.findById(id);
-
 	}
 
 }

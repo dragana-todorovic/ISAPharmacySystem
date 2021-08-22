@@ -273,7 +273,7 @@ public class PharmacyController {
 		
 		for(MedicinePriceDTO m : priceList.getMedicines()) {
 			MedicinePrice mp = new MedicinePrice();
-			mp.setMedicine(this.medicineService.findById(Long.parseLong(m.getMedicineId())).get());
+			mp.setMedicine(this.medicineService.findById(Long.parseLong(m.getMedicineId())));
 			mp.setPrice(Double.parseDouble(m.getPrice()));
 			medicinePrices.add(mp);
 			this.medicinePriceRepository.save(mp);
