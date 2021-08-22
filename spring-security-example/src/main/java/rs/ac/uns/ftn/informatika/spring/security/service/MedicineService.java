@@ -34,6 +34,7 @@ public interface MedicineService {
 	
 	void addMedicineWithQuatityInPharmacy(String email,String medicineName, int quantity);
 	Boolean deleteMedicineFromPharmacy(Long id, String email);
+	void editMedicineWithQuatityInPharmacy(String email, long id, int quantity);
 
 
 }

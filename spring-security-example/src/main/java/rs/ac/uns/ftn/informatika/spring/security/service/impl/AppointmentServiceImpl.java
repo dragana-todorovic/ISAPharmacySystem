@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import rs.ac.uns.ftn.informatika.spring.security.model.AppoitmentPrice;
 import rs.ac.uns.ftn.informatika.spring.security.model.Dermatologist;
 import rs.ac.uns.ftn.informatika.spring.security.model.DermatologistAppointment;
+import rs.ac.uns.ftn.informatika.spring.security.model.HolidayRequest;
+import rs.ac.uns.ftn.informatika.spring.security.model.HolidayRequestStatus;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
 import rs.ac.uns.ftn.informatika.spring.security.model.WorkingDay;
@@ -105,7 +107,6 @@ public class AppointmentServiceImpl implements AppointmentService{
 		
 		if(timePart.isBefore(workingDay.getStartTime()) || timePart.plusMinutes(duration).isBefore(workingDay.getStartTime())) {
 	
-			System.out.println(timePart.plusMinutes(duration));
 			return false;
 		}
 		if(timePart.isAfter(workingDay.getEndTime()) || timePart.plusMinutes(duration).isAfter(workingDay.getEndTime())) {
@@ -120,6 +121,14 @@ public class AppointmentServiceImpl implements AppointmentService{
 		for(DermatologistAppointment da : dermatologistAppointments) {
 			if(da.getDermatologist().equals(dermatologist)) {
 				derm.add(da);
+			}
+		}
+		
+		for(HolidayRequest hol : dermatologist.getHolidayRequests()) {
+			if(hol.getPharmacy().equals(p)) {
+				if(!datePart.isBefore(hol.getStartDate()) && !datePart.isAfter(hol.getEndDate()) && hol.getStatus().equals(HolidayRequestStatus.ACCEPT)) {
+					return false;
+				}
 			}
 		}
 		

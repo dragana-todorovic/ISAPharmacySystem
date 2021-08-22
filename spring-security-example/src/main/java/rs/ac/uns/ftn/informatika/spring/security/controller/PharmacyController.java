@@ -187,6 +187,16 @@ public class PharmacyController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
+	@PostMapping("/editMedicineWithQuantityInPharmacy/{email}/{medicineId}/{quantity}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public ResponseEntity<?> editMedicineWithQuantityInPharmacy(@PathVariable(name="email") String email,
+			@PathVariable(name="medicineId") String medicineId,@PathVariable(name="quantity") String quantity) {
+		int q = Integer.parseInt(quantity);
+		long id = Long.parseLong(medicineId);
+		this.medicineService.editMedicineWithQuatityInPharmacy(email, id, q);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
 	@GetMapping("/deleteMedicineFromPharmacy/{id}/{email}")
 	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
 	public ResponseEntity<?> deleteMedicineFromPharmacy(@PathVariable(name="id") String id,
@@ -402,6 +412,32 @@ public class PharmacyController {
 	public List<StatisticDTO> getMedicineConsumptionByQuarter(@PathVariable(name="email") String email) {
 		return this.statisticService.getMedicineConsumptionQuarter(email);
 	}
+	
+
+	@GetMapping("/getAppointmentIncomes/{email}/{from}/{to}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public List<StatisticDTO> getAppointmentIncomes(@PathVariable(name="email") String email,
+			@PathVariable(name="from") String from,@PathVariable(name="to") String to) {
+		
+		return this.statisticService.getPharmacyIncome(email, LocalDate.parse(from), LocalDate.parse(to));
+	}
+	
+	@GetMapping("/getCounselingIncomes/{email}/{from}/{to}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public List<StatisticDTO> getCounselingIncomes(@PathVariable(name="email") String email,
+			@PathVariable(name="from") String from,@PathVariable(name="to") String to) {
+		
+		return this.statisticService.getPharmacyIncomeFromPharmacistCouseling(email, LocalDate.parse(from), LocalDate.parse(to));
+	}
+	
+	@GetMapping("/getMedicineIncomes/{email}/{from}/{to}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public List<StatisticDTO> getMedicineIncome(@PathVariable(name="email") String email,
+			@PathVariable(name="from") String from,@PathVariable(name="to") String to) {
+		
+		return this.statisticService.getPharmacyIncomeFromMedicineConsumption(email, LocalDate.parse(from), LocalDate.parse(to));
+	}
+	
 	
 	
 
