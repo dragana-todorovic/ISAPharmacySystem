@@ -345,10 +345,10 @@ li.dropdown {
 		        <tbody>
 		            <tr>
 		                <td>Date:</td>		
-						<td><input type="date" id="date"></td>		                
+						<td><input type="datetime-local" id="date"></td>		                
 		            </tr>
 		            <tr>
-		                <td>Choose time:</td>
+		         <!--        <td>Choose time:</td>
 						<td><select id="time" class="ui dropdown">
 							  <option value="">8:00</option>
 							  <option value="1">8:30</option>
@@ -376,7 +376,7 @@ li.dropdown {
 							  <option value="0">19:30</option>
 							  <option value="0">20:00</option>
 							  <option value="0">20:30</option>
-							</select></td>        
+							</select></td>     -->    
 		            </tr> 
 		        </tbody>
 		        <tfoot class="full-width">
@@ -464,17 +464,16 @@ li.dropdown {
           <label style="color:black;font-weight: bold" >AVAILABLE APPOINTMENTS </label>
 			</br></br>
                   <form class="border rounded px-2 py-1 text-center">       
-        		 <table class="ui celled table" >
+        		 <table class="ui celled table" id="appointments_dermatology_table" >
 		  	<thead>
 		    	<tr><th>Dermatologist</th>
 		   		 <th>Dermatologists grade</th>
-		   		 <th>Date</th>
-		   		 <th>Time</th>
+		   		 <th>Start date and time</th>
+		   		 <th>Duration</th>
 		   		 <th>Price</th>
-		   		 <th>Pharmacy</th>
 		   		 <th></th>
 		 		 </tr></thead>
-		 	 <tbody id="appointments_dermatology_table" >
+		 	 <tbody id="appointments_dermatology_body" >
 		 	 </tbody>
 		</table>  
         </form>

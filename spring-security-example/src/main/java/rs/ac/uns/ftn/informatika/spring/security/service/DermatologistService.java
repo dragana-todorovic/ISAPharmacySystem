@@ -25,5 +25,5 @@ public interface DermatologistService {
 	Boolean isMedicineAvailable(Pharmacy pharmacy, String medicineId);
 	void saveAppointment(AppointmentDTO appointmantDTO,Pharmacy pharmacy);
 	Boolean isAppointmentAvailableForScheduling(Dermatologist dermatologist,Patient patient,Integer duration,Pharmacy pharmacy,LocalDate startDate, LocalDateTime startDateTime,LocalDateTime endDateTime);
-
+	Double getAvrageGrade(Dermatologist dermatologist);
 }

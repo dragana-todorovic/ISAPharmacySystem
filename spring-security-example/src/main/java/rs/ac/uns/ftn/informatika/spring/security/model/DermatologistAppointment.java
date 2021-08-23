@@ -28,6 +28,9 @@ public class DermatologistAppointment {
 	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Patient patient;
 	
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Pharmacy pharmacy;
+	
 	@Column(name = "startDateTime", nullable = false)
 	private LocalDateTime startDateTime;
 	
@@ -39,7 +42,9 @@ public class DermatologistAppointment {
 	
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Therapy therapy;
-
+	
+	
+	
 	public Long getId() {
 		return id;
 	}
@@ -62,6 +67,14 @@ public class DermatologistAppointment {
 
 	public void setPatient(Patient patient) {
 		this.patient = patient;
+	}
+
+	public Pharmacy getPharmacy() {
+		return pharmacy;
+	}
+
+	public void setPharmacy(Pharmacy pharmacy) {
+		this.pharmacy = pharmacy;
 	}
 
 	public LocalDateTime getStartDateTime() {
