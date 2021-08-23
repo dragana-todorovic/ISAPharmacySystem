@@ -191,8 +191,7 @@ public class PharmacistController {
 		String pom = id.substring(8,id.length());
        	Long ID = Long.parseLong(pom);
        	MedicineReservation reservation = medicineReservationRepository.findById(ID).get();
-       	reservation.setStatus(MedicineReservationStatus.TAKEN);
-       	reservation.getMedicineWithQuantity().setQuantity(reservation.getMedicineWithQuantity().getQuantity()-1);
+       	reservation.setStatus(MedicineReservationStatus.TAKEN);	
        	LocalDateTime dt = LocalDateTime.of(reservation.getDueTo(), reservation.getDueToTime());
        	if(LocalDateTime.now().isBefore(dt.minus(Period.ofDays(1)))) {
         try {

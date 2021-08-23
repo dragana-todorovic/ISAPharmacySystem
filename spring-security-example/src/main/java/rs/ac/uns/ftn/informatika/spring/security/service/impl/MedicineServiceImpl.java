@@ -1,12 +1,13 @@
 package rs.ac.uns.ftn.informatika.spring.security.service.impl;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -155,34 +156,12 @@ public class MedicineServiceImpl implements MedicineService{
 	}
 
 	@Override
-	public void saveReservation(MedicineReservationDTO medicineReservationDto) {
-
-		 User user = this.userService.findByUsername(medicineReservationDto.getPatientEmail());
-		 MedicineWithQuantity med = new MedicineWithQuantity();
-		 
-		 Medicine medicine=findById(medicineReservationDto.getMedicineId());
-		 
-		 med.setMedicine(medicine);
-		 med.setQuantity(medicineReservationDto.getQuantity());
-		 
-		 LocalDate localDueToDate = LocalDate.parse(medicineReservationDto.getDueTo());
-		 
-		 MedicineReservation mR=new MedicineReservation();
-		 mR.setDueTo(localDueToDate);
-		 mR.setMedicineWithQuantity(med);
-		 mR.setPatient(patientService.findPatientByUser(user));
-		 mR.setStatus(MedicineReservationStatus.RESERVED);
-		 
-		 Pharmacy pharmacy=pharmacyRepository.findPharmacyById(medicineReservationDto.getPharmacyId());
-		 pharmacy.getMedicineReservations().add(mR);
-		 this.pharmacyRepository.save(pharmacy);
-	}
-
-	@Override
 	public Medicine findByCode(String code) {
 		Medicine m = medicineRepository.findByCode(code);
 		return m;
 	}
+
+
 	
 	@Override
 	public void editMedicineWithQuatityInPharmacy(String email, long id, int quantity) {

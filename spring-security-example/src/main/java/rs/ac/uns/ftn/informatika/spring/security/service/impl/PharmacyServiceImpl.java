@@ -24,6 +24,7 @@ import rs.ac.uns.ftn.informatika.spring.security.model.HolidayRequest;
 import rs.ac.uns.ftn.informatika.spring.security.model.HolidayRequestStatus;
 import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicineReservation;
+import rs.ac.uns.ftn.informatika.spring.security.model.MedicineReservationStatus;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicineWithQuantity;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacist;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacistCounseling;
@@ -50,6 +51,7 @@ import rs.ac.uns.ftn.informatika.spring.security.view.WorkingDayDTO;
 
 
 import java.time.LocalTime;
+import java.time.Period;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -582,8 +584,10 @@ public class PharmacyServiceImpl implements PharmacyService{
 		for (Pharmacy pharmacy : pharmacyRepository.findAll()) {
 			for (MedicineWithQuantity medi : pharmacy.getMedicineWithQuantity()) {
 				if (medi.getMedicine().getId()==id) {
+					if(medi.getQuantity()>0) {
 					PharmacyWithMedicationView ph = new PharmacyWithMedicationView(pharmacy.getName(),pharmacy.getAddress().getStreet(),pharmacy.getAddress().getCity(),pharmacy.getId());
 					pharmacies.add(ph);
+					}
 				}
 			}
 		}
@@ -596,8 +600,19 @@ public class PharmacyServiceImpl implements PharmacyService{
 		for(Pharmacy ph:findAll()) {
 			for(MedicineReservation mR:ph.getMedicineReservations()) {
 				if(mR.getPatient().getUser().getEmail().equals(email)) {
-					MedicineReservationView myRes=new MedicineReservationView(mR.getMedicineWithQuantity().getMedicine().getName(),ph.getName(),ph.getAddress().getCity(),ph.getAddress().getStreet(),mR.getDueTo(),mR.getMedicineWithQuantity().getQuantity());
+					if(mR.getStatus().equals(MedicineReservationStatus.RESERVED)) {
+					MedicineReservationView myRes=new MedicineReservationView(mR.getId(),mR.getNumberOfReservation(),mR.getMedicineWithQuantity().getMedicine().getName(),ph.getName(),ph.getAddress().getCity(),ph.getAddress().getStreet(),mR.getDueToTime(),mR.getDueTo(),mR.getMedicineWithQuantity().getQuantity());
+				 	LocalDateTime dt = LocalDateTime.of(myRes.getDueTo(), myRes.getDueToTime());
+			       	if(LocalDateTime.now().isBefore(dt.minus(Period.ofDays(1)))) {
+			       		System.out.println("nije istekla");
+			       		myRes.setIsReservationExpired(false);
+			       	}
+			       	else {
+			       		System.out.println("istekla");
+			       		myRes.setIsReservationExpired(true);
+			       	}
 					reservations.add(myRes);
+					}
 				}
 			}
 		}

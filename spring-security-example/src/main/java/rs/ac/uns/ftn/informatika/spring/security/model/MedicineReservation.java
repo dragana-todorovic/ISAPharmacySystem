@@ -3,6 +3,7 @@ package rs.ac.uns.ftn.informatika.spring.security.model;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -27,7 +28,7 @@ public class MedicineReservation {
 	private Long id;
 	
 	 @Column(name = "numberOfReservation",nullable = false,unique = true)
-	 private String numberOfReservation;
+	 private UUID numberOfReservation;
 	
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Patient patient;
@@ -93,11 +94,11 @@ public class MedicineReservation {
 		this.status = status;
 	}
 
-	public String getNumberOfReservation() {
+	public UUID getNumberOfReservation() {
 		return numberOfReservation;
 	}
 
-	public void setNumberOfReservation(String numberOfReservation) {
+	public void setNumberOfReservation(UUID numberOfReservation) {
 		this.numberOfReservation = numberOfReservation;
 	}
 	

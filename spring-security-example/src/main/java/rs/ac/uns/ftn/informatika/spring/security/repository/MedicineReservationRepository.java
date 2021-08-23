@@ -1,6 +1,7 @@
 package rs.ac.uns.ftn.informatika.spring.security.repository;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,4 +15,5 @@ public interface MedicineReservationRepository extends JpaRepository<MedicineRes
 			"on medicinewithquantity.id=medicinereservation.medicine_with_quantity_id\n" +
 			"where medicinereservation.medicine_with_quantity_id= :medicineId")
 	List<MedicineReservation> getMedicineReservationByMedicineWithQuantity(@Param("medicineId")Long medicineId);
+	MedicineReservation getMedicineReservationById(@Param("id")Long id);
 }
