@@ -108,13 +108,13 @@ $(document).ready(function() {
 
 	})
 	$('#appointments_derm').on('click',function(){
-		alert(trid);
 				customAjax({
 				method:'GET',
-		        url:'/appointment/getAllByPharmacyId/' + trid,
+		        url:'/appointment/getAvailableAppointmentsByPharmacyId/' + trid,
 		        contentType: 'application/json',
 	    		success: function(data) { 	
-					alert(success);
+					console.log(data);
+					showAvailableAppointments(data);
 	    		},
 	    		error:function(message){
 					alert("Error")
@@ -122,13 +122,53 @@ $(document).ready(function() {
 	    		}
 	    	});	
 	})
+	 $('#appointments_dermatology_body').on('click','button',function(event){
+		pom = $(event.target).closest('tr').attr('id');
+		console.log(pom);
+        obj = JSON.stringify({
+    	patient:email,
+		});
+		            customAjax({
+                    method:'POST',
+                    url:'/appointment/scheduleDermatologistAppointment/'+pom ,
+ 					data:obj,
+                    contentType: 'application/json',
+                    success: function() {
+                       alert("Successfully scheduled appointment!");
+                    },
+                    error:function(){
+                        alert("Could not schedule appointment,try later");
+                    }
+                });
+		
+	})
 	
 	$('#pharamciesForConsulting').on('click',function(){
 		console.log($('#date').val())
-		console.log($("#time :selected").text())
+		//console.log($("#time :selected").text())
 	})
 
-
+function showAvailableAppointments(data){
+	$('#pharmacy-details').attr('hidden',true);
+	let temp='';
+	for (i in data){
+		temp+=`<tr id="`+data[i].id+`">
+			<td >`+data[i].dermatologistFirstName+` `+data[i].dermatologistLastName+`</td>
+			<td>`+data[i].grade+`</td>
+			<td>`+data[i].date+` `+data[i].time+`</td>
+			<td>`+data[i].duration+` min </td>
+			<td>`+data[i].price+` din </td>
+			<td><button id="schedule_appointment" class="ui primary basic button">Schedule appointment</button>
+			</tr>`;
+	}
+	
+	$('#appointments_dermatology_body').html(temp);
+	$('#derm_appointments').attr('hidden',false);
+	$('#pharmacy-details').attr('hidden',true);
+	$('#pharmacies_for_derm_appointments').attr('hidden',true);
+	$('#edit-profile').attr('hidden', true);
+	$('#show').attr('hidden',true);
+}
 function showSubscribedPharmacies(data){
 	$('#pharmacy-details').attr('hidden',true);
 	let temp='';

@@ -1,5 +1,6 @@
 package rs.ac.uns.ftn.informatika.spring.security.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import rs.ac.uns.ftn.informatika.spring.security.model.DermatologistAppointment;
+import rs.ac.uns.ftn.informatika.spring.security.service.AppointmentPriceService;
 import rs.ac.uns.ftn.informatika.spring.security.service.AppointmentService;
+import rs.ac.uns.ftn.informatika.spring.security.service.DermatologistService;
+import rs.ac.uns.ftn.informatika.spring.security.service.WorkingTimeService;
+import rs.ac.uns.ftn.informatika.spring.security.view.AvaliableDermatologistAppointmentsView;
 import rs.ac.uns.ftn.informatika.spring.security.view.PredefinedAppointmentDTO;
 
 @Controller
@@ -26,6 +31,11 @@ public class AppointmentController {
 
 	@Autowired
 	private AppointmentService appointmentService;
+	@Autowired
+	private AppointmentPriceService appointmentPriceService;
+	@Autowired
+	private DermatologistService dermatologistService;
+	
 	
 	@GetMapping("/getAll")
 	@PreAuthorize("hasRole('ROLE_PATIENT')  || hasRole('ROLE_DERMATOLOGIST')")
@@ -33,11 +43,21 @@ public class AppointmentController {
 		return this.appointmentService.findAll();
 	}
 	
-	@GetMapping("/getAllByPharmacyId/{id}")
+	@GetMapping("/getAvailableAppointmentsByPharmacyId/{id}")
 	@PreAuthorize("hasRole('ROLE_PATIENT')  || hasRole('ROLE_DERMATOLOGIST')")
-	public  List<DermatologistAppointment> getAllByPharmacyId(@PathVariable(name="id") Long id) {
+	public  List<AvaliableDermatologistAppointmentsView> getAvailableAppointmentsByPharmacyId(@PathVariable(name="id") Long id) {
 		System.out.println("pogodjena metoda");
-		return null;
+		List<AvaliableDermatologistAppointmentsView> result=new ArrayList<AvaliableDermatologistAppointmentsView>();
+		for(DermatologistAppointment da: appointmentService.getAvailableAppointmentsByPharmacyId(id)) {
+			String date=da.getStartDateTime().toString().split("T")[0];
+			String time=da.getStartDateTime().toString().split("T")[1];
+			String duration=Integer.toString(da.getDuration());
+			String price=Double.toString(appointmentPriceService.getPriceByAppointment(da));
+			String rating=Double.toString(dermatologistService.getAvrageGrade(da.getDermatologist()));
+			AvaliableDermatologistAppointmentsView view=new AvaliableDermatologistAppointmentsView(da.getId(),da.getDermatologist().getUser().getFirstName(),da.getDermatologist().getUser().getLastName(),date,time,duration,price,rating);
+			result.add(view);
+		}
+		return result;
 	}
 	
 	@PostMapping("/createPredefinedAppointmet/{email}")
@@ -49,6 +69,16 @@ public class AppointmentController {
 		} else {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
+		
+	}
+	
+	@PostMapping("/scheduleDermatologistAppointment/{pom}")
+	@PreAuthorize("hasRole('USER_PATIENT')")
+	public  ResponseEntity<?> scheduleDermatologistAppointment(@PathVariable(name="pom") Long pom,@RequestBody String patient) {
+		if(appointmentService.scheduleDermatologistAppointment(pom,patient))
+			return new ResponseEntity<>(HttpStatus.OK);
+		else 
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		
 	}
 	

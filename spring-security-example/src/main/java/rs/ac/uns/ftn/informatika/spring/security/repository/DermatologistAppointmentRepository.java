@@ -12,4 +12,5 @@ import rs.ac.uns.ftn.informatika.spring.security.model.DermatologistAppointment;
 public interface DermatologistAppointmentRepository extends JpaRepository<DermatologistAppointment, Long>  {
 	List<DermatologistAppointment> findAll();
 	Optional<DermatologistAppointment> findById(Long id);
+	
 }

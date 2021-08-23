@@ -23,6 +23,7 @@ import rs.ac.uns.ftn.informatika.spring.security.model.MedicineWithQuantity;
 import rs.ac.uns.ftn.informatika.spring.security.model.Patient;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacistCounseling;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
+import rs.ac.uns.ftn.informatika.spring.security.model.Rating;
 import rs.ac.uns.ftn.informatika.spring.security.model.RequestForMedicineAvailability;
 import rs.ac.uns.ftn.informatika.spring.security.model.Therapy;
 import rs.ac.uns.ftn.informatika.spring.security.model.User;
@@ -56,8 +57,6 @@ public class DermatologistServiceImpl implements DermatologistService{
 	@Autowired
 	private DermatologistAppointmentService dermatologistAppointmentService;
 	@Autowired
-	private HolidayRequestRepository holidayRequestRepository;
-	@Autowired
 	private RequestForMedicineAvailabilityRepository requestForMedicineAvailabilityRepository;
 	@Autowired
 	private DermatologistAppointmentRepository dermatologistAppointmentRepository;
@@ -65,8 +64,7 @@ public class DermatologistServiceImpl implements DermatologistService{
 	private UserRepository userRepository;
 	@Autowired
 	private MedicineRepository medicineRepository;
-	@Autowired
-	private PatientRepository patientRepository;
+
 	@Autowired
 	private PharmacistCounselingService pharmacistCounselingService;
 	@Override
@@ -384,6 +382,17 @@ public class DermatologistServiceImpl implements DermatologistService{
 		
 	
 		return true;
+	}
+
+	@Override
+	public Double getAvrageGrade(Dermatologist dermatologist) {
+		double avrage_grade=0;
+		int pom=0;
+		for(Rating ratings : dermatologist.getRatings()) {
+			pom++;
+			avrage_grade+=ratings.getRating();
+		}
+		return avrage_grade/pom;
 	}
 
 
