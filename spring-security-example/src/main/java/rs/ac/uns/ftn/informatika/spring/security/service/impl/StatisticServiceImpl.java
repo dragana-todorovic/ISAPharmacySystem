@@ -809,8 +809,8 @@ public class StatisticServiceImpl implements StatisticService{
 								}
 							}
 					}
-			}
 				}
+			}
 		
 			statistic.setTime(day.toString());
 			statistic.setData((int)income);
