@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -33,6 +34,7 @@ import rs.ac.uns.ftn.informatika.spring.security.model.WorkingTime;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.AppointmentDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.HolidayRequestDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.MyPatientDTO;
+import rs.ac.uns.ftn.informatika.spring.security.model.DTO.WorkCalendarDTO;
 import rs.ac.uns.ftn.informatika.spring.security.repository.AppointmentPriceRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.DermatologistRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.HolidayRequestRepository;
@@ -46,6 +48,7 @@ import rs.ac.uns.ftn.informatika.spring.security.repository.UserRepository;
 import rs.ac.uns.ftn.informatika.spring.security.service.DermatologistAppointmentService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacistCounselingService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacistService;
+import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyService;
 
 @Service
 public class PharmacistServiceImpl implements PharmacistService {
@@ -393,6 +396,30 @@ public class PharmacistServiceImpl implements PharmacistService {
 				result.add(m);				
 			}
 		}
+		return result;
+	}
+
+	@Override
+	public List<WorkCalendarDTO> getPharmacistsCounseling(Pharmacist pharmacist) {
+		List<WorkCalendarDTO> result = new ArrayList<WorkCalendarDTO>();
+		List<PharmacistCounseling> appointments =pharmacistCounselingService.findAll();
+		System.out.println("Size"+appointments.size());
+		List<PharmacistCounseling> app = new ArrayList<PharmacistCounseling>();
+		for(PharmacistCounseling da :appointments ) {
+			System.out.println(da.getPharmacist().getId());
+			System.out.println(pharmacist.getId());
+			if(da.getPharmacist().getId().equals(pharmacist.getId())) {
+				
+				app.add(da);
+			}
+		}
+		for(PharmacistCounseling d:app) {
+			if(d.getPatient()!=null) {
+			result.add(new WorkCalendarDTO(d.getId(),d.getPharmacist().getWorkingTimes().getPharmacy().getName(),d.getStartDateTime().toLocalDate(),d.getStartDateTime().toString(),d.getDuration(),d.getPatient().getUser().getFirstName(),d.getPatient().getUser().getLastName()));
+			}else{
+				result.add(new WorkCalendarDTO(d.getId(),d.getPharmacist().getWorkingTimes().getPharmacy().getName(),d.getStartDateTime().toLocalDate(),d.getStartDateTime().toString(),d.getDuration()));	
+			}
+			}
 		return result;
 	}
 	

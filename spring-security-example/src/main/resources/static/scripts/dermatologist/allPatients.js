@@ -21,7 +21,7 @@ $(document).ready(function(e){
     margin-right:auto; margin-top: 40px;">
 		        <thead>
 		            <tr class="success">
-		                <th colspan="3" class = "text-info" style= "text-align:center;">My patients</th>
+		                <th colspan="2" class = "text-info" style= "text-align:center;">My patients</th>
 		            </tr>
 						
 		        </thead>
