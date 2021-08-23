@@ -164,6 +164,81 @@ public class MedicineOrderServiceImpl implements MedicineOrderService {
 		return true;
 		}
 	}
+	
+	@Override
+	public Set<MedicineWithQuantity> getMedicinesByOrder(long id) {
+		List<MedicineOrder> allOrder = this.medicineOrderRepository.findAll();
+		
+		for(MedicineOrder mr : allOrder) {
+			if(mr.getId() == id) {
+				return mr.getMedicines();
+			}
+		}
+		return null;
+ 	}
+	
+	
+	@Override
+	public void editMedicineOrder(String email, long id, Set<MedicineWithQuantity> medicinesWithQuantity, LocalDateTime date) {
+		
+		PharmacyAdmin pa = pharmacyAdminService.findPharmacyAdminByUser(userService.findByEmail(email));
+		Pharmacy p = pa.getPharmacy();
+		List<Medicine> pomocna = new ArrayList<Medicine>();
+		for(MedicineWithQuantity m : p.getMedicineWithQuantity()) {
+			pomocna.add(m.getMedicine());
+		}
+		
+		for(MedicineWithQuantity mq : medicinesWithQuantity) {
+			if(!pomocna.contains(mq.getMedicine())) {
+				MedicineWithQuantity newM = new MedicineWithQuantity();
+				newM.setMedicine(mq.getMedicine());
+				newM.setQuantity(0);
+				p.getMedicineWithQuantity().add(newM);
+				this.medicineWithQuantityRepository.save(newM);
+			}
+		}
+		
+		MedicineOrder mo = this.medicineOrderRepository.findById(id).get();
+		
+		
+		for(MedicineOrder m : p.getMedicineOrders()) {
+			if(m.getId() == mo.getId()) {
+				m.setMedicines(medicinesWithQuantity);
+				m.setStatus(MedicineOrderStatus.ON_HOLD);
+				m.setTimeLimit(date);
+			}
+		}
+		
+		this.pharmacyRepository.save(p);
+		
+	}
+	
+	@Override
+	public Boolean orderHaveOffers(Long id) {		
+
+		
+		List<SuplierOffer> offers = this.suplierOfferRepository.findAll();
+		
+		for(SuplierOffer so : offers) {
+			if(so.getMedicineOrder().getId() == id) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	@Override
+	public void deleteMedicineOrder(String email,Long id) {		
+		PharmacyAdmin pa = pharmacyAdminService.findPharmacyAdminByUser(userService.findByEmail(email));
+		Pharmacy p = pa.getPharmacy();
+		for(MedicineOrder mo : p.getMedicineOrders()) {
+			if(mo.getId() == id) {
+				p.getMedicineOrders().remove(mo);
+				this.pharmacyRepository.save(p);
+			}
+		}
+		this.medicineOrderRepository.delete(this.medicineOrderRepository.findById(id).get());
+	}
 		
 
 }
