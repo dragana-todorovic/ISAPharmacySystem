@@ -76,7 +76,6 @@ $(document).ready(function(e){
         adviseddailydose:adviseddailydose,
         contradiction:contradiction
         });
-        console.log(obj)
         customAjax({
               url: '/medicine/addNewMedicine',
               method: 'POST',

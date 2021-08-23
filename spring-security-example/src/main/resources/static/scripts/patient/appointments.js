@@ -1,5 +1,6 @@
 $(document).ready(function() {
 	var trid;
+	var email = localStorage.getItem('email')
 	$('a#all_pharmacies').click(function(){
 				customAjax({
 		        method:'GET',
@@ -14,26 +15,97 @@ $(document).ready(function() {
 		     });
 
 	});
+
+	$('a#all_subscribed').click(function(){
+        customAjax({
+            method:'GET',
+            url:'/patient/getUserAllSubscribedPharmacies/' + email,
+            contentType: 'application/json',
+            success: function(data){
+                showSubscribedPharmacies(data)
+            },
+            error: function(){
+                console.log("error");
+            }
+         });
+
+    });
 		$('a#schedule_consulting').click(function(){
 			
 		$('#pharmacies_for_derm_appointments').attr('hidden',true);
 		$('#shedule_consulting').attr('hidden',false);
 
 	});
+	$('#submitSubscribe').click(function(){
+        obj = JSON.stringify({
+            patientEmail:email,
+            pharmacyId:trid
+        });
+
+        console.log(obj)
+        customAjax({
+            method:'POST',
+            url:'/patient/subscribePatientOnActionsAndBenefits' ,
+            data:obj,
+            contentType: 'application/json',
+            success: function() {
+                //poziv da se useru doda apoteka na listu subscribovanih apoteka
+                // treba provera da li je vec subscraboan
+
+                alert('Success subscribed on pharmacy')
+            },
+            error:function(message){
+                alert("You have already been subscribed to pharmacy")
+
+            }
+        });
+	})
 	 $('#pharmacies_tableBody').on('click','button',function(event){
 			trid = $(event.target).closest('tr').attr('id');
-			customAjax({
-				method:'GET',
-		        url:'/pharmacy/getPharmacyById/' + trid,
-		        contentType: 'application/json',
-	    		success: function(data) { 	
-					showPharmacy(data)
-	    		},
-	    		error:function(message){
-					alert("Error")
-	    			console.log(message)
-	    		}
-	    	});	
+            if(this.id == 'details'){
+                customAjax({
+                    method:'GET',
+                    url:'/pharmacy/getPharmacyById/' + trid,
+                    contentType: 'application/json',
+                    success: function(data) {
+                        showPharmacy(data)
+                    },
+                    error:function(message){
+                        alert("Error")
+                        console.log(message)
+                    }
+                });
+            }else if( this.id == 'subscribed'){
+                obj = JSON.stringify({
+                    patientEmail:email,
+                    pharmacyId:trid
+                });
+
+                customAjax({
+                    method:'POST',
+                    url:'/patient/unsubscribePatientOnActionsAndBenefits' ,
+                    data:obj,
+                    contentType: 'application/json',
+                    success: function() {
+                     customAjax({
+                            method:'GET',
+                            url:'/patient/getUserAllSubscribedPharmacies/' + email,
+                            contentType: 'application/json',
+                            success: function(data){
+                                showSubscribedPharmacies(data)
+                            },
+                            error: function(){
+                                console.log("error");
+                            }
+                         });
+                       alert("Successfully unsubscribed from Pharmacy Actions&Benefits");
+                    },
+                    error:function(message){
+                        alert("You are still subscribed to Pharmacy Actions&Benefits");
+                    }
+                });
+            }
+
 	})
 	$('#appointments_derm').on('click',function(){
 		alert(trid);
@@ -55,7 +127,25 @@ $(document).ready(function() {
 		console.log($('#date').val())
 		console.log($("#time :selected").text())
 	})
-	
+
+
+function showSubscribedPharmacies(data){
+	$('#pharmacy-details').attr('hidden',true);
+	let temp='';
+	for (i in data){
+		temp+=`<tr id="`+data[i].id+`">
+			<td >`+data[i].name+`</td>
+			<td>`+data[i].address.city+`</td>
+			<td>`+data[i].address.street+`</td>
+			<td>`+data[i].description+`</td>
+			<td><button id="subscribed" class="ui primary basic button">Unsubscribed</button>
+			</tr>`;
+	}
+	$('#pharmacies_tableBody').html(temp);
+	$('#pharmacies_for_derm_appointments').attr('hidden',false);
+	$('#edit-profile').attr('hidden', true);
+	$('#show').attr('hidden',true);
+}
 function showPharmacies(data){
 	$('#pharmacy-details').attr('hidden',true);
 	let temp='';
@@ -65,7 +155,7 @@ function showPharmacies(data){
 			<td>`+data[i].address.city+`</td>
 			<td>`+data[i].address.street+`</td>
 			<td>`+data[i].description+`</td>
-			<td><button  class="ui primary basic button">Details</button>
+			<td><button id="details" class="ui primary basic button">Details</button>
 			</tr>`;
 	}
 	$('#pharmacies_tableBody').html(temp);
