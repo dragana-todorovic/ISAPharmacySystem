@@ -50,11 +50,12 @@ public class PharmacistCounselingServiceImpl implements PharmacistCounselingServ
 		System.out.println("PATIENT ID"+id);
 		List <PharmacistCounseling> appointments = new ArrayList<PharmacistCounseling>();
 		for (PharmacistCounseling d:pharmacistCounselingRepository.findAll()) {
+			if(d.getPatient()!=null) {
 			if(d.getPatient().getId().equals(id)) {
 			
 				appointments.add(d);
 			}
-		}
+		}}
 		
 		return appointments;
 	}

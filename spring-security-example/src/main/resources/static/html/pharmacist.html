@@ -13,6 +13,14 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="../scripts/customAjax.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+ <!-- FullCalendar -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.css" rel="stylesheet" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.js"></script>
+
+
 <script src="../scripts/pharmacist/holidayRequest.js"></script>
 <script src="../scripts/pharmacist/profile.js"></script>
 <script src="../scripts/pharmacist/myPatients.js"></script>
@@ -20,7 +28,10 @@
 <script src="../scripts/pharmacist/scheduleAnAppointment.js"></script>
 <script src="../scripts/pharmacist/allPatients.js"></script>
 <script src="../scripts/pharmacist/gettingReservedMedicines.js"></script>
+<script src="../scripts/pharmacist/calendar.js"></script>
 <script src="../scripts/jwt.js"></script>  
+
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@5.3.0/main.min.js"></script>
 
 <title>Pharmacist Homepage</title>
 <style>
@@ -61,7 +72,7 @@ li.dropdown {
   z-index: 1;
 }
    .container_1 {
-    height: 100vh;
+    height: 200vh;
     background: url('../images/pharmacy.jpg') no-repeat center center/cover;
     color: black;
 }
@@ -130,6 +141,12 @@ div.container4 h2 {
   <li><a id="startAppointment" ><i >Start an appointment</i></a></li>
   
  <li><a id="holidayRequest" ><i >Holiday request</i></a></li>
+   <li>
+
+      <a id = "appointments" href="#">Pharmacist's counseling</a>
+   
+    
+  </li>
   <li class="dropdown" style="float:right;">
     <a href="javascript:void(0)" class="dropbtn">Profile</a>
     <div class="dropdown-content" style="right:0;">
@@ -142,6 +159,7 @@ div.container4 h2 {
   
 </ul>
 	<div id = "showData" class="container4" style = "color : white"><h2>You have successfully logged in as a pharmacist!</h2></div>
+ <div id='calendar'></div>
 </div>
 </body>
 </html>

@@ -15,5 +15,5 @@ public interface DermatologistAppointmentService {
 	List<DermatologistAppointment> findById(Long id);
 	List<DermatologistAppointment> findAll ();
 	List<DermatologistAppointment> findByPatientId(Long id);
-	void saveAppointment(AppointmentScheduleDTO appointmentDTO,Patient patient, LocalDateTime startDateTime);
+	void saveAppointment(AppointmentScheduleDTO appointmentDTO,Patient patient, LocalDateTime startDateTime,Pharmacy pharmacy);
 }

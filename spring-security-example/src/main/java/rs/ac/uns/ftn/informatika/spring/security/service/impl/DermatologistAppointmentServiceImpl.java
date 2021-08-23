@@ -11,6 +11,7 @@ import rs.ac.uns.ftn.informatika.spring.security.model.AppoitmentPrice;
 import rs.ac.uns.ftn.informatika.spring.security.model.Dermatologist;
 import rs.ac.uns.ftn.informatika.spring.security.model.DermatologistAppointment;
 import rs.ac.uns.ftn.informatika.spring.security.model.Patient;
+import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.User;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.AppointmentScheduleDTO;
 import rs.ac.uns.ftn.informatika.spring.security.repository.AppointmentPriceRepository;
@@ -32,7 +33,9 @@ public class DermatologistAppointmentServiceImpl implements DermatologistAppoint
 	private DermatologistRepository dermatologistRepository;
 	@Override
 	public List<DermatologistAppointment> findAll() {
+		System.out.println("Usao u find all");
 		List<DermatologistAppointment> result = dermatologistAppointmentRepository.findAll();
+		System.out.println("Broj"+result.size());
 		return result;
 	}
 	@Override
@@ -46,7 +49,7 @@ public class DermatologistAppointmentServiceImpl implements DermatologistAppoint
 		return appointments;
 	}
 	@Override
-	public void saveAppointment(AppointmentScheduleDTO appointmentDTO,Patient patient, LocalDateTime startDateTime) {
+	public void saveAppointment(AppointmentScheduleDTO appointmentDTO,Patient patient, LocalDateTime startDateTime,Pharmacy pharmacy) {
 		// TODO Auto-generated method stub
 		try{
 			User u = userRepository.findByEmail(appointmentDTO.getDermatologistEmail());
@@ -58,7 +61,7 @@ public class DermatologistAppointmentServiceImpl implements DermatologistAppoint
 			System.out.println(d.getId());
 			DermatologistAppointment ap = new DermatologistAppointment();
 			ap.setDermatologist(d);
-			
+			ap.setPharmacy(pharmacy);
 			ap.setDuration(Integer.parseInt(appointmentDTO.getDuration()));
 			ap.setPatient(patient);
 			ap.setStartDateTime(startDateTime);
@@ -81,10 +84,11 @@ public class DermatologistAppointmentServiceImpl implements DermatologistAppoint
 	public List<DermatologistAppointment> findByPatientId(Long id) {
 		List <DermatologistAppointment> appointments = new ArrayList<DermatologistAppointment>();
 		for (DermatologistAppointment d:dermatologistAppointmentRepository.findAll()) {
+			if(d.getPatient()!=null) {
 			if(d.getPatient().getId().equals(id)) {
 				appointments.add(d);
 			}
-		}
+		}}
 		return appointments;
 	}
 
