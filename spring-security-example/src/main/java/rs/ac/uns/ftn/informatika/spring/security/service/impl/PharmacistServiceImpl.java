@@ -388,7 +388,7 @@ public class PharmacistServiceImpl implements PharmacistService {
 		List<MedicineReservation>result = new ArrayList<MedicineReservation>();
 		for(MedicineReservation m:pharmacy.getMedicineReservations()) {
 			LocalDateTime dt = LocalDateTime.of(m.getDueTo(), m.getDueToTime());
-			if(m.getNumberOfReservation().toLowerCase().contains(resNumber.toLowerCase()) && m.getStatus().equals(MedicineReservationStatus.RESERVED) && dt.isAfter(LocalDateTime.now()) ) {
+			if(m.getNumberOfReservation().toString().toLowerCase().contains(resNumber.toLowerCase()) && m.getStatus().equals(MedicineReservationStatus.RESERVED) && dt.isAfter(LocalDateTime.now()) ) {
 				System.out.println("Rezervacija"+m.getNumberOfReservation());
 				result.add(m);				
 			}

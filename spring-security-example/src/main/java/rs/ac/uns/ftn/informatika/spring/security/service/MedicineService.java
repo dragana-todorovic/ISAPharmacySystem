@@ -7,6 +7,7 @@ import java.util.Set;
 
 import rs.ac.uns.ftn.informatika.spring.security.model.Dermatologist;
 import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
+import rs.ac.uns.ftn.informatika.spring.security.model.MedicineReservation;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicineWithQuantity;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.MedicineReservationDTO;
@@ -22,14 +23,9 @@ public interface MedicineService {
 	Medicine findById(Long id);
 	Medicine findByName(String name);
 	Medicine findByCode(String code);
-
 	
-	void saveReservation(MedicineReservationDTO medicineReservationDto);
-
-	//Optional<Medicine> findById(Long id);
-
-
-
+	
+		
 	Set<Medicine> getAllMedicinesExceptExisted (String email);
 	
 	void addMedicineWithQuatityInPharmacy(String email,String medicineName, int quantity);

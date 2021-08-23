@@ -87,6 +87,28 @@ $(document).ready(function() {
 			if($(event.target).attr('id')=="reserve-medicine"){
 				trid2 = $(event.target).closest('tr').attr('id')
 				modal.style.display = "block"
+				 elem = document.getElementById("pickupdate")
+			    var iso = new Date().toISOString();
+			    var minDate = iso.substring(0,iso.length-1);
+			    elem.value = minDate
+			    elem.min = minDate
+			}
+		})
+		
+		$('#reserved_medicine_table').on('click','button',function(event){
+			if($(event.target).attr('id')=="cancel-reservation"){
+				pom = $(event.target).closest('tr').attr('id')
+					    customAjax({
+			            url: '/medicine/cancelReservation/' + pom ,
+			            method: 'POST',
+			            success: function (data) {
+			               alert("Sucessfully canceled reservation!");
+			            },
+			            error: function () {
+							console.log("error")
+			            }
+		
+		        	});
 			}
 		})
 		
@@ -99,38 +121,58 @@ $(document).ready(function() {
 		var patientEmail = decoded.email
 		var quantity=$("#med_quantity :selected").text();
 		console.log(quantity)
-
-		obj = JSON.stringify({medicineId:medicineId,dueTo:dueTo,patientEmail:patientEmail,quantity:quantity,pharmacyId:pharmacyId});
-		customAjax({
-	        method:'POST',
-	        url:'/medicine/makeReservation',
-	        data : obj,
-	        contentType: 'application/json',
-	        success: function(){
-	        	alert("Success making reservation")
-				location.href = "patient.html";
-			},
-			error: function(){
-				alert("Error while making reservation")
+		
+		if(dueTo!=""){
+		
+		
+			obj = JSON.stringify({medicineId:medicineId,dueTo:dueTo,patientEmail:patientEmail,quantity:quantity,pharmacyId:pharmacyId});
+			customAjax({
+		        method:'POST',
+		        url:'/medicine/makeReservation',
+		        data : obj,
+		        contentType: 'application/json',
+		        success: function(){
+		        	alert("Success making reservation,check your email!")
+					location.href = "patient.html";
+				},
+				error: function(){
+					alert("Not enough medicine on stock,choose less quantity or another pharmacy")
+				}
+		            });
+			}else{
+				alert("You have to choose pick up date before making your reservation!");
 			}
-	            });
 		})
+		
 
 function showReservedMedicine(data){
-	console.log(new Date());
 	let temp='';
 	for (i in data){
-		console.log(data[i].dueTo)	
-		temp+=`<tr id="`+data[i].id+`">
-			<td>`+data[i].medicineName+`</td>
-			<td>`+data[i].quanity+`</td>
-			<td>`+data[i].dueTo+`</td>
-			<td>`+data[i].pharmacyName+`</td>
-			<td>`+data[i].pharmacyStreet+`</td>
-			<td>`+data[i].pharmacyCity+`</td>	
-			<td><button id="cancel-reservation" class="ui primary basic button">Cancel reservation</button>
-      			</td>
-			</tr>`;
+		if(data[i].isReservationExpired){
+			temp+=`<tr id="`+data[i].id+`">
+				<td>`+data[i].medicineName+`</td>
+				<td>`+data[i].quanity+`</td>
+				<td>`+data[i].dueTo+` `+data[i].dueToTime+`</td>
+				<td>`+data[i].pharmacyName+`</td>
+				<td>`+data[i].pharmacyStreet+`</td>
+				<td>`+data[i].pharmacyCity+`</td>	
+				<td><button id="cancel-reservation" class="ui primary basic button" disabled>Cancel reservation</button>
+	      			</td>
+				</tr>`;
+			}
+			else{
+				temp+=`<tr id="`+data[i].id+`">
+				<td>`+data[i].medicineName+`</td>
+				<td>`+data[i].quanity+`</td>
+				<td>`+data[i].dueTo+` `+data[i].dueToTime+`</td>
+				<td>`+data[i].pharmacyName+`</td>
+				<td>`+data[i].pharmacyStreet+`</td>
+				<td>`+data[i].pharmacyCity+`</td>	
+				<td><button id="cancel-reservation" class="ui primary basic button" >Cancel reservation</button>
+	      			</td>
+				</tr>`;
+				
+			}
 	}
 	$('#reserved_medicine_table').html(temp);
 }
@@ -138,6 +180,7 @@ function showReservedMedicine(data){
 function showMedicine(data){
 	let temp='';
 	for (i in data){
+
 		temp+=`<tr id="`+data[i].id+`">
 			<td>`+data[i].code+`</td>
 			<td>`+data[i].name+`</td>
