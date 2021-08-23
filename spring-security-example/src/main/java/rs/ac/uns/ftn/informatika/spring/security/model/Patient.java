@@ -126,6 +126,6 @@ public class Patient {
 	public void setPatientSubscriptions(Set<Long> patientSubscriptions) {
 		this.subscribePharmacyIds = patientSubscriptions;
 	}
-	 
-	
+
+
 }

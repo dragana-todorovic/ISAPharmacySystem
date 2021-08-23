@@ -21,6 +21,7 @@ import rs.ac.uns.ftn.informatika.spring.security.model.*;
 import rs.ac.uns.ftn.informatika.spring.security.service.*;
 import rs.ac.uns.ftn.informatika.spring.security.view.LoyaltyProgramView;
 import rs.ac.uns.ftn.informatika.spring.security.view.LoyaltyScaleView;
+import rs.ac.uns.ftn.informatika.spring.security.view.SubscribePatientOnPharmacyView;
 import rs.ac.uns.ftn.informatika.spring.security.view.UserRegisterView;
 
 
@@ -41,6 +42,9 @@ public class PatientController {
 
 	@Autowired
 	private LoyaltyProgramService loyaltyProgramService;
+
+	@Autowired
+	private PharmacyService pharmacyService;
 
 	@GetMapping("/getAll")
 	@PreAuthorize("hasRole('ROLE_PHARMACIST')  || hasRole('ROLE_DERMATOLOGIST')")
@@ -171,6 +175,60 @@ public class PatientController {
 	public ResponseEntity<?> saveLoyaltyProgram(@RequestBody LoyaltyProgramView loyaltyProgramView) {
 		// pronadjem po kategoriji i posaljem dva podatka za cuvanje  i setovanje
 		this.loyaltyProgramService.editLoyaltyProgram(loyaltyProgramView);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	@PostMapping("/subscribePatientOnActionsAndBenefits")
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	public ResponseEntity<?> subscribePatientOnAB(@RequestBody SubscribePatientOnPharmacyView subscribePatientOnPharmacyView) {
+		User user = this.userService.findByEmail(subscribePatientOnPharmacyView.getPatientEmail());
+		Patient patient = this.patientService.findPatientByUser(user);
+
+		Set<Long> patientSubscriptions = patient.getPatientSubscriptions();
+		if(patient.getPatientSubscriptions() != null) {
+			//provera da li je vec subscribovan
+			for (Long existsId : patientSubscriptions) {
+				System.out.println(existsId);
+				if (existsId == Long.valueOf(subscribePatientOnPharmacyView.getPharmacyId())) {
+					//ALREADY SUBSCRIBED
+					return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+				}
+			}
+		}
+		patientSubscriptions.add(Long.valueOf(subscribePatientOnPharmacyView.getPharmacyId()));
+		patient.setPatientSubscriptions(patientSubscriptions);
+
+		this.patientService.savePatient(patient);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	@GetMapping("/getUserAllSubscribedPharmacies/{email}")
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	public ResponseEntity<List<Pharmacy>> getUserAllSubscribedPharmacies(@PathVariable(name="email") String email) {
+		User user = this.userService.findByEmail(email);
+		Patient patient = this.patientService.findPatientByUser(user);
+
+		Set<Long> patientSubscriptions = patient.getPatientSubscriptions();
+		List<Pharmacy> pharmacies = new ArrayList<>();
+		for (Long pharmacyId : patientSubscriptions) {
+			pharmacies.add(this.pharmacyService.findById(pharmacyId).get());
+		}
+
+		return new  ResponseEntity<>(pharmacies,HttpStatus.OK);
+	}
+
+	@PostMapping("/unsubscribePatientOnActionsAndBenefits")
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	public ResponseEntity<?> unsubscribePatientOnAB(@RequestBody SubscribePatientOnPharmacyView subscribePatientOnPharmacyView) {
+		User user = this.userService.findByEmail(subscribePatientOnPharmacyView.getPatientEmail());
+		Patient patient = this.patientService.findPatientByUser(user);
+
+		Set<Long> patientSubscriptions = patient.getPatientSubscriptions();
+
+		patientSubscriptions.remove(Long.valueOf(subscribePatientOnPharmacyView.getPharmacyId()));
+		patient.setPatientSubscriptions(patientSubscriptions);
+
+		this.patientService.savePatient(patient);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

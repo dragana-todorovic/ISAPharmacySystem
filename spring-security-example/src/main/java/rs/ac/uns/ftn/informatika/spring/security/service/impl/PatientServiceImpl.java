@@ -41,7 +41,7 @@ public class PatientServiceImpl implements PatientService {
 		p.setPoints(patient.getPoints());
 		p.setUser(patient.getUser());
 		p.setId(patient.getId());
-
+		p.setPatientSubscriptions(patient.getPatientSubscriptions());
 		p = this.patientRepository.save(p);
 		return p;
 	}
