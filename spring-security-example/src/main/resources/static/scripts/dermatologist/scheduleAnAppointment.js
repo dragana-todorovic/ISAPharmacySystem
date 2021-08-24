@@ -14,28 +14,31 @@ $(document).ready(function(e){
 		                <td>Patient email:</td>
 						<td><select id="dropdownPatients" >
       <option  ></option></select></td>
-		               <td>
-                    
-                </td>
+		              
+               <td></td>
 		            </tr>
 		         
 					 <tr>
 		                <td>Duration:</td>
 						<td> <input  type="text" name="txtDuration" id="txtDuration" /></td>
-		                </tr>
+ <td></td>		                
+</tr>
 		          <tr>
 		                <td>Date for appointment:</td>		
 						<td><input type="text" id="datepickerStartDate"></td>		                
-		            </tr>
+		           
+ <td></td> </tr>
 				<td>Time for appointment:</td>		
 						<td><input value="08:00" type="time" id="txtTime"></td>		                
-		            </tr>
+		           
+ <td></td> </tr>
 		            
 		        </tbody>
 	        <tfoot class="full-width">
 			    <tr>
-			      <th></th>
-			      <th colspan="2">
+			     
+			      <th colspan="3">
+					
 					   <input id = "schedule" class="ui right floated positive basic button" type = "button" value = "Schedule"></input>
 			    
 			      </th>

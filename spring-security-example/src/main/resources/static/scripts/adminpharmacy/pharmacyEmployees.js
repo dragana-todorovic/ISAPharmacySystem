@@ -555,7 +555,7 @@ let showPharmacists = function(data) {
 			    margin-right:auto; margin-top: 40px;">
 			    
 	  <thead>
-	  <tr> <th colspan="5">
+	  <tr> <th colspan="6">
 	  Filter by rating:
 	  <div class="ui input left">
                <input type="number" name="filter" placeholder = "Od..." id="odOcjena" min="0" style="width:80px;"/></div>
@@ -563,7 +563,7 @@ let showPharmacists = function(data) {
                <input type="number" name="filter" id="doOcjena" placeholder = "Do..." min="0" style="width:80px;"/></div>
            </th> </tr>
 	  <tr>
-			<th colspan="5">
+			<th colspan="6">
 			 <div class="ui input left">
       <input type="text" placeholder="Search by first name..." id="firstNameSearch">
     </div>
@@ -587,7 +587,7 @@ let showPharmacists = function(data) {
 	  <tfoot class="full-width">
 			    <tr>
 			      <th></th>
-			      <th colspan="4">
+			      <th colspan="6">
 					   <input id = "addNew" class="ui right floated teal button" type = "button" value = "Add new pharmacist"></input>
 			    
 			      </th>

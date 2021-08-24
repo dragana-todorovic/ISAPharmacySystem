@@ -13,11 +13,14 @@ import java.util.regex.Matcher;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.MyPatientDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.PatientAndDermatologistDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.StartDateTimeDTO;
+import rs.ac.uns.ftn.informatika.spring.security.model.DTO.WorkCalendarDTO;
 import rs.ac.uns.ftn.informatika.spring.security.repository.DermatologistAppointmentRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.MedicineRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.UserRepository;
 
 import java.util.regex.Pattern;
+
+import javax.jws.soap.SOAPBinding.Use;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,6 +43,7 @@ import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
 import rs.ac.uns.ftn.informatika.spring.security.model.Patient;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.User;
+import rs.ac.uns.ftn.informatika.spring.security.model.WorkingTime;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.AppointmentDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.AppointmentScheduleDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.HolidayRequestDTO;
@@ -94,6 +98,22 @@ public class DermatologistController {
 		myPatientsDtos=this.dermatologistService.getPatientsForAppointment(email);
 		System.out.println("PACIJENTIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII "+myPatientsDtos);
 		return myPatientsDtos;
+		
+	}
+	@GetMapping("/getPharmaciesForDermatologist/{email}")
+	@PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
+	public List<Pharmacy> getPharmaciesForDermatologist(@PathVariable String email) {
+		Dermatologist dermatologist = null;
+		List<Pharmacy> result = new ArrayList<Pharmacy>();
+		for(Dermatologist d: dermatologistService.findAll()) {
+			if(d.getUser().getEmail().equals(email)) {
+			dermatologist=d;	
+			}
+		}
+		for(WorkingTime w:dermatologist.getWorkingTimes()) {
+			result.add(w.getPharmacy());
+		}
+		return result;
 		
 	}
 
@@ -224,7 +244,7 @@ public class DermatologistController {
 				 
 				 emailService.sendEmail(dto.getPatientEmail(),"Appointment","You have successfully scheduled an appointment");
 				 System.out.println("Mejl je poslat");
-				 dermatologistAppointmentService.saveAppointment(dto, patient, dt);
+				 dermatologistAppointmentService.saveAppointment(dto, patient, dt,pharmacy);
 				 
 			 }catch (Exception e){
 		            e.printStackTrace();
@@ -389,6 +409,20 @@ public class DermatologistController {
 			users.add(p.getUser());
 		}
 		return users;
+		
+	}
+	@GetMapping("/getDermatologistAppointments/{email}/{pharmacy}")
+	@PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
+	public List<WorkCalendarDTO> getDermatologistAppointments(@PathVariable String email,@PathVariable String pharmacy) {
+	System.out.println("********************"+pharmacy);
+	Pharmacy choosenPharmacy = pharmacyService.findById(Long.parseLong(pharmacy.split(",sifra ")[1])).get();
+	Dermatologist dermatologist=null;
+	for(Dermatologist d:dermatologistService.findAll()) {
+		if(d.getUser().getEmail().equals(email)) {
+			dermatologist = d;
+		}
+	}
+	return dermatologistService.getAppointmentsForCalendar(dermatologist,choosenPharmacy);
 		
 	}
 	

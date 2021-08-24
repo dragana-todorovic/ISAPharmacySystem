@@ -18,17 +18,32 @@ $(document).ready(function(e){
 	
 });
 
+let getMedicineFromPharmacy 
+
 let showPriceList = function(data) {
+	getMedicineFromPharmacy = []
+	customAjax({
+	      url: '/medicine/getMedicineFromPharmacy/' + email,
+	      method: 'GET',
+	      async: false,
+	      contentType: 'application/json',
+	      success: function(data){
+	    	  getMedicineFromPharmacy = data
+	      },
+	      error: function(){
+	      }
+
+});
 	
 	let sviLijekovi = '';
-	for (i in getAllMedicines) {
+	for (i in getMedicineFromPharmacy) {
 		sviLijekovi += `<tr style="display: table;
     width: 100%;
     table-layout: fixed;"><td><div class="ui checkbox">
-  <input type="checkbox" id = "`+getAllMedicines[i].id+`" name="lijek">
-  <label>`+getAllMedicines[i].name+`</label></td><td>
+  <input type="checkbox" id = "`+getMedicineFromPharmacy[i].medicine.id+`" name="lijek">
+  <label>`+getMedicineFromPharmacy[i].medicine.name+`</label></td><td>
     <div class="ui input small left icon">
-     <input type="number" min="1" value="1" placeholder="Price..." id="price`+getAllMedicines[i].id+`">
+     <input type="number" min="1" value="1" placeholder="Price..." id="price`+getMedicineFromPharmacy[i].medicine.id+`">
 </div>
 </td></tr>`
 	}
@@ -143,6 +158,61 @@ table-layout: fixed;
   </div>
 </div>
 
+
+ <div id="modalniZaIzmjenu" class="ui modal">
+  <i class="close icon"></i>
+  <div class="header">
+	Edit price list
+  </div>
+  <div class="content">
+
+    <table class="ui basic large table" style="width:100%; margin-left:auto; 
+			    margin-right:auto; margin-top: 40px;display:block">
+    <tbody style="display: block;
+    height: 300px;
+    overflow: auto;" id = "editTable">
+        </tbody>
+					        
+					    </table>
+					    <table>
+					    <tr><td>
+					    <form class="ui fluid form">
+  <div class="two field">
+    	<div class="ui calendar" id="date">
+          <div class="ui input left icon">
+            <i class="calendar icon"></i>
+            <input type="text" placeholder="Start date" id="startDateEdit">
+           
+          </div></div>
+        </div></td></tr>
+					    </table>
+  </div>
+  <div class="actions">
+    <div class="ui black deny button">
+      Nope
+    </div>
+      <input class="ui right floated positive button" type = "button" value = "Add" id="editPriceList"></input>
+			 
+     
+  </div>
+</div>
+
+
+<div id="errorAdd" class="ui modal">
+	  <i class="close icon"></i>
+	  <div class="header">
+		Error
+	  </div>
+	  <div class="content">
+	  <div class="ui negative message">
+  <div class="header">
+    We're sorry, you cannot add price list.
+  </div>
+  <p>You already have price list with that date. Please edit the same.
+</p></div>
+	  </div>
+	</div>
+
 `);
 	
 	$('#tabelaCjenovnika').html(temp)
@@ -173,6 +243,26 @@ table-layout: fixed;
 	 });
 	});
 	
+	
+	$("button[name=izmijeniCjenovnik]").click(function() {
+		var id = this.id;
+		 customAjax({
+		      url: '/pharmacy/getListMedicines/' + id,
+		      method: 'GET',
+		      contentType: 'application/json',
+		      success: function(data){
+		    	  prikaziListu(data)
+		    	  $('#modalniZaPrikazLijekova')
+				  .modal('show')
+				  
+		    	  
+		      },
+		      error: function(){
+		      }
+
+	 });
+	});
+	
 	$('#addNew').click(function() {
 		 $('#modalniZaNovuPonudu')
 		  .modal('show')
@@ -180,6 +270,7 @@ table-layout: fixed;
 	
 	$('#addPriceList').click(function(){
 		var date = formatDate($('#startDate').val())
+		console.log(date)
 		var medicines = []
 		console.log(medicines)
 		$('input[name="lijek"]:checked').each(function () {
@@ -205,7 +296,8 @@ table-layout: fixed;
     	    	location.href = "adminpharmacy.html"
     	    },
     	    error: function(){
-    	    	alert("Failed")
+    	    	  $('#errorAdd')
+				  .modal('show')
     	    }
 
     	});

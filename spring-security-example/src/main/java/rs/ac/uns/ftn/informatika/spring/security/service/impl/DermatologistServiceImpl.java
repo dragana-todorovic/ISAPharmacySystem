@@ -1,9 +1,11 @@
 package rs.ac.uns.ftn.informatika.spring.security.service.impl;
-
+import java.util.Date;
 import java.time.DayOfWeek;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -32,6 +34,7 @@ import rs.ac.uns.ftn.informatika.spring.security.model.WorkingTime;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.AppointmentDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.HolidayRequestDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.MyPatientDTO;
+import rs.ac.uns.ftn.informatika.spring.security.model.DTO.WorkCalendarDTO;
 import rs.ac.uns.ftn.informatika.spring.security.repository.AppointmentPriceRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.DermatologistAppointmentRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.DermatologistRepository;
@@ -44,6 +47,7 @@ import rs.ac.uns.ftn.informatika.spring.security.repository.UserRepository;
 import rs.ac.uns.ftn.informatika.spring.security.service.DermatologistAppointmentService;
 import rs.ac.uns.ftn.informatika.spring.security.service.DermatologistService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacistCounselingService;
+import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyService;
 
 @Service
 public class DermatologistServiceImpl implements DermatologistService{
@@ -67,6 +71,8 @@ public class DermatologistServiceImpl implements DermatologistService{
 
 	@Autowired
 	private PharmacistCounselingService pharmacistCounselingService;
+	@Autowired
+	private PharmacyService pharmacyService;
 	@Override
 	public void saveHolidayRequest(HolidayRequestDTO holidayRequest) {
 	try{
@@ -97,7 +103,31 @@ public class DermatologistServiceImpl implements DermatologistService{
 		List<Dermatologist> result = dermatologistRepository.findAll();
 		return result;
 	}
-
+	@Override
+	public List<WorkCalendarDTO> getAppointmentsForCalendar(Dermatologist dermatologist,Pharmacy choosenPharmacy) {
+		List<WorkCalendarDTO> result = new ArrayList<WorkCalendarDTO>();
+		List<DermatologistAppointment> appointments =dermatologistAppointmentService.findAll();
+		
+		List<DermatologistAppointment> app = new ArrayList<DermatologistAppointment>();
+		for(DermatologistAppointment da :appointments ) {
+			if(da.getDermatologist().getId().equals(dermatologist.getId())) {
+				if(da.getPharmacy().getId().equals(choosenPharmacy.getId())) {
+				app.add(da);
+			}}		
+			}
+		
+		for(DermatologistAppointment d:app) {			
+			if(d.getPatient()!=null ) {	
+		
+				result.add(new WorkCalendarDTO(d.getId(),choosenPharmacy.getName(),d.getStartDateTime().toLocalDate(),d.getStartDateTime().toString(),d.getDuration(),d.getPatient().getUser().getFirstName(),d.getPatient().getUser().getLastName()));
+			}
+			else if(d.getPatient()==null){
+					result.add(new WorkCalendarDTO(d.getId(),choosenPharmacy.getName(),d.getStartDateTime().toLocalDate(),d.getStartDateTime().toString(),d.getDuration()));	
+				}
+				
+		}
+		return result;
+	}
 	@Override
 	public List<MyPatientDTO> myPatients(String email) {
 		try {

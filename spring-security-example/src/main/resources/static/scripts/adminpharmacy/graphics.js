@@ -20,6 +20,8 @@ let labelsApIncome
 let dataApIncome
 let labelsCoIncome
 let dataCoIncome
+let labelsMedicineIncome
+let dataMedicineIncome
 $(document).ready(function(e){ 
 	$('#appointmentDStatistic').click(function() {
 		labelsYearDerm = []
@@ -516,6 +518,8 @@ $(document).ready(function(e){
 				dataApIncome = []
 				labelsCoIncome = []
 				dataCoIncome = []
+				labelsMedicineIncome = []
+				dataMedicineIncome = []
 				var from = formatDate($('#validFrom').val())
 				var to = formatDate($('#validTo').val())
 				customAjax({
@@ -560,7 +564,10 @@ $(document).ready(function(e){
 				      async:false,
 					  contentType: 'application/json',
 					        success: function(data){
-					        	console.log(data)
+					        	 for(i in data) {
+						    		  labelsMedicineIncome.push(data[i].time)
+						    		  dataMedicineIncome.push(data[i].data)
+						    	  }
 					        	  
 					        	  
 							},
@@ -572,8 +579,10 @@ $(document).ready(function(e){
 				let temp =''
 					temp += `<div style="width:20%; margin-left:5%; 
 						    margin-right:auto; margin-top: 40px;"><h3>Income from dermatologist appointments</h3><canvas id="myChart"></canvas></div>`;
-				temp += `<div style="width:25%; margin-left:30%; 
-				    margin-right:auto; margin-top: -220px;"><h3>Income from pharmacist counseling</h3><canvas id="myChart1"></canvas></div>`;
+				temp += `<div style="width:20%; margin-left:30%; 
+				    margin-right:auto; margin-top: -180px;"><h3>Income from pharmacist counseling</h3><canvas id="myChart1"></canvas></div>`;
+				temp += `<div style="width:20%; margin-left:55%; 
+				    margin-right:auto; margin-top: -210px;"><h3>Medicine income</h3><canvas id="myChart2"></canvas></div>`;
 				
 				$('#statisticData').html(temp)
 				
@@ -584,7 +593,7 @@ $(document).ready(function(e){
 				    data: {
 				    	 labels: labelsApIncome,
 				    		  datasets: [{
-				    		    label: 'Income from pharmacist counseling<',
+				    		    label: 'Income from dermatologist appointments',
 				    		    data: dataApIncome,
 				    		    backgroundColor: [
 				    		      'rgb(20, 99, 132)',
@@ -614,7 +623,7 @@ $(document).ready(function(e){
 				    data: {
 				    	 labels: labelsCoIncome,
 				    		  datasets: [{
-				    		    label: 'Count of pharmacist conseling per month',
+				    		    label: 'Income from pharmacist counselings',
 				    		    data: dataCoIncome,
 				    		    backgroundColor: [
 				    		      'rgb(200, 99, 132)',
@@ -623,6 +632,35 @@ $(document).ready(function(e){
 				    		      'rgb(215, 100, 235)',
 				    		      'rgb(220, 50, 235)',
 				    		      'rgb(225, 205, 86)'
+				    		    ],
+				    		    hoverOffset: 4
+				    		  }]
+				    },
+				    options: {
+				        scales: {
+				            y: {
+				                beginAtZero: true
+				            }
+				        }
+				    }
+				});
+				
+				
+				var ctx2 = document.getElementById('myChart2');
+				var myChart2 = new Chart(ctx2, {
+				    type: 'bar',
+				    data: {
+				    	 labels: labelsMedicineIncome,
+				    		  datasets: [{
+				    		    label: 'Medicine income',
+				    		    data: dataMedicineIncome,
+				    		    backgroundColor: [
+				    		      'rgb(100, 99, 132)',
+				    		      'rgb(105, 16, 235)',
+				    		      'rgb(110, 18, 235)',
+				    		      'rgb(115, 100, 235)',
+				    		      'rgb(120, 50, 235)',
+				    		      'rgb(125, 205, 86)'
 				    		    ],
 				    		    hoverOffset: 4
 				    		  }]
