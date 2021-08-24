@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.web.bind.annotation.PathVariable;
+
 import rs.ac.uns.ftn.informatika.spring.security.model.Dermatologist;
 import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
 import rs.ac.uns.ftn.informatika.spring.security.model.Patient;
@@ -26,4 +28,5 @@ public interface PharmacistService {
 	void saveAppointment(AppointmentDTO appointmantDTO);
 	void saveAppointment(AppointmentDTO appointmantDTO,Pharmacy pharmacy);
 	Boolean isAppointmentAvailableForScheduling(Pharmacist pharmacist,Patient patient,Integer duration,Pharmacy pharmacy,LocalDate startDate, LocalDateTime startDateTime,LocalDateTime endDateTime); 
+	double getAvrageGrade(Pharmacist pharmacist);
 }

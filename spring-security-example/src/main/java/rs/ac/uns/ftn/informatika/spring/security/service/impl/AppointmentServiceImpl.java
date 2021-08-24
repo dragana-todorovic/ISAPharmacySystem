@@ -16,6 +16,7 @@ import rs.ac.uns.ftn.informatika.spring.security.model.Dermatologist;
 import rs.ac.uns.ftn.informatika.spring.security.model.DermatologistAppointment;
 import rs.ac.uns.ftn.informatika.spring.security.model.HolidayRequest;
 import rs.ac.uns.ftn.informatika.spring.security.model.HolidayRequestStatus;
+import rs.ac.uns.ftn.informatika.spring.security.model.Patient;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
 import rs.ac.uns.ftn.informatika.spring.security.model.User;
@@ -176,10 +177,42 @@ public class AppointmentServiceImpl implements AppointmentService{
 
 	@Override
 	public Boolean scheduleDermatologistAppointment(Long id,String patient) {
+		System.out.println(patient);	
 		User user = this.userService.findByUsername(patient);
+		Patient p=patientService.findPatientByUser(user);
 		for(DermatologistAppointment app: dermatologistAppointmentRepository.findAll()) {
 			if(app.getId().equals(id)) {
-				app.setPatient(patientService.findPatientByUser(user));
+				app.setPatient(p);
+				this.dermatologistAppointmentRepository.save(app);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public List<DermatologistAppointment> getAllDermAppointmentsByPatient(String email) {
+		List<DermatologistAppointment> result=new ArrayList<DermatologistAppointment>();
+		for(DermatologistAppointment da : dermatologistAppointmentRepository.findAll()) {
+			if(da.getPatient()==null) {
+				continue;
+			}
+			else {
+				if(da.getPatient().getUser().getEmail().equals(email)) {
+					result.add(da);
+				}
+				
+			}
+		}
+		return result;
+	}
+
+	@Override
+	public Boolean cancelDermatologistAppointment(Long id) {
+		for(DermatologistAppointment da : dermatologistAppointmentRepository.findAll()) {
+			if(da.getId().equals(id)) {
+				da.setPatient(null);
+				this.dermatologistAppointmentRepository.save(da);
 				return true;
 			}
 		}

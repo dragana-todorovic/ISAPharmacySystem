@@ -15,6 +15,22 @@ $(document).ready(function() {
 		     });
 
 	});
+	
+	$('a#my_app_derm').click(function(){
+		console.log(email);
+			customAjax({
+	        method:'GET',
+	        url:'/appointment/getAllDermAppointmentsByPatient/'+email,
+	        contentType: 'application/json',
+	        success: function(data){
+				showMyAppointmentsAtDermatologists(data)
+			},
+			error: function(){
+				console.log("error");
+			}
+	     });
+
+	});
 
 	$('a#all_subscribed').click(function(){
         customAjax({
@@ -30,12 +46,7 @@ $(document).ready(function() {
          });
 
     });
-		$('a#schedule_consulting').click(function(){
-			
-		$('#pharmacies_for_derm_appointments').attr('hidden',true);
-		$('#shedule_consulting').attr('hidden',false);
 
-	});
 	$('#submitSubscribe').click(function(){
         obj = JSON.stringify({
             patientEmail:email,
@@ -124,14 +135,9 @@ $(document).ready(function() {
 	})
 	 $('#appointments_dermatology_body').on('click','button',function(event){
 		pom = $(event.target).closest('tr').attr('id');
-		console.log(pom);
-        obj = JSON.stringify({
-    	patient:email,
-		});
 		            customAjax({
                     method:'POST',
-                    url:'/appointment/scheduleDermatologistAppointment/'+pom ,
- 					data:obj,
+                    url:'/appointment/scheduleDermatologistAppointment/'+pom+'/'+email ,
                     contentType: 'application/json',
                     success: function() {
                        alert("Successfully scheduled appointment!");
@@ -143,9 +149,20 @@ $(document).ready(function() {
 		
 	})
 	
-	$('#pharamciesForConsulting').on('click',function(){
-		console.log($('#date').val())
-		//console.log($("#time :selected").text())
+	 $('#my_appointments_dermatology_body').on('click','button',function(event){
+		pom = $(event.target).closest('tr').attr('id');
+        customAjax({
+            method:'POST',
+            url:'/appointment/cancelDermatologistAppointment/'+pom ,
+            contentType: 'application/json',
+            success: function() {
+               alert("Successfully canceled appointment!");
+            },
+            error:function(){
+                alert("Could not cancel appointment,try later");
+            }
+        });
+		
 	})
 
 function showAvailableAppointments(data){
@@ -168,6 +185,9 @@ function showAvailableAppointments(data){
 	$('#pharmacies_for_derm_appointments').attr('hidden',true);
 	$('#edit-profile').attr('hidden', true);
 	$('#show').attr('hidden',true);
+	$('#my_derm_appointments').attr('hidden',true);
+	$('#ph_av_con').attr('hidden',true)
+	$('#ph_con').attr('hidden',true)
 }
 function showSubscribedPharmacies(data){
 	$('#pharmacy-details').attr('hidden',true);
@@ -185,6 +205,9 @@ function showSubscribedPharmacies(data){
 	$('#pharmacies_for_derm_appointments').attr('hidden',false);
 	$('#edit-profile').attr('hidden', true);
 	$('#show').attr('hidden',true);
+	$('#my_derm_appointments').attr('hidden',true);
+	$('#ph_av_con').attr('hidden',true)
+	$('#ph_con').attr('hidden',true)
 }
 function showPharmacies(data){
 	$('#pharmacy-details').attr('hidden',true);
@@ -202,6 +225,9 @@ function showPharmacies(data){
 	$('#pharmacies_for_derm_appointments').attr('hidden',false);	
 	$('#edit-profile').attr('hidden', true);
 	$('#show').attr('hidden',true);
+	$('#my_derm_appointments').attr('hidden',true);
+	$('#ph_av_con').attr('hidden',true)
+	$('#ph_con').attr('hidden',true)
 }
 function showPharmacy(data){
 	$('#pharmacy-name').text("Name:"+data.name);
@@ -210,20 +236,35 @@ function showPharmacy(data){
 	$('#pharmacy-address').text("Street:"+data.address.street);
 	$('#pharmacy-details').attr('hidden',false);
 	$('#pharmacies_for_derm_appointments').attr('hidden',true);
+	$('#my_derm_appointments').attr('hidden',true);	
+	$('#ph_av_con').attr('hidden',true)
+	$('#ph_con').attr('hidden',true)
 	
 }
-function showDermatologyAppointments(data){
-	console.log(data);
-		let temp='';
+
+function showMyAppointmentsAtDermatologists(data){
+	$('#pharmacy-details').attr('hidden',true);
+	let temp='';
 	for (i in data){
 		temp+=`<tr id="`+data[i].id+`">
-			<td>`+data[i].dermatologist_id+`</td>
-			<td>`+data[i].dermatologist_id+`</td>
-			<td>`+data[i].start_date_time,+`</td>
-			<td>`+data[i].start_date_time,+`</td>
+			<td >`+data[i].dermatologistFirstName+` `+data[i].dermatologistLastName+`</td>
+			<td>`+data[i].grade+`</td>
+			<td>`+data[i].date+` `+data[i].time+`</td>
+			<td>`+data[i].duration+` min </td>
+			<td>`+data[i].price+` din </td>
+			<td><button id="cancel_appointment" class="ui primary basic button">Cancel appointment</button>
 			</tr>`;
 	}
-	$('#appointments_dermatology_table').html(temp);
+	
+	$('#my_appointments_dermatology_body').html(temp);
+	$('#my_derm_appointments').attr('hidden',false);
+	$('#derm_appointments').attr('hidden',true);
+	$('#pharmacy-details').attr('hidden',true);
+	$('#pharmacies_for_derm_appointments').attr('hidden',true);
+	$('#edit-profile').attr('hidden', true);
+	$('#show').attr('hidden',true);
+	$('#ph_av_con').attr('hidden',true)
+	$('#ph_con').attr('hidden',true)
 }
 
 });

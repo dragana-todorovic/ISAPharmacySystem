@@ -18,6 +18,7 @@
   <script src="../scripts/patient/profile.js"></script>
   <script src="../scripts/patient/appointments.js"></script>
   <script src="../scripts/patient/medicine.js"></script>
+  <script src="../scripts/patient/counseling.js"></script>
   <script src="../scripts/jwt.js"></script>
 
 
@@ -133,12 +134,12 @@ li.dropdown {
 <li><a href=""><i class="home icon" style="color:white"></i></a></li>
   <li class="dropdown"><a href="javascript:void(0)" class="dropbtn">My appointments</a>
    <div class="dropdown-content">
-      <a href="#">My appointments at dermatologists</a>
-       <a href="#">My appointments at pharmacists </a>
+      <a href="#" id="my_app_derm">My appointments at dermatologists</a>
+       <a href="#" id="my_app_ph">My appointments at pharmacists </a>
   </li>
   <li><a href="#news">Penals</a></li>
   <li><a href="#news">Complaints</a></li>
-    <a id="schedule_consulting" href="javascript:void(0)" class="dropbtn">Schedule consulting with pharmacist</a>
+    <a id="schedule_consulting" href="#" class="dropbtn">Schedule counsuling with pharmacist</a>
 	<li class="dropdown">
     <a href="javascript:void(0)" class="dropbtn" id="all_pharamcies">Pharamices</a>
     <div class="dropdown-content">
@@ -458,7 +459,7 @@ li.dropdown {
   </div>
 
 </div>
-
+<!-- SCHEDULE DERMATOLOGIST APPOINTMENT -->
 <div id="derm_appointments"  hidden="true">
 <div style="padding:100px 300px 500px 300px;" class="cloumn" >
           <label style="color:black;font-weight: bold" >AVAILABLE APPOINTMENTS </label>
@@ -477,9 +478,94 @@ li.dropdown {
 		 	 </tbody>
 		</table>  
         </form>
+  </div></div>
+ 
+ <!-- MY DERMATOLOGIST APPOINTMENT -->
+<div id="my_derm_appointments"  hidden="true">
+<div style="padding:100px 300px 500px 300px;" class="cloumn" >
+          <label style="color:black;font-weight: bold" >MY APPOINTMENTS AT DERMATOLOGISTS </label>
+			</br></br>
+                  <form class="border rounded px-2 py-1 text-center">       
+        		 <table class="ui celled table" id="appointments_dermatology_table" >
+		  	<thead>
+		    	<tr><th>Dermatologist</th>
+		   		 <th>Dermatologists grade</th>
+		   		 <th>Start date and time</th>
+		   		 <th>Duration</th>
+		   		 <th>Price</th>
+		   		 <th></th>
+		 		 </tr></thead>
+		 	 <tbody id="my_appointments_dermatology_body" >
+		 	 </tbody>
+		</table>  
+        </form>
+  </div></div>
+  
+   <!-- MY PHARMACIES FOR CONSULTING -->
+<div id="ph_av_con"  hidden="true">
+<div style="padding:100px 300px 500px 300px;" class="cloumn" >
+          <label style="color:black;font-weight: bold" >PHARMACIES WITH AVAILABLE PHARMACISTS FOR COUNSELING </label>
+			</br></br>
+                  <form class="border rounded px-2 py-1 text-center">       
+        		 <table class="ui celled table" id="appointments_dermatology_table" >
+		  	<thead>
+		    	<tr><th>Pharmacy</th>
+		   		 <th>Pharmacy City</th>
+		   		 <th>Pharmacy Street</th>
+		   		 <th>Pharmacy Grade</th>
+		   		 <th>Price</th>
+		   		 <th></th>
+		 		 </tr></thead>
+		 	 <tbody id="ph_av_con_body" >
+		 	 </tbody>
+		</table>  
+        </form>
 
 
   </div></div>
+  
+     <!-- MY PHARMACISTS FOR CONSULTING -->
+<div id="ph_con"  hidden="true">
+<div style="padding:100px 300px 500px 300px;" class="cloumn" >
+          <label style="color:black;font-weight: bold" > AVAILABLE PHARMACISTS FOR COUNSELING </label>
+			</br></br>
+                  <form class="border rounded px-2 py-1 text-center">       
+        		 <table class="ui celled table" id="appointments_dermatology_table" >
+		  	<thead>
+		    	<tr><th>Pharmacist</th>
+		   		 <th>Pharmacists Grade</th>
+		   		 <th></th>
+		 		 </tr></thead>
+		 	 <tbody id="ph_con_body" >
+		 	 </tbody>
+		</table>  
+        </form>
+  </div></div>
+  
+   <!-- MY APPOINTMENTS AT PHARMACISTS -->
+<div id="my_ph_appointments"  hidden="true">
+<div style="padding:100px 300px 500px 300px;" class="cloumn" >
+          <label style="color:black;font-weight: bold" >MY APPOINTMENTS AT PHARMACISTS </label>
+			</br></br>
+                  <form class="border rounded px-2 py-1 text-center">       
+        		 <table class="ui celled table" id="appointments_dermatology_table" >
+		  	<thead>
+		    	<tr><th>Pharmacist</th>
+		   		 <th>Pharmacists grade</th>
+		   		 <th>Pharmacy</th>
+		   		 <th>Pharmacy City</th>
+		   		 <th>Pharmacy Street</th>
+		   		 <th>Start date and time</th>
+		   		 <th>Duration</th>
+		   		 <th>Price</th>
+		   		 <th></th>
+		 		 </tr></thead>
+		 	 <tbody id="my_ph_appointments_body" >
+		 	 </tbody>
+		</table>  
+        </form>
+  </div></div>
+  
 </div>
 
 

@@ -249,6 +249,7 @@ INSERT INTO dermatologist_holiday_requests(dermatologist_id,holiday_requests_id)
 INSERT INTO workingday (day,end_time,start_time) VALUES (0,'19:00:00.000000', '08:00:00.000000');
 INSERT INTO workingday (day,end_time,start_time) VALUES (1,'19:00:00.000000', '08:00:00.000000');
 INSERT INTO workingday (day,end_time,start_time) VALUES (2,'19:00:00.000000', '08:00:00.000000');
+INSERT INTO workingday (day,end_time,start_time) VALUES (2,'19:00:00.000000', '08:00:00.000000');
 INSERT INTO workingday (day,end_time,start_time) VALUES (3,'19:00:00.000000', '08:00:00.000000');
 INSERT INTO workingday (day,end_time,start_time) VALUES (4,'19:00:00.000000', '08:00:00.000000');
 INSERT INTO workingday (day,end_time,start_time) VALUES (5,'19:00:00.000000', '08:00:00.000000');

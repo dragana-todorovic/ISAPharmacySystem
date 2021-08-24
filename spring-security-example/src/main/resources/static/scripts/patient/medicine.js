@@ -175,6 +175,7 @@ function showReservedMedicine(data){
 			}
 	}
 	$('#reserved_medicine_table').html(temp);
+	$('#ph_con').attr('hidden',true)
 }
 
 function showMedicine(data){
@@ -195,6 +196,7 @@ function showMedicine(data){
 	}
 	$('#medicine_table').html(temp);
 	$('#medicine_show').attr('hidden',false);
+	$('#ph_con').attr('hidden',true)
 }
 
 function showPharmaciesWithMedicine(data){
@@ -211,6 +213,7 @@ function showPharmaciesWithMedicine(data){
 	}
 	$('#ph_med_table').html(temp);
 	$('#pharamcies_with_medicine_show').attr('hidden',false);
+	$('#ph_con').attr('hidden',true)
 }
 
 
