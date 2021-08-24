@@ -149,6 +149,9 @@ INSERT INTO MEDICINEPRICE (	price, medicine_id) VALUES ( 586, 5);
 INSERT INTO MEDICINEPRICE ( price, medicine_id) VALUES ( 255, 6);
 INSERT INTO MEDICINEPRICE (	price, medicine_id) VALUES ( 3005, 7);
 INSERT INTO MEDICINEPRICE (	price, medicine_id) VALUES ( 600, 8);
+INSERT INTO MEDICINEPRICE ( price, medicine_id) VALUES ( 350, 1);
+INSERT INTO MEDICINEPRICE (	price, medicine_id) VALUES ( 286, 2);
+INSERT INTO MEDICINEPRICE ( price, medicine_id) VALUES ( 127, 3);
 --medicine with quantity
 INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (20, 1);
 INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (50, 2);
@@ -176,18 +179,23 @@ INSERT INTO pharmacy_medicine_with_quantity (pharmacy_id, medicine_with_quantity
 
 --price list
 INSERT INTO pricelist(start_date) VALUES ('2021-07-07 21:58:58.508-07');
+INSERT INTO pricelist(start_date) VALUES ('2021-08-07 21:58:58.508-07');
 INSERT INTO pricelist(start_date) VALUES ('2021-08-08 21:58:58.508-07');
-
+INSERT INTO pricelist(start_date) VALUES ('2021-08-14 21:58:58.508-07');
 
 --price list medicine price list
-INSERT INTO pricelist_medicine_price_list(price_list_id,medicine_price_list_id) VALUES (1,1);
-INSERT INTO pricelist_medicine_price_list(price_list_id,medicine_price_list_id) VALUES (1,2);
-INSERT INTO pricelist_medicine_price_list(price_list_id,medicine_price_list_id) VALUES (1,3);
 INSERT INTO pricelist_medicine_price_list(price_list_id,medicine_price_list_id) VALUES (1,4);
 INSERT INTO pricelist_medicine_price_list(price_list_id,medicine_price_list_id) VALUES (1,5);
 INSERT INTO pricelist_medicine_price_list(price_list_id,medicine_price_list_id) VALUES (1,6);
 INSERT INTO pricelist_medicine_price_list(price_list_id,medicine_price_list_id) VALUES (1,7);
 INSERT INTO pricelist_medicine_price_list(price_list_id,medicine_price_list_id) VALUES (1,8);
+INSERT INTO pricelist_medicine_price_list(price_list_id,medicine_price_list_id) VALUES (2,1);
+INSERT INTO pricelist_medicine_price_list(price_list_id,medicine_price_list_id) VALUES (2,2);
+INSERT INTO pricelist_medicine_price_list(price_list_id,medicine_price_list_id) VALUES (2,3);
+
+INSERT INTO pricelist_medicine_price_list(price_list_id,medicine_price_list_id) VALUES (3,9);
+INSERT INTO pricelist_medicine_price_list(price_list_id,medicine_price_list_id) VALUES (3,10);
+INSERT INTO pricelist_medicine_price_list(price_list_id,medicine_price_list_id) VALUES (3,11);
 
 --price list appoitment price list
 --INSERT INTO pricelist_appoitment_price_list(price_list_id,appoitment_price_list_id) VALUES (1,1);
@@ -202,7 +210,8 @@ INSERT INTO pharmacy_ratings (pharmacy_id, ratings_id) VALUES (2,5);
 
 --pharmacy price list
 INSERT INTO pharmacy_price_list(pharmacy_id, price_list_id) VALUES (2,1);
-
+INSERT INTO pharmacy_price_list(pharmacy_id, price_list_id) VALUES (2,2);
+INSERT INTO pharmacy_price_list(pharmacy_id, price_list_id) VALUES (2,3);
 --actions and benefits
 INSERT INTO actionandbenefit (description,start_date,end_date) VALUES ( 'brufen 20%','2017-10-01 21:58:58.508-07','2017-12-01 21:58:58.508-07');
 INSERT INTO actionandbenefit (description,start_date,end_date) VALUES ( 'kupis 2 dobijes 3','2017-10-01 21:58:58.508-07','2017-12-01 21:58:58.508-07');
@@ -317,12 +326,12 @@ INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,
 INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id) VALUES (2,'2017-10-04','14:00:00.000000',0,4,1);
 INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id) VALUES (3,'2017-12-04','14:00:00.000000',0,1,2);
 INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id) VALUES ('rezervacija','2017-12-04','14:00:00.000000',0,1,1);
-INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id) VALUES ('Rez','2021-08-22','14:00:00.000000',0,4,1);
+INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id) VALUES ('Rez','2021-08-22','14:00:00.000000',2,3,1);
 INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id) VALUES (11,'2021-08-04','14:00:00.000000',2,1,2);
 INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id) VALUES ('REZERV','2018-08-04','14:00:00.000000',0,4,2);
 INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id) VALUES (12,'2018-12-04','14:00:00.000000',2,1,2);
 INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id) VALUES (6,'2018-12-06','14:00:00.000000',2,1,2);
-INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id) VALUES (7,'2021-08-15','14:00:00.000000',2,3,2);
+INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id) VALUES (7,'2021-08-15','14:00:00.000000',2,1,2);
 --pharmacy medicine reservations
 INSERT INTO pharmacy_medicine_reservations(pharmacy_id,medicine_reservations_id) VALUES (2,1);
 INSERT INTO pharmacy_medicine_reservations(pharmacy_id,medicine_reservations_id) VALUES (1,2);

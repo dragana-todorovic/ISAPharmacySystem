@@ -76,7 +76,6 @@ public class MedicineServiceImpl implements MedicineService{
 		PharmacyAdmin pa = pharmacyAdminService.findPharmacyAdminByUser(userService.findByEmail(email));
 
 		Pharmacy p = pa.getPharmacy();
-		System.out.println(p.getMedicineWithQuantity());
 
 		return p.getMedicineWithQuantity();
 	}

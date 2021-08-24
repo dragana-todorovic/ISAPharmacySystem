@@ -10,6 +10,7 @@ import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicineReservation;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicineShape;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicineType;
+import rs.ac.uns.ftn.informatika.spring.security.model.MedicineWithQuantity;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.MedicineReservationDTO;
 import rs.ac.uns.ftn.informatika.spring.security.service.MedicineService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PatientService;
@@ -37,6 +38,13 @@ public class MedicineController {
     public List<Medicine> getAllMedicine()   {
         return this.medicineService.findAll();
     }
+    
+    @GetMapping("/getMedicineFromPharmacy/{email}")
+    @PreAuthorize("hasRole('ADMIN_PHARMACY')")
+    public Set<MedicineWithQuantity> getMedicinePriceList(@PathVariable("email") String email)   {
+        return this.medicineService.getMedicinesByPharmacy(email);
+    }
+
 
 
     @PostMapping("/addNewMedicine")

@@ -16,5 +16,5 @@ public interface PriceListService {
 	List<MedicinePrice> findMedicinePricesByPriceList(Long priceListId);
 	Set<MedicinePrice> findMedicinePricesByPriceListId(Long priceListId);
 	
-	void createNewPriceList(String email, Set<MedicinePrice> medicinePrice, LocalDate date);
+	Boolean createNewPriceList(String email, Set<MedicinePrice> medicinePrice, LocalDate date);
 }

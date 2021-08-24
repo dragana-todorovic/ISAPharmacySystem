@@ -268,7 +268,7 @@ $('.ui.dropdown')
 	<div id="modalniZaIzmjenu" class="ui modal">
   <i class="close icon"></i>
   <div class="header">
-	Create order
+	Edit order
   </div>
   <div class="content">
 
