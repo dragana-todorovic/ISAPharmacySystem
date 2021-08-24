@@ -27,6 +27,7 @@ public class PriceList {
 	
 	@Column(name = "start_date", nullable = false)
 	private LocalDate startDate;
+	
 
 	public long getId() {
 		return id;
