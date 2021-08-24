@@ -51,6 +51,7 @@ import rs.ac.uns.ftn.informatika.spring.security.service.PatientService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacistCounselingService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacistService;
 import rs.ac.uns.ftn.informatika.spring.security.service.UserService;
+import rs.ac.uns.ftn.informatika.spring.security.view.PharamcistForCounselingView;
 
 @RestController
 @RequestMapping(value = "/pharm", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -254,8 +255,11 @@ public class PharmacistController {
 		return result;
 		
 	}
+	@PreAuthorize("hasRole('ROLE_PHARMACIST') || hasRole('ROLE_PATIENT') ")
 	@RequestMapping(value = "/scheduleAnAppointment" , method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> scheduleAnAppointment(@RequestBody CounselingDTO dto)  {
+		System.out.println(dto.getDuration());
+		System.out.println(dto.getStartDate());
 		String startDate;
 		startDate = dto.getStartDate().replace('/', '-');	
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
@@ -448,6 +452,14 @@ public class PharmacistController {
 			users.add(p.getUser());
 		}
 		return users;
+		
+	}
+	@GetMapping("/getAvailablePharmacistsByPharmacy/{pharmacy}/{term}")
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	public List<PharamcistForCounselingView> getAvailablePharmacistsByPharmacy(@PathVariable Long pharmacy,@PathVariable String term) {
+		System.out.println("pogodjena metoda");
+		System.out.println(this.pharmacistCounselingService.getAvailablePharmacistsByPharmacy(pharmacy, term));
+		return this.pharmacistCounselingService.getAvailablePharmacistsByPharmacy(pharmacy, term);
 		
 	}
 }

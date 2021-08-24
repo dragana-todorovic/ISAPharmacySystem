@@ -32,8 +32,9 @@ import rs.ac.uns.ftn.informatika.spring.security.model.HolidayRequest;
 import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicinePrice;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicineWithQuantity;
+import rs.ac.uns.ftn.informatika.spring.security.model.Patient;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacist;
-
+import rs.ac.uns.ftn.informatika.spring.security.model.PharmacistCounseling;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
 import rs.ac.uns.ftn.informatika.spring.security.model.PriceList;
@@ -43,6 +44,8 @@ import rs.ac.uns.ftn.informatika.spring.security.model.WorkingTime;
 import rs.ac.uns.ftn.informatika.spring.security.repository.MedicinePriceRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacyAdminRepository;
 import rs.ac.uns.ftn.informatika.spring.security.service.MedicineService;
+import rs.ac.uns.ftn.informatika.spring.security.service.PatientService;
+import rs.ac.uns.ftn.informatika.spring.security.service.PharmacistCounselingService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyAdminService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PriceListService;
@@ -57,6 +60,7 @@ import rs.ac.uns.ftn.informatika.spring.security.view.MedicinePriceDTO;
 import rs.ac.uns.ftn.informatika.spring.security.view.NewDermatologistDTO;
 import rs.ac.uns.ftn.informatika.spring.security.view.NewOrderDTO;
 import rs.ac.uns.ftn.informatika.spring.security.view.NewPharmacistDTO;
+import rs.ac.uns.ftn.informatika.spring.security.view.PharmacyForCounselingView;
 import rs.ac.uns.ftn.informatika.spring.security.view.PriceListDTO;
 import rs.ac.uns.ftn.informatika.spring.security.view.StatisticDTO;
 import rs.ac.uns.ftn.informatika.spring.security.view.UserRegisterView;
@@ -70,11 +74,18 @@ public class PharmacyController {
 	@Autowired
 	private PharmacyService pharmacyService;
 	@Autowired
+	private PatientService patientService;
+	@Autowired
+	private UserService userService;
+	@Autowired
 	private MedicineService medicineService;
 	@Autowired
 	private PriceListService priceListService;
 	@Autowired
 	private StatisticService statisticService;
+	
+	@Autowired
+	private PharmacistCounselingService pharmacistCounselingService;
 	@Autowired
 	private MedicinePriceRepository medicinePriceRepository;
 	
@@ -445,7 +456,19 @@ public class PharmacyController {
 		return this.statisticService.getPharmacyIncomeFromMedicineConsumption(email, LocalDate.parse(from), LocalDate.parse(to));
 	}
 	
+	@GetMapping("/getPharamciesWithAvailablePharmacists/{term}")
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	public List<PharmacyForCounselingView> getPharamciesWithAvailablePharmacists(@PathVariable(name="term") String term) {
+		return this.pharmacistCounselingService.getPharamciesWithAvailablePharmacists(term);
+	}
 	
+	@GetMapping("/getCounselingByPatienetId/{email}")
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	public List<PharmacistCounseling> getCounselingByPatienetId(@PathVariable(name="email") String email) {
+		User user=this.userService.findByEmail(email);
+		Patient patient=this.patientService.findPatientByUser(user);
+		return this.pharmacistCounselingService.findByPatientId(patient.getId());
+	}
 	
 
 }

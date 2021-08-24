@@ -16,12 +16,8 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
 	Optional<Patient> findById(Long id);
 
 	Patient findByUser(User user);
-
-
-
-		List<Patient> findAll();
-
-		Patient findPatientById(Long id);
+	List<Patient> findAll();
+	Patient findPatientById(Long id);
 
 
 		@Query(nativeQuery = true, value = "select name from patients_allergies_medicine left join medicine \n" +

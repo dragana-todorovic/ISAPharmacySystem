@@ -26,6 +26,7 @@ import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacist;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacistCounseling;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacistCounselingPrice;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
+import rs.ac.uns.ftn.informatika.spring.security.model.Rating;
 import rs.ac.uns.ftn.informatika.spring.security.model.RequestForMedicineAvailability;
 import rs.ac.uns.ftn.informatika.spring.security.model.Therapy;
 import rs.ac.uns.ftn.informatika.spring.security.model.User;
@@ -407,6 +408,15 @@ public class PharmacistServiceImpl implements PharmacistService {
 	}
 
 	@Override
+	public double getAvrageGrade(Pharmacist pharmacist) {
+		double avrage_grade=0;
+		int pom=0;
+		for(Rating ratings : pharmacist.getRatings()) {
+			pom++;
+			avrage_grade+=ratings.getRating();
+		}
+		return avrage_grade/pom;
+  }
 	public List<WorkCalendarDTO> getPharmacistsCounseling(Pharmacist pharmacist) {
 		List<WorkCalendarDTO> result = new ArrayList<WorkCalendarDTO>();
 		List<PharmacistCounseling> appointments =pharmacistCounselingService.findAll();
