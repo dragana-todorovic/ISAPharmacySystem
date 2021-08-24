@@ -6,9 +6,11 @@ import java.util.Set;
 
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicineOrder;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicineWithQuantity;
+import rs.ac.uns.ftn.informatika.spring.security.model.Patient;
 
 public interface MedicineOrderService {
 	List<MedicineOrder> findMedicineOrdersByPharmacy(Long pharmacyId);
 	void createNewMedicineOrder(String email, Set<MedicineWithQuantity> medicinesWithQuantity, LocalDateTime date);
 	public Boolean acceptSuplierOffer(String email, Long id);
+	List<MedicineOrder> findAll();
 }

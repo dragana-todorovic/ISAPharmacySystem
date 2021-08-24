@@ -164,6 +164,11 @@ public class MedicineOrderServiceImpl implements MedicineOrderService {
 		return true;
 		}
 	}
-		
+
+	@Override
+	public List<MedicineOrder> findAll() {
+		return this.medicineOrderRepository.findAll();
+	}
+
 
 }

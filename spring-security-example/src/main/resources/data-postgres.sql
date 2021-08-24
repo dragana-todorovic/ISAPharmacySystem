@@ -350,13 +350,14 @@ INSERT INTO patients_pharmacy_complaints(patient_id,pharmacy_complaints_id) VALU
 INSERT INTO requestformedicineavailability(id,created_at,medicine_with_quantity_id) VALUES (1,'2021-07-04 21:58:58.508-07',1);
 
 --suplier offer 
-INSERT INTO suplieroffer(delevery_time,price,medicine_order_id) VALUES ('2017-10-01 21:58:58.508-07',500,1);
-INSERT INTO suplieroffer(delevery_time,price,medicine_order_id) VALUES ('2021-08-08 21:58:58.508-07',500,1);
+INSERT INTO suplieroffer(delevery_time,price,medicine_order_id, status) VALUES ('2020-10-01 21:58:58.508-07',400,1,0);
+INSERT INTO suplieroffer(delevery_time,price,medicine_order_id, status) VALUES ('2021-08-08 21:58:58.508-07',500,1,0);
+INSERT INTO suplieroffer(delevery_time,price,medicine_order_id, status) VALUES ('2021-11-11 07:58:58.508-07',300,2,1);
 
 --suplier offers 
 INSERT INTO suplier_offers(suplier_id,offers_id) VALUES (1,1);
 INSERT INTO suplier_offers(suplier_id,offers_id) VALUES (2,2);
-
+INSERT INTO suplier_offers(suplier_id,offers_id) VALUES (2,3);
 --theraphy
 INSERT INTO therapy(duration,medicine_id) VALUES (4,1);
 INSERT INTO therapy(duration,medicine_id) VALUES (6,2);

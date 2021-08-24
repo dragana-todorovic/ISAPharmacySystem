@@ -33,6 +33,10 @@ public class SuplierOffer {
 	@Column(name = "deleveryTime", nullable = false)
 	private LocalDateTime deleveryTime;
 
+
+	@Column(name = "status", nullable = false)
+	private SuplierOfferStatus status = SuplierOfferStatus.ON_HOLD;
+
 	public long getId() {
 		return id;
 	}
@@ -41,6 +45,13 @@ public class SuplierOffer {
 		this.id = id;
 	}
 
+	public SuplierOfferStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(SuplierOfferStatus status) {
+		this.status = status;
+	}
 	public MedicineOrder getMedicineOrder() {
 		return medicineOrder;
 	}
