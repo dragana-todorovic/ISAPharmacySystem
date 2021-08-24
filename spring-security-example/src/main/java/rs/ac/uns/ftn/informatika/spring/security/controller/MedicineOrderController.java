@@ -23,11 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import rs.ac.uns.ftn.informatika.spring.security.model.MedicineOrder;
-import rs.ac.uns.ftn.informatika.spring.security.model.MedicineWithQuantity;
-import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
-import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
-import rs.ac.uns.ftn.informatika.spring.security.model.SuplierOffer;
+import rs.ac.uns.ftn.informatika.spring.security.model.*;
 import rs.ac.uns.ftn.informatika.spring.security.repository.MedicineOrderRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.MedicineWithQuantityRepository;
 import rs.ac.uns.ftn.informatika.spring.security.service.MedicineOrderService;
@@ -118,6 +114,14 @@ public class MedicineOrderController {
 			return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
 		}
 	}
+
+
+	@GetMapping("/getAllOrders")
+	@PreAuthorize("hasRole('ROLE_SUPPLIER')")
+	public List<MedicineOrder> getAllOrders()   {
+		return this.medicineOrderService.findAll();
+	}
+
 	
 	@GetMapping("/getMedicineFromOrder/{id}")
 	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
@@ -173,6 +177,7 @@ public class MedicineOrderController {
 		this.medicineOrderService.deleteMedicineOrder(email,Long.parseLong(id));
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
+
 
 
 }

@@ -164,6 +164,14 @@ public class MedicineOrderServiceImpl implements MedicineOrderService {
 		return true;
 		}
 	}
+
+
+	@Override
+	public List<MedicineOrder> findAll() {
+		return this.medicineOrderRepository.findAll();
+	}
+
+
 	
 	@Override
 	public Set<MedicineWithQuantity> getMedicinesByOrder(long id) {
@@ -239,6 +247,6 @@ public class MedicineOrderServiceImpl implements MedicineOrderService {
 		}
 		this.medicineOrderRepository.delete(this.medicineOrderRepository.findById(id).get());
 	}
-		
+
 
 }
