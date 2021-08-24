@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicineOrder;
 import rs.ac.uns.ftn.informatika.spring.security.model.Patient;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
@@ -16,6 +17,9 @@ public interface MedicineOrderRepository extends JpaRepository<MedicineOrder, Lo
 			"where pharmacy_medicine_orders.pharmacy_id= :pharmacyId")
 	List<MedicineOrder> findMedicineOrdersByPharmacy(@Param("pharmacyId")Long pharmacyId);
 
+
 	List<MedicineOrder> findAll();
 
 }
+
+

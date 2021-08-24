@@ -253,6 +253,7 @@ function showAllergies(data){
       			</td></tr>`;
 	}
 	$('#medicine_for_allergies').html(temp);
+	
 };
 function showProfile(data,result){
 	

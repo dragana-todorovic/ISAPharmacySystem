@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -114,10 +115,69 @@ public class MedicineOrderController {
 		}
 	}
 
+
 	@GetMapping("/getAllOrders")
 	@PreAuthorize("hasRole('ROLE_SUPPLIER')")
 	public List<MedicineOrder> getAllOrders()   {
 		return this.medicineOrderService.findAll();
 	}
+
+	
+	@GetMapping("/getMedicineFromOrder/{id}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public Set<MedicineWithQuantity> getMedicineFromOrder(@PathVariable(name="id") String id) {
+		return this.medicineOrderService.getMedicinesByOrder(Long.parseLong(id));
+	}
+	
+
+	@PostMapping("/editMedicineOrder/{email}/{id}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public ResponseEntity<?> editMedicineOrder(@PathVariable(name="email") String email,@PathVariable(name="id") String id,
+			@RequestBody NewOrderDTO newOrder) {
+		
+		System.out.println(newOrder);
+		String date = newOrder.getDate();
+		LocalDate datePart = LocalDate.parse(date);
+		LocalTime timePart = LocalTime.parse(newOrder.getTime());
+		LocalDateTime dt = LocalDateTime.of(datePart, timePart);
+		
+		Set<MedicineWithQuantity> medicinesWithQuantity = new HashSet<MedicineWithQuantity>();
+		
+		for(MedicineForOrderView m : newOrder.getMedicines()) {
+			MedicineWithQuantity mq = new MedicineWithQuantity();
+
+			mq.setMedicine(this.medicineService.findById(Long.parseLong(m.getMedicineId())));
+			mq.setQuantity(Integer.parseInt(m.getQuantity()));
+			medicinesWithQuantity.add(mq);
+			this.medicineWithQuantityRepository.save(mq);
+			
+		}
+		
+		this.medicineOrderService.editMedicineOrder(email, Long.parseLong(id), medicinesWithQuantity, dt);
+		
+		
+		return new ResponseEntity<>(HttpStatus.OK);
+		
+	}
+	
+	@GetMapping("/orderHaveOffer/{id}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public ResponseEntity<?> orderHaveOffer(@PathVariable(name="id") String id) {
+		if(this.medicineOrderService.orderHaveOffers(Long.parseLong(id))) {
+			
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		} else {
+			return new ResponseEntity<>(HttpStatus.OK);
+		}
+	}
+	
+	@DeleteMapping("/deleteMedicineOrder/{email}/{id}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public ResponseEntity<?> deleteMedicineOrder(@PathVariable(name="email") String email,@PathVariable(name="id") String id) {
+		this.medicineOrderService.deleteMedicineOrder(email,Long.parseLong(id));
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+
 
 }

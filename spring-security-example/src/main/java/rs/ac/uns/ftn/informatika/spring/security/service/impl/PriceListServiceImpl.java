@@ -67,9 +67,15 @@ public class PriceListServiceImpl implements PriceListService {
 	}
 
 	@Override
-	public void createNewPriceList(String email, Set<MedicinePrice> medicinePrice, LocalDate date) {
+	public Boolean createNewPriceList(String email, Set<MedicinePrice> medicinePrice, LocalDate date) {
 		PharmacyAdmin pa = pharmacyAdminService.findPharmacyAdminByUser(userService.findByEmail(email));
 		Pharmacy p = pa.getPharmacy();
+		
+		for(PriceList priceList : p.getPriceList()) {
+			if(priceList.getStartDate().equals(date)) {
+				return false;
+			}
+		}
 		
 		PriceList pl = new PriceList();
 		pl.setMedicinePriceList(medicinePrice);
@@ -78,6 +84,7 @@ public class PriceListServiceImpl implements PriceListService {
 		p.getPriceList().add(pl);
 		
 		this.pharmacyRepository.save(p);
+		return true;
 		
 	}
 

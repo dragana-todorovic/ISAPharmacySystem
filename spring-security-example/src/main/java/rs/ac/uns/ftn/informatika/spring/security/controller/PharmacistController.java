@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import rs.ac.uns.ftn.informatika.spring.security.model.Dermatologist;
 import rs.ac.uns.ftn.informatika.spring.security.model.DermatologistAppointment;
 import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicineReservation;
@@ -38,6 +39,7 @@ import rs.ac.uns.ftn.informatika.spring.security.model.DTO.CounselingDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.HolidayRequestDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.MyPatientDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.StartDateTimeDTO;
+import rs.ac.uns.ftn.informatika.spring.security.model.DTO.WorkCalendarDTO;
 import rs.ac.uns.ftn.informatika.spring.security.repository.MedicineRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.MedicineReservationRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacistCounselingRepository;
@@ -49,6 +51,7 @@ import rs.ac.uns.ftn.informatika.spring.security.service.PatientService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacistCounselingService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacistService;
 import rs.ac.uns.ftn.informatika.spring.security.service.UserService;
+import rs.ac.uns.ftn.informatika.spring.security.view.PharamcistForCounselingView;
 
 @RestController
 @RequestMapping(value = "/pharm", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -87,7 +90,20 @@ public class PharmacistController {
 		}
 		return null;
 	}
-	
+	@GetMapping("/getPharmacistsCounseling/{email}")
+	@PreAuthorize("hasRole('ROLE_PHARMACIST')")
+	public List<WorkCalendarDTO> getPharmacistsCounseling(@PathVariable String email) {
+	Pharmacist pharmacist=null;
+	System.out.println("Pogodio metodu");
+	for(Pharmacist d:pharmacistService.findAll()) {
+		if(d.getUser().getEmail().equals(email)) {
+			pharmacist = d;
+		}
+	}
+	System.out.println(pharmacist.getUser().getEmail());
+	return pharmacistService.getPharmacistsCounseling(pharmacist);
+		
+	}
 	
 	@GetMapping("/getMedicinesOnWhichPatientIsNotAllergic/{id}")
 	@PreAuthorize("hasRole('ROLE_PHARMACIST')")
@@ -140,10 +156,14 @@ public class PharmacistController {
 		System.out.println("Usao u rezervaciju");
 		Pharmacist pharmacist =null;
 		for(Pharmacist p: pharmacistService.findAll()) {
+			System.out.println(p);
+			System.out.println(p.getUser().getEmail());
 			if(p.getUser().getEmail().equals(email)) {
 				pharmacist=p;
 			}
 		}
+		System.out.println(pharmacist);
+		System.out.println("working time"+pharmacist.getWorkingTimes());
 		Pharmacy pharmacy = pharmacist.getWorkingTimes().getPharmacy();
 		//System.out.println(pharmacistService.searchReservedMedicnes(resNumber,pharmacy).size());
 		return pharmacistService.searchReservedMedicnes(resNumber,pharmacy);
@@ -191,8 +211,7 @@ public class PharmacistController {
 		String pom = id.substring(8,id.length());
        	Long ID = Long.parseLong(pom);
        	MedicineReservation reservation = medicineReservationRepository.findById(ID).get();
-       	reservation.setStatus(MedicineReservationStatus.TAKEN);
-       	reservation.getMedicineWithQuantity().setQuantity(reservation.getMedicineWithQuantity().getQuantity()-1);
+       	reservation.setStatus(MedicineReservationStatus.TAKEN);	
        	LocalDateTime dt = LocalDateTime.of(reservation.getDueTo(), reservation.getDueToTime());
        	if(LocalDateTime.now().isBefore(dt.minus(Period.ofDays(1)))) {
         try {
@@ -236,8 +255,11 @@ public class PharmacistController {
 		return result;
 		
 	}
+	@PreAuthorize("hasRole('ROLE_PHARMACIST') || hasRole('ROLE_PATIENT') ")
 	@RequestMapping(value = "/scheduleAnAppointment" , method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> scheduleAnAppointment(@RequestBody CounselingDTO dto)  {
+		System.out.println(dto.getDuration());
+		System.out.println(dto.getStartDate());
 		String startDate;
 		startDate = dto.getStartDate().replace('/', '-');	
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
@@ -251,9 +273,11 @@ public class PharmacistController {
 		}
 		Pharmacist pharmacist=null;
 		LocalDate startDateDPharmacist=dt.toLocalDate();
-		
+		System.out.println("Farmaceut"+dto.getPharmacistEmail());
+	
 		for(Pharmacist d: pharmacistService.findAll()) {
 			if(d.getUser().getEmail().equals(dto.getPharmacistEmail())) {
+				System.out.println("Email farmaceuta"+d.getUser().getEmail());
 				pharmacist= d;
 			}
 			}
@@ -265,7 +289,9 @@ public class PharmacistController {
 			}
 		}
 		//AKO JE PHARMACY NULL ZNACI DA NE RADI TRENUTNO U NJOJ
+		System.out.println("da li je null"+pharmacist);
 		Pharmacy pharmacy=pharmacist.getWorkingTimes().getPharmacy();
+		
 		if(pharmacy==null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
@@ -426,6 +452,14 @@ public class PharmacistController {
 			users.add(p.getUser());
 		}
 		return users;
+		
+	}
+	@GetMapping("/getAvailablePharmacistsByPharmacy/{pharmacy}/{term}")
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	public List<PharamcistForCounselingView> getAvailablePharmacistsByPharmacy(@PathVariable Long pharmacy,@PathVariable String term) {
+		System.out.println("pogodjena metoda");
+		System.out.println(this.pharmacistCounselingService.getAvailablePharmacistsByPharmacy(pharmacy, term));
+		return this.pharmacistCounselingService.getAvailablePharmacistsByPharmacy(pharmacy, term);
 		
 	}
 }

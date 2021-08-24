@@ -1,9 +1,9 @@
 package rs.ac.uns.ftn.informatika.spring.security.service.impl;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -16,25 +16,25 @@ import rs.ac.uns.ftn.informatika.spring.security.model.Dermatologist;
 import rs.ac.uns.ftn.informatika.spring.security.model.DermatologistAppointment;
 import rs.ac.uns.ftn.informatika.spring.security.model.HolidayRequest;
 import rs.ac.uns.ftn.informatika.spring.security.model.HolidayRequestStatus;
+import rs.ac.uns.ftn.informatika.spring.security.model.Patient;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
+import rs.ac.uns.ftn.informatika.spring.security.model.User;
 import rs.ac.uns.ftn.informatika.spring.security.model.WorkingDay;
 import rs.ac.uns.ftn.informatika.spring.security.model.WorkingTime;
 import rs.ac.uns.ftn.informatika.spring.security.repository.AppointmentPriceRepository;
-import rs.ac.uns.ftn.informatika.spring.security.repository.AppointmentRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.DermatologistAppointmentRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.DermatologistRepository;
-import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacyRepository;
 import rs.ac.uns.ftn.informatika.spring.security.service.AppointmentService;
+import rs.ac.uns.ftn.informatika.spring.security.service.PatientService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyAdminService;
 import rs.ac.uns.ftn.informatika.spring.security.service.UserService;
+import rs.ac.uns.ftn.informatika.spring.security.service.WorkingTimeService;
 import rs.ac.uns.ftn.informatika.spring.security.view.PredefinedAppointmentDTO;
 
 @Service
 public class AppointmentServiceImpl implements AppointmentService{
 	
-	@Autowired
-	private AppointmentRepository appointmentRepository;
 	@Autowired
 	private PharmacyAdminService pharmacyAdminService;
 	
@@ -42,7 +42,7 @@ public class AppointmentServiceImpl implements AppointmentService{
 	private UserService userService;
 	
 	@Autowired
-	private PharmacyRepository pharmacyRepository;
+	private PatientService patientService;
 	
 	@Autowired
 	private DermatologistRepository dermatologistRepository;
@@ -55,7 +55,7 @@ public class AppointmentServiceImpl implements AppointmentService{
 	
 	@Override
 	public List<DermatologistAppointment> findAll() {
-		List<DermatologistAppointment> result=appointmentRepository.findAll();
+		List<DermatologistAppointment> result=dermatologistAppointmentRepository.findAll();
 		System.out.println("Servis");
 		return result;
 	}
@@ -152,7 +152,7 @@ public class AppointmentServiceImpl implements AppointmentService{
 		appointment.setDuration(Integer.parseInt(predefinedAppointment.getDuration()));
 		appointment.setStartDateTime(dt);
 		
-		this.appointmentRepository.save(appointment);
+		this.dermatologistAppointmentRepository.save(appointment);
 		
 		AppoitmentPrice ap = new AppoitmentPrice();
 		ap.setAppoitment(appointment);
@@ -160,5 +160,62 @@ public class AppointmentServiceImpl implements AppointmentService{
 		this.appointmentPriceRepository.save(ap);
 		
 		return true;
+	}
+
+	@Override
+	public List<DermatologistAppointment> getAvailableAppointmentsByPharmacyId(Long id) {
+		List<DermatologistAppointment> appointments=new ArrayList<DermatologistAppointment>();
+		for(DermatologistAppointment da : dermatologistAppointmentRepository.findAll()) {
+			if(da.getPharmacy().getId().equals(id)) {
+				if(da.getPatient()==null) {
+					appointments.add(da);
+				}
+			}
+		}
+		return appointments;
+	}
+
+	@Override
+	public Boolean scheduleDermatologistAppointment(Long id,String patient) {
+		System.out.println(patient);	
+		User user = this.userService.findByUsername(patient);
+		Patient p=patientService.findPatientByUser(user);
+		for(DermatologistAppointment app: dermatologistAppointmentRepository.findAll()) {
+			if(app.getId().equals(id)) {
+				app.setPatient(p);
+				this.dermatologistAppointmentRepository.save(app);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public List<DermatologistAppointment> getAllDermAppointmentsByPatient(String email) {
+		List<DermatologistAppointment> result=new ArrayList<DermatologistAppointment>();
+		for(DermatologistAppointment da : dermatologistAppointmentRepository.findAll()) {
+			if(da.getPatient()==null) {
+				continue;
+			}
+			else {
+				if(da.getPatient().getUser().getEmail().equals(email)) {
+					result.add(da);
+				}
+				
+			}
+		}
+		return result;
+	}
+
+	@Override
+	public Boolean cancelDermatologistAppointment(Long id) {
+		for(DermatologistAppointment da : dermatologistAppointmentRepository.findAll()) {
+			if(da.getId().equals(id)) {
+				da.setPatient(null);
+				this.dermatologistAppointmentRepository.save(da);
+				return true;
+			}
+		}
+		return false;
 	}
 }

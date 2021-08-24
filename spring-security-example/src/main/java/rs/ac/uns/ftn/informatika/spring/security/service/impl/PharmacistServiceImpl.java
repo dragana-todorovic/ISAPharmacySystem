@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -25,6 +26,7 @@ import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacist;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacistCounseling;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacistCounselingPrice;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
+import rs.ac.uns.ftn.informatika.spring.security.model.Rating;
 import rs.ac.uns.ftn.informatika.spring.security.model.RequestForMedicineAvailability;
 import rs.ac.uns.ftn.informatika.spring.security.model.Therapy;
 import rs.ac.uns.ftn.informatika.spring.security.model.User;
@@ -33,6 +35,7 @@ import rs.ac.uns.ftn.informatika.spring.security.model.WorkingTime;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.AppointmentDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.HolidayRequestDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.MyPatientDTO;
+import rs.ac.uns.ftn.informatika.spring.security.model.DTO.WorkCalendarDTO;
 import rs.ac.uns.ftn.informatika.spring.security.repository.AppointmentPriceRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.DermatologistRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.HolidayRequestRepository;
@@ -46,6 +49,7 @@ import rs.ac.uns.ftn.informatika.spring.security.repository.UserRepository;
 import rs.ac.uns.ftn.informatika.spring.security.service.DermatologistAppointmentService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacistCounselingService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacistService;
+import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyService;
 
 @Service
 public class PharmacistServiceImpl implements PharmacistService {
@@ -102,6 +106,7 @@ public class PharmacistServiceImpl implements PharmacistService {
 	@Override
 	public List<Pharmacist> findAll() {
 		List<Pharmacist> result = pharmacistRepository.findAll();
+		System.out.println("Rezultat"+result.size());
 		return result;
 	}
 	@Override
@@ -387,12 +392,51 @@ public class PharmacistServiceImpl implements PharmacistService {
 	public List<MedicineReservation>searchReservedMedicnes(String resNumber,Pharmacy pharmacy){
 		List<MedicineReservation>result = new ArrayList<MedicineReservation>();
 		for(MedicineReservation m:pharmacy.getMedicineReservations()) {
+			System.out.println(m.getNumberOfReservation().toString());
+			System.out.println(resNumber);
+			System.out.println(m.getNumberOfReservation().toString().toLowerCase().contains(resNumber.toLowerCase()));
+			System.out.println(m.getStatus().equals(MedicineReservationStatus.RESERVED));
+
 			LocalDateTime dt = LocalDateTime.of(m.getDueTo(), m.getDueToTime());
-			if(m.getNumberOfReservation().toLowerCase().contains(resNumber.toLowerCase()) && m.getStatus().equals(MedicineReservationStatus.RESERVED) && dt.isAfter(LocalDateTime.now()) ) {
+			System.out.println(dt.isAfter(LocalDateTime.now()));
+			if(m.getNumberOfReservation().toString().toLowerCase().contains(resNumber.toLowerCase()) && m.getStatus().equals(MedicineReservationStatus.RESERVED) && dt.isAfter(LocalDateTime.now()) ) {
 				System.out.println("Rezervacija"+m.getNumberOfReservation());
 				result.add(m);				
 			}
 		}
+		return result;
+	}
+
+	@Override
+	public double getAvrageGrade(Pharmacist pharmacist) {
+		double avrage_grade=0;
+		int pom=0;
+		for(Rating ratings : pharmacist.getRatings()) {
+			pom++;
+			avrage_grade+=ratings.getRating();
+		}
+		return avrage_grade/pom;
+  }
+	public List<WorkCalendarDTO> getPharmacistsCounseling(Pharmacist pharmacist) {
+		List<WorkCalendarDTO> result = new ArrayList<WorkCalendarDTO>();
+		List<PharmacistCounseling> appointments =pharmacistCounselingService.findAll();
+		System.out.println("Size"+appointments.size());
+		List<PharmacistCounseling> app = new ArrayList<PharmacistCounseling>();
+		for(PharmacistCounseling da :appointments ) {
+			System.out.println(da.getPharmacist().getId());
+			System.out.println(pharmacist.getId());
+			if(da.getPharmacist().getId().equals(pharmacist.getId())) {
+				
+				app.add(da);
+			}
+		}
+		for(PharmacistCounseling d:app) {
+			if(d.getPatient()!=null) {
+			result.add(new WorkCalendarDTO(d.getId(),d.getPharmacist().getWorkingTimes().getPharmacy().getName(),d.getStartDateTime().toLocalDate(),d.getStartDateTime().toString(),d.getDuration(),d.getPatient().getUser().getFirstName(),d.getPatient().getUser().getLastName()));
+			}else{
+				result.add(new WorkCalendarDTO(d.getId(),d.getPharmacist().getWorkingTimes().getPharmacy().getName(),d.getStartDateTime().toLocalDate(),d.getStartDateTime().toString(),d.getDuration()));	
+			}
+			}
 		return result;
 	}
 	

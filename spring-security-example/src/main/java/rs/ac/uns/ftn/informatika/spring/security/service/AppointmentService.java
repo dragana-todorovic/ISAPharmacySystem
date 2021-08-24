@@ -7,6 +7,9 @@ import rs.ac.uns.ftn.informatika.spring.security.view.PredefinedAppointmentDTO;
 
 public interface AppointmentService {
 	List<DermatologistAppointment> findAll();
-
+	List<DermatologistAppointment> getAvailableAppointmentsByPharmacyId(Long id);
 	Boolean createPredefinedExamination(String email, PredefinedAppointmentDTO predefinedAppointment);
+	Boolean scheduleDermatologistAppointment(Long id,String patient);
+	List<DermatologistAppointment> getAllDermAppointmentsByPatient(String email);
+	Boolean cancelDermatologistAppointment(Long id);
 }
