@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,6 +29,7 @@ import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacistRepository
 import rs.ac.uns.ftn.informatika.spring.security.repository.UserRepository;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacistCounselingService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacistService;
+import rs.ac.uns.ftn.informatika.spring.security.view.PatientsCounslingView;
 import rs.ac.uns.ftn.informatika.spring.security.view.PharamcistForCounselingView;
 import rs.ac.uns.ftn.informatika.spring.security.view.PharmacyForCounselingView;
 
@@ -153,6 +155,42 @@ public class PharmacistCounselingServiceImpl implements PharmacistCounselingServ
 		}
 		
 		return result;
+	}
+
+	@Override
+	public List<PatientsCounslingView> getPatientsCounlings(Long id) {
+		List<PatientsCounslingView> result=new ArrayList<PatientsCounslingView>();
+		LocalDateTime today=LocalDateTime.now();
+		for(PharmacistCounseling pc: findByPatientId(id)) {
+			boolean isExpaired=false;
+			Pharmacy pharmacy=pc.getPharmacist().getWorkingTimes().getPharmacy();
+			if(pc.getStartDateTime().isBefore(today.minusDays(1))) {
+				isExpaired=true;
+			}
+			PatientsCounslingView pcv=new PatientsCounslingView(pc.getId(),pc.getPharmacist().getUser().getFirstName(),pc.getPharmacist().getUser().getLastName(),
+					pharmacy.getName(),pharmacy.getAddress().getCity(),pharmacy.getAddress().getStreet(),pc.getStartDateTime(),pc.getDuration(),"cena",isExpaired);
+			result.add(pcv);
+		}
+		return result;
+	}
+
+	@Override
+	public Boolean cancelAppointment(Long id) {
+		LocalDateTime today=LocalDateTime.now();
+		for(PharmacistCounseling pc: pharmacistCounselingRepository.findAll()) {
+			if(pc.getId().equals(id)) {
+				if(pc.getStartDateTime().isBefore(today.minusDays(1))) {
+					return false;
+				}
+				pc.setPharmacist(null);
+				pc.setPatient(null);
+				pc.setTherapy(null);
+				this.pharmacistCounselingRepository.delete(pc);
+				return true;
+			}	
+		}
+		return false;
+		
 	}
 
 }

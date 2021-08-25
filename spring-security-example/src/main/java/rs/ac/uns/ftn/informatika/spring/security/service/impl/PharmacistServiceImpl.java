@@ -407,6 +407,11 @@ public class PharmacistServiceImpl implements PharmacistService {
 		}
 		return avrage_grade/pom;
 	}
+
+	@Override
+	public Pharmacist getPharmacistsById(Long id) {
+		return this.pharmacistRepository.findPharmacistById(id);
+	}
 	
 	
 }

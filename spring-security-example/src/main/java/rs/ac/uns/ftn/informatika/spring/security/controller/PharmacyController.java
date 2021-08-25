@@ -60,6 +60,7 @@ import rs.ac.uns.ftn.informatika.spring.security.view.MedicinePriceDTO;
 import rs.ac.uns.ftn.informatika.spring.security.view.NewDermatologistDTO;
 import rs.ac.uns.ftn.informatika.spring.security.view.NewOrderDTO;
 import rs.ac.uns.ftn.informatika.spring.security.view.NewPharmacistDTO;
+import rs.ac.uns.ftn.informatika.spring.security.view.PatientsCounslingView;
 import rs.ac.uns.ftn.informatika.spring.security.view.PharmacyForCounselingView;
 import rs.ac.uns.ftn.informatika.spring.security.view.PriceListDTO;
 import rs.ac.uns.ftn.informatika.spring.security.view.StatisticDTO;
@@ -457,12 +458,21 @@ public class PharmacyController {
 	
 	@GetMapping("/getCounselingByPatienetId/{email}")
 	@PreAuthorize("hasRole('ROLE_PATIENT')")
-	public List<PharmacistCounseling> getCounselingByPatienetId(@PathVariable(name="email") String email) {
+	public List<PatientsCounslingView> getCounselingByPatienetId(@PathVariable(name="email") String email) {
 		User user=this.userService.findByEmail(email);
 		Patient patient=this.patientService.findPatientByUser(user);
-		return this.pharmacistCounselingService.findByPatientId(patient.getId());
+		return this.pharmacistCounselingService.getPatientsCounlings(patient.getId());
 	}
-	
-
+	@PostMapping("/cancelCounselingAppointment/{pom}")
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	public  ResponseEntity<?> cancelCounselingAppointment(@PathVariable(name="pom") Long pom) {
+		if(pharmacistCounselingService.cancelAppointment(pom))
+		{
+			return new ResponseEntity<>(HttpStatus.OK);	
+		}
+		else {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
 }
 

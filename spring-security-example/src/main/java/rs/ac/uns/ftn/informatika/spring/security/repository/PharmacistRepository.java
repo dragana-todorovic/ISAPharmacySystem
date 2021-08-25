@@ -8,11 +8,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import rs.ac.uns.ftn.informatika.spring.security.model.Dermatologist;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacist;
+import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 
 public interface PharmacistRepository extends JpaRepository<Pharmacist, Long>{
 	List<Pharmacist> findAll();
 	Optional<Pharmacist> findById(Long id);	
-	
+	Pharmacist findPharmacistById(Long id);
 	
 }
 
