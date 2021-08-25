@@ -23,6 +23,7 @@ $(document).ready(function() {
 	        url:'/appointment/getAllDermAppointmentsByPatient/'+email,
 	        contentType: 'application/json',
 	        success: function(data){
+				console.log(data)
 				showMyAppointmentsAtDermatologists(data)
 			},
 			error: function(){
@@ -164,6 +165,34 @@ $(document).ready(function() {
         });
 		
 	})
+	$("th[name=sortByGrade]").click(function () {
+        if ($(this.getElementsByTagName("span")).attr(`class`) == "glyphicon glyphicon-arrow-down") {
+            $(this.getElementsByTagName("span")).removeClass("glyphicon glyphicon-arrow-down");
+            $(this.getElementsByTagName("span")).toggleClass("glyphicon glyphicon-arrow-up");
+        } else {
+            $(this.getElementsByTagName("span")).removeClass("glyphicon glyphicon-up-down");
+            $(this.getElementsByTagName("span")).toggleClass("glyphicon glyphicon-arrow-down");
+        }
+        var table = $(this).parents('table').eq(0)
+        var rows = table.find('tr:gt(1)').toArray().sort(comparer($(this).index()))
+        this.asc = !this.asc
+        if (!this.asc) { rows = rows.reverse() }
+        for (var i = 0; i < rows.length; i++) { table.append(rows[i]) }
+    });
+	$("th[name=sortByPrice]").click(function () {
+        if ($(this.getElementsByTagName("span")).attr(`class`) == "glyphicon glyphicon-arrow-down") {
+            $(this.getElementsByTagName("span")).removeClass("glyphicon glyphicon-arrow-down");
+            $(this.getElementsByTagName("span")).toggleClass("glyphicon glyphicon-arrow-up");
+        } else {
+            $(this.getElementsByTagName("span")).removeClass("glyphicon glyphicon-up-down");
+            $(this.getElementsByTagName("span")).toggleClass("glyphicon glyphicon-arrow-down");
+        }
+        var table = $(this).parents('table').eq(0)
+        var rows = table.find('tr:gt(1)').toArray().sort(comparer($(this).index()))
+        this.asc = !this.asc
+        if (!this.asc) { rows = rows.reverse() }
+        for (var i = 0; i < rows.length; i++) { table.append(rows[i]) }
+    });
 
 function showAvailableAppointments(data){
 	$('#pharmacy-details').attr('hidden',true);
@@ -221,8 +250,8 @@ function showPharmacies(data){
 			<td><button id="details" class="ui primary basic button">Details</button>
 			</tr>`;
 	}
-	$('#pharmacies_tableBody').html(temp);
-	$('#pharmacies_for_derm_appointments').attr('hidden',false);	
+	$('#all_pharmacies_table').html(temp);
+	$('#all_pharmacies_show').attr('hidden',false);	
 	$('#edit-profile').attr('hidden', true);
 	$('#show').attr('hidden',true);
 	$('#my_derm_appointments').attr('hidden',true);
@@ -246,14 +275,32 @@ function showMyAppointmentsAtDermatologists(data){
 	$('#pharmacy-details').attr('hidden',true);
 	let temp='';
 	for (i in data){
+		var date=data[i].dateAndtime.split("T")[0];
+		var time=data[i].dateAndtime.split("T")[1];
+		if(data[i].isAppointmentExpired){
 		temp+=`<tr id="`+data[i].id+`">
-			<td >`+data[i].dermatologistFirstName+` `+data[i].dermatologistLastName+`</td>
-			<td>`+data[i].grade+`</td>
-			<td>`+data[i].date+` `+data[i].time+`</td>
+			<td >`+data[i].dermatologistsFirstName+` `+data[i].dermatologistsLastName+`</td>
+			<td>`+data[i].pharmacyName+`</td>
+			<td>`+data[i].pharmacyCity+`</td>
+			<td>`+data[i].pharmacyStreet+`</td>
+			<td>`+date+` `+time+`</td>
+			<td>`+data[i].duration+` min </td>
+			<td>`+data[i].price+` din </td>
+			<td><button id="cancel_appointment" class="ui primary basic button" disabled>Cancel appointment</button>
+			</tr>`;
+		}
+		else{
+		temp+=`<tr id="`+data[i].id+`">
+			<td >`+data[i].dermatologistsFirstName+` `+data[i].dermatologistsLastName+`</td>
+			<td>`+data[i].pharmacyName+`</td>
+			<td>`+data[i].pharmacyCity+`</td>
+			<td>`+data[i].pharmacyStreet+`</td>
+			<td>`+date+` `+time+`</td>
 			<td>`+data[i].duration+` min </td>
 			<td>`+data[i].price+` din </td>
 			<td><button id="cancel_appointment" class="ui primary basic button">Cancel appointment</button>
 			</tr>`;
+		}
 	}
 	
 	$('#my_appointments_dermatology_body').html(temp);
@@ -266,5 +313,13 @@ function showMyAppointmentsAtDermatologists(data){
 	$('#ph_av_con').attr('hidden',true)
 	$('#ph_con').attr('hidden',true)
 }
-
+function comparer(index) { //ZA SORTIRANJE!
+    return function (a, b) {
+        var valA = getCellValue(a, index), valB = getCellValue(b, index)
+        return $.isNumeric(valA) && $.isNumeric(valB) ? valA - valB : valA.toString().localeCompare(valB)
+    }
+};
+function getCellValue(row, index) {
+    return $(row).children('td').eq(index).text()
+};
 });

@@ -49,15 +49,17 @@ INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (5, 3);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (6, 3);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (7, 5);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (9, 4);
-INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (8, 5);
-INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (10, 6);
+
+INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (8, 4);
+INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (10, 4);
+
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (11, 5);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (12, 5);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (13, 7);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (14, 7);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (15, 3);
 --patient
-INSERT INTO PATIENTS (id,user_id,points,category,penal,point) VALUES (1,5,10,0,0,0);
+INSERT INTO PATIENTS (id,user_id,points,category,penal,point) VALUES (1,5,10,2,0,0);
 INSERT INTO PATIENTS (id,user_id,points,category,penal,point) VALUES (2,6,100,0,0,0);
 INSERT INTO PATIENTS (id,user_id,points,category,penal,point) VALUES (3,15,100,0,0,0);
 INSERT INTO patients_allergies_medicine(patient_id, allergies_medicine_id) values (1,1);
@@ -262,7 +264,11 @@ INSERT INTO dermatologist_holiday_requests(dermatologist_id,holiday_requests_id)
 INSERT INTO workingday (day,end_time,start_time) VALUES (0,'19:00:00.000000', '08:00:00.000000');
 INSERT INTO workingday (day,end_time,start_time) VALUES (1,'19:00:00.000000', '08:00:00.000000');
 INSERT INTO workingday (day,end_time,start_time) VALUES (2,'19:00:00.000000', '08:00:00.000000');
+INSERT INTO workingday (day,end_time,start_time) VALUES (2,'19:00:00.000000', '08:00:00.000000');
+INSERT INTO workingday (day,end_time,start_time) VALUES (2,'19:00:00.000000', '08:00:00.000000');
+
 INSERT INTO workingday (day,end_time,start_time) VALUES (3,'19:00:00.000000', '08:00:00.000000');
+
 INSERT INTO workingday (day,end_time,start_time) VALUES (4,'19:00:00.000000', '08:00:00.000000');
 INSERT INTO workingday (day,end_time,start_time) VALUES (5,'19:00:00.000000', '08:00:00.000000');
 INSERT INTO workingday (day,end_time,start_time) VALUES (6,'23:30:00.000000', '08:00:00.000000');
@@ -274,12 +280,12 @@ INSERT INTO workingtime (pharmacy_id) VALUES (2);
 INSERT INTO workingtime (pharmacy_id) VALUES (1);
 
 --working time with working days
-INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (1,1);
-INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (1,2);
-INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (1,3);
-INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (2,4);
-INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (2,5);
-INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (2,6);
+INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (2,1);
+INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (2,2);
+INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (2,3);
+INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (3,4);
+INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (3,5);
+INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (3,6);
 
 INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (3,7);
 --dermatologist working time
@@ -288,7 +294,8 @@ INSERT INTO dermatologist_working_times (dermatologist_id, working_times_id) VAL
 INSERT INTO dermatologist_working_times (dermatologist_id, working_times_id) VALUES (2,3); 
 
 --pharmacist
-INSERT INTO PHARMACIST (user_id,working_time_id) VALUES (9,2);
+INSERT INTO PHARMACIST (user_id,working_time_id) VALUES (10,2);
+INSERT INTO PHARMACIST (user_id,working_time_id) VALUES (8,3);
 
 
 

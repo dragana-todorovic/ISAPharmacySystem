@@ -231,4 +231,11 @@ public class PatientController {
 		this.patientService.savePatient(patient);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
+	@GetMapping("/getPatientsDiscount/{email}")
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	public int getPatientsDiscount(@PathVariable(name="email") String email) {
+		User user = this.userService.findByEmail(email);
+		Patient patient = this.patientService.findPatientByUser(user);
+		return patientService.getPatientsDiscount(patient);
+	}
 }

@@ -7,15 +7,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import rs.ac.uns.ftn.informatika.spring.security.model.Authority;
+import rs.ac.uns.ftn.informatika.spring.security.model.LoyaltyScale;
 import rs.ac.uns.ftn.informatika.spring.security.model.Patient;
 import rs.ac.uns.ftn.informatika.spring.security.model.User;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PatientRepository;
+import rs.ac.uns.ftn.informatika.spring.security.service.LoyaltyScaleService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PatientService;
 
 @Service
 public class PatientServiceImpl implements PatientService {
 	@Autowired
 	private PatientRepository patientRepository;
+	
+	@Autowired
+	private LoyaltyScaleService loyaltyScaleService;
 	
 	@Override
 	public List<Patient> findAll() {
@@ -54,6 +59,15 @@ public class PatientServiceImpl implements PatientService {
 		System.out.println("Usao u penaleee");
 		p.setPenal(p.getPenal()+1);		
 		patientRepository.save(p);
+	}
+	@Override
+	public int getPatientsDiscount(Patient patient) {	
+		for(LoyaltyScale ls : loyaltyScaleService.findAll()) {
+			if(ls.getCategory().equals(patient.getCategory())) {
+				return ls.getDisccount();
+			}
+		}
+		return 0;
 	}
 
 

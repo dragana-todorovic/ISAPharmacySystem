@@ -1,5 +1,6 @@
 package rs.ac.uns.ftn.informatika.spring.security.controller;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +27,7 @@ import rs.ac.uns.ftn.informatika.spring.security.service.DermatologistService;
 import rs.ac.uns.ftn.informatika.spring.security.service.EmailService;
 import rs.ac.uns.ftn.informatika.spring.security.service.WorkingTimeService;
 import rs.ac.uns.ftn.informatika.spring.security.view.AvaliableDermatologistAppointmentsView;
+import rs.ac.uns.ftn.informatika.spring.security.view.PatientDermatologistAppointmentView;
 import rs.ac.uns.ftn.informatika.spring.security.view.PredefinedAppointmentDTO;
 
 @Controller
@@ -112,15 +114,17 @@ public class AppointmentController {
 	
 	@GetMapping("/getAllDermAppointmentsByPatient/{email}")
 	@PreAuthorize("hasRole('ROLE_PATIENT')")
-	public  List<AvaliableDermatologistAppointmentsView> getAllDermAppointmentsByPatient(@PathVariable(name="email") String email) {
-		List<AvaliableDermatologistAppointmentsView> result=new ArrayList<AvaliableDermatologistAppointmentsView>();
+	public  List<PatientDermatologistAppointmentView> getAllDermAppointmentsByPatient(@PathVariable(name="email") String email) {
+		List<PatientDermatologistAppointmentView> result=new ArrayList<PatientDermatologistAppointmentView>();
+		LocalDateTime today=LocalDateTime.now();
 		for(DermatologistAppointment da: appointmentService.getAllDermAppointmentsByPatient(email)) {
-			String date=da.getStartDateTime().toString().split("T")[0];
-			String time=da.getStartDateTime().toString().split("T")[1];
-			String duration=Integer.toString(da.getDuration());
 			String price=Double.toString(appointmentPriceService.getPriceByAppointment(da));
-			String rating=Double.toString(dermatologistService.getAvrageGrade(da.getDermatologist()));
-			AvaliableDermatologistAppointmentsView view=new AvaliableDermatologistAppointmentsView(da.getId(),da.getDermatologist().getUser().getFirstName(),da.getDermatologist().getUser().getLastName(),date,time,duration,price,rating);
+			boolean isExpaired=false;
+			if(da.getStartDateTime().isBefore(today.minusDays(1))) {
+				isExpaired=true;
+			}
+			PatientDermatologistAppointmentView view=new PatientDermatologistAppointmentView(da.getId(),da.getDermatologist().getUser().getFirstName(),da.getDermatologist().getUser().getLastName(),da.getPharmacy().getName(),
+					da.getPharmacy().getAddress().getCity(),da.getPharmacy().getAddress().getStreet(),da.getStartDateTime(),da.getDuration(),price,isExpaired);
 			result.add(view);
 		}
 		return result;

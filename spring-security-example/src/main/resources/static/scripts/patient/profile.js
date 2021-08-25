@@ -115,6 +115,19 @@ $(document).ready(function() {
 	    })
 			customAjax({
 				method:'GET',
+		        url:'/patient/getPatientsDiscount/'+id,
+		        contentType: 'application/json',
+	    		success: function(data) { 
+						$("#discount").text("Your current discount: "+ data +" %")
+						console.log(data);
+			},
+	    		error:function(message){
+					alert("Error")
+	    		}
+	    				    	    	    	
+	    })
+			customAjax({
+				method:'GET',
 		        url:'/patient/getPatientById/'+id,
 		        contentType: 'application/json',
 	    		success: function(data) { 	
@@ -228,18 +241,6 @@ $(document).ready(function() {
 function showPatientData(data){
 		$('#category').text("Category:"+data.category);
 		$('#mypoints').text("My points:"+data.points);
-		/*	customAjax({
-				method:'GET',
-		        url:'/patient/getActionsAndBenefitsByCategory/'+category,
-		        contentType: 'application/json',
-	    		success: function(data) { 	
-						console.log(data)
-			},
-	    		error:function(message){
-					alert(message)
-	    		}
-	    				    	    	    	
-	    })*/
 		
 };
 function showAllergies(data){

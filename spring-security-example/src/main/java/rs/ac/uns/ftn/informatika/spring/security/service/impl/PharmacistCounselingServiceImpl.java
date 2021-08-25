@@ -3,6 +3,7 @@ package rs.ac.uns.ftn.informatika.spring.security.service.impl;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Period;
@@ -15,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import rs.ac.uns.ftn.informatika.spring.security.model.DermatologistAppointment;
+import rs.ac.uns.ftn.informatika.spring.security.model.HolidayRequest;
+import rs.ac.uns.ftn.informatika.spring.security.model.HolidayRequestStatus;
 import rs.ac.uns.ftn.informatika.spring.security.model.Patient;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacist;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacistCounseling;
@@ -77,7 +80,6 @@ public class PharmacistCounselingServiceImpl implements PharmacistCounselingServ
 	}
 	@Override
 	public void saveAppointment(CounselingDTO appointmentDTO,Patient patient, LocalDateTime startDateTime) {
-		// TODO Auto-generated method stub
 		try{
 			User u = userRepository.findByEmail(appointmentDTO.getPharmacistEmail());
 			for (Pharmacist d: pharmacistRepository.findAll()) {	
@@ -103,23 +105,39 @@ public class PharmacistCounselingServiceImpl implements PharmacistCounselingServ
 	@Override
 	public List<PharmacyForCounselingView> getPharamciesWithAvailablePharmacists(String term) {
 		LocalDateTime dateTime = LocalDateTime.parse(term);
+		LocalDate date=LocalDate.parse(term.split("T")[0]);
 		LocalTime time=LocalTime.parse(term.split("T")[1]);
 		DayOfWeek day= dateTime.getDayOfWeek();
-		System.out.println(time);
-		System.out.println(day);
 		ArrayList<PharmacyForCounselingView> result=new ArrayList<PharmacyForCounselingView>();
+
 		for(Pharmacist pharmacist : pharmacistRepository.findAll()) {
+
 			boolean isWorking=false;
 			for(WorkingDay wt:pharmacist.getWorkingTimes().getWorkingDays()) {
-				if(wt.getStartTime().isBefore(time) && wt.getEndTime().isAfter(time) && wt.getDay().equals(day)) {
-					System.out.println("u radnom vremenu je");			
+
+				if(wt.getStartTime().isBefore(time) && wt.getEndTime().isAfter(time) && wt.getDay().equals(day)) {	
+					System.out.println("radi u " + pharmacist.getWorkingTimes().getPharmacy());
 					isWorking=true;
 					break;
 				}
 			}
+			
+			for(HolidayRequest hol: pharmacist.getHolidayRequests()) {
+				System.out.println("Holiday"+pharmacist.getHolidayRequests());
+				if(hol.getStartDate().isBefore(date) && hol.getEndDate().isAfter(date) && hol.getStatus().equals(HolidayRequestStatus.ACCEPT)){
+					System.out.println("Tad je na godisnjem");
+					isWorking= false;
+				}
+			}
+			
 			if(isWorking) {
-				System.out.println("dodaj");
-				result.add(new PharmacyForCounselingView(pharmacist.getWorkingTimes().getPharmacy().getId(),pharmacist.getWorkingTimes().getPharmacy().getName(),pharmacist.getWorkingTimes().getPharmacy().getAddress().getCity(),pharmacist.getWorkingTimes().getPharmacy().getAddress().getStreet(),"ocena","cena"));
+				
+				String grade=Double.toString(pharmacistService.getAvrageGrade(pharmacist));
+				if(grade.equals("NaN")) {
+					grade="";
+				}
+				result.add(new PharmacyForCounselingView(pharmacist.getWorkingTimes().getPharmacy().getId(),pharmacist.getWorkingTimes().getPharmacy().getName(),pharmacist.getWorkingTimes().getPharmacy().getAddress().getCity(),pharmacist.getWorkingTimes().getPharmacy().getAddress().getStreet(),
+						grade,"cena"));
 			}
 			else {
 				continue;
@@ -132,6 +150,7 @@ public class PharmacistCounselingServiceImpl implements PharmacistCounselingServ
 	public List<PharamcistForCounselingView> getAvailablePharmacistsByPharmacy(Long id, String term) {	
 		List<PharamcistForCounselingView> result=new ArrayList<PharamcistForCounselingView>();
 		LocalDateTime dateTime = LocalDateTime.parse(term);
+		LocalDate date=LocalDate.parse(term.split("T")[0]);
 		LocalTime time=LocalTime.parse(term.split("T")[1]);
 		DayOfWeek day= dateTime.getDayOfWeek();
 		for(Pharmacist pharmacist : pharmacistRepository.findAll()) {
@@ -143,10 +162,19 @@ public class PharmacistCounselingServiceImpl implements PharmacistCounselingServ
 						isWorking=true;
 						break;
 					}
+				}		
+				for(HolidayRequest hol: pharmacist.getHolidayRequests()) {
+					System.out.println("Holiday"+pharmacist.getHolidayRequests());
+					System.out.println("godisnji od" + hol.getStartDate());
+					System.out.println("godisnji do"+hol.getEndDate());
+					System.out.println(date);
+					System.out.println(hol.getStatus());
+					if(hol.getStartDate().isBefore(date) && hol.getEndDate().isAfter(date) && hol.getStatus().equals(HolidayRequestStatus.ACCEPT)){
+						isWorking= false;
+						break;
+					}
 				}
 				if(isWorking) {
-					System.out.println("dodaj");
-					System.out.println(pharmacist.getUser().getFirstName());
 					result.add(new PharamcistForCounselingView(pharmacist.getId(),pharmacist.getUser().getFirstName(),pharmacist.getUser().getLastName(),pharmacistService.getAvrageGrade(pharmacist)));
 				}
 				else {

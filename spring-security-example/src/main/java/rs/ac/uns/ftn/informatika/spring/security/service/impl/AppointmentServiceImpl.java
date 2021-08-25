@@ -209,11 +209,17 @@ public class AppointmentServiceImpl implements AppointmentService{
 
 	@Override
 	public Boolean cancelDermatologistAppointment(Long id) {
+		LocalDateTime today=LocalDateTime.now();
 		for(DermatologistAppointment da : dermatologistAppointmentRepository.findAll()) {
 			if(da.getId().equals(id)) {
-				da.setPatient(null);
-				this.dermatologistAppointmentRepository.save(da);
-				return true;
+				if(da.getStartDateTime().isBefore(today.minusDays(1))) {
+					return false;
+				}
+				else {
+					da.setPatient(null);
+					this.dermatologistAppointmentRepository.save(da);
+					return true;
+				}
 			}
 		}
 		return false;

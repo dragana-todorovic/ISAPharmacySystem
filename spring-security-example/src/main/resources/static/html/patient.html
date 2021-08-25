@@ -3,18 +3,23 @@
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 
-
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
           crossorigin="anonymous"></script>
-
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
   <!-- fontovi -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
+  
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
         crossorigin="anonymous">
 
   <taglib uri="http://coverity.com/security" prefix="cov" />
   <script src="../scripts/customAjax.js"></script>
+  <script src="../scripts/searchPharmacies.js"></script>
   <script src="../scripts/patient/profile.js"></script>
   <script src="../scripts/patient/appointments.js"></script>
   <script src="../scripts/patient/medicine.js"></script>
@@ -27,6 +32,9 @@
         crossorigin="anonymous">
 
  <link href="http://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.css" rel="stylesheet"/>
+ 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"  />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
   <style type="text/css">
   /* Modal Content */
@@ -181,6 +189,7 @@ li.dropdown {
   <div class="ui two column very relaxed grid">
     <div class="column">
 	        <h5 id="category"  class="border rounded px-2 py-1 text-center" ></h5>
+	         <h5 id="discount"  class="border rounded px-2 py-1 text-center" ></h5>
           <h5 id="mypoints" style="font-weight: bold" class="border rounded px-2 py-1 text-center" ></h5>
 	      <h5 id="actions_and_benefits" style="font-weight: bold" class="border rounded px-2 py-1 text-center" ></h5>
         <div class="ui two column very relaxed grid">
@@ -300,7 +309,7 @@ li.dropdown {
 
   <!-- RESERVED MEDICINE-->
   <div class="ui list" id="reserved_medicine_div" hidden="true" class="cloumn">
- 	<table class="ui celled table">
+ 	<table class="table  table-bordered">
   <thead>
     <tr>
 	<tr><th>Medicine</th>
@@ -318,8 +327,12 @@ li.dropdown {
 </div>
 
   <!-- SHOW ALL PHARMACIES-->
-  <div class="ui list" id="pharmacies_for_derm_appointments" hidden="true" style="padding:100px 300px 500px 300px;" class="cloumn">
- 	<table class="ui celled table">
+  <div class="ui list" id="all_pharmacies_show" hidden="true" style="padding:100px 300px 500px 300px;" class="cloumn">
+  <div class="ui icon input">
+          <input  class="prompt" type="text" id="pharmaciesSearch" placeholder="Search pharmacies by name,city,address..">
+          <i class="search link icon" id="searchPharmacies"></i>
+          </div>
+ 	<table class="table  table-bordered">
   <thead>
     <tr>
 	<tr><th>Name</th>
@@ -329,14 +342,14 @@ li.dropdown {
 		 <th></th>
     </tr>
   </thead>
-  <tbody id="pharmacies_tableBody">
+  <tbody id="all_pharmacies_table">
   </tbody>
 </table>
 </div>
 
 <!-- SCHEDULING PHARMACIES CONSULING-->
 <div class="ui list" id="shedule_consulting" hidden="true" style="padding:100px 300px 500px 300px;" class="cloumn">
- <table class="ui large table" style="width:50%; margin-left:auto; 
+ <table class="table  table-bordered" style="width:50%; margin-left:auto; 
     margin-right:auto; margin-top: 40px;">
 		        <thead>
 		            <tr class="success">
@@ -399,7 +412,7 @@ li.dropdown {
          </div>
       	    <div class="container_1" hidden='true' id="medicine_show">
         <form class="border rounded px-2 py-1 text-center">       
-        		 <table class="ui celled table" >
+        		 <table class="table  table-bordered" >
 		  	<thead>
 		    	<tr><th>Code</th>
 		   		 <th>Name</th>
@@ -468,10 +481,10 @@ li.dropdown {
         		 <table class="ui celled table" id="appointments_dermatology_table" >
 		  	<thead>
 		    	<tr><th>Dermatologist</th>
-		   		 <th>Dermatologists grade</th>
+		   		  <th name="sortByGrade">Dermatologists grade<span  name="strelica" class="glyphicon glyphicon-arrow-down"></span></th>
 		   		 <th>Start date and time</th>
 		   		 <th>Duration</th>
-		   		 <th>Price</th>
+		   		 <th name="sortByPrice">Price<span  name="strelica" class="glyphicon glyphicon-arrow-down"></span></th>
 		   		 <th></th>
 		 		 </tr></thead>
 		 	 <tbody id="appointments_dermatology_body" >
@@ -486,10 +499,12 @@ li.dropdown {
           <label style="color:black;font-weight: bold" >MY APPOINTMENTS AT DERMATOLOGISTS </label>
 			</br></br>
                   <form class="border rounded px-2 py-1 text-center">       
-        		 <table class="ui celled table" id="appointments_dermatology_table" >
+        		 <table class="table  table-bordered" id="appointments_dermatology_table" >
 		  	<thead>
 		    	<tr><th>Dermatologist</th>
-		   		 <th>Dermatologists grade</th>
+		   		 <th>Pharmacy</th>
+		   		 <th>Pharmacy City</th>
+		   		 <th>Pharmacy Street</th>
 		   		 <th>Start date and time</th>
 		   		 <th>Duration</th>
 		   		 <th>Price</th>
@@ -507,13 +522,13 @@ li.dropdown {
           <label style="color:black;font-weight: bold" >PHARMACIES WITH AVAILABLE PHARMACISTS FOR COUNSELING </label>
 			</br></br>
                   <form class="border rounded px-2 py-1 text-center">       
-        		 <table class="ui celled table" id="appointments_dermatology_table" >
+        		 <table class="table  table-bordered" id="appointments_dermatology_table" >
 		  	<thead>
-		    	<tr><th>Pharmacy</th>
+		    	<tr class="success"><th>Pharmacy</th>
 		   		 <th>Pharmacy City</th>
 		   		 <th>Pharmacy Street</th>
-		   		 <th>Pharmacy Grade</th>
-		   		 <th>Price</th>
+		   		 <th name="sortByGrade">Grade<span  name="strelica" class="glyphicon glyphicon-arrow-down"></span></th>
+		   		 <th name="sortByPrice">Price<span  name="strelica" class="glyphicon glyphicon-arrow-down"></span></th>
 		   		 <th></th>
 		 		 </tr></thead>
 		 	 <tbody id="ph_av_con_body" >
@@ -530,10 +545,10 @@ li.dropdown {
           <label style="color:black;font-weight: bold" > AVAILABLE PHARMACISTS FOR COUNSELING </label>
 			</br></br>
                   <form class="border rounded px-2 py-1 text-center">       
-        		 <table class="ui celled table" id="appointments_dermatology_table" >
+        		 <table class="table  table-bordered" id="appointments_dermatology_table" >
 		  	<thead>
 		    	<tr><th>Pharmacist</th>
-		   		 <th>Pharmacists Grade</th>
+		   		 <th name="sortByGrade">Pharmacists grade<span  name="strelica" class="glyphicon glyphicon-arrow-down"></span></th>
 		   		 <th></th>
 		 		 </tr></thead>
 		 	 <tbody id="ph_con_body" >
@@ -548,7 +563,7 @@ li.dropdown {
           <label style="color:black;font-weight: bold" >MY APPOINTMENTS AT PHARMACISTS </label>
 			</br></br>
                   <form class="border rounded px-2 py-1 text-center">       
-        		 <table class="ui celled table" id="appointments_dermatology_table" >
+        		 <table class="table  table-bordered" id="appointments_dermatology_table" >
 		  	<thead>
 		    	<tr><th>Pharmacist</th>
 		   		 <th>Pharmacy</th>

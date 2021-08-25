@@ -5,8 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 <script src="../jquery-3.3.1.min.js"></script>
-<script src="../scripts/customAjax.js"></script>
+<script src="../scripts/searchPharmacies.js"></script>
  <script src="../scripts/homepage.js"></script> 
+ <script src="../scripts/customAjax.js"></script>
 <taglib uri="http://coverity.com/security" prefix="cov" />
 
  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
@@ -106,7 +107,7 @@ input[type=text]:focus {
            <input class="prompt" type="text" id="medicineSearch" name="search" placeholder="Search medicine by name..">
            <i class="search link icon" id="searchMedicine"></i>
          </div>
-    <div class="container_1" hidden='true' id="pharmacies_show">
+    <div class="container_1" hidden='true' id="all_pharmacies_show">
         <form class="border rounded px-2 py-1 text-center">       
         		 <table class="ui celled table" >
 		  	<thead>
@@ -115,7 +116,7 @@ input[type=text]:focus {
 		   		 <th>Street</th>
 		   		 <th>Description</th>
 		 		 </tr></thead>
-		 	 <tbody id="pharmacies_table" >
+		 	 <tbody id="all_pharmacies_table" >
 		 	 </tbody>
 		</table>  
         </form>
