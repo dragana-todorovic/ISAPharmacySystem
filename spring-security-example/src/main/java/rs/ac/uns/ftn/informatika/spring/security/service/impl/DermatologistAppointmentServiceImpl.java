@@ -14,6 +14,7 @@ import rs.ac.uns.ftn.informatika.spring.security.model.Patient;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.User;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.AppointmentScheduleDTO;
+import rs.ac.uns.ftn.informatika.spring.security.model.DTO.PredefinedAppointmentScheduleDTO;
 import rs.ac.uns.ftn.informatika.spring.security.repository.AppointmentPriceRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.DermatologistAppointmentRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.DermatologistRepository;
@@ -65,19 +66,38 @@ public class DermatologistAppointmentServiceImpl implements DermatologistAppoint
 			ap.setDuration(Integer.parseInt(appointmentDTO.getDuration()));
 			ap.setPatient(patient);
 			ap.setStartDateTime(startDateTime);
+	
 			
 			System.out.println("Usao prije save");
 			dermatologistAppointmentRepository.save(ap);
 			AppoitmentPrice price = new AppoitmentPrice();
 			price.setAppoitment(ap);
 			appoitmentPriceRepository.save(price);
-			
-			
+						
 			break;
 			
 				}}} catch (Exception e) {
 			return;
 		}
+			
+	}
+	@Override
+	public void savePredefinedAppointment(PredefinedAppointmentScheduleDTO appointmentDTO,Patient patient) {
+		// TODO Auto-generated method stub
+		try{
+			Long appId =Long.parseLong( appointmentDTO.getStartDateTimeId().split(" sifra ")[1]);
+			for(DermatologistAppointment da: dermatologistAppointmentRepository.findAll()) {
+				if(da.getId().equals(appId)) {
+					da.setDuration(Integer.parseInt(appointmentDTO.getDuration()));
+					da.setPatient(patient);
+					dermatologistAppointmentRepository.save(da);
+					break;
+				}
+			}
+		} catch (Exception e) {
+			return;
+		}
+			
 			
 	}
 	@Override

@@ -75,10 +75,16 @@ public class PharmacistController {
 	private MedicineReservationRepository medicineReservationRepository;
 	
 	@RequestMapping(value = "/holidayRequest" , method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_PHARMACIST')")
 	public ResponseEntity<?> requestHoliday(@RequestBody HolidayRequestDTO holidayRequest) {
 		System.out.println("Usao u kontroler");
-		this.pharmacistService.saveHolidayRequest(holidayRequest);
+		if(this.pharmacistService.saveHolidayRequest(holidayRequest))
+		{
 		return new ResponseEntity<>(HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 	
 	
 	}
@@ -164,6 +170,9 @@ public class PharmacistController {
 		}
 		System.out.println(pharmacist);
 		System.out.println("working time"+pharmacist.getWorkingTimes());
+		if(pharmacist.getWorkingTimes()==null) {
+			return new ArrayList<MedicineReservation>();
+		}
 		Pharmacy pharmacy = pharmacist.getWorkingTimes().getPharmacy();
 		//System.out.println(pharmacistService.searchReservedMedicnes(resNumber,pharmacy).size());
 		return pharmacistService.searchReservedMedicnes(resNumber,pharmacy);
@@ -218,7 +227,7 @@ public class PharmacistController {
 			 
 			 emailService.sendEmail(reservation.getPatient().getUser().getEmail(),"Reservation","Raservation has been taken.");
 			 System.out.println("Mejl je poslat");
-			medicineReservationRepository.save(reservation);
+			 medicineReservationRepository.save(reservation);
 			 
 		 }catch (Exception e){
 	            e.printStackTrace();
