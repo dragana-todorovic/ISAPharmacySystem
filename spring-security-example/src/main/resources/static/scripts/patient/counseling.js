@@ -12,7 +12,7 @@ $(document).ready(function() {
 		$('#pharmacies_for_derm_appointments').attr('hidden',true);
 		$('#edit-profile').attr('hidden', true);
 		$('#show').attr('hidden',true);
-
+		$('#my_ph_appointments').attr('hidden',true)
 	});
 	$('a#my_app_ph').click(function(){
 		console.log(email);
@@ -22,6 +22,7 @@ $(document).ready(function() {
 	        contentType: 'application/json',
 	        success: function(data){
 				console.log(data);
+				showMyCounslingAppointments(data);
 			},
 			error: function(){
 				console.log("error");
@@ -65,12 +66,19 @@ $(document).ready(function() {
 	
 	 $('#ph_con_body').on('click','button',function(event){
 		var pom = $(event.target).closest('tr').attr('id');
+		var pharmacistEmail;
 		var date=term.split("T")[0];
 		var time=term.split("T")[1];
 		var duration="30";
-		alert(time)
-		obj = JSON.stringify({pharmacistEmail:pom,startDate:date,startTime:time,patientEmail:email,duration:duration});
-	    			customAjax({
+		customAjax({
+			method:'GET',
+	        url:'/pharm/getPharmacistsById/'+pom,
+	        contentType: 'application/json',
+    		success: function(data) {
+				console.log(data);
+				pharmacistEmail=data.user.email;
+				obj = JSON.stringify({pharmacistEmail:pharmacistEmail,startDate:date,startTime:time,patientEmail:email,duration:duration});
+	    		customAjax({
 		        method:'POST',
 		        url:'/pharm/scheduleAnAppointment',
 		        data : obj,
@@ -85,6 +93,28 @@ $(document).ready(function() {
 					alert("Can't schedule an appointment. Date and time aren't correct. You are not working then, patient and you are not available ot it passed")
 				}
 		      });
+    		},
+    		error:function(message){
+				alert("Error")
+    			console.log(message)
+    		}
+    	});
+		$('#my_ph_appointments_body').on('click','button',function(event){
+		pom = $(event.target).closest('tr').attr('id');
+        customAjax({
+            method:'POST',
+            url:'/pharmacy/cancelCounselingAppointment/'+pom ,
+            contentType: 'application/json',
+            success: function() {
+               alert("Successfully canceled counseling!");
+            },
+            error:function(){
+                alert("You can not cancel counseling within less than 24 before appointment!");
+            }
+        });
+		
+	})
+
 		
 	})
 
@@ -109,6 +139,7 @@ function showPharmacistsForConsulting(data){
 	$('#edit-profile').attr('hidden', true);
 	$('#show').attr('hidden',true);
 	$('#shedule_consulting').attr('hidden',true);
+	$('#my_ph_appointments').attr('hidden',true)
 }
 
 function showPharmaciesForConsulting(data){
@@ -116,7 +147,7 @@ function showPharmaciesForConsulting(data){
 	let temp='';
 	for (i in data){
 		temp+=`<tr id="`+data[i].id+`">
-			<td >`+data[i].pharmacyName+` `+data[i].dermatologistLastName+`</td>
+			<td >`+data[i].pharmacyName+`</td>
 			<td>`+data[i].pharmacyCity+`</td>
 			<td>`+data[i].pharmacyStreet+`</td>
 			<td>`+data[i].pharmacyGrade+`</td>
@@ -127,6 +158,53 @@ function showPharmaciesForConsulting(data){
 	
 	$('#ph_av_con_body').html(temp);	
 	$('#ph_av_con').attr('hidden',false)
+	$('#ph_con').attr('hidden',true)
+	$('#my_derm_appointments').attr('hidden',true);
+	$('#derm_appointments').attr('hidden',true);
+	$('#pharmacy-details').attr('hidden',true);
+	$('#pharmacies_for_derm_appointments').attr('hidden',true);
+	$('#edit-profile').attr('hidden', true);
+	$('#show').attr('hidden',true);
+	$('#shedule_consulting').attr('hidden',true);	
+	$('#my_ph_appointments').attr('hidden',true)
+}
+
+function showMyCounslingAppointments(data){
+	$('#pharmacy-details').attr('hidden',true);
+	let temp='';
+	for (i in data){
+		var date=data[i].time.split("T")[0];
+		var time=data[i].time.split("T")[1];
+		if(data[i].isCounslingExpired){
+			temp+=`<tr id="`+data[i].id+`">
+				<td >`+data[i].pharmacistsFirstName+` `+data[i].pharmacistsLastName+`</td>
+				<td>`+data[i].pharmacyName+`</td>
+				<td>`+data[i].pharmacyCity+`</td>
+				<td>`+data[i].pharmacyStreet+`</td>
+				<td>`+date+` `+time+`</td>
+				<td>`+data[i].duration+`</td>
+				<td>`+data[i].price+`</td>
+				<td><button id="cancel_counsling" class="ui primary basic button" disabled>Cancel appointment</button>
+				</tr>`;
+			}
+			else{
+			temp+=`<tr id="`+data[i].id+`">
+			<td >`+data[i].pharmacistsFirstName+` `+data[i].pharmacistsLastName+`</td>
+			<td>`+data[i].pharmacyName+`</td>
+			<td>`+data[i].pharmacyCity+`</td>
+			<td>`+data[i].pharmacyStreet+`</td>
+			<td>`+data[i].time+`</td>
+			<td>`+data[i].duration+`</td>
+			<td>`+data[i].price+`</td>
+			<td><button id="cancel_counsling" class="ui primary basic button">Cancel appointment</button>
+			</tr>`;
+		}
+			
+	}
+	
+	$('#my_ph_appointments_body').html(temp);	
+	$('#my_ph_appointments').attr('hidden',false)
+	$('#ph_av_con').attr('hidden',true)
 	$('#ph_con').attr('hidden',true)
 	$('#my_derm_appointments').attr('hidden',true);
 	$('#derm_appointments').attr('hidden',true);

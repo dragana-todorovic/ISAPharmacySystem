@@ -261,11 +261,19 @@ public class PharmacistController {
 		System.out.println(dto.getDuration());
 		System.out.println(dto.getStartDate());
 		String startDate;
-		startDate = dto.getStartDate().replace('/', '-');	
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
-		DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		String start = LocalDate.parse(startDate, formatter).format(formatter2);
+		String start;
+		if(dto.getStartDate().contains("/")) {
+			System.out.println("sadrzi /");
+			startDate = dto.getStartDate().replace('/', '-');
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
+			DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+			start = LocalDate.parse(startDate, formatter).format(formatter2);
+		}
+		else
+			start=dto.getStartDate();
+	
 		LocalDate datePart = LocalDate.parse(start);
+		System.out.println(datePart);
 		LocalTime timePart = LocalTime.parse(dto.getStartTime());
 		LocalDateTime dt = LocalDateTime.of(datePart, timePart);
 		if(dt.isBefore(LocalDateTime.now())) {
@@ -276,6 +284,9 @@ public class PharmacistController {
 		System.out.println("Farmaceut"+dto.getPharmacistEmail());
 	
 		for(Pharmacist d: pharmacistService.findAll()) {
+			System.out.println("*******************************");
+			System.out.println(d.getUser().getFirstName());
+			System.out.println(dto.getPharmacistEmail());
 			if(d.getUser().getEmail().equals(dto.getPharmacistEmail())) {
 				System.out.println("Email farmaceuta"+d.getUser().getEmail());
 				pharmacist= d;
@@ -289,15 +300,13 @@ public class PharmacistController {
 			}
 		}
 		//AKO JE PHARMACY NULL ZNACI DA NE RADI TRENUTNO U NJOJ
+
+		if(pharmacist.getWorkingTimes().getPharmacy()==null) {
 		System.out.println("da li je null"+pharmacist);
-		Pharmacy pharmacy=pharmacist.getWorkingTimes().getPharmacy();
-		
-		if(pharmacy==null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-	
+		Pharmacy pharmacy=pharmacist.getWorkingTimes().getPharmacy();
 		 if(pharmacistService.isAppointmentAvailableForScheduling(pharmacist,patient,Integer.parseInt(dto.getDuration()), pharmacy, datePart, dt, dt.plusMinutes(Integer.parseInt((dto.getDuration()))))) {
-			 System.out.println("Datum je u redu");
 			 try {
 				 
 				 emailService.sendEmail(dto.getPatientEmail(),"Counseling","You have successfully scheduled an counseling");
@@ -460,6 +469,15 @@ public class PharmacistController {
 		System.out.println("pogodjena metoda");
 		System.out.println(this.pharmacistCounselingService.getAvailablePharmacistsByPharmacy(pharmacy, term));
 		return this.pharmacistCounselingService.getAvailablePharmacistsByPharmacy(pharmacy, term);
+		
+	}
+	
+	@GetMapping("/getPharmacistsById/{id}")
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	public Pharmacist getPharmacistsById(@PathVariable Long id) {
+		System.out.println("pogodjena metoda");
+		System.out.println(this.pharmacistService.getPharmacistsById(id));
+		return this.pharmacistService.getPharmacistsById(id);
 		
 	}
 }

@@ -439,6 +439,11 @@ public class PharmacistServiceImpl implements PharmacistService {
 			}
 		return result;
 	}
+
+	@Override
+	public Pharmacist getPharmacistsById(Long id) {
+		return this.pharmacistRepository.findPharmacistById(id);
+	}
 	
 	
 }

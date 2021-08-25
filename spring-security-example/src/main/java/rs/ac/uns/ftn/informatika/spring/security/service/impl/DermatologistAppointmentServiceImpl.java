@@ -85,10 +85,16 @@ public class DermatologistAppointmentServiceImpl implements DermatologistAppoint
 		List <DermatologistAppointment> appointments = new ArrayList<DermatologistAppointment>();
 		for (DermatologistAppointment d:dermatologistAppointmentRepository.findAll()) {
 			if(d.getPatient()!=null) {
-			if(d.getPatient().getId().equals(id)) {
-				appointments.add(d);
+				if(d.getPatient().getId().equals(id)) {
+					appointments.add(d);
+				}
 			}
-		}}
+			else {
+				continue;
+			}
+
+		}
+
 		return appointments;
 	}
 

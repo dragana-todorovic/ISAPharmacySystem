@@ -31,4 +31,5 @@ public interface PharmacistService {
 	List<WorkCalendarDTO> getPharmacistsCounseling(Pharmacist pharmacist);
 	Boolean isAppointmentAvailableForScheduling(Pharmacist pharmacist,Patient patient,Integer duration,Pharmacy pharmacy,LocalDate startDate, LocalDateTime startDateTime,LocalDateTime endDateTime); 
 	double getAvrageGrade(Pharmacist pharmacist);
+	Pharmacist getPharmacistsById(Long id);
 }
