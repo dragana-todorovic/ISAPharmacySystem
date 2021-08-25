@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import rs.ac.uns.ftn.informatika.spring.security.model.Dermatologist;
 import rs.ac.uns.ftn.informatika.spring.security.model.DermatologistAppointment;
 import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicineReservation;
@@ -38,6 +39,7 @@ import rs.ac.uns.ftn.informatika.spring.security.model.DTO.CounselingDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.HolidayRequestDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.MyPatientDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.StartDateTimeDTO;
+import rs.ac.uns.ftn.informatika.spring.security.model.DTO.WorkCalendarDTO;
 import rs.ac.uns.ftn.informatika.spring.security.repository.MedicineRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.MedicineReservationRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacistCounselingRepository;
@@ -88,7 +90,20 @@ public class PharmacistController {
 		}
 		return null;
 	}
-	
+	@GetMapping("/getPharmacistsCounseling/{email}")
+	@PreAuthorize("hasRole('ROLE_PHARMACIST')")
+	public List<WorkCalendarDTO> getPharmacistsCounseling(@PathVariable String email) {
+	Pharmacist pharmacist=null;
+	System.out.println("Pogodio metodu");
+	for(Pharmacist d:pharmacistService.findAll()) {
+		if(d.getUser().getEmail().equals(email)) {
+			pharmacist = d;
+		}
+	}
+	System.out.println(pharmacist.getUser().getEmail());
+	return pharmacistService.getPharmacistsCounseling(pharmacist);
+		
+	}
 	
 	@GetMapping("/getMedicinesOnWhichPatientIsNotAllergic/{id}")
 	@PreAuthorize("hasRole('ROLE_PHARMACIST')")
@@ -141,10 +156,14 @@ public class PharmacistController {
 		System.out.println("Usao u rezervaciju");
 		Pharmacist pharmacist =null;
 		for(Pharmacist p: pharmacistService.findAll()) {
+			System.out.println(p);
+			System.out.println(p.getUser().getEmail());
 			if(p.getUser().getEmail().equals(email)) {
 				pharmacist=p;
 			}
 		}
+		System.out.println(pharmacist);
+		System.out.println("working time"+pharmacist.getWorkingTimes());
 		Pharmacy pharmacy = pharmacist.getWorkingTimes().getPharmacy();
 		//System.out.println(pharmacistService.searchReservedMedicnes(resNumber,pharmacy).size());
 		return pharmacistService.searchReservedMedicnes(resNumber,pharmacy);
@@ -262,12 +281,14 @@ public class PharmacistController {
 		}
 		Pharmacist pharmacist=null;
 		LocalDate startDateDPharmacist=dt.toLocalDate();
-		
+		System.out.println("Farmaceut"+dto.getPharmacistEmail());
+	
 		for(Pharmacist d: pharmacistService.findAll()) {
 			System.out.println("*******************************");
 			System.out.println(d.getUser().getFirstName());
 			System.out.println(dto.getPharmacistEmail());
 			if(d.getUser().getEmail().equals(dto.getPharmacistEmail())) {
+				System.out.println("Email farmaceuta"+d.getUser().getEmail());
 				pharmacist= d;
 			}
 			}
@@ -279,7 +300,9 @@ public class PharmacistController {
 			}
 		}
 		//AKO JE PHARMACY NULL ZNACI DA NE RADI TRENUTNO U NJOJ
+
 		if(pharmacist.getWorkingTimes().getPharmacy()==null) {
+		System.out.println("da li je null"+pharmacist);
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		Pharmacy pharmacy=pharmacist.getWorkingTimes().getPharmacy();

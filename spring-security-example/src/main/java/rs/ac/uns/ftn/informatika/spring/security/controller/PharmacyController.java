@@ -297,18 +297,25 @@ public class PharmacyController {
 		
 		Set<MedicinePrice> medicinePrices = new HashSet<MedicinePrice>();
 		
+		MedicinePrice mp = new MedicinePrice();
 		for(MedicinePriceDTO m : priceList.getMedicines()) {
-			MedicinePrice mp = new MedicinePrice();
+			
 			mp.setMedicine(this.medicineService.findById(Long.parseLong(m.getMedicineId())));
 			mp.setPrice(Double.parseDouble(m.getPrice()));
 			medicinePrices.add(mp);
-			this.medicinePriceRepository.save(mp);
+			
 			
 		}
-		this.priceListService.createNewPriceList(email, medicinePrices, date);
+		if(this.priceListService.createNewPriceList(email, medicinePrices, date)) {
+			this.medicinePriceRepository.save(mp);
+			return new ResponseEntity<>(HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		
 		
-		return new ResponseEntity<>(HttpStatus.OK);
+		
+		
 		
 	}
 	

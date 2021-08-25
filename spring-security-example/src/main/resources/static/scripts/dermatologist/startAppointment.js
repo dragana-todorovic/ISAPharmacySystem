@@ -16,7 +16,7 @@ var result=false;
 			
 					console.log(patients[i].myPatientId)
 					
-			temp+=`<tr><td>`+patients[i].name+`</td><td>`+patients[i].surname+`</td><td>`+patients[i].startDateTime.split("T")[0]+`</td><td> <input name="start" id="btnStart` + patients[i].myPatientId +`k`+patients[i].startDateTime + `" name = "start" class="btn btn-primary" type="button" value="Start appointment"><br> <input name="finish" id="btnFinish` + patients[i].myPatientId+`k`+patients[i].startDateTime + `" name = "finish" class="btn btn-danger" type="button" value="Patient hasn't apperead"></td>`;
+			temp+=`<tr><td>`+patients[i].name+`</td><td>`+patients[i].surname+`</td><td>`+patients[i].startDateTime.split("T")[0]+" "+patients[i].startDateTime.split("T")[1]+`</td><td> <input name="start" id="btnStart` + patients[i].myPatientId +`k`+patients[i].startDateTime + `" name = "start" class="btn btn-primary" type="button" value="Start appointment"><br> <input name="finish" id="btnFinish` + patients[i].myPatientId+`k`+patients[i].startDateTime + `" name = "finish" class="btn btn-danger" type="button" value="Patient hasn't apperead"></td>`;
 			
 			temp+=`</tr>`;
 		}
@@ -165,9 +165,9 @@ $("#surname").keyup(function () {
 			    </tr>
  <p id="errorInput"> </p>
 			  </tfoot>
-		    </table> <p id="errorInput"> </p>`);
+		    </table><div id="showSchedule"></div> <p id="errorInput"> </p>`);
 $("#scheduleAppointment").click(function () {
-	 $("#showData").html(`
+	 $("#showSchedule").html(`
 				<table id="table" class="ui large table" style="width:50%; margin-left:auto; 
     margin-right:auto; margin-top: 40px;">
 		       <thead>
@@ -276,7 +276,8 @@ $('#schedule').click(function(){
 		        contentType: 'application/json',
 		        success: function(){
 					
-		        	alert("Success scheduled an appointment!")
+		        	alert("Success scheduled an appointment!");
+					 $("#showSchedule").html(``);
 					
 				
 				},

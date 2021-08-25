@@ -8,8 +8,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,6 +29,7 @@ import rs.ac.uns.ftn.informatika.spring.security.model.PharmacistCounselingPrice
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
 import rs.ac.uns.ftn.informatika.spring.security.model.PriceList;
+import rs.ac.uns.ftn.informatika.spring.security.model.PriceListSort;
 import rs.ac.uns.ftn.informatika.spring.security.model.WorkingTime;
 import rs.ac.uns.ftn.informatika.spring.security.repository.ActionAndBenefitRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.AppointmentPriceRepository;
@@ -749,30 +752,21 @@ public class StatisticServiceImpl implements StatisticService{
 		
 		Set<MedicineReservation> medicineReservations = p.getMedicineReservations();
 		Set<PriceList> allPrices = p.getPriceList();
-		Set<MedicinePrice> appointmentPrices = new HashSet<MedicinePrice>();
-	/*	for(MedicineReservation r : medicineReservations) {
-			if(r.getDueTo().isBefore(LocalDate.now()) && r.getStatus().equals(MedicineReservationStatus.TAKEN)) {
-			{
-					for(PriceList ap : allPrices) {
-						if(ap.getStartDate().isBefore(LocalDate.now()))
-						for(MedicinePrice mp : ap.getMedicinePriceList()) {
-							if(mp.getMedicine().equals(r.getMedicineWithQuantity().getMedicine())) {
-								
-							}
-						if(ap.get) {
-							appointmentPrices.add(ap);
-						}
-					}
-					}
-				}
-			}
-		}*/
-		System.out.println(appointmentPrices);
+		
+		List<PriceList> list = new ArrayList<PriceList>(allPrices);
+		Collections.sort(list, new PriceListSort(-1));
+		
+		Set<PriceList> resultSet = new LinkedHashSet<PriceList>(list);
+		
+		for(PriceList plist : resultSet) {
+			System.out.println(plist.getStartDate());
+		}
+		
 		List<LocalDate> allDates = new ArrayList<LocalDate>();
-		for(PriceList a : allPrices) {
-			if(a.getStartDate().isBefore(LocalDate.now()) && a.getStartDate().isAfter(from) &&
-					a.getStartDate().isBefore(to)) {
-			allDates.add(a.getStartDate());
+		for(MedicineReservation a : medicineReservations) {
+			if(a.getDueTo().isBefore(LocalDate.now()) && a.getDueTo().isAfter(from) &&
+					a.getDueTo().isBefore(to) && a.getStatus().equals(MedicineReservationStatus.TAKEN)) {
+			allDates.add(a.getDueTo());
 			}
 		}
 		
@@ -787,26 +781,25 @@ public class StatisticServiceImpl implements StatisticService{
 			}
 			
 		}
-		System.out.println("daysss " + days);
-		//Collections.sort(days);
 		for(String day : days) {
-			System.out.println("REZERVSCIJE" + medicineReservations);
 			System.out.println("day" + day);
 			StatisticDTO statistic = new StatisticDTO();
 			int income = 0;
 			for(MedicineReservation r : medicineReservations) {
 				if(r.getDueTo().isBefore(LocalDate.now()) && r.getStatus().equals(MedicineReservationStatus.TAKEN)) {
-						for(PriceList ap : allPrices) {
+						for(PriceList ap : resultSet){
 							if(ap.getStartDate().isBefore(LocalDate.now()) && ap.getStartDate().isBefore(r.getDueTo())) {
 								for(MedicinePrice mp : ap.getMedicinePriceList()) {
 									if(mp.getMedicine().equals(r.getMedicineWithQuantity().getMedicine())) {
-										if(ap.getStartDate().getYear() == Integer.parseInt(day.split("\\.")[2]) && 
-												ap.getStartDate().getMonthValue() == Integer.parseInt(day.split("\\.")[1]) &&
-														ap.getStartDate().getDayOfMonth() == Integer.parseInt(day.split("\\.")[0])) {
+										if(r.getDueTo().getYear() == Integer.parseInt(day.split("\\.")[2]) && 
+												r.getDueTo().getMonthValue() == Integer.parseInt(day.split("\\.")[1]) &&
+														r.getDueTo().getDayOfMonth() == Integer.parseInt(day.split("\\.")[0])) {
 											income += mp.getPrice() * r.getMedicineWithQuantity().getQuantity();
+											break;
 										}
 									}
 								}
+								break;
 							}
 					}
 				}
@@ -819,5 +812,7 @@ public class StatisticServiceImpl implements StatisticService{
 		return statisticsPerMonth;
 		
 	}
+	
+	
 
 }

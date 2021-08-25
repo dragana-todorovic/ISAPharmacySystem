@@ -10,11 +10,13 @@ $(document).ready(function(e){
 		        <tbody>
 		            <tr>
 		                <td>Start date:</td>		
-						<td><input type="text" id="datepickerStartDate"></td>		                
+						<td><input type="text" id="datepickerStartDate"></td>	
+							                
 		            </tr>
 		            <tr>
 		                <td>End date:</td>
 						<td><input type="text" id="datepickerEndDate"></td>
+						
 		                
 		            </tr>
 		           

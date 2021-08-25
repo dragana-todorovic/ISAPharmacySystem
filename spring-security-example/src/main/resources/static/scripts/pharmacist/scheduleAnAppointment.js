@@ -101,7 +101,7 @@ $('#schedule').click(function(){
 	console.log(e.value);	
 	if(startDate!="" && e.value!=""){
 	var patientEmail = e.value;
-	
+	console.log(pharmacistEmail)
 	
 	$("#errorInput").text("")
 	
