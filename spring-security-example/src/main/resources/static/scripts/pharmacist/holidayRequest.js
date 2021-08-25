@@ -78,18 +78,18 @@ $( "#datepickerStartDate" ).datepicker({
 				},
 				error: function(){
 					
-					alert("Can't send holiday request'")
+					alert("Can't send holiday request. It's not pharmacist working time.'")
 				}
 		            });
 		}else{
 			alert("Start date needs to be after today!")
-			location.href = "pharmacist.html";
+			
 		}}else{
 			alert("End date needs to be after start date!")
-			location.href = "pharmacist.html";
+	
 		}}else{
 			alert("You haven't filled all fields or you are not logged in! Please try again!")
-			location.href = "pharmacist.html";
+			
 		}
 			
 	 });

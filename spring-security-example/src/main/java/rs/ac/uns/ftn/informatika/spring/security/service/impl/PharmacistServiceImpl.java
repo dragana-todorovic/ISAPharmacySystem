@@ -77,29 +77,33 @@ public class PharmacistServiceImpl implements PharmacistService {
 	@Autowired
 	private UserRepository userRepository;
 	@Override
-	public void saveHolidayRequest(HolidayRequestDTO holidayRequest) {
+	public Boolean saveHolidayRequest(HolidayRequestDTO holidayRequest) {
 	try{
 		User u = userRepository.findByEmail(holidayRequest.getEmail());
 		System.out.println("U"+u);
 		for (Pharmacist d: pharmacistRepository.findAll()) {
-		System.out.println("Hahahahh"+d.getUser().getEmail());
 			d.getUser().getEmail();
 			if(d.getUser().getEmail().equals(u.getEmail()))
 			{
-		System.out.println("Usao u if");		
+	   Pharmacy pharmacy = d.getWorkingTimes().getPharmacy();
+		if(pharmacy==null) {
+					 return false;
+				 }
+		 System.out.println("Usao u if");		
 		 HolidayRequest req = new HolidayRequest();
 		 LocalDate localStartDate = LocalDate.parse(holidayRequest.getStartDate());
 		 LocalDate localEndDate = LocalDate.parse(holidayRequest.getEndDate());
 		 req.setStartDate(localStartDate);
 		 req.setEndDate(localEndDate);
 		 req.setStatus(HolidayRequestStatus.ON_HOLD);
-		 d.getHolidayRequests().add(req);
-		 //this.holidayRequestRepository.save(req);		
+		 req.setPharmacy(pharmacy);
+		 d.getHolidayRequests().add(req);	
 		 this.pharmacistRepository.save(d);
+		 return true;
 			}}} catch (Exception e) {
-		return;
+		return false;
 	}
-		
+	return false;	
 	
 	}
 
@@ -277,7 +281,7 @@ public class PharmacistServiceImpl implements PharmacistService {
 		for(PharmacistCounseling da:appointments) {
 			if (da.getStartDateTime().toLocalDate().equals(startDateTime.toLocalDate())) {
 				if (isTimeFine(startDateTime.toLocalTime(), duration, da.getStartDateTime().toLocalTime(),
-						da.getStartDateTime().toLocalTime().plusMinutes(da.getDuration())))
+						da.getStartDateTime().toLocalTime().plusMinutes(da.getDuration())) && da.getPatient()!=null)
 				{
 					return false;}
 			}
@@ -297,7 +301,7 @@ public class PharmacistServiceImpl implements PharmacistService {
 			System.out.println("Counseling" + da);
 			if (da.getStartDateTime().toLocalDate().equals(startDateTime.toLocalDate())) {
 				if (isTimeFine(startDateTime.toLocalTime(), duration, da.getStartDateTime().toLocalTime(),
-						da.getStartDateTime().toLocalTime().plusMinutes(da.getDuration())))
+						da.getStartDateTime().toLocalTime().plusMinutes(da.getDuration())) && da.getPatient()!=null)
 					return false;
 			}
 		}
@@ -395,6 +399,7 @@ public class PharmacistServiceImpl implements PharmacistService {
 			System.out.println(m.getNumberOfReservation().toString());
 			System.out.println(resNumber);
 			System.out.println(m.getNumberOfReservation().toString().toLowerCase().contains(resNumber.toLowerCase()));
+			System.out.println(m.getStatus());
 			System.out.println(m.getStatus().equals(MedicineReservationStatus.RESERVED));
 
 			LocalDateTime dt = LocalDateTime.of(m.getDueTo(), m.getDueToTime());
