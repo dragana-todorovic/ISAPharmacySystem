@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.MyPatientDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.PatientAndDermatologistDTO;
+import rs.ac.uns.ftn.informatika.spring.security.model.DTO.PredefinedAppointmentScheduleDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.StartDateTimeDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.WorkCalendarDTO;
 import rs.ac.uns.ftn.informatika.spring.security.repository.DermatologistAppointmentRepository;
@@ -76,9 +77,13 @@ public class DermatologistController {
 	private DermatologistAppointmentService dermatologistAppointmentService;
 	
 	@RequestMapping(value = "/holidayRequest" , method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
 	public ResponseEntity<?> requestHoliday(@RequestBody HolidayRequestDTO holidayRequest) {
-		this.dermatologistService.saveHolidayRequest(holidayRequest);
-		return new ResponseEntity<>(HttpStatus.OK);
+		if(this.dermatologistService.saveHolidayRequest(holidayRequest)) {
+		return new ResponseEntity<>(HttpStatus.OK);}
+		else {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 	}
 	@RequestMapping(value = "/getStartDateTime" , method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public LocalDateTime getStartDateTime(@RequestBody StartDateTimeDTO startDateTimeDTO) {
@@ -202,7 +207,29 @@ public class DermatologistController {
 		return result;
 		
 	}
+	@GetMapping("/getAllPredefinedAppointments/{email}")
+	@PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
+	public List<DermatologistAppointment> getAllPredefinedAppointments(@PathVariable String email) {
+		Dermatologist dermatologist = null;
+		for(Dermatologist d :dermatologistService.findAll()) {
+			if(d.getUser().getEmail().equals(email)){
+				dermatologist=d;
+			}
+		}
+		List <DermatologistAppointment> appointments = dermatologistAppointmentService.findAll();
+		List<DermatologistAppointment> result = new ArrayList<DermatologistAppointment>();
+		for(DermatologistAppointment da:appointments) {
+			if(da.getDermatologist().getId().equals(dermatologist.getId()) && da.getPatient()==null) {
+				result.add(da);
+				
+			}
+		}
+		
+		return result;
+		
+	}
 	@RequestMapping(value = "/scheduleAnAppointment" , method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
 	public ResponseEntity<?> scheduleAnAppointment(@RequestBody AppointmentScheduleDTO dto)  {
 		String startDate;
 		startDate = dto.getStartDate().replace('/', '-');	
@@ -253,6 +280,59 @@ public class DermatologistController {
 			 System.out.println("Datum NIIIIIJEEE OK");
 			 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		 }
+		
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	@RequestMapping(value = "/scheduleAPredefinedAppointment" , method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
+	public ResponseEntity<?> scheduleAPredefinedAppointment(@RequestBody PredefinedAppointmentScheduleDTO dto)  {
+	
+		String startDateTime = dto.getStartDateTimeId().split(" sifra ")[0];
+		LocalDateTime dt = LocalDateTime.of(LocalDate.parse(startDateTime.split(" ")[0]), LocalTime.parse(startDateTime.split(" ")[1]));
+		if(dt.isBefore(LocalDateTime.now())) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);	
+		}
+		System.out.println(dt);
+	
+
+		Dermatologist dermatologist=null;
+		
+		
+		for(Dermatologist d: dermatologistService.findAll()) {
+			if(d.getUser().getEmail().equals(dto.getDermatologistEmail())) {
+				dermatologist= d;
+			}
+			}
+		Patient patient=null;	
+		for(Patient p:patientService.findAll()) {
+			System.out.println("Email pacijenta"+p.getUser().getEmail());
+			if(p.getUser().getEmail().equals(dto.getPatientEmail())) {
+				patient = p;
+			}
+		}
+		//AKO JE PHARMACY NULL ZNACI DA NE RADI TRENUTNO U NJOJ
+		Pharmacy pharmacy=pharmacyService.getPharmacyByDermatologistAndStartDate(dermatologist, LocalDateTime.now());
+		if(pharmacy==null) {
+			System.out.println("Apoteka je null");
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		 if(dermatologistService.isAppointmentAvailableForScheduling(dermatologist,patient,Integer.parseInt(dto.getDuration()), pharmacy, LocalDate.parse(startDateTime.split(" ")[0]), dt, dt.plusMinutes(Integer.parseInt((dto.getDuration()))))) {
+			 System.out.println("Datum je u redu");
+			 try {
+				 
+				 emailService.sendEmail(dto.getPatientEmail(),"Appointment","You have successfully scheduled an appointment");
+				 System.out.println("Mejl je poslat");
+				 dermatologistAppointmentService.savePredefinedAppointment(dto, patient);
+				 
+			 }catch (Exception e){
+		            e.printStackTrace();
+		        }
+		 }else {
+			 System.out.println("Datum NIIIIIJEEE OK");
+			 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		 }
+		
 		
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
@@ -382,6 +462,7 @@ public class DermatologistController {
 		return medicine;
 		
 	}
+	//PROVJERITI DA LI JE OSTALA
 	@RequestMapping(value = "/saveAppointment" , method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
 	public ResponseEntity<?> saveAppointment(@RequestBody AppointmentDTO appointmentDTO) {

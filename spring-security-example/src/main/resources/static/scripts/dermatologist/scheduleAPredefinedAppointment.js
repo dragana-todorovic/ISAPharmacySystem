@@ -1,6 +1,7 @@
 $(document).ready(function(e){
 	var email = localStorage.getItem('email');
-	$("#scheduleAnAppointment").click(function () {
+	$("#scheduleAPredefinedAppointment").click(function () {
+		console.log("Usao u klik")
 	 $("#showData").html(`
 				<table id="table" class="ui large table" style="width:50%; margin-left:auto; 
     margin-right:auto; margin-top: 40px;">
@@ -16,22 +17,19 @@ $(document).ready(function(e){
       <option  ></option></select></td>
 		              
                <td></td>
-		            </tr>
-		         
-					 <tr>
+		            </tr>		        					
+		          <tr>
+		            <td>Predefined appointments:</td>
+						<td><select id="dropdownAppointments" >
+      <option  ></option></select></td>
+		              
+               <td></td> </tr>
+				 <tr>
 		                <td>Duration:</td>
 						<td> <input  type="text" name="txtDuration" id="txtDuration" /></td>
  <td></td>		                
 </tr>
-		          <tr>
-		                <td>Date for appointment:</td>		
-						<td><input type="text" id="datepickerStartDate"></td>		                
-		           
- <td></td> </tr>
-				<td>Time for appointment:</td>		
-						<td><input value="08:00" type="time" id="txtTime"></td>		                
-		           
- <td></td> </tr>
+				
 		            
 		        </tbody>
 	        <tfoot class="full-width">
@@ -46,37 +44,10 @@ $(document).ready(function(e){
  <p id="errorInput"> </p>
 			  </tfoot>
 		    </table> <p id="errorInput"> </p>`);
-$( "#datepickerStartDate" ).datepicker({
-	format: 'yyyy-mm-dd'
-});
 	btnAcceptChange = document.getElementById("schedule")
 	btnAcceptChange.disabled = true
-	
-	
-	 input_email=$('#txtPatient');
-	var input_Date = $('#datepickerStartDate');
-    var input_Time = $('#txtTime');
 	var input_Duration = $('#txtDuration');
-
-customAjax({
-		      url: '/derm/getAllPatients',
-		      method: 'GET',
-		      success: function(patients){
-			
-				console.log(patients)
-					for (var i = 0; i < patients.length; i++) { 
-						console.log(patients[i])
-					 var option = document.createElement("option");
-					 var dropdown = document.getElementById("dropdownPatients");
-					 option.text = (patients[i]);
-					 dropdown.add(option); }},
-				 error: function(medicines){
-		
-		      }
-});
-
-
-input_Duration.keyup(function () {
+	input_Duration.keyup(function () {
 	  	if(validateNumber(input_Duration.val())) {
 			btnAcceptChange.disabled = false
 	  	}
@@ -92,26 +63,55 @@ input_Duration.keyup(function () {
 	  		$("#errorInput").text("")
 	  	}
   });
-
+customAjax({
+		      url: '/derm/getAllPatients',
+		      method: 'GET',
+		      success: function(patients){
+			
+				console.log(patients)
+					for (var i = 0; i < patients.length; i++) { 
+						console.log(patients[i])
+					 var option = document.createElement("option");
+					 var dropdown = document.getElementById("dropdownPatients");
+					 option.text = (patients[i]);
+					 dropdown.add(option); }},
+				 error: function(){
+		
+		      }
+});
+customAjax({
+		      url: '/derm/getAllPredefinedAppointments/'+email,
+		      method: 'GET',
+		      success: function(appointments){
+			for (var i = 0; i < appointments.length; i++) { 
+						console.log(appointments[i])
+					 var option = document.createElement("option");
+					 var dropdown = document.getElementById("dropdownAppointments");
+					 option.text = (appointments[i].startDateTime.split("T")[0]+" "+ appointments[i].startDateTime.split("T")[1]+" sifra "+appointments[i].id);
+					 dropdown.add(option); }
+				},
+				 error: function(){
+		
+		      }
+});
 $('#schedule').click(function(){	
 	var dermatologistEmail = email;
-	var startDate =  $('#datepickerStartDate').val();
-	var startTime = $('#txtTime').val();
-	var duration = $('#txtDuration').val();
-	var e = document.getElementById("dropdownPatients");
-
 	
-	console.log(e.value);	
-	if(startDate!="" && e.value!=""){
+	var e = document.getElementById("dropdownPatients");
+	var app = document.getElementById("dropdownAppointments");
+
+	if(app.value!="" && e.value!=""){
 	var patientEmail = e.value;
+	var startDateTimeId = app.value;
+	var duration = $('#txtDuration').val();
 	
 	
 	$("#errorInput").text("")
 	
-	obj = JSON.stringify({dermatologistEmail:dermatologistEmail,startDate:startDate,startTime:startTime,patientEmail:patientEmail,duration:duration});
+	obj = JSON.stringify({dermatologistEmail:dermatologistEmail,startDateTimeId:startDateTimeId,patientEmail:patientEmail,duration:duration});
 			customAjax({
 		        method:'POST',
-		        url:'/derm/scheduleAnAppointment',
+		        url:'/derm/scheduleAPredefinedAppointment',
 		        data : obj,
 		        contentType: 'application/json',
 		        success: function(){
@@ -127,18 +127,16 @@ $('#schedule').click(function(){
 		            });}
 else{
 			
-			$("#errorInput").text("Choose date, time and email!")
+			$("#errorInput").text("Choose patient and predefined appointment!")
 	  		$('#errorInput').css('color', 'red');
 }
 
 });
 });	
-});
-function validateEmail(email) {
-	    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-	    return re.test(String(email).toLowerCase());
-}
-function validateNumber(name) {
+
+	
+	});
+	function validateNumber(name) {
 	    const re = /^[0-9]{1,3}$/;
 	    return re.test(String(name));
 }

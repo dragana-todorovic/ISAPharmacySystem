@@ -9,6 +9,7 @@ import rs.ac.uns.ftn.informatika.spring.security.model.Dermatologist;
 import rs.ac.uns.ftn.informatika.spring.security.model.DermatologistAppointment;
 import rs.ac.uns.ftn.informatika.spring.security.model.Patient;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.AppointmentScheduleDTO;
+import rs.ac.uns.ftn.informatika.spring.security.model.DTO.PredefinedAppointmentScheduleDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 
 public interface DermatologistAppointmentService {
@@ -16,4 +17,5 @@ public interface DermatologistAppointmentService {
 	List<DermatologistAppointment> findAll ();
 	List<DermatologistAppointment> findByPatientId(Long id);
 	void saveAppointment(AppointmentScheduleDTO appointmentDTO,Patient patient, LocalDateTime startDateTime,Pharmacy pharmacy);
+	void savePredefinedAppointment(PredefinedAppointmentScheduleDTO appointmentDTO,Patient patient);
 }

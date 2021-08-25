@@ -158,7 +158,7 @@ let editProfile = function(user) {
 	 input_phone = $('#txtPhoneNumber')
 	 input_email=user.email
 	 input_first_name.keyup(function () { console.log("Usao")
-	  	if(validateName(input_first_name.val()) && validateName(input_last_name.val())  && validateName(input_country.val()) && validateName(input_city.val()) && validateAddress(input_address.val()) && validateNumber(input_phone.val())) {
+	  	if(validateName(input_first_name.val()) && validateName(input_last_name.val())  && validateName(input_country.val()) && validateName(input_city.val()) && validateAddress(input_address.val()) && validatePhoneNumber(input_phone.val())) {
 			btnAcceptChange.disabled = false
 	  	}
 	  	if(!validateName(input_first_name.val())){
@@ -175,7 +175,7 @@ let editProfile = function(user) {
 	  	}
   });
 input_last_name.keyup(function () {
-	  	if(validateName(input_first_name.val()) && validateName(input_last_name.val())  && validateName(input_country.val()) && validateName(input_city.val()) && validateAddress(input_address.val()) && validateNumber(input_phone.val())) {
+	  	if(validateName(input_first_name.val()) && validateName(input_last_name.val())  && validateName(input_country.val()) && validateName(input_city.val()) && validateAddress(input_address.val()) && validatePhoneNumber(input_phone.val())) {
 			btnAcceptChange.disabled = false
 	  	}
 	  	if(!validateName(input_last_name.val())){
@@ -191,7 +191,7 @@ input_last_name.keyup(function () {
 	  	}
   });
 	input_country.keyup(function () {
-	  	if(validateName(input_first_name.val()) && validateName(input_last_name.val())  && validateName(input_country.val()) && validateName(input_city.val()) && validateAddress(input_address.val()) && validateNumber(input_phone.val())) {
+	  	if(validateName(input_first_name.val()) && validateName(input_last_name.val())  && validateName(input_country.val()) && validateName(input_city.val()) && validateAddress(input_address.val()) && validatePhoneNumber(input_phone.val())) {
 			btnAcceptChange.disabled = false
 	  	}
 	  	if(!validateName(input_country.val())){
@@ -207,7 +207,7 @@ input_last_name.keyup(function () {
 	  	}
   });
 	input_city.keyup(function () {
-	  	if( validateName(input_first_name.val()) && validateName(input_last_name.val())  && validateName(input_country.val()) && validateName(input_city.val()) && validateAddress(input_address.val()) && validateNumber(input_phone.val())) {
+	  	if( validateName(input_first_name.val()) && validateName(input_last_name.val())  && validateName(input_country.val()) && validateName(input_city.val()) && validateAddress(input_address.val()) && validatePhoneNumber(input_phone.val())) {
 			btnAcceptChange.disabled = false
 	  	}
 	  	if(!validateName(input_city.val())){
@@ -223,7 +223,7 @@ input_last_name.keyup(function () {
 	  	}
   });
 input_address.keyup(function () {
-	  	if( validateName(input_first_name.val()) && validateName(input_last_name.val())  && validateName(input_country.val()) && validateName(input_city.val()) && validateAddress(input_address.val()) && validateNumber(input_phone.val())) {
+	  	if( validateName(input_first_name.val()) && validateName(input_last_name.val())  && validateName(input_country.val()) && validateName(input_city.val()) && validateAddress(input_address.val()) && validatePhoneNumber(input_phone.val())) {
 			btnAcceptChange.disabled = false
 	  	}
 	  	if(!validateAddress(input_address.val())){
@@ -239,10 +239,10 @@ input_address.keyup(function () {
 	  	}
   });
 input_phone.keyup(function () {
-	  	if( validateName(input_first_name.val()) && validateName(input_last_name.val())  && validateName(input_country.val()) && validateName(input_city.val()) && validateAddress(input_address.val()) && validateNumber(input_phone.val())) {
+	  	if( validateName(input_first_name.val()) && validateName(input_last_name.val())  && validateName(input_country.val()) && validateName(input_city.val()) && validateAddress(input_address.val()) && validatePhoneNumber(input_phone.val())) {
 			btnAcceptChange.disabled = false
 	  	}
-	  	if(!validateNumber(input_phone.val())){
+	  	if(!validatePhoneNumber(input_phone.val())){
 	  		btnAcceptChange.disabled = true
 			$(this).addClass(`alert-danger`);
 	  		$('#txtPhoneNumber').css('border-color', 'red');
@@ -400,7 +400,7 @@ function validateEmail(email) {
 	    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 	    return re.test(String(email).toLowerCase());
 }
-function validateNumber(name) {
+function validatePhoneNumber(name) {
 	    const re = /^[0-9]+$/;
 	    return re.test(String(name));
 }

@@ -19,7 +19,7 @@ import rs.ac.uns.ftn.informatika.spring.security.model.DTO.WorkCalendarDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicineReservation;
 
 public interface PharmacistService {
-	void saveHolidayRequest(HolidayRequestDTO holidayRequest);
+	Boolean saveHolidayRequest(HolidayRequestDTO holidayRequest);
 	List<Pharmacist> findAll ();
 	List<MyPatientDTO> myPatients(String email);
 	List<MyPatientDTO> getPatientsForAppointment(String email);

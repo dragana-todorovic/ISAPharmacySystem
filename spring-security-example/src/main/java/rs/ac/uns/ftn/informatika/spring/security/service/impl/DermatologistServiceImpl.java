@@ -74,27 +74,32 @@ public class DermatologistServiceImpl implements DermatologistService{
 	@Autowired
 	private PharmacyService pharmacyService;
 	@Override
-	public void saveHolidayRequest(HolidayRequestDTO holidayRequest) {
+	public Boolean saveHolidayRequest(HolidayRequestDTO holidayRequest) {
+	
 	try{
 		User u = userRepository.findByEmail(holidayRequest.getEmail());
 		for (Dermatologist d: dermatologistRepository.findAll()) {
 		
 			if(d.getUser().getEmail().equals(u.getEmail()))
 			{
-		System.out.println("Usao u if");		
+		 Pharmacy pharmacy = pharmacyService.getPharmacyByDermatologistAndStartDate(d, LocalDateTime.now());
+		 if(pharmacy==null) {
+			 return false;
+		 }		
 		 HolidayRequest req = new HolidayRequest();
 		 LocalDate localStartDate = LocalDate.parse(holidayRequest.getStartDate());
 		 LocalDate localEndDate = LocalDate.parse(holidayRequest.getEndDate());
 		 req.setStartDate(localStartDate);
 		 req.setEndDate(localEndDate);
 		 req.setStatus(HolidayRequestStatus.ON_HOLD);
-		 d.getHolidayRequests().add(req);
-		 //this.holidayRequestRepository.save(req);		
+		 req.setPharmacy(pharmacy);		
+		 d.getHolidayRequests().add(req);	
 		 this.dermatologistRepository.save(d);
+		 return true;
 			}}} catch (Exception e) {
-		return;
+		return false;
 	}
-		
+		return false;
 	
 	}
 
@@ -303,8 +308,10 @@ public class DermatologistServiceImpl implements DermatologistService{
 		for(DermatologistAppointment da:appointments) {
 			if (da.getStartDateTime().toLocalDate().equals(startDateTime.toLocalDate())) {
 				if (isTimeFine(startDateTime.toLocalTime(), duration, da.getStartDateTime().toLocalTime(),
-						da.getStartDateTime().toLocalTime().plusMinutes(da.getDuration())))
+						da.getStartDateTime().toLocalTime().plusMinutes(da.getDuration())) && da.getPatient()!=null)
 				{
+					System.out.println("************"+da.getPatient());
+					System.out.println("Dermatolog nije slobodan");
 					return false;}
 			}
 		}
@@ -324,7 +331,7 @@ public class DermatologistServiceImpl implements DermatologistService{
 			System.out.println("Counseling" + da);
 			if (da.getStartDateTime().toLocalDate().equals(startDateTime.toLocalDate())) {
 				if (isTimeFine(startDateTime.toLocalTime(), duration, da.getStartDateTime().toLocalTime(),
-						da.getStartDateTime().toLocalTime().plusMinutes(da.getDuration())))
+						da.getStartDateTime().toLocalTime().plusMinutes(da.getDuration())) && da.getPatient()!=null)
 					return false;
 			}
 		}
@@ -342,13 +349,17 @@ public class DermatologistServiceImpl implements DermatologistService{
 		
 	}
 	private Boolean isTimeFine(LocalTime time, int duration, LocalTime startTime, LocalTime endTime){
+		System.out.println(startTime);
+		System.out.println(duration);
+		System.out.println(endTime);
+		System.out.println(time);
 		if (!time.isBefore(startTime) && !time.plusMinutes(duration).isAfter(endTime))
 			return true;
 		if (time.isAfter(startTime) && time.isBefore(endTime))
+			return true;			
+		if (time.plusMinutes(duration).isAfter(startTime) && time.plusMinutes(duration).isBefore(endTime))		
 			return true;
-		if (time.plusMinutes(duration).isAfter(startTime) && time.plusMinutes(duration).isBefore(endTime))
-			return true;
-		if (time.equals(startTime))
+		if (time.equals(startTime)) 
 			return true;
 		return false;
 		
