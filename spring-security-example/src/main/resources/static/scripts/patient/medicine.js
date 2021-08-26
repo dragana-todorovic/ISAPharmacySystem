@@ -1,3 +1,7 @@
+var isShapeSelected = false;
+var isTypeSelected = false;
+var selectedType ='';
+var selectedShape = '';
 $(document).ready(function() {
 	var decoded = parseJwt(localStorage.getItem('jwt'));
 	var email = decoded.email
@@ -17,6 +21,173 @@ $(document).ready(function() {
 	    modal.style.display = "none";
 	  }
 	}
+
+    // modalni za detials abotu medicines
+    var modalMedicines = document.getElementById('modal-medicines')
+    var spanMedicine = document.getElementsByClassName("closeMedicine")[0];
+      spanMedicine.onclick = function () {
+            modalMedicines.style.display = "none";
+        }
+
+    window.onclick = function (event) {
+        if (event.target == modalMedicines) {
+            modalMedicines.style.display = "none";
+        }
+    }
+    $('input:radio[name="postage"]').change(function(){
+            if ($(this).is(':checked') ) {
+                selectedType = $(this).val();
+                if( selectedType == 'NO_FILTER' ){
+                var let= $("#medicineSearch").val();
+                   customAjax({
+                       url: '/medicine/searchMedicine/' + let ,
+                       method: 'GET',
+                    success: function (data) {
+                        showMedicine(data);
+                    },
+                    error: function () {
+                    }
+                });
+                }else if(selectedType != '' && selectedShape == '' ) {
+                   var let= $("#medicineSearch").val();
+                    customAjax({
+                        url: '/medicine/searchMedicine/' + let ,
+                        method: 'GET',
+                        success: function (data) {
+                            showMedicineType(data, selectedType);
+                        },
+                        error: function () {
+                        }
+                    });
+                }else  if(selectedType != '' && selectedShape != ''){
+                        if (selectedType == 'NO_FILTER'){
+                            //selektuj samo shape
+                               var let= $("#medicineSearch").val();
+                            customAjax({
+                                url: '/medicine/searchMedicine/' + let ,
+                                method: 'GET',
+                                success: function (data) {
+                                    showMedicineShape(data, selectedShape);
+                                },
+                                error: function () {
+                                }
+                            });
+                        }else if (selectedShape == "NO_FILTER_SHAPE"){
+                               var let= $("#medicineSearch").val();
+                            //selektuj samo type
+                            customAjax({
+                                url: '/medicine/searchMedicine/' + let ,
+                                method: 'GET',
+                                success: function (data) {
+                                    showMedicineType(data, selectedType);
+                                },
+                                error: function () {
+                                }
+                            });
+                        }else{ //nadji presek
+                               var let= $("#medicineSearch").val();
+                                customAjax({
+                                    url: '/medicine/searchMedicine/' + let ,
+                                    method: 'GET',
+                                    success: function (data) {
+                                        showMedicineShapeType(data, selectedShape, selectedType);
+                                    },
+                                    error: function () {
+                                    }
+                                });
+                    }
+                }else if((selectedType != '' && selectedType !='NO_FILTER') &&  selectedShape == 'NO_FILTER_SHAPE'){
+                    var let= $("#medicineSearch").val();
+                    customAjax({
+                        url: '/medicine/searchMedicine/' + let ,
+                        method: 'GET',
+                        success: function (data) {
+                            showMedicineType(data, selectedType);
+                        },
+                        error: function () {
+                        }
+                    });
+                }
+            }
+    })
+
+    $('input:radio[name="postageS"]').change(function(){
+                 if ($(this).is(':checked') ) {
+                    selectedShape = $(this).val();
+                    if( selectedShape == 'NO_FILTER_SHAPE' ){
+                    var let= $("#medicineSearch").val();
+                       customAjax({
+                           url: '/medicine/searchMedicine/' + let ,
+                           method: 'GET',
+                        success: function (data) {
+                            showMedicine(data);
+                        },
+                        error: function () {
+                        }
+                    });
+                    }else if(selectedShape != '' && selectedType == '' ) {
+                       var let= $("#medicineSearch").val();
+                        customAjax({
+                            url: '/medicine/searchMedicine/' + let ,
+                            method: 'GET',
+                            success: function (data) {
+                                showMedicineShape(data, selectedShape);
+                            },
+                            error: function () {
+                            }
+                        });
+                    }else  if(selectedType != '' && selectedShape != ''){
+                       if (selectedType == 'NO_FILTER'){
+                               var let= $("#medicineSearch").val();
+                                                   //selektuj samo shape
+                                                   customAjax({
+                                                       url: '/medicine/searchMedicine/' + let ,
+                                                       method: 'GET',
+                                                       success: function (data) {
+                                                           showMedicineShape(data, selectedShape);
+                                                       },
+                                                       error: function () {
+                                                       }
+                                                   });
+                                               }else if (selectedShape == "NO_FILTER_SHAPE"){
+                               var let= $("#medicineSearch").val();
+                                                   //selektuj samo type
+                                                   customAjax({
+                                                       url: '/medicine/searchMedicine/' + let ,
+                                                       method: 'GET',
+                                                       success: function (data) {
+                                                           showMedicineType(data, selectedType);
+                                                       },
+                                                       error: function () {
+                                                       }
+                                                   });
+                                               }else{ //nadji presek
+                                                      var let= $("#medicineSearch").val();
+                                                       customAjax({
+                                                           url: '/medicine/searchMedicine/' + let ,
+                                                           method: 'GET',
+                                                           success: function (data) {
+                                                               showMedicineShapeType(data, selectedShape, selectedType);
+                                                           },
+                                                           error: function () {
+                                                           }
+                                                       });
+                                           }
+                    }else if((selectedShape != '' && selectedShape !='NO_FILTER_SHAPE') &&  selectedType == 'NO_FILTER'){
+                        var let= $("#medicineSearch").val();
+                        customAjax({
+                            url: '/medicine/searchMedicine/' + let ,
+                            method: 'GET',
+                            success: function (data) {
+                                showMedicineShape(data, selectedShape);
+                            },
+                            error: function () {
+                            }
+                        });
+                    }
+                }
+
+        })
 	$('a#reserve_medicine').click(function(){
 				$('#search-box-medicine').attr('hidden',false);
 				$('#edit-profile').attr('hidden', true);
@@ -80,9 +251,34 @@ $(document).ready(function() {
 			            }
 		
 		        	});
-					
+				}else if ($(event.target).attr('id')=="show-details"){
+				    trid = $(event.target).closest('tr').attr('id');
+                    customAjax({
+                        url: '/medicine/getMedicineById/' + trid ,
+                        method: 'GET',
+                        success: function (data) {
+                                var substituteMedArray = new Array();
+                                for(i in data.substituteMedicineCodes){
+                                    substituteMedArray += data.substituteMedicineCodes[i] + " ,"
+                                }
+                                $('#txtContent').val(data.content)
+                                $('#txtProducer').val(data.producer)
+                                $("#withPrescriptionTrue").val(data.withprescription)
+                                $('#txtSubstituteMedicineCodes').val(substituteMedArray)
+                                $('#txtNotes').val(data.notes)
+                                $('#txtAdvisedDailyDose').val(data.adviseddailydose)
+                                $('#txtContradiction').val(data.contradiction)
+                           modalMedicines.style.display = "block";
+
+                        },
+                        error: function () {
+                            console.log("error")
+                        }
+
+                    });
 				}
 		})
+
 		$('#ph_med_table').on('click','button',function(event){
 			if($(event.target).attr('id')=="reserve-medicine"){
 				trid2 = $(event.target).closest('tr').attr('id')
@@ -178,6 +374,70 @@ function showReservedMedicine(data){
 	$('#ph_con').attr('hidden',true)
 }
 
+function showMedicineType(data, selectedType){
+	let temp='';
+	for (i in data){
+        if(data[i].type == selectedType)
+        {
+		temp+=`<tr id="`+data[i].id+`">
+			<td>`+data[i].code+`</td>
+			<td>`+data[i].name+`</td>
+			<td>`+data[i].shape+`</td>
+			<td>`+data[i].type+`</td>
+             <td><button id="show-details" class="ui primary basic button">Details</button>
+                        </td>
+			 <td><button id="show-pharamcies" class="ui primary basic button">Show pharamcies</button>
+      			</td>
+			</tr>`;
+			}
+	}
+	$('#medicine_table').html(temp);
+	$('#medicine_show').attr('hidden',false);
+	$('#ph_con').attr('hidden',true)
+}
+function showMedicineShape(data, selectedShape){
+	let temp='';
+	for (i in data){
+        if(data[i].shape == selectedShape)
+        {
+		temp+=`<tr id="`+data[i].id+`">
+			<td>`+data[i].code+`</td>
+			<td>`+data[i].name+`</td>
+			<td>`+data[i].shape+`</td>
+			<td>`+data[i].type+`</td>
+             <td><button id="show-details" class="ui primary basic button">Details</button>
+                        </td>
+			 <td><button id="show-pharamcies" class="ui primary basic button">Show pharamcies</button>
+      			</td>
+			</tr>`;
+			}
+	}
+	$('#medicine_table').html(temp);
+	$('#medicine_show').attr('hidden',false);
+	$('#ph_con').attr('hidden',true)
+}
+
+function showMedicineShapeType(data,  selectedShape, selectedType){
+	let temp='';
+	for (i in data){
+        if(data[i].type == selectedType && data[i].shape == selectedShape)
+        {
+		temp+=`<tr id="`+data[i].id+`">
+			<td>`+data[i].code+`</td>
+			<td>`+data[i].name+`</td>
+			<td>`+data[i].shape+`</td>
+			<td>`+data[i].type+`</td>
+             <td><button id="show-details" class="ui primary basic button">Details</button>
+                        </td>
+			 <td><button id="show-pharamcies" class="ui primary basic button">Show pharamcies</button>
+      			</td>
+			</tr>`;
+			}
+	}
+	$('#medicine_table').html(temp);
+	$('#medicine_show').attr('hidden',false);
+	$('#ph_con').attr('hidden',true)
+}
 function showMedicine(data){
 	let temp='';
 	for (i in data){
@@ -186,10 +446,9 @@ function showMedicine(data){
 			<td>`+data[i].code+`</td>
 			<td>`+data[i].name+`</td>
 			<td>`+data[i].shape+`</td>
-			<td>`+data[i].content+`</td>
-			<td>`+data[i].producer+`</td>
-			<td>`+data[i].withprescription+`</td>
-			<td>`+data[i].notes+`</td>
+			<td>`+data[i].type+`</td>
+             <td><button id="show-details" class="ui primary basic button">Details</button>
+                        </td>
 			 <td><button id="show-pharamcies" class="ui primary basic button">Show pharamcies</button>
       			</td>
 			</tr>`;
@@ -207,6 +466,7 @@ function showPharmaciesWithMedicine(data){
 			<td>`+data[i].pharmacyName+`</td>
 			<td>`+data[i].street+`</td>
 			<td>`+data[i].city+`</td>
+			<td>`+data[i].medicinePrice+`</td>
 			 <td><button id="reserve-medicine" class="ui primary basic button">Reserve Medicine</button>
       			</td>
 			</tr>`;

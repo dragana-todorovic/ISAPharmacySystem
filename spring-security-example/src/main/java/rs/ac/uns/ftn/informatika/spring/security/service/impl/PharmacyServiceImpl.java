@@ -13,24 +13,8 @@ import org.springframework.mail.MailException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import rs.ac.uns.ftn.informatika.spring.security.model.ActionAndBenefit;
-import rs.ac.uns.ftn.informatika.spring.security.model.Address;
-import rs.ac.uns.ftn.informatika.spring.security.model.Authority;
-import rs.ac.uns.ftn.informatika.spring.security.model.Patient;
+import rs.ac.uns.ftn.informatika.spring.security.model.*;
 
-import rs.ac.uns.ftn.informatika.spring.security.model.Dermatologist;
-import rs.ac.uns.ftn.informatika.spring.security.model.DermatologistAppointment;
-import rs.ac.uns.ftn.informatika.spring.security.model.HolidayRequest;
-import rs.ac.uns.ftn.informatika.spring.security.model.HolidayRequestStatus;
-import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
-import rs.ac.uns.ftn.informatika.spring.security.model.MedicineReservation;
-import rs.ac.uns.ftn.informatika.spring.security.model.MedicineReservationStatus;
-import rs.ac.uns.ftn.informatika.spring.security.model.MedicineWithQuantity;
-import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacist;
-import rs.ac.uns.ftn.informatika.spring.security.model.PharmacistCounseling;
-import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
-import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
-import rs.ac.uns.ftn.informatika.spring.security.model.User;
 import rs.ac.uns.ftn.informatika.spring.security.repository.ActionAndBenefitRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.DermatologistAppointmentRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacyRepository;
@@ -59,8 +43,6 @@ import javax.mail.MessagingException;
 
 import rs.ac.uns.ftn.informatika.spring.security.model.Dermatologist;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacist;
-import rs.ac.uns.ftn.informatika.spring.security.model.WorkingDay;
-import rs.ac.uns.ftn.informatika.spring.security.model.WorkingTime;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.MedicineReservationDTO;
 import rs.ac.uns.ftn.informatika.spring.security.repository.DermatologistRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.HolidayRequestRepository;
@@ -578,15 +560,25 @@ public class PharmacyServiceImpl implements PharmacyService{
 		}
 
 	@Override
-
 	public Collection<PharmacyWithMedicationView> getPharamciesWithMedication(Long id) {
 		ArrayList<PharmacyWithMedicationView> pharmacies = new ArrayList <PharmacyWithMedicationView>();
+
 		for (Pharmacy pharmacy : pharmacyRepository.findAll()) {
 			for (MedicineWithQuantity medi : pharmacy.getMedicineWithQuantity()) {
 				if (medi.getMedicine().getId()==id) {
 					if(medi.getQuantity()>0) {
-					PharmacyWithMedicationView ph = new PharmacyWithMedicationView(pharmacy.getName(),pharmacy.getAddress().getStreet(),pharmacy.getAddress().getCity(),pharmacy.getId());
-					pharmacies.add(ph);
+						//System.out.println("dobavljanje cene");
+						for(PriceList pl :pharmacy.getPriceList()){
+							for(MedicinePrice medicinePrice : pl.getMedicinePriceList()){
+								if(medicinePrice.getMedicine().getId().equals(medi.getMedicine().getId())){
+									System.out.println(medicinePrice.getPrice());
+								}
+							}
+						}
+
+						PharmacyWithMedicationView ph = new PharmacyWithMedicationView(pharmacy.getName(),
+								pharmacy.getAddress().getStreet(),pharmacy.getAddress().getCity(), pharmacy.getId());
+						pharmacies.add(ph);
 					}
 				}
 			}

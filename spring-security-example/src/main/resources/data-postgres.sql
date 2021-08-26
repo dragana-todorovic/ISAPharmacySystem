@@ -18,11 +18,11 @@ INSERT INTO USERS (username, password, first_name, last_name, email, country, ci
 --medicine
 
 INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,type,notes,adviseddailydose,contradiction) VALUES ('Code1','Midol',1,'content1','Galenika',false,0,'Ne konzumirati uz alkohol',1,'Contradiction0');
-INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,type,notes,adviseddailydose,contradiction) VALUES ('Code2','Rapten DUO',1,'content2','Galenika',false,0,'Ne konzumirati uz alkohol',2,'Contradiction1');
-INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,type,notes,adviseddailydose,contradiction) VALUES ('Code3','Paracetamol',1,'content3','HEMOFARM',false,0,'Ne konzumirati uz alkohol',2,'Contradiction2');
-INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,type,notes,adviseddailydose,contradiction) VALUES ('Code4','Andol',1,'content4','FARMAVITA',false,0,'Ne konzumirati uz alkohol',3,'Contradiction3');
-INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,type,notes,adviseddailydose,contradiction) VALUES ('Code5','Deksomen',1,'content5','Galenika',false,0,'Ne konzumirati uz alkohol',5,'Contradiction4');
-INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,type,notes,adviseddailydose,contradiction) VALUES ('Code6','Analgin',1,'content6','HEMOFARM',false,0,'Ne konzumirati uz alkohol',4,'Contradiction5');
+INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,type,notes,adviseddailydose,contradiction) VALUES ('Code2','Rapten DUO',2,'content2','Galenika',false,0,'Ne konzumirati uz alkohol',2,'Contradiction1');
+INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,type,notes,adviseddailydose,contradiction) VALUES ('Code3','Paracetamol',3,'content3','HEMOFARM',false,1,'Ne konzumirati uz alkohol',2,'Contradiction2');
+INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,type,notes,adviseddailydose,contradiction) VALUES ('Code4','Andol',4,'content4','FARMAVITA',false,1,'Ne konzumirati uz alkohol',3,'Contradiction3');
+INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,type,notes,adviseddailydose,contradiction) VALUES ('Code5','Deksomen',5,'content5','Galenika',false,2,'Ne konzumirati uz alkohol',5,'Contradiction4');
+INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,type,notes,adviseddailydose,contradiction) VALUES ('Code6','Analgin',5,'content6','HEMOFARM',false,0,'Ne konzumirati uz alkohol',4,'Contradiction5');
 
 INSERT INTO MEDICINE(code,name,shape,type,content,producer,withprescription,notes,adviseddailydose,contradiction) VALUES ('1234','Brufen',1,1,'nesto','Galenika',false,'Ne konzumirati uz alkohol', 2,'Contradiction');
 INSERT INTO MEDICINE(code,name,shape,type,content,producer,withprescription,notes,adviseddailydose,contradiction) VALUES ('12333','Aspirin',1,2,'nesto','Galenika',false,'Ne konzumirati uz alkohol',3,'Contradiction2');

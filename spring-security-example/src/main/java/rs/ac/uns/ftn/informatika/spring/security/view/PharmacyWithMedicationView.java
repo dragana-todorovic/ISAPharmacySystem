@@ -5,7 +5,7 @@ public class PharmacyWithMedicationView {
 	private String pharmacyName;
 	private String street;
     private String city; 
-    //private double medicinePrice;
+    private double medicinePrice;
    
 	public PharmacyWithMedicationView() {
 		super();
@@ -18,7 +18,23 @@ public class PharmacyWithMedicationView {
 		this.city = city;
 		
 	}
-	
+
+	public PharmacyWithMedicationView(Long id, String pharmacyName, String street, String city, double medicinePrice) {
+		this.id = id;
+		this.pharmacyName = pharmacyName;
+		this.street = street;
+		this.city = city;
+		this.medicinePrice = medicinePrice;
+	}
+
+	public double getMedicinePrice() {
+		return medicinePrice;
+	}
+
+	public void setMedicinePrice(double medicinePrice) {
+		this.medicinePrice = medicinePrice;
+	}
+
 	public Long getId() {
 		return id;
 	}

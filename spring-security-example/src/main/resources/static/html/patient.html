@@ -26,6 +26,7 @@
   <script src="../scripts/patient/counseling.js"></script>
   <script src="../scripts/jwt.js"></script>
 
+ <link rel="stylesheet" type="text/css" href="../css/modal.css">
 
   <!--za bootstrap-->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
@@ -409,19 +410,35 @@ li.dropdown {
  <div class="ui icon input" hidden="true" id="search-box-medicine">
            <input class="prompt" type="text" id="medicineSearch" name="search" placeholder="Search medicine by name..">
            <i class="search link icon" id="searchMedicine"></i>
+
          </div>
       	    <div class="container_1" hidden='true' id="medicine_show">
+                <h4 >Filter Medicine By Type :</h4>
+                <p >
+                    <input type="radio" id="ON_HOLD" name="postage" value="ANTIBIOTIC" /> ANTIBIOTIC
+                    <input type="radio" id="ACCEPTED" name="postage" value="ANESTHETIC" /> ANESTHETIC
+                    <input type="radio" id="REJECTED" name="postage" value="ANTIHISTAMINE" /> ANTIHISTAMINE
+                    <input type="radio" id="NO_FILTER" name="postage" value="NO_FILTER" /> NO FILTER
+                </p>
+                <h4 >Filter Medicine By Shape :</h4>
+                <p >
+                    <input type="radio" id="CAPSULE" name="postageS" value="CAPSULE" /> CAPSULE
+                    <input type="radio" id="TABLET" name="postageS" value="TABLET" /> TABLET
+                    <input type="radio" id="POWDER" name="postageS" value="POWDER" /> POWDER
+                    <input type="radio" id="CREAM" name="postageS" value="CREAM" /> CREAM
+                    <input type="radio" id="OIL" name="postageS" value="OIL" /> OIL
+                    <input type="radio" id="SYRUP" name="postageS" value="SYRUP" /> SYRUP
+                    <input type="radio" id="NO_FILTER_SHAPE" name="postageS" value="NO_FILTER_SHAPE" /> NO FILTER
+                </p>
         <form class="border rounded px-2 py-1 text-center">       
         		 <table class="table  table-bordered" >
 		  	<thead>
 		    	<tr><th>Code</th>
 		   		 <th>Name</th>
 		   		 <th>Shape</th>
-		   		 <th>Content</th>
-		   		 <th>Produces</th>
-		   		 <th>With prescription?</th>
-		   		 <th>Notes</th>
+		   		 <th>Type</th>
 		   		 <th></th>
+                    <th></th>
 		 		 </tr></thead>
 		 	 <tbody id="medicine_table" >
 		 	 </tbody>
@@ -435,6 +452,7 @@ li.dropdown {
 		    	<tr><th>Pharmacy Name</th>
 		   		 <th>Street</th>
 		   		 <th>City</th>
+                    <th>Price</th>
 		   		 <th></th>
 		 		 </tr></thead>
 		 	 <tbody id="ph_med_table" >
@@ -582,6 +600,50 @@ li.dropdown {
   
 </div>
 
+<div id="modal-medicines" class="modal">
+    <div class="modal-content" style="text-align: center;">
+        <span class="closeMedicine">&times;</span>
+        <table class="centered">
+            <tbody>
+            <tr colspan="2">
+                <td>Details About Medicine </td>
+            </tr>
+            <tr>
+                <td>Content:</td>
+                <td class="ui input small"> <input disabled type="text" id="txtContent" /></td>
 
+            </tr>
+            <tr>
+                <td>Producer:</td>
+                <td class="ui input small"> <input disabled type="text" id="txtProducer" /></td>
+
+            </tr>
+            <tr>
+                <td>Can Medicine be Taken With Prescription:</td>
+                <td class="ui input small"> <input disabled type="text" id="withPrescriptionTrue" /></td>
+            </tr>
+            <tr>
+                <td>Substitute Medicine Codes:</td>
+                <td class="ui input small"> <input disabled type="text" id="txtSubstituteMedicineCodes" /></td>
+
+            </tr>
+            <tr>
+                <td>Notes: </td>
+                <td class="ui input small"> <input disabled type="text" id="txtNotes" /></td>
+            </tr>
+            <tr>
+                <td>Contradiction: </td>
+                <td class="ui input small"> <input disabled type="text" id="txtContradiction" /></td>
+            </tr>
+            <tr>
+                <td>Advised daily dose: </td>
+                <td class="ui input small"> <input disabled type="number" id="txtAdvisedDailyDose" /></td>
+            </tr>
+            </tbody>
+            <tfoot class="full-width">
+            </tfoot>
+        </table>
+    </div>
+</div>
 </body>
 </html>
