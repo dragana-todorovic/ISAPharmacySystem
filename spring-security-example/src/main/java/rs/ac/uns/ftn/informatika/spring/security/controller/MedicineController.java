@@ -43,11 +43,17 @@ public class MedicineController {
     private MedicineReservationService medicineReservationService;
     
     @GetMapping("/getAllMedicine")
-    @PreAuthorize("hasRole('ADMIN_SYSTEM') || hasRole('ADMIN_PHARMACY')")
+    @PreAuthorize("hasRole('ADMIN_SYSTEM') || hasRole('ADMIN_PHARMACY') || hasRole('ROLE_PATIENT')")
     public List<Medicine> getAllMedicine()   {
         return this.medicineService.findAll();
     }
-    
+
+    @GetMapping("/getAllMedicineForSearch")
+    @PreAuthorize("hasRole('ROLE_PATIENT')")
+    public List<Medicine> getAllMedicineForSearch()   {
+        return this.medicineService.findAll();
+    }
+
     @GetMapping("/getMedicineFromPharmacy/{email}")
     @PreAuthorize("hasRole('ADMIN_PHARMACY')")
     public Set<MedicineWithQuantity> getMedicinePriceList(@PathVariable("email") String email)   {
@@ -134,5 +140,11 @@ public class MedicineController {
 			medicineReservationService.editReservation(reservation);
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
+
+    @GetMapping("/getMedicineById/{trid}")
+    @PreAuthorize("hasRole('ROLE_PATIENT')")
+    public Medicine getMedicineById(@PathVariable("trid") String trid)   {
+        return this.medicineService.findById(Long.valueOf(trid));
+    }
 
 }
