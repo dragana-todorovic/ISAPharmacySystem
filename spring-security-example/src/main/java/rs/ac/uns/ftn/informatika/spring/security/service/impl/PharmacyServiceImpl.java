@@ -626,11 +626,20 @@ public class PharmacyServiceImpl implements PharmacyService{
 	}
 
 	@Override
-	public void acceptHolidayRequest(long id,long dermatologistId) {
+	public Boolean acceptHolidayRequest(long id,long dermatologistId) {
 		Dermatologist dermatologist = this.dermatologistRepository.findById(dermatologistId).get();
 		HolidayRequest holidayRequest = this.holidayRequestRepository.findById(id).get();
+		List<DermatologistAppointment> dermatologistAppointments = this.dermatologistAppoitmentRepository.findApByDermatologist(dermatologistId);
+		
 		for(HolidayRequest hr : dermatologist.getHolidayRequests()) {
 			if(hr.equals(holidayRequest)) {
+				for(DermatologistAppointment da : dermatologistAppointments) {
+			
+					if(!hr.getStartDate().isAfter(da.getStartDateTime().toLocalDate()) &&
+							!hr.getEndDate().isBefore(da.getStartDateTime().toLocalDate())) {
+						return false;
+					}
+				}
 				hr.setStatus(HolidayRequestStatus.ACCEPT);
 			}
 		}
@@ -641,6 +650,7 @@ public class PharmacyServiceImpl implements PharmacyService{
 			e.printStackTrace();
 		}
 		this.dermatologistRepository.save(dermatologist);
+		return true;
 		
 	}
 

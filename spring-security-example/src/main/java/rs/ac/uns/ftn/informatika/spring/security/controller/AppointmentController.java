@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import rs.ac.uns.ftn.informatika.spring.security.model.AppoitmentPrice;
 import rs.ac.uns.ftn.informatika.spring.security.model.DermatologistAppointment;
 import rs.ac.uns.ftn.informatika.spring.security.service.AppointmentPriceService;
 import rs.ac.uns.ftn.informatika.spring.security.service.AppointmentService;
@@ -130,4 +131,12 @@ public class AppointmentController {
 		return result;
 	}
 
+	
+	@GetMapping("/getAllAppointmentPrices/{email}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public  List<AppoitmentPrice> getAllAppointmentPrices(@PathVariable(name="email") String email) {
+		return this.appointmentService.getAllAppointmentPricesByPharmacy(email);
+		
+	}
+	
 }

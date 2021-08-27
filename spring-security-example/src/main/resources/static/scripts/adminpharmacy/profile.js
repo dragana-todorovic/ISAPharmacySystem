@@ -49,7 +49,7 @@ $(document).ready(function(e){
             var iconFeatures = [];
             var lon = coord[0];
             var lat = coord[1];
-           // var icon = "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Map_marker_font_awesome.svg/200px-Map_marker_font_awesome.svg.png";
+           var icon = "https://img.icons8.com/ios-glyphs/30/000000/marker--v1.png";
             var iconGeometry = new ol.geom.Point(ol.proj.transform([lon, lat], 'EPSG:4326', 'EPSG:3857'));
             var iconFeature = new ol.Feature({
                 geometry: iconGeometry
@@ -76,19 +76,6 @@ $(document).ready(function(e){
                 source: vectorSource,
                 style: iconStyle
             });
-          /*  var markers = new ol.layer.Vector({
-            	  source: new ol.source.Vector(),
-            	  style: new ol.style.Style({
-            	    image: new ol.style.Icon({
-            	      anchor: [0.5, 1],
-            	      src: 'marker.png'
-            	    })
-            	  })
-            	});
-            	map.addLayer(markers);
-
-            	var marker = new ol.Feature(new ol.geom.Point(ol.proj.fromLonLat([106.8478695, -6.1568562])));
-            	markers.getSource().addFeature(marker);*/
 
             map.addLayer(vectorLayer);
 
@@ -111,7 +98,6 @@ $(document).ready(function(e){
 	  });
 
 	$('#logout').click(function(){
-		console.log("blabla")
 		localStorage.removeItem('jwt')
 		location.href = "login.html";
 		});

@@ -30,13 +30,15 @@ let pomocna = function () {
         })
     });
     map.on('click', function (evt) {
+    	var loc = window.location.pathname;
+    	var dir = loc.substring(0, loc.lastIndexOf('/'));
+    	console.log(dir)
         var coord = ol.proj.toLonLat(evt.coordinate);
         reverseGeocode(coord);
         var iconFeatures = [];
         var lon = coord[0];
         var lat = coord[1];
-        
-        var icon = "";
+       
         var iconGeometry = new ol.geom.Point(ol.proj.transform([lon, lat], 'EPSG:4326', 'EPSG:3857'));
         var iconFeature = new ol.Feature({
             geometry: iconGeometry
@@ -51,7 +53,7 @@ let pomocna = function () {
                 anchorXUnits: 'fraction',
                 anchorYUnits: 'pixels',
                 opacity: 0.95,
-                src: icon
+                src: "marker.png"
             }))
         });
         var vectorLayer = new ol.layer.Vector({

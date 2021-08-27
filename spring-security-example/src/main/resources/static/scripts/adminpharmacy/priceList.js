@@ -16,6 +16,21 @@ $(document).ready(function(e){
 	 });
 	 });
 	
+	$("#appointmentPriceList").click(function () {
+		 customAjax({
+		      url: '/appointment/getAllAppointmentPrices/' + email,
+		      method: 'GET',
+		      contentType: 'application/json',
+		      success: function(data){
+		    	  console.log(data)
+		    	  showAllAppointments(data)
+		      },
+		      error: function(){
+		      }
+
+	 });
+	 });
+	
 });
 
 let getMedicineFromPharmacy 
@@ -61,11 +76,7 @@ let showPriceList = function(data) {
 		<i class="eye icon"></i>
 		Show list
 		</button>
-		<br>
-		<button id = "`+data[i].id+`" name="izmijeniCjenovnik" class="ui secondary button">
-		<i class="edit icon"></i>
-		Edit price list
-		</button>
+		
 			 </td></tr>`;
 	}
 	
@@ -99,13 +110,13 @@ table-layout: fixed;
 <div id="modalniZaPrikazLijekova" class="ui modal">
   <i class="close icon"></i>
   <div class="header">
-	All offers
+	All medicines 
   </div>
   <div class="content">
 
     	<table class="ui black table">
   <thead>
-    <tr><th>Delevery time</th>
+    <tr><th>Medicine name</th>
     <th>Price</th>
     <th></th>
   </tr></thead><tbody id="lijekoviTabela">
@@ -245,22 +256,24 @@ table-layout: fixed;
 	
 	
 	$("button[name=izmijeniCjenovnik]").click(function() {
-		var id = this.id;
+		var idSelected = this.id;
 		 customAjax({
-		      url: '/pharmacy/getListMedicines/' + id,
+		      url: '/pharmacy/getListMedicines/' + idSelected,
 		      method: 'GET',
 		      contentType: 'application/json',
 		      success: function(data){
-		    	  prikaziListu(data)
-		    	  $('#modalniZaPrikazLijekova')
-				  .modal('show')
-				  
+				console.log(data)
+				editPriceList(idSelected,data)
 		    	  
 		      },
 		      error: function(){
 		      }
+		      
 
 	 });
+		 $('#modalniZaIzmjenu')
+		 .modal('show')
+		  
 	});
 	
 	$('#addNew').click(function() {
@@ -330,4 +343,133 @@ function formatDate(date) {
         day = '0' + day;
 
     return [year, month, day].join('-');
+}
+
+
+/*let editPriceList = function(idSelected,lijekovi) {
+	pomocna = []
+	customAjax({
+	      url: '/medicine/getMedicineFromPharmacy/' + email,
+	      method: 'GET',
+	      async: false,
+	      contentType: 'application/json',
+	      success: function(data){
+	    	  pomocna = data
+	      },
+	      error: function(){
+	      }
+	})
+
+	let radnoVrijeme = '';
+
+		for(i in lijekovi) {
+				radnoVrijeme += `<tr><td><div class="ui checkbox">
+					  <input type="checkbox" id = "`+lijekovi[i].medicine.id+`" name="lijekIzm" checked>
+					  <label>`+lijekovi[i].medicine.name+`</label></td>
+					   <td>
+    <div class="ui input small left icon">
+     <input type="number" min="1" value="`+lijekovi[i].price+`" placeholder="Price..." id="priceEdit`+lijekovi[i].medicine.id+`">
+</div>
+</td></tr>`
+					for(var k = 0; k < pomocna.length; k++) {
+						if(pomocna[k].name === lijekovi[i].medicine.name) {
+							pomocna.splice(k, 1);
+						}
+					}   
+			}
+	for(i in pomocna) {
+		radnoVrijeme += `<tr><td><div class="ui checkbox">
+			  <input type="checkbox" id = "`+pomocna[i].id+`" name="lijekIzm">
+			  <label>`+pomocna[i].name+`</label></td>
+			   <td>
+    <div class="ui input small left icon">
+     <input type="number" min="1" placeholder="Quantity..." id="quantityEdit`+pomocna[i].id+`">
+</div>
+</td></tr>`;
+	}
+			
+	$('#editTable').html(radnoVrijeme)
+	
+	/*$('#editOrder').click(function() {
+		var dateEdit = formatDate($('#dateOfOrderEdit').val())
+		var timeEdit = $('#timeOfOrderEdit').val()
+		var medicines = []
+		$('input[name="lijekIzm"]:checked').each(function () {
+		
+    		var medicineId = this.id;
+    		var quantity = $("#quantityEdit"+this.id).val();
+    		
+    		obj = {
+    			medicineId:medicineId,
+    			quantity:quantity
+    			}
+    		medicines.push(obj)
+    		
+    	
+    	});
+		console.log(medicines)
+		customAjax({
+    	    url: '/medicineOrder/editMedicineOrder/' + email + '/' + idSelected,
+    	    method: 'POST',
+    	    data: JSON.stringify({medicines:medicines,date:dateEdit,time:timeEdit}),
+    	    contentType: 'application/json',
+    	    success: function(){
+    	    	alert("Success edit medicine order")
+    	    	location.href = "adminpharmacy.html"
+    	    },
+    	    error: function(){
+    	    	alert("Failed")
+    	    }
+
+    	});
+	})
+	
+}*/
+
+
+
+
+let showAllAppointments = function(data) {
+	let temp = ''
+	for (i in data){
+	
+		temp+=`<tr style="display: table;
+    width: 100%;
+    table-layout: fixed;"><td>`+
+		data[i].appoitment.startDateTime+`</td>
+		<td>`+
+		data[i].appoitment.dermatologist.user.firstName + ` ` +data[i].appoitment.dermatologist.user.lastName +`</td>
+		<td>`+
+		data[i].price+ `</td>
+	</tr>`;
+	}
+	
+	$("#showData").html(`<table class="ui very padded scrollable table" id="medicineTable" style="width:70%; margin-left:auto; 
+		    margin-right:auto; margin-top: 40px;display:block;">
+		    
+  <thead style="display: table;
+width: 100%;
+table-layout: fixed;
+ width: calc( 100% - 1em )">
+    <tr><th>Start date and time</th>
+    <th>Dermatologist</th>
+    <th>Price</th>
+  </tr></thead><tbody style="display: block;
+height: 500px;
+overflow: auto;" id="tabelaPregleda">
+  </tbody>
+  <tfoot style="display: table;
+width: 100%;
+table-layout: fixed;
+ width: calc( 100% - 1em )" class="full-width">
+		   
+		  </tfoot>
+</table>
+
+
+`);
+	
+	$('#tabelaPregleda').html(temp)
+	
+	
 }

@@ -13,6 +13,11 @@ public interface AppointmentPriceRepository extends JpaRepository<AppoitmentPric
 	
 	@Query(nativeQuery = true, value = "select * from appoitmentprice \n" +
 			"where appoitmentprice.appoitment_id= :appointmentId")
-AppoitmentPrice findByAppintmentId(@Param("appointmentId")Long appointmentId);
+	AppoitmentPrice findByAppintmentId(@Param("appointmentId")Long appointmentId);
+	
+	@Query(nativeQuery = true, value = "select * from APPOITMENTPRICE left join APPOITMENT \n" +
+			"on APPOITMENTPRICE.appoitment_id = APPOITMENT.id\n" +
+			"where APPOITMENT.pharmacy_id= :pharmacyId")
+	List<AppoitmentPrice> findAllAppointmentPricesByPharmacy(@Param("pharmacyId")long pharmacyId);
 
 }
