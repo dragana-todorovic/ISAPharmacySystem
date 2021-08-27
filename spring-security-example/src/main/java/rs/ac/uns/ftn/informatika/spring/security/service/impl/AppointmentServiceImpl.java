@@ -151,6 +151,7 @@ public class AppointmentServiceImpl implements AppointmentService{
 		appointment.setDermatologist(dermatologist);
 		appointment.setDuration(Integer.parseInt(predefinedAppointment.getDuration()));
 		appointment.setStartDateTime(dt);
+		appointment.setPharmacy(p);
 		
 		this.dermatologistAppointmentRepository.save(appointment);
 		
@@ -217,5 +218,13 @@ public class AppointmentServiceImpl implements AppointmentService{
 			}
 		}
 		return false;
+	}
+	
+	@Override
+	public List<AppoitmentPrice> getAllAppointmentPricesByPharmacy(String email) {
+		PharmacyAdmin pa = pharmacyAdminService.findPharmacyAdminByUser(userService.findByEmail(email));
+		Pharmacy p = pa.getPharmacy();
+		
+		return this.appointmentPriceRepository.findAllAppointmentPricesByPharmacy(p.getId());
 	}
 }

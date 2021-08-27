@@ -19,6 +19,7 @@ import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
 import rs.ac.uns.ftn.informatika.spring.security.model.Suplier;
 import rs.ac.uns.ftn.informatika.spring.security.model.SuplierOffer;
+import rs.ac.uns.ftn.informatika.spring.security.model.SuplierOfferStatus;
 import rs.ac.uns.ftn.informatika.spring.security.repository.LoyaltyScaleRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.MedicineOrderRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.MedicineWithQuantityRepository;
@@ -106,7 +107,6 @@ public class MedicineOrderServiceImpl implements MedicineOrderService {
 		SuplierOffer so = this.suplierOfferRepository.findById(id).get();
 		
 		
-		
 		if(so.getDeleveryTime().isAfter(LocalDateTime.now())) {
 			return false;
 		} else {
@@ -138,6 +138,7 @@ public class MedicineOrderServiceImpl implements MedicineOrderService {
 		for(Suplier s : supliers) {
 			for(SuplierOffer soffer : s.getOffers()) {
 				if(soffer.equals(so)) {
+					
 					try {
 						this.emailService.sendEmail(s.getUser().getEmail(), "Accept offer", "Your offer is accepted");
 					} catch (MailException | MessagingException e) {

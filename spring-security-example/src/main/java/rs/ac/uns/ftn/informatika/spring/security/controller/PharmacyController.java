@@ -292,31 +292,21 @@ public class PharmacyController {
 	public ResponseEntity<?> add(@PathVariable(name="email") String email,
 			@RequestBody PriceListDTO priceList) {
 		
-		
 		LocalDate date = LocalDate.parse(priceList.getDate());
 		
 		Set<MedicinePrice> medicinePrices = new HashSet<MedicinePrice>();
 		
-		MedicinePrice mp = new MedicinePrice();
+		
 		for(MedicinePriceDTO m : priceList.getMedicines()) {
-			
+			MedicinePrice mp = new MedicinePrice();
 			mp.setMedicine(this.medicineService.findById(Long.parseLong(m.getMedicineId())));
 			mp.setPrice(Double.parseDouble(m.getPrice()));
 			medicinePrices.add(mp);
-			
-			
-		}
-		if(this.priceListService.createNewPriceList(email, medicinePrices, date)) {
 			this.medicinePriceRepository.save(mp);
-			return new ResponseEntity<>(HttpStatus.OK);
-		} else {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		
-		
-		
-		
-		
+		this.priceListService.createNewPriceList(email, medicinePrices, date);
+			
+			return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 
@@ -337,8 +327,11 @@ public class PharmacyController {
 	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
 	public ResponseEntity<?> acceptHolidayRequest(@PathVariable(name="id") String id,
 			@PathVariable(name="dermatologistId") String dermatologistId) {
-		this.pharmacyService.acceptHolidayRequest(Long.parseLong(id), Long.parseLong(dermatologistId));
-		return new ResponseEntity<>(HttpStatus.OK);
+		if(this.pharmacyService.acceptHolidayRequest(Long.parseLong(id), Long.parseLong(dermatologistId))) {
+			return new ResponseEntity<>(HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 	}
 	@PostMapping("/declineHolidayRequest/{id}/{dermatologistId}/{reason}")
 	@PreAuthorize("hasRole('ADMIN_PHARMACY')")

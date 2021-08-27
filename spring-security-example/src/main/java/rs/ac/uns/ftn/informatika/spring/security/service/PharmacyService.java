@@ -99,7 +99,7 @@ public interface PharmacyService {
 	Boolean editDermatologistInPharmacy(String email, NewDermatologistDTO newDermatologist);
 	
 	Set<HolidayRequest> getHolidayRequestsByPharmacy(long id, String email);
-	void acceptHolidayRequest(long id, long dermatologistId);
+	Boolean acceptHolidayRequest(long id, long dermatologistId);
 	void declineHolidayRequest(long id, long dermatologistId, String reason);
 
 	WorkingTime getDermatologistWorkingTimes(long id, String email);
