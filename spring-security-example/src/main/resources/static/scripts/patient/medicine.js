@@ -229,7 +229,7 @@ $(document).ready(function() {
         var image=$('#blah').attr('src');
          var formData = new FormData();
          formData.append("file", file);
-                formData.append("type","image");
+         formData.append("type","image");
         // ovdde da decodujemo qr codde
         // procitamo tekst i ocitamo apoteke koje imaju
         customAjax({
@@ -275,10 +275,28 @@ $(document).ready(function() {
             data:obj,
             contentType: 'application/json',
             success: function(){
-                alert("Success bought medicine list by ePrescription.")
+                    var formData = new FormData();
+                     formData.append("file", file);
+                     formData.append("type","image");
+                    customAjax({
+                        url: '/patient/sendQrCode/' ,
+                        method: 'POST',
+                        data : formData,
+                        processData: false,
+                        contentType: false,
+                        success: function (data) {
+                           console.log(data)
+                           showPharmaciesForQr(data)
+                        },
+                        error: function () {
+                            console.log("error")
+                        }
+
+                    });
+                alert("Success bought medicine list by ePrescription. Check your Email About Confirmation!")
             },
              error: function(){
-               alert('Error');
+               alert('There is no more medicine with quantity in Pharmacy.');
              }
             });
         }
@@ -667,7 +685,7 @@ function showPharmaciesForQr(data){
                 </tr>`;
         }
     }else{
-        temp += `<tr ><td colspan="7">No pharmacy found!</td></tr>`;
+        temp += `<tr ><td colspan="7">No pharmacy founded with needed medicine quanity!</td></tr>`;
     }
 	$('#qr_pharmacy_table').html(temp);
 	$('#pharamcies_with_medicine_show').attr('hidden',true);
