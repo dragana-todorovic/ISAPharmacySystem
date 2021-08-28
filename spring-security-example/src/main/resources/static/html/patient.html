@@ -1,43 +1,43 @@
- <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-          crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-  <link rel="stylesheet" href="/resources/demos/style.css">
-  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-  <!-- fontovi -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
-  
+<!-- fontovi -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
+
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
-        crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
+      crossorigin="anonymous">
 
-  <taglib uri="http://coverity.com/security" prefix="cov" />
-  <script src="../scripts/customAjax.js"></script>
-  <script src="../scripts/searchPharmacies.js"></script>
-  <script src="../scripts/patient/profile.js"></script>
-  <script src="../scripts/patient/appointments.js"></script>
-  <script src="../scripts/patient/medicine.js"></script>
-  <script src="../scripts/patient/counseling.js"></script>
-  <script src="../scripts/jwt.js"></script>
+<taglib uri="http://coverity.com/security" prefix="cov" />
+<script src="../scripts/customAjax.js"></script>
+<script src="../scripts/searchPharmacies.js"></script>
+<script src="../scripts/patient/profile.js"></script>
+<script src="../scripts/patient/appointments.js"></script>
+<script src="../scripts/patient/medicine.js"></script>
+<script src="../scripts/patient/counseling.js"></script>
+<script src="../scripts/jwt.js"></script>
 
- <link rel="stylesheet" type="text/css" href="../css/modal.css">
+<link rel="stylesheet" type="text/css" href="../css/modal.css">
 
-  <!--za bootstrap-->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-        crossorigin="anonymous">
+<!--za bootstrap-->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous">
 
- <link href="http://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.css" rel="stylesheet"/>
- 
+<link href="http://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.css" rel="stylesheet"/>
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"  />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-  <style type="text/css">
+<style type="text/css">
   /* Modal Content */
 .modal-content {
   background-color: #fefefe;
@@ -138,466 +138,501 @@ li.dropdown {
 </head>
 <body>
 <div class="container_1">
-<div>
-<ul style="background:skyblue">
-<li><a href=""><i class="home icon" style="color:white"></i></a></li>
-  <li class="dropdown"><a href="javascript:void(0)" class="dropbtn">My appointments</a>
-   <div class="dropdown-content">
-      <a href="#" id="my_app_derm">My appointments at dermatologists</a>
-       <a href="#" id="my_app_ph">My appointments at pharmacists </a>
-  </li>
-  <li><a href="#news">Penals</a></li>
-  <li><a href="#news">Complaints</a></li>
-    <a id="schedule_consulting" href="#" class="dropbtn">Schedule counsuling with pharmacist</a>
-	<li class="dropdown">
-    <a href="javascript:void(0)" class="dropbtn" id="all_pharamcies">Pharamices</a>
-    <div class="dropdown-content">
-      <a href="#" id = "all_subscribed">Subscribed pharamices</a>
-      <a href="#" id="all_pharmacies">All pharamices</a>
-    </div>
-  </li>
-    <li class="dropdown">
-    <a href="javascript:void(0)" class="dropbtn">Medicine</a>
-    <div class="dropdown-content">
-     <a href="#" id="reserve_medicine">Reserve medicine </a>
-     <a href="#" id="reserved_medicine">Reserved medicine</a>
-      <a href="#">My ePrescription medicine</a>
-       <a href="#">Issued ePrescription medicine </a>
-      <a href="#">Take over your medicine</a>
-      
-    </div>
-  </li>
-      <li class="dropdown">
-    <a href="javascript:void(0)" class="dropbtn">Appointments history</a>
-    <div class="dropdown-content">
-      <a href="#">Dermatology </a>
-      <a href="#">Pharamcy</a>
-    </div>
-  </li>
-  <li class="dropdown" style="float:right;">
-    <a href="javascript:void(0)" class="dropbtn">Profile</a>
-    <div class="dropdown-content" style="right:0;">
-      <a id="profile" href="#" ><i class="user icon"></i>My profile</a>
-       <a id="changePassword" href="#" >Change password</a>
-      <a id="logout" href="#"><i class = "sign-out icon"></i>Log out</a>
-    </div>
-  </li>
-</ul>
-</div>
+    <div>
+        <ul style="background:skyblue">
+            <li><a href=""><i class="home icon" style="color:white"></i></a></li>
+            <li class="dropdown"><a href="javascript:void(0)" class="dropbtn">My appointments</a>
+                <div class="dropdown-content">
+                    <a href="#" id="my_app_derm">My appointments at dermatologists</a>
+                    <a href="#" id="my_app_ph">My appointments at pharmacists </a>
+            </li>
+            <li><a href="#news">Penals</a></li>
+            <li><a href="#news">Complaints</a></li>
+            <a id="schedule_consulting" href="#" class="dropbtn">Schedule counsuling with pharmacist</a>
+            <li class="dropdown">
+                <a href="javascript:void(0)" class="dropbtn" id="all_pharamcies">Pharamices</a>
+                <div class="dropdown-content">
+                    <a href="#" id = "all_subscribed">Subscribed pharamices</a>
+                    <a href="#" id="all_pharmacies">All pharamices</a>
+                </div>
+            </li>
+            <li class="dropdown">
+                <a href="javascript:void(0)" class="dropbtn">Medicine</a>
+                <div class="dropdown-content">
+                    <a href="#" id="reserve_medicine">Reserve medicine </a>
+                    <a href="#" id="reserved_medicine">Reserved medicine</a>
+                    <a href="#" id="ePrescription">My ePrescription medicine</a>
+                    <a href="#">Issued ePrescription medicine </a>
+                    <a href="#">Take over your medicine</a>
 
-<!-- EDIT PROFILE -->
-<div  style="padding:10px 100px 50px 0px;" class="cloumn" hidden="true" id="edit-profile">
-  <div class="ui two column very relaxed grid">
-    <div class="column">
-	        <h5 id="category"  class="border rounded px-2 py-1 text-center" ></h5>
-	         <h5 id="discount"  class="border rounded px-2 py-1 text-center" ></h5>
-          <h5 id="mypoints" style="font-weight: bold" class="border rounded px-2 py-1 text-center" ></h5>
-	      <h5 id="actions_and_benefits" style="font-weight: bold" class="border rounded px-2 py-1 text-center" ></h5>
+                </div>
+            </li>
+            <li class="dropdown">
+                <a href="javascript:void(0)" class="dropbtn">Appointments history</a>
+                <div class="dropdown-content">
+                    <a href="#">Dermatology </a>
+                    <a href="#">Pharamcy</a>
+                </div>
+            </li>
+            <li class="dropdown" style="float:right;">
+                <a href="javascript:void(0)" class="dropbtn">Profile</a>
+                <div class="dropdown-content" style="right:0;">
+                    <a id="profile" href="#" ><i class="user icon"></i>My profile</a>
+                    <a id="changePassword" href="#" >Change password</a>
+                    <a id="logout" href="#"><i class = "sign-out icon"></i>Log out</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <!-- EDIT PROFILE -->
+    <div  style="padding:10px 100px 50px 0px;" class="cloumn" hidden="true" id="edit-profile">
         <div class="ui two column very relaxed grid">
-        <div class="column">
-      <form class="border rounded px-2 py-1 text-left">
-      <h5 style="font-weight: bold" >Add allergies</h5>
-        <div class="form-group" id="id_alergies" >
+            <div class="column">
+                <h5 id="category"  class="border rounded px-2 py-1 text-center" ></h5>
+                <h5 id="discount"  class="border rounded px-2 py-1 text-center" ></h5>
+                <h5 id="mypoints" style="font-weight: bold" class="border rounded px-2 py-1 text-center" ></h5>
+                <h5 id="actions_and_benefits" style="font-weight: bold" class="border rounded px-2 py-1 text-center" ></h5>
+                <div class="ui two column very relaxed grid">
+                    <div class="column">
+                        <form class="border rounded px-2 py-1 text-left">
+                            <h5 style="font-weight: bold" >Add allergies</h5>
+                            <div class="form-group" id="id_alergies" >
+                            </div>
+                            <table class="ui very basic collapsing celled table">
+                                <thead>
+                                <tr><th>Medicine</th>
+                                    <th></th>
+                                </tr></thead>
+                                <tbody id="medicine_for_allergies">
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                    <div class="column">
+                        <form class="border rounded px-2 py-1 text-left">
+                            <h5 style="font-weight: bold" >My allergies:</h5>
+                            <div class="form-group" >
+                            </div>
+                            <table class="ui very basic collapsing celled table">
+                                <thead>
+                                <tr><th>Medicine</th>
+                                    <th></th>
+                                </tr></thead>
+                                <tbody id="my_allergies">
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+                <p class="invalid_1" id="id_p_log"></p>
+            </div>
+            <div class="column">
+                <form class="border rounded px-2 py-1 text-center">
+                    <h5 style="font-weight: bold" >Basic information</h5>
+                    <div class="form-group">
+                        <input type="text" class="form-control form-control-sm not-pass" id="id_first_name" placeholder="First name" autofocus>
+                        <p id="errorFirstName"></p>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control form-control-sm not-pass" id="id_last_name" placeholder="Last name" autofocus>
+                        <p id="errorLastName"></p>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control form-control-sm not-pass" id="id_country" placeholder="Country" autofocus>
+                        <p id="errorCountry"></p>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control form-control-sm not-pass" id="id_city" placeholder="City" autofocus>
+                        <p id="errorCity"></p>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control form-control-sm not-pass" id="id_address" placeholder="Address" autofocus>
+                        <p id="errorAddress"></p>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control form-control-sm not-pass" id="id_phone" placeholder="Phone" autofocus>
+                        <p id="errorPhone"></p>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control form-control-sm not-pass" id="id_email" placeholder="Email" autofocus disabled>
+                        <p id = "errorEmail"></p>
+                    </div>
+                    <button type="button" class="btn btn-info" id="id_submit_changes" >SUBMIT CHANGES</button>
+                </form>
+                <p class="invalid_1" id="id_p_log"></p>
+            </div>
         </div>
-        <table class="ui very basic collapsing celled table">
-  <thead>
-    <tr><th>Medicine</th>
-    <th></th>
-  </tr></thead>
-  <tbody id="medicine_for_allergies">
-  </tbody>
-</table>
-      </form>
-      </div>
-       <div class="column">
-       <form class="border rounded px-2 py-1 text-left">
-      <h5 style="font-weight: bold" >My allergies:</h5>
-        <div class="form-group" >
-        </div>
-        <table class="ui very basic collapsing celled table">
-  <thead>
-    <tr><th>Medicine</th>
-    <th></th>
-  </tr></thead>
-  <tbody id="my_allergies">
-  </tbody>
-</table>
-      </form>
-       </div>
-  </div>
-      <p class="invalid_1" id="id_p_log"></p>
     </div>
-    <div class="column">
-      <form class="border rounded px-2 py-1 text-center">
-      <h5 style="font-weight: bold" >Basic information</h5>
-        <div class="form-group">
-          <input type="text" class="form-control form-control-sm not-pass" id="id_first_name" placeholder="First name" autofocus>
-          <p id="errorFirstName"></p>
-        </div>
-        <div class="form-group">
-          <input type="text" class="form-control form-control-sm not-pass" id="id_last_name" placeholder="Last name" autofocus>
-          <p id="errorLastName"></p>
-        </div>
-        <div class="form-group">
-          <input type="text" class="form-control form-control-sm not-pass" id="id_country" placeholder="Country" autofocus>
-          <p id="errorCountry"></p>
-        </div>
-        <div class="form-group">
-          <input type="text" class="form-control form-control-sm not-pass" id="id_city" placeholder="City" autofocus>
-          <p id="errorCity"></p>
-        </div>
-        <div class="form-group">
-          <input type="text" class="form-control form-control-sm not-pass" id="id_address" placeholder="Address" autofocus>
-          <p id="errorAddress"></p>
-        </div>
-        <div class="form-group">
-          <input type="text" class="form-control form-control-sm not-pass" id="id_phone" placeholder="Phone" autofocus>
-          <p id="errorPhone"></p>
-        </div>
-        <div class="form-group">
-          <input type="text" class="form-control form-control-sm not-pass" id="id_email" placeholder="Email" autofocus disabled>
-          <p id = "errorEmail"></p>
-        </div>
-        <button type="button" class="btn btn-info" id="id_submit_changes" >SUBMIT CHANGES</button>
-      </form>
-      <p class="invalid_1" id="id_p_log"></p>
-    </div>
-  </div>
-</div>
 
 
-<!-- CHANGE PASSWORD -->
+    <!-- CHANGE PASSWORD -->
 
-<div id="show"  hidden="true">
-<div style="padding:100px 300px 500px 300px;" class="cloumn" >
-        <form class="border rounded px-2 py-1 text-left" >
+    <div id="show"  hidden="true">
+        <div style="padding:100px 300px 500px 300px;" class="cloumn" >
+            <form class="border rounded px-2 py-1 text-left" >
 
-          <label style="color:black;font-weight: bold" >CHANGE PASSWORD </label>
-			</br></br>
-          <div class="form-group">
-          <input type="password" class="form-control form-control-sm not-pass" id="id_password" placeholder="New password" autofocus>
-          <p id = "errorPassword"></p>
-          </div>
-         
-          <div class="form-group">
-          <input type="password" class="form-control form-control-sm not-pass" id="id_passwordConf" placeholder="Confirm password" autofocus>
-          <p id = "errorPasswordConf"></p>
-          </div>
-		
-          <button type="button" class="btn btn-confirm" id="btnChange" >Change password</button>
-        </form>
-        <p class="invalid_1" id="id_p_log"></p>
+                <label style="color:black;font-weight: bold" >CHANGE PASSWORD </label>
+                </br></br>
+                <div class="form-group">
+                    <input type="password" class="form-control form-control-sm not-pass" id="id_password" placeholder="New password" autofocus>
+                    <p id = "errorPassword"></p>
+                </div>
 
+                <div class="form-group">
+                    <input type="password" class="form-control form-control-sm not-pass" id="id_passwordConf" placeholder="Confirm password" autofocus>
+                    <p id = "errorPasswordConf"></p>
+                </div>
 
-  </div></div>
-  <!-- PHARMACY DETAILS-->
-  <div  style="padding:10px 100px 50px 0px;" class="cloumn" hidden="true" id="pharmacy-details">
-  <div class="ui two column very relaxed grid">
-    <div class="column">
-	        <h5 id="pharmacy-name"  class="border rounded px-2 py-1 text-center" ></h5>
-          <h5 id="pharmacy-description" style="font-weight: bold" class="border rounded px-2 py-1 text-center" ></h5>
-           <h5 id="pharmacy-city" style="font-weight: bold" class="border rounded px-2 py-1 text-center" ></h5>
-            <h5 id="pharmacy-address" style="font-weight: bold" class="border rounded px-2 py-1 text-center" ></h5>
-      <p class="invalid_1" id="id_p_log"></p>
-    </div>
-    <div class="column">
-    	<td><button id="appointments_derm"  class="ui primary basic button">Show available appointments at dermatologists</button>
-        <td><button id="submitSubscribe"  class="ui primary basic button">Subscribe On Pharmacy</button>
+                <button type="button" class="btn btn-confirm" id="btnChange" >Change password</button>
+            </form>
             <p class="invalid_1" id="id_p_log"></p>
+
+
+        </div></div>
+    <!-- PHARMACY DETAILS-->
+    <div  style="padding:10px 100px 50px 0px;" class="cloumn" hidden="true" id="pharmacy-details">
+        <div class="ui two column very relaxed grid">
+            <div class="column">
+                <h5 id="pharmacy-name"  class="border rounded px-2 py-1 text-center" ></h5>
+                <h5 id="pharmacy-description" style="font-weight: bold" class="border rounded px-2 py-1 text-center" ></h5>
+                <h5 id="pharmacy-city" style="font-weight: bold" class="border rounded px-2 py-1 text-center" ></h5>
+                <h5 id="pharmacy-address" style="font-weight: bold" class="border rounded px-2 py-1 text-center" ></h5>
+                <p class="invalid_1" id="id_p_log"></p>
+            </div>
+            <div class="column">
+                <td><button id="appointments_derm"  class="ui primary basic button">Show available appointments at dermatologists</button>
+                <td><button id="submitSubscribe"  class="ui primary basic button">Subscribe On Pharmacy</button>
+                    <p class="invalid_1" id="id_p_log"></p>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
 
-  <!-- RESERVED MEDICINE-->
-  <div class="ui list" id="reserved_medicine_div" hidden="true" class="cloumn">
- 	<table class="table  table-bordered">
-  <thead>
-    <tr>
-	<tr><th>Medicine</th>
-		 <th>Qunatity</th>
-		  <th>Due to</th>
-		 <th>Pharmacy</th>
-		 <th>Pharmacy Street</th>
-		 <th>Pharmacy City</th>
-		 <th></th>
-    </tr>
-  </thead>
-  <tbody id="reserved_medicine_table">
-  </tbody>
-</table>
-</div>
+    <!-- RESERVED MEDICINE-->
+    <div class="ui list" id="reserved_medicine_div" hidden="true" class="cloumn">
+        <table class="table  table-bordered">
+            <thead>
+            <tr>
+            <tr><th>Medicine</th>
+                <th>Qunatity</th>
+                <th>Due to</th>
+                <th>Pharmacy</th>
+                <th>Pharmacy Street</th>
+                <th>Pharmacy City</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody id="reserved_medicine_table">
+            </tbody>
+        </table>
+    </div>
 
-  <!-- SHOW ALL PHARMACIES-->
-  <div class="ui list" id="all_pharmacies_show" hidden="true" style="padding:100px 300px 500px 300px;" class="cloumn">
-  <div class="ui icon input">
-          <input  class="prompt" type="text" id="pharmaciesSearch" placeholder="Search pharmacies by name,city,address..">
-          <i class="search link icon" id="searchPharmacies"></i>
-          </div>
- 	<table class="table  table-bordered">
-  <thead>
-    <tr>
-	<tr><th>Name</th>
-		 <th>City</th>
-		  <th>Street</th>
-		 <th>Description</th>
-		 <th></th>
-    </tr>
-  </thead>
-  <tbody id="all_pharmacies_table">
-  </tbody>
-</table>
-</div>
+    <!-- SHOW ALL PHARMACIES-->
+    <div class="ui list" id="all_pharmacies_show" hidden="true" style="padding:100px 300px 500px 300px;" class="cloumn">
+        <div class="ui icon input">
+            <input  class="prompt" type="text" id="pharmaciesSearch" placeholder="Search pharmacies by name,city,address..">
+            <i class="search link icon" id="searchPharmacies"></i>
+        </div>
+        <table class="table  table-bordered">
+            <thead>
+            <tr>
+            <tr><th>Name</th>
+                <th>City</th>
+                <th>Street</th>
+                <th>Description</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody id="all_pharmacies_table">
+            </tbody>
+        </table>
+    </div>
 
-<!-- SCHEDULING PHARMACIES CONSULING-->
-<div class="ui list" id="shedule_consulting" hidden="true" style="padding:100px 300px 500px 300px;" class="cloumn">
- <table class="table  table-bordered" style="width:50%; margin-left:auto; 
+
+    <!-- UPLOAD QR CODE-->
+    <div class="ui list" id="qr_code_show" hidden="true" style="padding:100px 300px 500px 300px;" class="cloumn">
+        <form method="post" enctype="multipart/form-data">
+            <tr>
+                <th height="50"><label for="file">Upload your QR code :</label></th>
+                <th height="50"><input type="file" id="file" name="file" multiple required onchange="readURL(this);" accept=".jpg, .jpeg, .png"></th>
+                <!--  -->
+                <th><img id="blah" height="150px" alt="your image" /></th>
+            </tr>
+            <tr>
+                <th></th>
+                <th colspan="2">
+                    <input id = "submitQrCode" class="ui centered floated primary  basic button" type = "button" value = "Search pharmacy"></input>
+                </th>
+            </tr>
+        </form>
+        <table class="table  table-bordered">
+            <thead>
+            <tr>
+            <tr>
+                <th name="sortByName">Pharmacy Name<span  name="strelica" class="glyphicon glyphicon-arrow-down" /></th>
+                <th name="sortByAddress">Pharmacy Address<span  name="strelica" class="glyphicon glyphicon-arrow-down" /></th>
+                <th name="sortByRating">Pharmacy Rating<span  name="strelica" class="glyphicon glyphicon-arrow-down" /></th>
+                <th>EPrescription Medicine Needed</th>
+                <th>EPrescription Medicine Quantity Needed</th>
+                <th name="sortByPrice">Total Price<span  name="strelica" class="glyphicon glyphicon-arrow-down" /></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody id="qr_pharmacy_table">
+            </tbody>
+        </table>
+    </div>
+    <!-- SCHEDULING PHARMACIES CONSULING-->
+    <div class="ui list" id="shedule_consulting" hidden="true" style="padding:100px 300px 500px 300px;" class="cloumn">
+        <table class="table  table-bordered" style="width:50%; margin-left:auto;
     margin-right:auto; margin-top: 40px;">
-		        <thead>
-		            <tr class="success">
-		                <th colspan="2" class = "text-info" style= "text-align:center;">Choose date and time for consulting with pharmacist</th>
-		            </tr>
-		        </thead>
-		        <tbody>
-		            <tr>
-		                <td>Date:</td>		
-						<td><input type="datetime-local" id="date"></td>		                
-		            </tr>
-		            <tr>
-		         <!--        <td>Choose time:</td>
-						<td><select id="time" class="ui dropdown">
-							  <option value="">8:00</option>
-							  <option value="1">8:30</option>
-							  <option value="0">9:00</option>
-							  <option value="0">9:30</option>
-							  <option value="0">10:00</option>
-							  <option value="0">10:30</option>
-							  <option value="0">11:00</option>
-							  <option value="0">11:30</option>
-							  <option value="0">12:00</option>
-							  <option value="0">12:30</option>
-							  <option value="0">13:00</option>
-							  <option value="0">13:30</option>
-							  <option value="0">14:00</option>
-							  <option value="0">14:30</option>
-							  <option value="0">15:00</option>
-							  <option value="0">15:30</option>
-							  <option value="0">16:00</option>
-							  <option value="0">16:30</option>
-							  <option value="0">17:00</option>
-							  <option value="0">17:30</option>
-							  <option value="0">18:00</option>
-							  <option value="0">18:30</option>
-							  <option value="0">19:00</option>
-							  <option value="0">19:30</option>
-							  <option value="0">20:00</option>
-							  <option value="0">20:30</option>
-							</select></td>     -->    
-		            </tr> 
-		        </tbody>
-		        <tfoot class="full-width">
-    <tr>
-      <th></th>
-      <th colspan="2">     
-          <input id = "pharamciesForConsulting" class="ui right floated teal basic button" type = "button" value = "Next"></input>
-		  
-       
-      </th>
-    </tr>
-  </tfoot>
-		    </table> <p id="er"> </p>
-</div>
-<!-- SEARCH MEDICINE -->
- <div class="ui icon input" hidden="true" id="search-box-medicine">
-           <input class="prompt" type="text" id="medicineSearch" name="search" placeholder="Search medicine by name..">
-           <i class="search link icon" id="searchMedicine"></i>
+            <thead>
+            <tr class="success">
+                <th colspan="2" class = "text-info" style= "text-align:center;">Choose date and time for consulting with pharmacist</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Date:</td>
+                <td><input type="datetime-local" id="date"></td>
+            </tr>
+            <tr>
+                <!--        <td>Choose time:</td>
+                       <td><select id="time" class="ui dropdown">
+                             <option value="">8:00</option>
+                             <option value="1">8:30</option>
+                             <option value="0">9:00</option>
+                             <option value="0">9:30</option>
+                             <option value="0">10:00</option>
+                             <option value="0">10:30</option>
+                             <option value="0">11:00</option>
+                             <option value="0">11:30</option>
+                             <option value="0">12:00</option>
+                             <option value="0">12:30</option>
+                             <option value="0">13:00</option>
+                             <option value="0">13:30</option>
+                             <option value="0">14:00</option>
+                             <option value="0">14:30</option>
+                             <option value="0">15:00</option>
+                             <option value="0">15:30</option>
+                             <option value="0">16:00</option>
+                             <option value="0">16:30</option>
+                             <option value="0">17:00</option>
+                             <option value="0">17:30</option>
+                             <option value="0">18:00</option>
+                             <option value="0">18:30</option>
+                             <option value="0">19:00</option>
+                             <option value="0">19:30</option>
+                             <option value="0">20:00</option>
+                             <option value="0">20:30</option>
+                           </select></td>     -->
+            </tr>
+            </tbody>
+            <tfoot class="full-width">
+            <tr>
+                <th></th>
+                <th colspan="2">
+                    <input id = "pharamciesForConsulting" class="ui right floated teal basic button" type = "button" value = "Next"></input>
 
-         </div>
-      	    <div class="container_1" hidden='true' id="medicine_show">
-                <h4 >Filter Medicine By Type :</h4>
-                <p >
-                    <input type="radio" id="ON_HOLD" name="postage" value="ANTIBIOTIC" /> ANTIBIOTIC
-                    <input type="radio" id="ACCEPTED" name="postage" value="ANESTHETIC" /> ANESTHETIC
-                    <input type="radio" id="REJECTED" name="postage" value="ANTIHISTAMINE" /> ANTIHISTAMINE
-                    <input type="radio" id="NO_FILTER" name="postage" value="NO_FILTER" /> NO FILTER
-                </p>
-                <h4 >Filter Medicine By Shape :</h4>
-                <p >
-                    <input type="radio" id="CAPSULE" name="postageS" value="CAPSULE" /> CAPSULE
-                    <input type="radio" id="TABLET" name="postageS" value="TABLET" /> TABLET
-                    <input type="radio" id="POWDER" name="postageS" value="POWDER" /> POWDER
-                    <input type="radio" id="CREAM" name="postageS" value="CREAM" /> CREAM
-                    <input type="radio" id="OIL" name="postageS" value="OIL" /> OIL
-                    <input type="radio" id="SYRUP" name="postageS" value="SYRUP" /> SYRUP
-                    <input type="radio" id="NO_FILTER_SHAPE" name="postageS" value="NO_FILTER_SHAPE" /> NO FILTER
-                </p>
-        <form class="border rounded px-2 py-1 text-center">       
-        		 <table class="table  table-bordered" >
-		  	<thead>
-		    	<tr><th>Code</th>
-		   		 <th>Name</th>
-		   		 <th>Shape</th>
-		   		 <th>Type</th>
-		   		 <th></th>
+
+                </th>
+            </tr>
+            </tfoot>
+        </table> <p id="er"> </p>
+    </div>
+    <!-- SEARCH MEDICINE -->
+    <div class="ui icon input" hidden="true" id="search-box-medicine">
+        <input class="prompt" type="text" id="medicineSearch" name="search" placeholder="Search medicine by name..">
+        <i class="search link icon" id="searchMedicine"></i>
+
+    </div>
+    <div class="container_1" hidden='true' id="medicine_show">
+        <h4 >Filter Medicine By Type :</h4>
+        <p >
+            <input type="radio" id="ON_HOLD" name="postage" value="ANTIBIOTIC" /> ANTIBIOTIC
+            <input type="radio" id="ACCEPTED" name="postage" value="ANESTHETIC" /> ANESTHETIC
+            <input type="radio" id="REJECTED" name="postage" value="ANTIHISTAMINE" /> ANTIHISTAMINE
+            <input type="radio" id="NO_FILTER" name="postage" value="NO_FILTER" /> NO FILTER
+        </p>
+        <h4 >Filter Medicine By Shape :</h4>
+        <p >
+            <input type="radio" id="CAPSULE" name="postageS" value="CAPSULE" /> CAPSULE
+            <input type="radio" id="TABLET" name="postageS" value="TABLET" /> TABLET
+            <input type="radio" id="POWDER" name="postageS" value="POWDER" /> POWDER
+            <input type="radio" id="CREAM" name="postageS" value="CREAM" /> CREAM
+            <input type="radio" id="OIL" name="postageS" value="OIL" /> OIL
+            <input type="radio" id="SYRUP" name="postageS" value="SYRUP" /> SYRUP
+            <input type="radio" id="NO_FILTER_SHAPE" name="postageS" value="NO_FILTER_SHAPE" /> NO FILTER
+        </p>
+        <form class="border rounded px-2 py-1 text-center">
+            <table class="table  table-bordered" >
+                <thead>
+                <tr><th>Code</th>
+                    <th>Name</th>
+                    <th>Ratings</th>
+                    <th>Shape</th>
+                    <th>Type</th>
                     <th></th>
-		 		 </tr></thead>
-		 	 <tbody id="medicine_table" >
-		 	 </tbody>
-		</table>  
+                    <th></th>
+                </tr></thead>
+                <tbody id="medicine_table" >
+                </tbody>
+            </table>
         </form>
-      </div>
-        <div class="container_1" hidden='true' id="pharamcies_with_medicine_show">
-        <form class="border rounded px-2 py-1 text-center">       
-        		 <table class="ui celled table" >
-		  	<thead>
-		    	<tr><th>Pharmacy Name</th>
-		   		 <th>Street</th>
-		   		 <th>City</th>
+    </div>
+    <div class="container_1" hidden='true' id="pharamcies_with_medicine_show">
+        <form class="border rounded px-2 py-1 text-center">
+            <table class="ui celled table" >
+                <thead>
+                <tr><th>Pharmacy Name</th>
+                    <th>Street</th>
+                    <th>City</th>
                     <th>Price</th>
-		   		 <th></th>
-		 		 </tr></thead>
-		 	 <tbody id="ph_med_table" >
-		 	 </tbody>
-		</table>  
+                    <th></th>
+                </tr></thead>
+                <tbody id="ph_med_table" >
+                </tbody>
+            </table>
         </form>
-      </div>
-      <div id="myModal" class="modal">
+    </div>
+    <div id="myModal" class="modal">
 
-  <!-- Modal content -->
-  <div class="modal-content">
-    <span class="close">&times;</span>
-     <label for="start">Choose quantity:</label>
-     <select id="med_quantity" class="ui dropdown">
-							  <option value="">1</option>
-							  <option value="1">2</option>
-							  <option value="0">3</option>
-							  <option value="0">4</option>
-							  <option value="0">5</option>
-							  <option value="0">6</option>
-							  <option value="0">7</option>
-							  <option value="0">8</option>
-							  <option value="0">9</option>
-							  <option value="0">10</option>
-							  <option value="0">11</option>
-							  <option value="0">12</option>
-							  <option value="0">13</option>
-							  <option value="0">14</option>
-							  <option value="0">15</option>
-							</select>
-   <label for="start">Choose pick up date:</label>
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <label for="start">Choose quantity:</label>
+            <select id="med_quantity" class="ui dropdown">
+                <option value="">1</option>
+                <option value="1">2</option>
+                <option value="0">3</option>
+                <option value="0">4</option>
+                <option value="0">5</option>
+                <option value="0">6</option>
+                <option value="0">7</option>
+                <option value="0">8</option>
+                <option value="0">9</option>
+                <option value="0">10</option>
+                <option value="0">11</option>
+                <option value="0">12</option>
+                <option value="0">13</option>
+                <option value="0">14</option>
+                <option value="0">15</option>
+            </select>
+            <label for="start">Choose pick up date:</label>
 
-	<input type="datetime-local"" id="pickupdate" >
-	<button id="send_reservation" class="ui primary basic button">Send reservation</button>
-  </div>
+            <input type="datetime-local"" id="pickupdate" >
+            <button id="send_reservation" class="ui primary basic button">Send reservation</button>
+        </div>
 
-</div>
-<!-- SCHEDULE DERMATOLOGIST APPOINTMENT -->
-<div id="derm_appointments"  hidden="true">
-<div style="padding:100px 300px 500px 300px;" class="cloumn" >
-          <label style="color:black;font-weight: bold" >AVAILABLE APPOINTMENTS </label>
-			</br></br>
-                  <form class="border rounded px-2 py-1 text-center">       
-        		 <table class="ui celled table" id="appointments_dermatology_table" >
-		  	<thead>
-		    	<tr><th>Dermatologist</th>
-		   		  <th name="sortByGrade">Dermatologists grade<span  name="strelica" class="glyphicon glyphicon-arrow-down"></span></th>
-		   		 <th>Start date and time</th>
-		   		 <th>Duration</th>
-		   		 <th name="sortByPrice">Price<span  name="strelica" class="glyphicon glyphicon-arrow-down"></span></th>
-		   		 <th></th>
-		 		 </tr></thead>
-		 	 <tbody id="appointments_dermatology_body" >
-		 	 </tbody>
-		</table>  
-        </form>
-  </div></div>
- 
- <!-- MY DERMATOLOGIST APPOINTMENT -->
-<div id="my_derm_appointments"  hidden="true">
-<div style="padding:100px 300px 500px 300px;" class="cloumn" >
-          <label style="color:black;font-weight: bold" >MY APPOINTMENTS AT DERMATOLOGISTS </label>
-			</br></br>
-                  <form class="border rounded px-2 py-1 text-center">       
-        		 <table class="table  table-bordered" id="appointments_dermatology_table" >
-		  	<thead>
-		    	<tr><th>Dermatologist</th>
-		   		 <th>Pharmacy</th>
-		   		 <th>Pharmacy City</th>
-		   		 <th>Pharmacy Street</th>
-		   		 <th>Start date and time</th>
-		   		 <th>Duration</th>
-		   		 <th>Price</th>
-		   		 <th></th>
-		 		 </tr></thead>
-		 	 <tbody id="my_appointments_dermatology_body" >
-		 	 </tbody>
-		</table>  
-        </form>
-  </div></div>
-  
-   <!-- MY PHARMACIES FOR CONSULTING -->
-<div id="ph_av_con"  hidden="true">
-<div style="padding:100px 300px 500px 300px;" class="cloumn" >
-          <label style="color:black;font-weight: bold" >PHARMACIES WITH AVAILABLE PHARMACISTS FOR COUNSELING </label>
-			</br></br>
-                  <form class="border rounded px-2 py-1 text-center">       
-        		 <table class="table  table-bordered" id="appointments_dermatology_table" >
-		  	<thead>
-		    	<tr class="success"><th>Pharmacy</th>
-		   		 <th>Pharmacy City</th>
-		   		 <th>Pharmacy Street</th>
-		   		 <th name="sortByGrade">Grade<span  name="strelica" class="glyphicon glyphicon-arrow-down"></span></th>
-		   		 <th name="sortByPrice">Price<span  name="strelica" class="glyphicon glyphicon-arrow-down"></span></th>
-		   		 <th></th>
-		 		 </tr></thead>
-		 	 <tbody id="ph_av_con_body" >
-		 	 </tbody>
-		</table>  
-        </form>
+    </div>
+    <!-- SCHEDULE DERMATOLOGIST APPOINTMENT -->
+    <div id="derm_appointments"  hidden="true">
+        <div style="padding:100px 300px 500px 300px;" class="cloumn" >
+            <label style="color:black;font-weight: bold" >AVAILABLE APPOINTMENTS </label>
+            </br></br>
+            <form class="border rounded px-2 py-1 text-center">
+                <table class="ui celled table" id="appointments_dermatology_table" >
+                    <thead>
+                    <tr><th>Dermatologist</th>
+                        <th name="sortByGrade">Dermatologists grade<span  name="strelica" class="glyphicon glyphicon-arrow-down"></span></th>
+                        <th>Start date and time</th>
+                        <th>Duration</th>
+                        <th name="sortByPrice">Price<span  name="strelica" class="glyphicon glyphicon-arrow-down"></span></th>
+                        <th></th>
+                    </tr></thead>
+                    <tbody id="appointments_dermatology_body" >
+                    </tbody>
+                </table>
+            </form>
+        </div></div>
+
+    <!-- MY DERMATOLOGIST APPOINTMENT -->
+    <div id="my_derm_appointments"  hidden="true">
+        <div style="padding:100px 300px 500px 300px;" class="cloumn" >
+            <label style="color:black;font-weight: bold" >MY APPOINTMENTS AT DERMATOLOGISTS </label>
+            </br></br>
+            <form class="border rounded px-2 py-1 text-center">
+                <table class="table  table-bordered" id="appointments_dermatology_table" >
+                    <thead>
+                    <tr><th>Dermatologist</th>
+                        <th>Pharmacy</th>
+                        <th>Pharmacy City</th>
+                        <th>Pharmacy Street</th>
+                        <th>Start date and time</th>
+                        <th>Duration</th>
+                        <th>Price</th>
+                        <th></th>
+                    </tr></thead>
+                    <tbody id="my_appointments_dermatology_body" >
+                    </tbody>
+                </table>
+            </form>
+        </div></div>
+
+    <!-- MY PHARMACIES FOR CONSULTING -->
+    <div id="ph_av_con"  hidden="true">
+        <div style="padding:100px 300px 500px 300px;" class="cloumn" >
+            <label style="color:black;font-weight: bold" >PHARMACIES WITH AVAILABLE PHARMACISTS FOR COUNSELING </label>
+            </br></br>
+            <form class="border rounded px-2 py-1 text-center">
+                <table class="table  table-bordered" id="appointments_dermatology_table" >
+                    <thead>
+                    <tr class="success"><th>Pharmacy</th>
+                        <th>Pharmacy City</th>
+                        <th>Pharmacy Street</th>
+                        <th name="sortByGrade">Grade<span  name="strelica" class="glyphicon glyphicon-arrow-down"></span></th>
+                        <th name="sortByPrice">Price<span  name="strelica" class="glyphicon glyphicon-arrow-down"></span></th>
+                        <th></th>
+                    </tr></thead>
+                    <tbody id="ph_av_con_body" >
+                    </tbody>
+                </table>
+            </form>
 
 
-  </div></div>
-  
-     <!-- MY PHARMACISTS FOR CONSULTING -->
-<div id="ph_con"  hidden="true">
-<div style="padding:100px 300px 500px 300px;" class="cloumn" >
-          <label style="color:black;font-weight: bold" > AVAILABLE PHARMACISTS FOR COUNSELING </label>
-			</br></br>
-                  <form class="border rounded px-2 py-1 text-center">       
-        		 <table class="table  table-bordered" id="appointments_dermatology_table" >
-		  	<thead>
-		    	<tr><th>Pharmacist</th>
-		   		 <th name="sortByGrade">Pharmacists grade<span  name="strelica" class="glyphicon glyphicon-arrow-down"></span></th>
-		   		 <th></th>
-		 		 </tr></thead>
-		 	 <tbody id="ph_con_body" >
-		 	 </tbody>
-		</table>  
-        </form>
-  </div></div>
-  
-   <!-- MY APPOINTMENTS AT PHARMACISTS -->
-<div id="my_ph_appointments"  hidden="true">
-<div style="padding:100px 300px 500px 300px;" class="cloumn" >
-          <label style="color:black;font-weight: bold" >MY APPOINTMENTS AT PHARMACISTS </label>
-			</br></br>
-                  <form class="border rounded px-2 py-1 text-center">       
-        		 <table class="table  table-bordered" id="appointments_dermatology_table" >
-		  	<thead>
-		    	<tr><th>Pharmacist</th>
-		   		 <th>Pharmacy</th>
-		   		 <th>Pharmacy City</th>
-		   		 <th>Pharmacy Street</th>
-		   		 <th>Start date and time</th>
-		   		 <th>Duration</th>
-		   		 <th>Price</th>
-		   		 <th></th>
-		 		 </tr></thead>
-		 	 <tbody id="my_ph_appointments_body" >
-		 	 </tbody>
-		</table>  
-        </form>
-  </div></div>
-  
+        </div></div>
+
+    <!-- MY PHARMACISTS FOR CONSULTING -->
+    <div id="ph_con"  hidden="true">
+        <div style="padding:100px 300px 500px 300px;" class="cloumn" >
+            <label style="color:black;font-weight: bold" > AVAILABLE PHARMACISTS FOR COUNSELING </label>
+            </br></br>
+            <form class="border rounded px-2 py-1 text-center">
+                <table class="table  table-bordered" id="appointments_dermatology_table" >
+                    <thead>
+                    <tr><th>Pharmacist</th>
+                        <th name="sortByGrade">Pharmacists grade<span  name="strelica" class="glyphicon glyphicon-arrow-down"></span></th>
+                        <th></th>
+                    </tr></thead>
+                    <tbody id="ph_con_body" >
+                    </tbody>
+                </table>
+            </form>
+        </div></div>
+
+    <!-- MY APPOINTMENTS AT PHARMACISTS -->
+    <div id="my_ph_appointments"  hidden="true">
+        <div style="padding:100px 300px 500px 300px;" class="cloumn" >
+            <label style="color:black;font-weight: bold" >MY APPOINTMENTS AT PHARMACISTS </label>
+            </br></br>
+            <form class="border rounded px-2 py-1 text-center">
+                <table class="table  table-bordered" id="appointments_dermatology_table" >
+                    <thead>
+                    <tr><th>Pharmacist</th>
+                        <th>Pharmacy</th>
+                        <th>Pharmacy City</th>
+                        <th>Pharmacy Street</th>
+                        <th>Start date and time</th>
+                        <th>Duration</th>
+                        <th>Price</th>
+                        <th></th>
+                    </tr></thead>
+                    <tbody id="my_ph_appointments_body" >
+                    </tbody>
+                </table>
+            </form>
+        </div></div>
+
 </div>
 
 <div id="modal-medicines" class="modal">
