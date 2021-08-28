@@ -454,11 +454,15 @@ public class StatisticServiceImpl implements StatisticService{
 		List<MedicineReservation> result = new ArrayList<MedicineReservation>();
 		
 		for(MedicineReservation da : allReservations) {
+			
 			if(da.getDueTo().isBefore(LocalDate.now()) && da.getStatus().equals(MedicineReservationStatus.TAKEN)) {
+				System.out.println(da);
 				result.add(da);
 			}
 		}
 			
+		
+		
 		List<LocalDate> allDates = new ArrayList<LocalDate>();
 		for(MedicineReservation d : result) {
 			allDates.add(d.getDueTo());
@@ -475,6 +479,8 @@ public class StatisticServiceImpl implements StatisticService{
 		}
 
 		Collections.sort(years);
+		
+		
 		for(Integer year : years) {
 			StatisticDTO statistic = new StatisticDTO();
 			int quantity = 0;

@@ -92,7 +92,7 @@ let showOrders = function(data) {
 	
 	temp+=`</tr>`
 		
-		$("#showData").html(`<table class="ui very padded scrollable table" id="medicineTable" style="width:70%; margin-left:auto; 
+		$("#showData").html(`<table class="ui very basic padded scrollable table" id="medicineTable" style="width:70%; margin-left:auto; 
 			    margin-right:auto; margin-top: 40px;display:block;">
 			    
 	  <thead style="display: table;
@@ -136,7 +136,7 @@ $('.ui.dropdown')
 			    <tr>
 			      <th></th>
 			      <th colspan="6">
-					   <input id = "addNew" class="ui right floated teal button" type = "button" value = "Add new medicine"></input>	    
+					   <input id = "addNew" class="ui right floated teal button" type = "button" value = "Create new order"></input>	    
 			      </th>
 			    </tr>
 			  </tfoot>
@@ -242,7 +242,7 @@ $('.ui.dropdown')
   <div class="header">
     We're sorry, you cannot edit that order.
   </div>
-  <p>That order has already offers!
+  <p>That order already has offers!
 </p></div>
 	  </div>
 	</div>

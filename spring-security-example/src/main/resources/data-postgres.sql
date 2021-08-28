@@ -90,6 +90,7 @@ INSERT INTO PHARMACYADMIN ( pharmacy_id, user_id) VALUES (2,9);
 
 
 INSERT INTO patient_subscribe_pharmacy_ids(patient_id,subscribe_pharmacy_ids) VALUES (1,2);
+INSERT INTO patient_subscribe_pharmacy_ids(patient_id,subscribe_pharmacy_ids) VALUES (1,1);
 INSERT INTO patient_subscribe_pharmacy_ids(patient_id,subscribe_pharmacy_ids) VALUES (2,2);
 --dermatologist 
 INSERT INTO DERMATOLOGIST ( user_id) VALUES (7);
@@ -215,8 +216,8 @@ INSERT INTO pricelist_medicine_price_list(price_list_id,medicine_price_list_id) 
 INSERT INTO pricelist_medicine_price_list(price_list_id,medicine_price_list_id) VALUES (2,3);
 
 INSERT INTO pricelist_medicine_price_list(price_list_id,medicine_price_list_id) VALUES (3,9);
-INSERT INTO pricelist_medicine_price_list(price_list_id,medicine_price_list_id) VALUES (3,10);
-INSERT INTO pricelist_medicine_price_list(price_list_id,medicine_price_list_id) VALUES (3,11);
+INSERT INTO pricelist_medicine_price_list(price_list_id,medicine_price_list_id) VALUES (4,10);
+INSERT INTO pricelist_medicine_price_list(price_list_id,medicine_price_list_id) VALUES (4,11);
 
 --price list appoitment price list
 --INSERT INTO pricelist_appoitment_price_list(price_list_id,appoitment_price_list_id) VALUES (1,1);
@@ -233,6 +234,8 @@ INSERT INTO pharmacy_ratings (pharmacy_id, ratings_id) VALUES (2,5);
 INSERT INTO pharmacy_price_list(pharmacy_id, price_list_id) VALUES (2,1);
 INSERT INTO pharmacy_price_list(pharmacy_id, price_list_id) VALUES (2,2);
 INSERT INTO pharmacy_price_list(pharmacy_id, price_list_id) VALUES (2,3);
+INSERT INTO pharmacy_price_list(pharmacy_id, price_list_id) VALUES (2,4);
+
 --actions and benefits
 INSERT INTO actionandbenefit (description,start_date,end_date) VALUES ( 'brufen 20%','2017-10-01 21:58:58.508-07','2017-12-01 21:58:58.508-07');
 INSERT INTO actionandbenefit (description,start_date,end_date) VALUES ( 'kupis 2 dobijes 3','2017-10-01 21:58:58.508-07','2017-12-01 21:58:58.508-07');
@@ -251,7 +254,7 @@ INSERT INTO dermatologist_complaint(id,content,dermatologist_id,patient_id,is_an
 INSERT INTO patients_dermatologist_complaints(patient_id,dermatologist_complaints_id) VALUES (1,1);
 
 --holiday request
-INSERT INTO holidayrequest(pharmacy_id,start_date,end_date,status) VALUES (2,'2021-10-20 21:58:58.508-07','2021-10-30 21:58:58.508-07',0);
+INSERT INTO holidayrequest(pharmacy_id,start_date,end_date,status) VALUES (2,'2021-10-20 21:58:58.508-07','2021-10-29 21:58:58.508-07',0);
 INSERT INTO holidayrequest(pharmacy_id,start_date,end_date,status) VALUES (2,'2021-10-10 21:58:58.508-07','2021-12-12 21:58:58.508-07',0);
 INSERT INTO holidayrequest(pharmacy_id,start_date,end_date,status) VALUES (2,'2021-07-07 21:58:58.508-07','2021-12-12 21:58:58.508-07',0);
 
@@ -274,25 +277,37 @@ INSERT INTO workingday (day,end_time,start_time) VALUES (4,'19:00:00.000000', '0
 INSERT INTO workingday (day,end_time,start_time) VALUES (5,'19:00:00.000000', '08:00:00.000000');
 INSERT INTO workingday (day,end_time,start_time) VALUES (6,'23:30:00.000000', '08:00:00.000000');
 
+INSERT INTO workingday (day,end_time,start_time) VALUES (0,'15:00:00.000000', '07:00:00.000000');
+INSERT INTO workingday (day,end_time,start_time) VALUES (1,'15:00:00.000000', '07:00:00.000000');
+INSERT INTO workingday (day,end_time,start_time) VALUES (2,'15:00:00.000000', '07:00:00.000000');
+
 
 --working time
 INSERT INTO workingtime (pharmacy_id) VALUES (2);
 INSERT INTO workingtime (pharmacy_id) VALUES (2);
 INSERT INTO workingtime (pharmacy_id) VALUES (1);
+INSERT INTO workingtime (pharmacy_id) VALUES (1);
 
 --working time with working days
+
 INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (2,1);
 INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (2,2);
 INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (2,3);
 INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (3,4);
 INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (3,5);
-INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (3,6);
+INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (4,6);
 
-INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (3,7);
+INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (4,7);
+
+INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (1,10);
+INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (1,11);
+INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (1,12);
 --dermatologist working time
 INSERT INTO dermatologist_working_times (dermatologist_id, working_times_id) VALUES (1,1); 
 INSERT INTO dermatologist_working_times (dermatologist_id, working_times_id) VALUES (1,3); 
 INSERT INTO dermatologist_working_times (dermatologist_id, working_times_id) VALUES (2,2); 
+INSERT INTO dermatologist_working_times (dermatologist_id, working_times_id) VALUES (3,4); 
+
 
 --pharmacist
 INSERT INTO PHARMACIST (user_id,working_time_id) VALUES (10,2);
@@ -363,10 +378,10 @@ INSERT INTO pharmacy_medicine_reservations(pharmacy_id,medicine_reservations_id)
 INSERT INTO pharmacy_medicine_reservations(pharmacy_id,medicine_reservations_id) VALUES (2,2);
 INSERT INTO pharmacy_medicine_reservations(pharmacy_id,medicine_reservations_id) VALUES (2,5);
 INSERT INTO pharmacy_medicine_reservations(pharmacy_id,medicine_reservations_id) VALUES (2,6);
-INSERT INTO pharmacy_medicine_reservations(pharmacy_id,medicine_reservations_id) VALUES (1,7);
-INSERT INTO pharmacy_medicine_reservations(pharmacy_id,medicine_reservations_id) VALUES (1,8);
-INSERT INTO pharmacy_medicine_reservations(pharmacy_id,medicine_reservations_id) VALUES (1,9);
-INSERT INTO pharmacy_medicine_reservations(pharmacy_id,medicine_reservations_id) VALUES (1,10);
+INSERT INTO pharmacy_medicine_reservations(pharmacy_id,medicine_reservations_id) VALUES (2,7);
+INSERT INTO pharmacy_medicine_reservations(pharmacy_id,medicine_reservations_id) VALUES (2,8);
+INSERT INTO pharmacy_medicine_reservations(pharmacy_id,medicine_reservations_id) VALUES (2,9);
+INSERT INTO pharmacy_medicine_reservations(pharmacy_id,medicine_reservations_id) VALUES (2,10);
 --pharmacist complaint
 INSERT INTO pharmacist_complaint(id,content,pharmacist_id,patient_id, is_answered) VALUES (1,'Skup',1, 1,false);
 
@@ -382,8 +397,9 @@ INSERT INTO pharmacy_complaint(id,content,pharmacy_id,patient_id, is_answered) V
 INSERT INTO patients_pharmacy_complaints(patient_id,pharmacy_complaints_id) VALUES (1,1);
 
 --request for medicine availabitlity
-INSERT INTO requestformedicineavailability(id,created_at,medicine_with_quantity_id) VALUES (1,'2021-07-04 21:58:58.508-07',1);
-
+INSERT INTO requestformedicineavailability(created_at,medicine_with_quantity_id,pharmacy_id) VALUES ('2021-07-05 21:58:58.508-07',1,2);
+INSERT INTO requestformedicineavailability(created_at,medicine_with_quantity_id,pharmacy_id) VALUES ('2021-08-04 21:58:58.508-07',2,2);
+INSERT INTO requestformedicineavailability(created_at,medicine_with_quantity_id,pharmacy_id) VALUES ('2021-08-21 21:58:58.508-07',3,1);
 --suplier offer 
 INSERT INTO suplieroffer(delevery_time,price,medicine_order_id, status) VALUES ('2020-10-01 21:58:58.508-07',400,1,0);
 INSERT INTO suplieroffer(delevery_time,price,medicine_order_id, status) VALUES ('2021-08-08 21:58:58.508-07',500,1,0);
@@ -404,7 +420,7 @@ INSERT INTO loyaltyscale(id,category,needed_points,discount) VALUES (3,2,60,30);
 
 
 --pharmacist consulting
-INSERT INTO pharmacistcounseling(description,duration,start_date_time,patient_id,pharmacist_id,therapy_id) VALUES ('opis 1',30,'2021-08-21 10:58:58.508-07',1,1,1);
+INSERT INTO pharmacistcounseling(description,duration,start_date_time,patient_id,pharmacist_id,therapy_id) VALUES ('opis 1',30,'2021-08-25 10:58:58.508-07',1,1,1);
 INSERT INTO pharmacistcounseling(description,duration,start_date_time,patient_id,pharmacist_id,therapy_id) VALUES ('opis 2',30,'2021-08-21 21:58:58.508-07',1,1,1);
 INSERT INTO pharmacistcounseling(description,duration,start_date_time,patient_id,pharmacist_id,therapy_id) VALUES ('opis 1',30,'2021-08-23 10:58:58.508-07',1,1,1);
 INSERT INTO pharmacistcounseling(description,duration,start_date_time,patient_id,pharmacist_id,therapy_id) VALUES ('opis 2',30,'2021-08-24 21:58:58.508-07',2,1,1);

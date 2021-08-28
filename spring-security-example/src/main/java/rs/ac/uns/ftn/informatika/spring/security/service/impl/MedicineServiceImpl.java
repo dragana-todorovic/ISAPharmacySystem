@@ -13,17 +13,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
+import rs.ac.uns.ftn.informatika.spring.security.model.MedicinePrice;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicineReservation;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicineReservationStatus;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicineWithQuantity;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
+import rs.ac.uns.ftn.informatika.spring.security.model.PriceList;
 import rs.ac.uns.ftn.informatika.spring.security.model.User;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.MedicineReservationDTO;
 import rs.ac.uns.ftn.informatika.spring.security.repository.MedicineRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.MedicineReservationRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.MedicineWithQuantityRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacyRepository;
+import rs.ac.uns.ftn.informatika.spring.security.repository.PriceListRepository;
 import rs.ac.uns.ftn.informatika.spring.security.service.MedicineService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PatientService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyAdminService;
@@ -42,6 +45,11 @@ public class MedicineServiceImpl implements MedicineService{
 	private MedicineReservationRepository medicineReservationRepository;
 	@Autowired
 	private MedicineWithQuantityRepository medicineWithQuantityRepository;
+	
+	@Autowired
+	private PriceListRepository priceListRepository;
+	
+	
 	@Autowired
 	private UserService userService;
 	
@@ -178,6 +186,26 @@ public class MedicineServiceImpl implements MedicineService{
 		}
 		
 		this.pharmacyRepository.save(pharmacy);
+		
+	}
+
+	@Override
+	public Set<Medicine> getAllMedicinePricesExpectedExsitedInPriceList(String email,List<Long> existed, String priceListId) {
+		PriceList priceList = this.priceListRepository.findById(Long.parseLong(priceListId)).get();
+		PharmacyAdmin pa = pharmacyAdminService.findPharmacyAdminByUser(userService.findByEmail(email));
+		
+		Pharmacy pharmacy = pa.getPharmacy();
+		
+		Set<Medicine> medicines = new HashSet<Medicine>();
+		
+		for(MedicineWithQuantity m : pharmacy.getMedicineWithQuantity()) {
+			if(!existed.contains(m.getMedicine().getId())) {
+				medicines.add(m.getMedicine());
+			}
+			}
+		
+		return medicines;
+	
 		
 	}
 

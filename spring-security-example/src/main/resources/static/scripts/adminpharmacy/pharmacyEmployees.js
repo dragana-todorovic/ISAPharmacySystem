@@ -159,7 +159,7 @@ let showDermatologists = function(data) {
 	}
 	temp+=`</tr>`
 	
-	 $("#showData").html(`<table class="ui very padded selectable table" id="table" style="width:70%; margin-left:auto; 
+	 $("#showData").html(`<table class="ui very basic padded selectable table" id="table" style="width:70%; margin-left:auto; 
 			    margin-right:auto; margin-top: 40px;">
 			    
 	  <thead>
@@ -418,7 +418,7 @@ $("button[name=prikaziZahjeve]").click(function() {
 	      method: 'GET',
 		  contentType: 'application/json',
 		        success: function(data){
-					 showRequests(idSelected,data)
+					 showRequestsD(idSelected,data)
 					  $('#modalniZaPrikazZahtjeva')
 					  .modal('show')
 					  
@@ -551,7 +551,7 @@ let showPharmacists = function(data) {
 	}
 	temp+=`</tr>`
 	
-	 $("#showData").html(`<table class="ui very padded selectable table" id="table" style="width:70%; margin-left:auto; 
+	 $("#showData").html(`<table class="ui very basic padded selectable table" id="table" style="width:70%; margin-left:auto; 
 			    margin-right:auto; margin-top: 40px;">
 			    
 	  <thead>
@@ -683,6 +683,22 @@ let showPharmacists = function(data) {
   </div>
 </div>
 
+
+<div id="errorDeleteP" class="ui modal">
+	  <i class="close icon"></i>
+	  <div class="header">
+		Error
+	  </div>
+	  <div class="content">
+	  <div class="ui negative message">
+  <div class="header">
+    We're sorry, you cannot delete that pharmacist.
+  </div>
+  <p>That pharmacist has an counseling scheduled!
+</p></div>
+	  </div>
+	</div>
+
 `)
 
 $("#firstNameSearch").keyup(function () {
@@ -748,7 +764,8 @@ $("button[name=obrisiDermatologa]").click(function() {
 					  location.href = "adminpharmacy.html"
 				},
 			      error: function(){
-			       	alert('Error');
+			    	  $('#errorDeleteP')
+			    	  .modal('show')
 			      }
 	    });
 	

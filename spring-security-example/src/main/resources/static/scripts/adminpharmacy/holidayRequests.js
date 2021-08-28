@@ -1,5 +1,5 @@
-let id;
-let showRequests = function(idSelected,data) {
+
+let showRequestsD = function(idSelected,data) {
 	let temp = '';
 	for(i in data) {
 		temp += `<tr>

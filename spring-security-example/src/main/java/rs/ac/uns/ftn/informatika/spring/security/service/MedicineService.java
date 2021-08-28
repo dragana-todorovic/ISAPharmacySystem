@@ -7,6 +7,7 @@ import java.util.Set;
 
 import rs.ac.uns.ftn.informatika.spring.security.model.Dermatologist;
 import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
+import rs.ac.uns.ftn.informatika.spring.security.model.MedicinePrice;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicineReservation;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicineWithQuantity;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
@@ -31,6 +32,7 @@ public interface MedicineService {
 	void addMedicineWithQuatityInPharmacy(String email,String medicineName, int quantity);
 	Boolean deleteMedicineFromPharmacy(Long id, String email);
 	void editMedicineWithQuatityInPharmacy(String email, long id, int quantity);
+	Set<Medicine> getAllMedicinePricesExpectedExsitedInPriceList(String email, List<Long> existed, String priceListId);
 
 
 }

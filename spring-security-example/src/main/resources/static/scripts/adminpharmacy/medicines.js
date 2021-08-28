@@ -16,6 +16,22 @@ $(document).ready(function(e){
 	  
 	 });
 	
+	$("#requests").click(function () {
+		 customAjax({
+		      url: '/pharmacy/getRequestForMedicineAvailability/' + email,
+		      method: 'GET',
+		      contentType: 'application/json',
+		      success: function(data){
+		    	  showRequests(data)
+		      },
+		      error: function(){
+		      }
+
+	 });
+	  
+	 });
+	
+	
 
 });
 
@@ -67,7 +83,7 @@ let showMedicines = function(data) {
 	}
 	temp+=`</tr>`
 		
-		$("#showData").html(`<table class="ui very padded scrollable table" id="medicineTable" style="width:70%; margin-left:auto; 
+		$("#showData").html(`<table class="ui very basic padded scrollable table" id="medicineTable" style="width:70%; margin-left:auto; 
 			    margin-right:auto; margin-top: 40px;display:block;">
 			    
 	  <thead style="display: table;
@@ -77,10 +93,10 @@ let showMedicines = function(data) {
 	  <tr>
 			<th colspan="6">
 			 <div class="ui input left">
-      <input type="text" placeholder="Search by name..." id="firstNameSearch">
+      <input type="text" placeholder="Search by name..." id="nameSearch">
     </div>
     <div class="ui input left">
-      <input type="text" placeholder="Search by code..." id="lastNameSearch">
+      <input type="text" placeholder="Search by code..." id="codeSearch">
     </div>
 			 
 			</th>
@@ -252,6 +268,33 @@ $('.ui.dropdown')
 		
 	 });
 	
+	$("#nameSearch").keyup(function () {
+        var firstNameSearch = ($('#nameSearch').val()).toLowerCase();
+       
+        $("#medicineTable tbody tr").each(function () {
+            var name = ($('td:eq(1)', this).text()).toLowerCase();
+            if (name.includes(firstNameSearch) || firstNameSearch == "") {
+                $(this).show()
+            } else {
+                $(this).hide()
+            }
+        });
+    });
+	
+	$("#codeSearch").keyup(function () {
+        var codeSearch = ($('#codeSearch').val()).toLowerCase();
+       
+        $("#medicineTable tbody tr").each(function () {
+            var code = ($('td:eq(0)', this).text()).toLowerCase();
+            if (code.includes(codeSearch) || codeSearch == "") {
+                $(this).show()
+            } else {
+                $(this).hide()
+            }
+        });
+    });
+	
+	
 	$("button[name=obrisiLijek]").click(function() {
 		idSelected = this.id
 		customAjax({
@@ -300,6 +343,48 @@ $('.ui.dropdown')
 			});
 		})
 	}
+}
+
+let showRequests = function(data) {
+	let temp='';
+	for (i in data){
+		temp+=`<tr style="display: table;
+    width: 100%;
+    table-layout: fixed;"><td>`+
+		data[i].createdAt+`</td>
+		<td>`+data[i].medicineWithQuantity.medicine.name+`</td>	
+		<td>`+
+		+data[i].medicineWithQuantity.quantity+`</td>
+		`;
+	}
+	temp+=`</tr>`
+		
+		$("#showData").html(`<table class="ui very basic padded scrollable table" id="medicineTable" style="width:70%; margin-left:auto; 
+			    margin-right:auto; margin-top: 40px;display:block;">
+			    
+	  <thead style="display: table;
+    width: 100%;
+    table-layout: fixed;
+     width: calc( 100% - 1em )">
+	  
+	    <tr>
+	    <th>Created at</th>
+	    <th>Medicine name</th>
+	    <th>Medicine quantity</th>
+	   
+	  </tr></thead><tbody style="display: block;
+    height: 500px;
+    overflow: auto;" id="tabelaLijekova">
+	  </tbody>
+	  <tfoot style="display: table;
+    width: 100%;
+    table-layout: fixed;
+     width: calc( 100% - 1em )" class="full-width">
+			   
+			  </tfoot>
+	</table>`)
+	
+	$('#tabelaLijekova').html(temp)
 }
 
 
