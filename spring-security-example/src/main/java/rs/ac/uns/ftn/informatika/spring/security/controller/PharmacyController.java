@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -38,6 +39,7 @@ import rs.ac.uns.ftn.informatika.spring.security.model.PharmacistCounseling;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
 import rs.ac.uns.ftn.informatika.spring.security.model.PriceList;
+import rs.ac.uns.ftn.informatika.spring.security.model.RequestForMedicineAvailability;
 import rs.ac.uns.ftn.informatika.spring.security.model.User;
 import rs.ac.uns.ftn.informatika.spring.security.model.WorkingDay;
 import rs.ac.uns.ftn.informatika.spring.security.model.WorkingTime;
@@ -51,6 +53,7 @@ import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PriceListService;
 import rs.ac.uns.ftn.informatika.spring.security.service.StatisticService;
 import rs.ac.uns.ftn.informatika.spring.security.service.UserService;
+import rs.ac.uns.ftn.informatika.spring.security.view.AlreadyExistsMedicinePrice;
 import rs.ac.uns.ftn.informatika.spring.security.view.EditPharmacyView;
 
 import rs.ac.uns.ftn.informatika.spring.security.view.PharmacyWithMedicationView;
@@ -190,6 +193,20 @@ public class PharmacyController {
 		
 	}
 	
+	@GetMapping("/getMedicinePricesExceptAlreadyExisted/{email}/{ids}/{priceListId}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public Set<Medicine> getMedicinePricesExceptAlreadyExisted(@PathVariable(name="email") String email,
+			@PathVariable(name="ids") String ids, @PathVariable(name="priceListId") String priceListId) {
+		System.out.println(ids);
+		List<Long> existed = new ArrayList<Long>();
+		String[] existedString = ids.split(",");
+		for(String s : existedString) {
+			existed.add(Long.parseLong(s));
+		}
+		return this.medicineService.getAllMedicinePricesExpectedExsitedInPriceList(email,existed,priceListId);
+		
+	}
+	
 	@PostMapping("/addMedicineWithQuantityInPharmacy/{email}/{medicineName}/{quantity}")
 	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
 	public ResponseEntity<?> getAllMedicineExceptAlreadyExisted(@PathVariable(name="email") String email,
@@ -275,7 +292,7 @@ public class PharmacyController {
 	
 	@GetMapping("/getMedicinePriceList/{email}")
 	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
-	public List<PriceList> getMedicinePriceList(@PathVariable(name="email") String email) {
+	public PriceList getMedicinePriceList(@PathVariable(name="email") String email) {
 		return this.priceListService.findPriceListByPharmacy(email);
 	}
 	
@@ -353,8 +370,11 @@ public class PharmacyController {
 	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
 	public ResponseEntity<?> acceptHolidayRequestP(@PathVariable(name="id") String id,
 			@PathVariable(name="pharmacistId") String pharmacistId) {
-		this.pharmacyService.acceptHolidayRequestP(Long.parseLong(id), Long.parseLong(pharmacistId));
-		return new ResponseEntity<>(HttpStatus.OK);
+		if(this.pharmacyService.acceptHolidayRequestP(Long.parseLong(id), Long.parseLong(pharmacistId))) {
+			return new ResponseEntity<>(HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 	}
 	@PostMapping("/declineHolidayRequestP/{id}/{pharmacistId}/{reason}")
 	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
@@ -463,6 +483,7 @@ public class PharmacyController {
 		Patient patient=this.patientService.findPatientByUser(user);
 		return this.pharmacistCounselingService.getPatientsCounlings(patient.getId());
 	}
+	
 	@PostMapping("/cancelCounselingAppointment/{pom}")
 	@PreAuthorize("hasRole('ROLE_PATIENT')")
 	public  ResponseEntity<?> cancelCounselingAppointment(@PathVariable(name="pom") Long pom) {
@@ -474,5 +495,13 @@ public class PharmacyController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
+	
+	@GetMapping("/getRequestForMedicineAvailability/{email}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public List<RequestForMedicineAvailability> getRequestForMedicineAvailability(@PathVariable(name="email") String email) {
+		
+		return this.pharmacyService.findRequestsByPharmacy(email);
+	}
+	
 }
 

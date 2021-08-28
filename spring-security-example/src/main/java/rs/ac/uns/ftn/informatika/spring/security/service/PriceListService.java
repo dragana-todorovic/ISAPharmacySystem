@@ -12,7 +12,7 @@ import rs.ac.uns.ftn.informatika.spring.security.model.MedicineWithQuantity;
 import rs.ac.uns.ftn.informatika.spring.security.model.PriceList;
 
 public interface PriceListService {
-	List<PriceList> findPriceListByPharmacy(String email);
+	PriceList findPriceListByPharmacy(String email);
 	List<MedicinePrice> findMedicinePricesByPriceList(Long priceListId);
 	Set<MedicinePrice> findMedicinePricesByPriceListId(Long priceListId);
 	

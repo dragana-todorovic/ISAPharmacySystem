@@ -12,12 +12,6 @@ import rs.ac.uns.ftn.informatika.spring.security.view.ActionAndBenefitDTO;
 import rs.ac.uns.ftn.informatika.spring.security.view.EditPharmacyView;
 import rs.ac.uns.ftn.informatika.spring.security.view.NewDermatologistDTO;
 import rs.ac.uns.ftn.informatika.spring.security.view.NewPharmacistDTO;
-
-import rs.ac.uns.ftn.informatika.spring.security.model.ActionAndBenefit;
-import rs.ac.uns.ftn.informatika.spring.security.model.Patient;
-import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
-import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
-import rs.ac.uns.ftn.informatika.spring.security.model.User;
 import rs.ac.uns.ftn.informatika.spring.security.view.ActionAndBenefitDTO;
 import rs.ac.uns.ftn.informatika.spring.security.view.EditPharmacyView;
 
@@ -33,26 +27,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import rs.ac.uns.ftn.informatika.spring.security.model.ActionAndBenefit;
-
-import rs.ac.uns.ftn.informatika.spring.security.model.Patient;
-
-import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
-import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
-
-import rs.ac.uns.ftn.informatika.spring.security.model.Dermatologist;
-import rs.ac.uns.ftn.informatika.spring.security.model.HolidayRequest;
-import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacist;
-
-import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
-import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
-import rs.ac.uns.ftn.informatika.spring.security.model.User;
-import rs.ac.uns.ftn.informatika.spring.security.model.WorkingDay;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.MedicineReservationDTO;
-
-import rs.ac.uns.ftn.informatika.spring.security.model.WorkingDay;
-import rs.ac.uns.ftn.informatika.spring.security.model.WorkingTime;
-
 import rs.ac.uns.ftn.informatika.spring.security.view.ActionAndBenefitDTO;
 import rs.ac.uns.ftn.informatika.spring.security.view.EditPharmacyView;
 
@@ -105,7 +80,8 @@ public interface PharmacyService {
 	WorkingTime getDermatologistWorkingTimes(long id, String email);
 	Pharmacy getPharmacyByDermatologistAndStartDate(Dermatologist d,LocalDateTime start);
 	Set<HolidayRequest> getHolidayRequestsByPharmacyP(long parseLong, String email);
-	void acceptHolidayRequestP(long parseLong, long pharmacistId);
+	Boolean acceptHolidayRequestP(long parseLong, long pharmacistId);
 	void declineHolidayRequestP(long parseLong, long pharmacistId, String reason);
+	List<RequestForMedicineAvailability> findRequestsByPharmacy(String email);
 
 }

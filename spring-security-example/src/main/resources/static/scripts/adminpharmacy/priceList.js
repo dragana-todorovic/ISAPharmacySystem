@@ -2,13 +2,30 @@ var email = localStorage.getItem('email')
 $(document).ready(function(e){ 
 	
 	$("#medicinePriceList").click(function () {
+		var existedIds = []
 		 customAjax({
 		      url: '/pharmacy/getMedicinePriceList/' + email,
 		      method: 'GET',
 		      contentType: 'application/json',
 		      success: function(data){
 		    	  console.log(data)
-		    	  showPriceList(data)
+		    	  for(i in data.medicinePriceList) {
+		    		  existedIds.push(data.medicinePriceList[i].medicine.id)
+		    	  }
+		    	  customAjax({
+				      url: '/pharmacy/getMedicinePricesExceptAlreadyExisted/' + email + '/' + existedIds + '/' + data.id,
+				      method: 'GET',
+				      contentType: 'application/json',
+				      success: function(medicinesEx) {
+				    	  console.log(medicinesEx)
+				    	  
+				    	 showPriceListPharmacy(data,medicinesEx)
+				      },
+				      error: function(){
+				      }
+
+			 });
+		    	 // showPriceList(data)
 		      },
 		      error: function(){
 		      }
@@ -80,7 +97,7 @@ let showPriceList = function(data) {
 			 </td></tr>`;
 	}
 	
-	$("#showData").html(`<table class="ui very padded scrollable table" id="medicineTable" style="width:70%; margin-left:auto; 
+	$("#showData").html(`<table class="ui very basic padded scrollable table" id="medicineTable" style="width:70%; margin-left:auto; 
 		    margin-right:auto; margin-top: 40px;display:block;">
 		    
   <thead style="display: table;
@@ -346,88 +363,6 @@ function formatDate(date) {
 }
 
 
-/*let editPriceList = function(idSelected,lijekovi) {
-	pomocna = []
-	customAjax({
-	      url: '/medicine/getMedicineFromPharmacy/' + email,
-	      method: 'GET',
-	      async: false,
-	      contentType: 'application/json',
-	      success: function(data){
-	    	  pomocna = data
-	      },
-	      error: function(){
-	      }
-	})
-
-	let radnoVrijeme = '';
-
-		for(i in lijekovi) {
-				radnoVrijeme += `<tr><td><div class="ui checkbox">
-					  <input type="checkbox" id = "`+lijekovi[i].medicine.id+`" name="lijekIzm" checked>
-					  <label>`+lijekovi[i].medicine.name+`</label></td>
-					   <td>
-    <div class="ui input small left icon">
-     <input type="number" min="1" value="`+lijekovi[i].price+`" placeholder="Price..." id="priceEdit`+lijekovi[i].medicine.id+`">
-</div>
-</td></tr>`
-					for(var k = 0; k < pomocna.length; k++) {
-						if(pomocna[k].name === lijekovi[i].medicine.name) {
-							pomocna.splice(k, 1);
-						}
-					}   
-			}
-	for(i in pomocna) {
-		radnoVrijeme += `<tr><td><div class="ui checkbox">
-			  <input type="checkbox" id = "`+pomocna[i].id+`" name="lijekIzm">
-			  <label>`+pomocna[i].name+`</label></td>
-			   <td>
-    <div class="ui input small left icon">
-     <input type="number" min="1" placeholder="Quantity..." id="quantityEdit`+pomocna[i].id+`">
-</div>
-</td></tr>`;
-	}
-			
-	$('#editTable').html(radnoVrijeme)
-	
-	/*$('#editOrder').click(function() {
-		var dateEdit = formatDate($('#dateOfOrderEdit').val())
-		var timeEdit = $('#timeOfOrderEdit').val()
-		var medicines = []
-		$('input[name="lijekIzm"]:checked').each(function () {
-		
-    		var medicineId = this.id;
-    		var quantity = $("#quantityEdit"+this.id).val();
-    		
-    		obj = {
-    			medicineId:medicineId,
-    			quantity:quantity
-    			}
-    		medicines.push(obj)
-    		
-    	
-    	});
-		console.log(medicines)
-		customAjax({
-    	    url: '/medicineOrder/editMedicineOrder/' + email + '/' + idSelected,
-    	    method: 'POST',
-    	    data: JSON.stringify({medicines:medicines,date:dateEdit,time:timeEdit}),
-    	    contentType: 'application/json',
-    	    success: function(){
-    	    	alert("Success edit medicine order")
-    	    	location.href = "adminpharmacy.html"
-    	    },
-    	    error: function(){
-    	    	alert("Failed")
-    	    }
-
-    	});
-	})
-	
-}*/
-
-
-
 
 let showAllAppointments = function(data) {
 	let temp = ''
@@ -444,7 +379,7 @@ let showAllAppointments = function(data) {
 	</tr>`;
 	}
 	
-	$("#showData").html(`<table class="ui very padded scrollable table" id="medicineTable" style="width:70%; margin-left:auto; 
+	$("#showData").html(`<table class="ui very basic padded scrollable table" id="medicineTable" style="width:70%; margin-left:auto; 
 		    margin-right:auto; margin-top: 40px;display:block;">
 		    
   <thead style="display: table;
@@ -473,3 +408,109 @@ table-layout: fixed;
 	
 	
 }
+
+
+let showPriceListPharmacy = function(data,medicineEx) {
+	
+	let temp = '';
+
+		for(i in data.medicinePriceList) {
+				temp += `<tr><td><div class="ui checkbox">
+					  <input type="checkbox" id = "`+data.medicinePriceList[i].medicine.id+`" name="lijekIzm" checked>
+					  <label>`+data.medicinePriceList[i].medicine.name+`</label></td>
+					   <td>
+    <div class="ui input small left icon">
+     <input type="number" min="1" value="`+data.medicinePriceList[i].price+`" placeholder="Price..." id="price`+data.medicinePriceList[i].medicine.id+`">
+</div>
+</td></tr>`
+		}
+	for(i in medicineEx) {
+		temp += `<tr><td><div class="ui checkbox">
+			  <input type="checkbox" id = "`+medicineEx[i].id+`" name="lijekIzm">
+			  <label>`+medicineEx[i].name+`</label></td>
+			   <td>
+    <div class="ui input small left icon">
+     <input type="number" min="1" placeholder="Price..." id="price`+medicineEx[i].id+`">
+</div>
+</td></tr>`;
+	}
+	
+	 $("#showData").html(`<table class="ui basic large table" style="width:50%; margin-left:auto; 
+			    margin-right:auto; margin-top: 40px;">
+					        <thead>
+					            <tr class="success">
+					                <th colspan="2" class = "text-info" style= "text-align:center;">Price list</th>
+					            </tr>
+					        </thead>
+					        <tbody id = "bodyMedicine">
+					          
+					        </tbody>
+					     
+			   
+					    <tr><td>
+					    <form class="ui fluid form">
+  <div class="two field">
+    	<div class="ui calendar" id="date">
+          <div class="ui input left icon">
+            <i class="calendar icon"></i>
+            <input type="text" placeholder="Start date" value="`+data.startDate+`" id="startDate">
+           
+          </div></div>
+        </div></td></tr>
+           <tfoot class="full-width">
+         <tr>
+			      <th></th>
+			      <th colspan="2">
+					   <input id = "addPriceList" class="ui right floated positive button" type = "button" value = "Edit price list"></input>
+			    
+			      </th>
+			    </tr>
+			  </tfoot>
+					    </table> 
+					    
+					    
+					   `)
+					   $('#bodyMedicine').html(temp)
+					   
+						var today = new Date();
+	 $('#date').calendar({
+		  type: 'date',
+		  initialDate:  new Date(today.getFullYear(), today.getMonth(), today.getDate()),
+		  minDate: new Date(today.getFullYear(), today.getMonth(), today.getDate())
+		});
+	 
+	 $('#addPriceList').click(function(){
+			var date = formatDate($('#startDate').val())
+			var medicines = []
+			console.log(medicines)
+			$('input[name="lijekIzm"]:checked').each(function () {
+	    		var medicineId = this.id;
+	    		var price = $("#price"+this.id).val();
+	    		
+	    		obj = {
+	    			medicineId:medicineId,
+	    			price:price
+	    			}
+	    		medicines.push(obj)
+	    		
+	    	
+	    	});
+			customAjax({
+	    	    url: '/pharmacy/addMedicinePriceToPriceList/' + email,
+	    	    method: 'POST',
+	    	    data: JSON.stringify({medicines:medicines,date:date}),
+	    	    contentType: 'application/json',
+	    	    success: function(){
+	    	    	alert("Success")
+	    	    	location.href = "adminpharmacy.html"
+	    	    },
+	    	    error: function(){
+	    	    	  $('#errorAdd')
+					  .modal('show')
+	    	    }
+
+	    	});
+		})
+	
+}
+

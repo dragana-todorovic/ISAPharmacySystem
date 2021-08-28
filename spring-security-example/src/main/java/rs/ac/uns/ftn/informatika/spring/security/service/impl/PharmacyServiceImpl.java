@@ -18,6 +18,7 @@ import rs.ac.uns.ftn.informatika.spring.security.model.*;
 import rs.ac.uns.ftn.informatika.spring.security.repository.ActionAndBenefitRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.DermatologistAppointmentRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacyRepository;
+import rs.ac.uns.ftn.informatika.spring.security.repository.RequestForMedicineAvailabilityRepository;
 import rs.ac.uns.ftn.informatika.spring.security.service.AuthorityService;
 import rs.ac.uns.ftn.informatika.spring.security.service.EmailService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyAdminService;
@@ -93,6 +94,9 @@ public class PharmacyServiceImpl implements PharmacyService{
 	@Autowired
 	private HolidayRequestRepository holidayRequestRepository;
 	
+	@Autowired
+	private RequestForMedicineAvailabilityRepository requestForMedicineAvailabilityRepository;
+	
 	@Override
 	public Optional<Pharmacy> findById(Long id) {
 		return pharmacyRepository.findById(id);
@@ -132,7 +136,7 @@ public class PharmacyServiceImpl implements PharmacyService{
 			for(Long ph : p.getPatientSubscriptions()) {
 				if(pa.getPharmacy().getId().equals(ph)) {
 					try {
-						emailService.sendEmail(p.getUser().getEmail(), "Action and benefits", actionAndBenefit.getDescription());
+						emailService.sendEmail(p.getUser().getEmail(), "Action or benefit valid from "  + actionAndBenefit.getStartDate() + " to " + actionAndBenefit.getEndDate(), actionAndBenefit.getDescription());
 					} catch (MailException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -740,13 +744,21 @@ public class PharmacyServiceImpl implements PharmacyService{
 		
 		return holidayRequests;
 	}
-
+	
+	
 	@Override
-	public void acceptHolidayRequestP(long id, long pharmacistId) {
+	public Boolean acceptHolidayRequestP(long id, long pharmacistId) {
 		Pharmacist pharmacist = this.pharmacistRepository.findById(pharmacistId).get();
 		HolidayRequest holidayRequest = this.holidayRequestRepository.findById(id).get();
+		List<PharmacistCounseling> pharmacistConselings = this.pharmacistConselingRepository.findCoByPharmacist(pharmacistId);
 		for(HolidayRequest hr : pharmacist.getHolidayRequests()) {
 			if(hr.equals(holidayRequest)) {
+				for(PharmacistCounseling pc : pharmacistConselings) {
+					if(!hr.getStartDate().isAfter(pc.getStartDateTime().toLocalDate()) &&
+							!hr.getEndDate().isBefore(pc.getStartDateTime().toLocalDate())) {
+						return false;
+					}
+				}
 				hr.setStatus(HolidayRequestStatus.ACCEPT);
 			}
 		}
@@ -757,6 +769,7 @@ public class PharmacyServiceImpl implements PharmacyService{
 			e.printStackTrace();
 		}
 		this.pharmacistRepository.save(pharmacist);
+		return true;
 		
 	}
 
@@ -776,6 +789,19 @@ public class PharmacyServiceImpl implements PharmacyService{
 			e.printStackTrace();
 		}
 		this.pharmacistRepository.save(pharmacist);
+	}
+	
+	
+
+	@Override
+	public List<RequestForMedicineAvailability> findRequestsByPharmacy(String email) {
+
+		PharmacyAdmin pa = pharmacyAdminService.findPharmacyAdminByUser(userService.findByEmail(email));
+		Pharmacy p = pa.getPharmacy(); 
+		
+		long pharmacyId = p.getId();
+		
+		return this.requestForMedicineAvailabilityRepository.findRequestsByPharmacy(pharmacyId);
 	}
 }
 
