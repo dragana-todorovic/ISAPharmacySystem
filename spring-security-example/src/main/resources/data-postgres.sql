@@ -79,9 +79,15 @@ INSERT INTO systemadmin(user_id) VALUES (1);
 
 INSERT INTO ADDRESS (street,city) VALUES ('Bulevar oslobodjenja 4', 'Novi Sad');
 INSERT INTO ADDRESS (street,city) VALUES ('Kralja Petra 20', 'Beograd');
+INSERT INTO ADDRESS (street,city) VALUES ('Neznanih Junaka 5', 'Beograd');
+INSERT INTO ADDRESS (street,city) VALUES ('Narodnog Fronta 37', 'Beograd');
 --pharmacy
 INSERT INTO PHARMACY (name, description, address_id) VALUES ('Jankovic', 'Opis Jankovic',2);
 INSERT INTO PHARMACY (name, description, address_id) VALUES ('Benu', 'Opis Benu',1);
+
+--pharmacy for qr codes
+INSERT INTO PHARMACY (name, description, address_id) VALUES ('Zdravlje', 'Opis Zdravlje',3);
+INSERT INTO PHARMACY (name, description, address_id) VALUES ('Super', 'Opis Super',4);
 
 --pharmacyadmin
 
@@ -182,6 +188,13 @@ INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (25, 5);
 INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (28, 6);
 INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (3, 6);
 
+--za qr
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (30, 4);
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (25, 5);
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (100, 2);
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (20, 1);
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (28, 6);
+
 
 --za offers 
 INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (55, 1);
@@ -196,6 +209,11 @@ INSERT INTO pharmacy_medicine_with_quantity (pharmacy_id, medicine_with_quantity
 INSERT INTO pharmacy_medicine_with_quantity (pharmacy_id, medicine_with_quantity_id) VALUES (1, 6);
 INSERT INTO pharmacy_medicine_with_quantity (pharmacy_id, medicine_with_quantity_id) VALUES (1, 2);
 INSERT INTO pharmacy_medicine_with_quantity (pharmacy_id, medicine_with_quantity_id) VALUES (2, 7);
+INSERT INTO pharmacy_medicine_with_quantity (pharmacy_id, medicine_with_quantity_id) VALUES (3, 8);
+INSERT INTO pharmacy_medicine_with_quantity (pharmacy_id, medicine_with_quantity_id) VALUES (3, 9);
+INSERT INTO pharmacy_medicine_with_quantity (pharmacy_id, medicine_with_quantity_id) VALUES (3, 10);
+INSERT INTO pharmacy_medicine_with_quantity (pharmacy_id, medicine_with_quantity_id) VALUES (4, 11);
+INSERT INTO pharmacy_medicine_with_quantity (pharmacy_id, medicine_with_quantity_id) VALUES (4, 12);
 
 
 --price list

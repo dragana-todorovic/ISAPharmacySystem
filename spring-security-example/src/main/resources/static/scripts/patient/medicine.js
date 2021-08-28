@@ -644,26 +644,31 @@ function showMedicine(data){
 //qr_pharmacy_table
 function showPharmaciesForQr(data){
 	let temp='';
-	for (i in data){
-	        var medicinesCodes = "";
-            var medicinesQuantities = "";
-    		for(x in data[i].medicineCodes){
-                medicinesCodes += "<b>" +data[i].medicineCodes[x] +"</b></br>"
-    		}
-    		for(x in data[i].medicineCodesQuantity){
-                medicinesQuantities += "<b>" +data[i].medicineCodesQuantity[x] +"</b></br>"
-            }
-		temp+=`<tr id="`+data[i].pharmacyId+`">
-			<td>`+data[i].pharmacyName+`</td>
-			<td>`+data[i].pharmacyAddress+`</td>
-			<td>`+data[i].pharmacyAverageRating+`</td>
-			<td id ="` + medicinesCodes + `">`+medicinesCodes+`</td>
-			<td id ="` + medicinesQuantities + `">`+medicinesQuantities+`</td>
-			<td>`+data[i].totalPrice+`</td>
-			 <td><button id="buy-medicine" class="ui primary basic button">Buy</button>
-      			</td>
-			</tr>`;
-	}
+	if(data.length >0)
+	{
+        for (i in data){
+                var medicinesCodes = "";
+                var medicinesQuantities = "";
+                for(x in data[i].medicineCodes){
+                    medicinesCodes += "<b>" +data[i].medicineCodes[x] +"</b></br>"
+                }
+                for(x in data[i].medicineCodesQuantity){
+                    medicinesQuantities += "<b>" +data[i].medicineCodesQuantity[x] +"</b></br>"
+                }
+            temp+=`<tr id="`+data[i].pharmacyId+`">
+                <td>`+data[i].pharmacyName+`</td>
+                <td>`+data[i].pharmacyAddress+`</td>
+                <td>`+data[i].pharmacyAverageRating+`</td>
+                <td id ="` + medicinesCodes + `">`+medicinesCodes+`</td>
+                <td id ="` + medicinesQuantities + `">`+medicinesQuantities+`</td>
+                <td>`+data[i].totalPrice+`</td>
+                 <td><button id="buy-medicine" class="ui primary basic button">Buy</button>
+                    </td>
+                </tr>`;
+        }
+    }else{
+        temp += `<tr ><td colspan="7">No pharmacy found!</td></tr>`;
+    }
 	$('#qr_pharmacy_table').html(temp);
 	$('#pharamcies_with_medicine_show').attr('hidden',true);
 	$('#ph_con').attr('hidden',true)
