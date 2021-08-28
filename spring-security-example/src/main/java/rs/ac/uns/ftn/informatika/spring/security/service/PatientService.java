@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rs.ac.uns.ftn.informatika.spring.security.model.Patient;
+import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.User;
+import rs.ac.uns.ftn.informatika.spring.security.view.EPrescriptionPharmacyView;
 import rs.ac.uns.ftn.informatika.spring.security.view.UserRegisterView;
 
 
@@ -18,6 +20,6 @@ public interface PatientService {
 	Patient findPatientById(Long id);
 	void giveOnePenalForPatient(Patient p);
 	int getPatientsDiscount(Patient patient);
-	
-
+	List<EPrescriptionPharmacyView> findPharmacyForEPrescription(String codesAndCount);
+    void buyEPrescriptionInPharmacy(Patient patient, Pharmacy pharmacy, List<String> medicineCodes, List<String> medicineCodesQuantity);
 }

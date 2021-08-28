@@ -24,6 +24,15 @@ public class MedicineWithQuantity {
 	@Column(name = "quantity", nullable = false)
 	private int quantity;
 
+	public MedicineWithQuantity() {
+	}
+
+	public MedicineWithQuantity(Medicine medicine, int quantity) {
+		this.medicine = medicine;
+		this.quantity = quantity;
+	}
+
+
 	public long getId() {
 		return id;
 	}

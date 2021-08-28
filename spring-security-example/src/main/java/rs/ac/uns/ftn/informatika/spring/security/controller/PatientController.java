@@ -1,28 +1,34 @@
 package rs.ac.uns.ftn.informatika.spring.security.controller;
 
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 
+import com.google.zxing.*;
+import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
+import com.google.zxing.common.HybridBinarizer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.parameters.P;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 import rs.ac.uns.ftn.informatika.spring.security.model.*;
 import rs.ac.uns.ftn.informatika.spring.security.service.*;
-import rs.ac.uns.ftn.informatika.spring.security.view.LoyaltyProgramView;
-import rs.ac.uns.ftn.informatika.spring.security.view.LoyaltyScaleView;
-import rs.ac.uns.ftn.informatika.spring.security.view.SubscribePatientOnPharmacyView;
-import rs.ac.uns.ftn.informatika.spring.security.view.UserRegisterView;
+import rs.ac.uns.ftn.informatika.spring.security.view.*;
+
+import javax.imageio.ImageIO;
 
 
 @RestController
@@ -237,5 +243,47 @@ public class PatientController {
 		User user = this.userService.findByEmail(email);
 		Patient patient = this.patientService.findPatientByUser(user);
 		return patientService.getPatientsDiscount(patient);
+	}
+
+
+	@PostMapping(value = "/sendQrCode",  consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	public ResponseEntity<List<EPrescriptionPharmacyView>> sendQrCode(@RequestParam("file") MultipartFile  file) throws IOException {
+		String path = new File("src/main/resources/qrCodes").getAbsolutePath();
+		Path filepath = Paths.get(path, file.getOriginalFilename());
+
+		try (OutputStream os = Files.newOutputStream(filepath)) {
+			os.write(file.getBytes());
+		} catch (IOException e2) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e2.getMessage());
+		}
+		String codesAndCount = decodeQrCode(filepath);
+		return new ResponseEntity<>(this.patientService.findPharmacyForEPrescription(codesAndCount),HttpStatus.OK);
+	}
+
+	@PostMapping(value = "/buyEPrescription")
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	public ResponseEntity<?> buyEPrescription(@RequestBody EPrescriptionBuyPharmacyView ePrescriptionBuyPharmacyView){
+		User user = this.userService.findByUsername(ePrescriptionBuyPharmacyView.getPatientEmail());
+		Patient patient = this.patientService.findPatientByUser(user);
+
+		Pharmacy pharmacy = this.pharmacyService.findById(Long.valueOf(ePrescriptionBuyPharmacyView.getPharmacyId())).get();
+		this.patientService.buyEPrescriptionInPharmacy(patient, pharmacy, ePrescriptionBuyPharmacyView.getMedicineCodes(), ePrescriptionBuyPharmacyView.getMedicineCodesQuantity());
+
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	public static String decodeQrCode(Path filePath) throws IOException {
+		File img = new File(filePath.toString());
+		BufferedImage bufferedImage = ImageIO.read(img);
+		LuminanceSource source = new BufferedImageLuminanceSource(bufferedImage);
+		BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
+
+		try {
+			Result result = new MultiFormatReader().decode(bitmap);
+			return result.getText();
+		} catch (NotFoundException e) {
+			System.out.println("There is no QR code in the image");
+			return null;
+		}
 	}
 }

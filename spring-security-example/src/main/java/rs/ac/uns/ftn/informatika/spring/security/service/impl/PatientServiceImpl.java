@@ -1,18 +1,25 @@
 package rs.ac.uns.ftn.informatika.spring.security.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.time.LocalDate;
+import java.util.*;
 
+import com.google.zxing.*;
+import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
+import com.google.zxing.common.HybridBinarizer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import rs.ac.uns.ftn.informatika.spring.security.model.Authority;
-import rs.ac.uns.ftn.informatika.spring.security.model.LoyaltyScale;
-import rs.ac.uns.ftn.informatika.spring.security.model.Patient;
-import rs.ac.uns.ftn.informatika.spring.security.model.User;
+import rs.ac.uns.ftn.informatika.spring.security.model.*;
+import rs.ac.uns.ftn.informatika.spring.security.repository.MedicineWithQuantityRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PatientRepository;
-import rs.ac.uns.ftn.informatika.spring.security.service.LoyaltyScaleService;
-import rs.ac.uns.ftn.informatika.spring.security.service.PatientService;
+import rs.ac.uns.ftn.informatika.spring.security.service.*;
+import rs.ac.uns.ftn.informatika.spring.security.view.EPrescriptionPharmacyView;
+
+import javax.imageio.ImageIO;
 
 @Service
 public class PatientServiceImpl implements PatientService {
@@ -21,6 +28,18 @@ public class PatientServiceImpl implements PatientService {
 	
 	@Autowired
 	private LoyaltyScaleService loyaltyScaleService;
+
+	@Autowired
+	private MedicineService medicineService;
+
+	@Autowired
+	private PharmacyService pharmacyService;
+
+	@Autowired
+	private EPrescriptionService ePrescriptionService;
+
+	@Autowired
+	private MedicineWithQuantityRepository medicineWithQuantityRepository;
 	
 	@Override
 	public List<Patient> findAll() {
@@ -70,7 +89,126 @@ public class PatientServiceImpl implements PatientService {
 		return 0;
 	}
 
+	@Override
+	public List<EPrescriptionPharmacyView> findPharmacyForEPrescription(String codesAndCount) {
+		String[] partings = codesAndCount.split(";");
+		List<String> medicineCodes = new ArrayList<String>();
+		List<String> medicineQuantity = new ArrayList<>();
+	//	List<Medicine> medicines = new ArrayList<Medicine>();
 
+		List<MedicineWithQuantity> medicineWithQuantities = new ArrayList<>();
+		for(String p:partings){
+			String[] medCodeAndCount = p.split(":");
+			medicineCodes.add(medCodeAndCount[0]);
+			medicineQuantity.add(medCodeAndCount[1]);
+			medicineWithQuantities.add(new MedicineWithQuantity(medicineService.findByCode(medCodeAndCount[0]),Integer.parseInt( medCodeAndCount[1])));
+		//	medicines.add(medicineService.findByCode(medCodeAndCount[0]));
+		}
+
+		List<EPrescriptionPharmacyView> foundedPharmacies = new ArrayList<>();
+		for(Pharmacy pharmacy: pharmacyService.findAll()){
+			if(checkIfPharmacyHaveAllMedicines(pharmacy,medicineWithQuantities)){
+			//	double totalPrice = findTotalPrice(pharmacy,medicines);
+				double pharmacyAverageRating = getPharmacyAverageRating(pharmacy);
+				foundedPharmacies.add(new EPrescriptionPharmacyView(medicineCodes, medicineQuantity,pharmacy.getId(),0.0 ,pharmacyAverageRating,pharmacy.getName(), pharmacy.getAddress().getCity() + " " + pharmacy.getAddress().getStreet()));
+			}
+		}
+
+		return foundedPharmacies;
+	}
+
+	@Override
+	public void buyEPrescriptionInPharmacy(Patient patient, Pharmacy pharmacy, List<String> medicineCodes, List<String> medicineCodesQuantity) {
+		EPrescription ePrescription = new EPrescription();
+		ePrescription.setPatient(patient);
+		ePrescription.setIssuedDate(LocalDate.now());
+		List<Medicine> codes = new ArrayList<>();
+		List<Integer> quantities = new ArrayList<>();
+		for(String code:medicineCodes){
+			codes.add(this.medicineService.findByCode(code));
+		}
+
+		for(String q: medicineCodesQuantity)
+		{
+			quantities.add(Integer.parseInt(q));
+		}
+
+		List<MedicineWithQuantity> medicineWithQuantities = new ArrayList<>();
+		Set<MedicineWithQuantity> mqSet = new HashSet<>();
+		for(int i=0;i < codes.size(); i++){
+			MedicineWithQuantity mq = new MedicineWithQuantity(codes.get(i), quantities.get(i));
+			medicineWithQuantities.add(mq);
+			mqSet.add(mq);
+		}
+
+		ePrescription.setMedicines(mqSet);
+		this.ePrescriptionService.save(ePrescription);
+
+		//update in pharmacy medicine quantity
+		for(MedicineWithQuantity myMed :medicineWithQuantities) {
+			updateMedicineQuantityInPharmacy(myMed, pharmacy);
+		}
+	}
+	public void updateMedicineQuantityInPharmacy(MedicineWithQuantity myMed, Pharmacy pharmacy)  {
+
+		//prolazim kroz listu u apoteci
+				for(MedicineWithQuantity medicineWithQuantity: pharmacy.getMedicineWithQuantity()){
+			// proveravam da li se lekovi u apoteci poklapaju sa mojim svim lekovima
+					if(myMed.getMedicine().equals(medicineWithQuantity.getMedicine())){
+						medicineWithQuantity.setQuantity(medicineWithQuantity.getQuantity() - myMed.getQuantity());
+						//save in medicine wwith quantity
+						this.pharmacyService.save(pharmacy);
+						return;
+					}
+				}
+
+	}
+	private double getPharmacyAverageRating(Pharmacy pharmacy) {
+		double averageRating= 0.0;
+		double totalCountOfRatings = 0.0;
+		Set<Rating> ratings = pharmacy.getRatings();
+		if(!ratings.isEmpty() ) {
+			for(Rating r : ratings) {
+				totalCountOfRatings += r.getRating();
+			}
+			averageRating = totalCountOfRatings/ratings.size();
+		}
+		return averageRating;
+	}
+
+	private double findTotalPrice(Pharmacy pharmacy, List<Medicine> medicines) {
+		double totalPrice = 0.0;
+		for(Medicine m : medicines) {
+			//totalPrice += pharmacy.getCurrentPrice(m);
+		}
+		return totalPrice;
+	}
+	private boolean checkIfPharmacyHaveAllMedicines(Pharmacy pharmacy, List<MedicineWithQuantity> medicineWithQuantities) {
+		int foundedMedicineAndQuantity = 0;
+
+		//za tu apoteku prolazimo kroz listu lekova sa kolicinom
+		for(MedicineWithQuantity medicineWithQuantityInPharmacy :pharmacy.getMedicineWithQuantity()){
+
+			// prolazimo kroz listu nasih potrebnih lekova
+			for(MedicineWithQuantity neededMedicineAndQuantity : medicineWithQuantities){
+				//proveravamo da li se lek u apoteci poklapa sa nasim lekom
+				if(medicineWithQuantityInPharmacy.getMedicine().equals(neededMedicineAndQuantity.getMedicine())){
+					//ima lek proveravamo kolicinu
+					if(medicineWithQuantityInPharmacy.getQuantity() >= neededMedicineAndQuantity.getQuantity()){
+						//ima za taj lek
+						foundedMedicineAndQuantity ++;
+					}
+
+				}
+			}
+		}
+
+		if(foundedMedicineAndQuantity >= medicineWithQuantities.size()){
+			return true;
+		}else {
+			return  false;
+		}
+	}
 
 
 }

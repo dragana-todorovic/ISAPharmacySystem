@@ -2,6 +2,20 @@ var isShapeSelected = false;
 var isTypeSelected = false;
 var selectedType ='';
 var selectedShape = '';
+var file;
+var eMedicinesCodes = '';
+var eMedicinesCodesQuantity = '';
+function readURL(input) {
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+     file=input.files[0];
+    reader.onload = function(e) {
+      $('#blah').attr('src', e.target.result);
+    }
+    reader.readAsDataURL(input.files[0]); // convert to base64 string
+  }
+
+}
 $(document).ready(function() {
 	var decoded = parseJwt(localStorage.getItem('jwt'));
 	var email = decoded.email
@@ -196,6 +210,141 @@ $(document).ready(function() {
 				$('#pharmacies_for_derm_appointments').attr('hidden',true);
 				$('#reserved_medicine_div').attr('hidden',true);
 		     });
+		     //mili for ePrecription
+    $('a#ePrescription').click(function(){
+	    $('#qr_code_show').attr('hidden', false);
+        $('#search-box-medicine').attr('hidden',true);
+        $('#edit-profile').attr('hidden', true);
+        $('#show').attr('hidden',true);
+        $('#pharmacy-details').attr('hidden',true);
+        $('#pharmacies_for_derm_appointments').attr('hidden',true);
+        $('#reserved_medicine_div').attr('hidden',true);
+     });
+
+     $("#file").change(function() {
+        readURL(this);
+    });
+
+    $('#submitQrCode').click(function(){
+        var image=$('#blah').attr('src');
+         var formData = new FormData();
+         formData.append("file", file);
+                formData.append("type","image");
+        // ovdde da decodujemo qr codde
+        // procitamo tekst i ocitamo apoteke koje imaju
+        customAjax({
+            url: '/patient/sendQrCode/' ,
+            method: 'POST',
+            data : formData,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+               console.log(data)
+               showPharmaciesForQr(data)
+            },
+            error: function () {
+                console.log("error")
+            }
+
+        });
+    })
+
+    $('#qr_pharmacy_table').on('click','button',function(event){
+        if($(event.target).attr('id')=="buy-medicine"){
+        //email
+            pharmacyId = $(event.target).closest('tr').attr('id')
+            eMedicinesCodesQuantity = $(event.target).parent().parent().children().first().next().next().next().next()[0].innerText;
+            eMedicinesCodes =  $(event.target).parent().parent().children().first().next().next().next()[0].innerText;
+
+             var newECodesQuantity = eMedicinesCodesQuantity.split("\n")
+             var q= newECodesQuantity.slice(0, -1)
+
+              var newECodes = eMedicinesCodes.split("\n")
+              var m = newECodes.slice(0, -1);
+
+            obj = JSON.stringify({
+                pharmacyId:pharmacyId,
+                patientEmail:email,
+                medicineCodes: m,
+                medicineCodesQuantity: q,
+            });
+
+            customAjax({
+            url: '/patient/buyEPrescription',
+            method: 'POST',
+            data:obj,
+            contentType: 'application/json',
+            success: function(){
+                alert("Success bought medicine list by ePrescription.")
+            },
+             error: function(){
+               alert('Error');
+             }
+            });
+        }
+    })
+
+    $("th[name=sortByName]").click(function () {
+            if ($(this.getElementsByTagName("span")).attr(`class`) == "glyphicon glyphicon-arrow-down") {
+                $(this.getElementsByTagName("span")).removeClass("glyphicon glyphicon-arrow-down");
+                $(this.getElementsByTagName("span")).toggleClass("glyphicon glyphicon-arrow-up");
+            } else {
+                $(this.getElementsByTagName("span")).removeClass("glyphicon glyphicon-up-down");
+                $(this.getElementsByTagName("span")).toggleClass("glyphicon glyphicon-arrow-down");
+            }
+            var table = $(this).parents('table').eq(0)
+            var rows = table.find('tr:gt(1)').toArray().sort(comparer($(this).index()))
+            this.asc = !this.asc
+            if (!this.asc) { rows = rows.reverse() }
+            for (var i = 0; i < rows.length; i++) { table.append(rows[i]) }
+        });
+
+      $("th[name=sortByAddress]").click(function () {
+            console.log('CLICKEED')
+                if ($(this.getElementsByTagName("span")).attr(`class`) == "glyphicon glyphicon-arrow-down") {
+                    $(this.getElementsByTagName("span")).removeClass("glyphicon glyphicon-arrow-down");
+                    $(this.getElementsByTagName("span")).toggleClass("glyphicon glyphicon-arrow-up");
+                } else {
+                    $(this.getElementsByTagName("span")).removeClass("glyphicon glyphicon-up-down");
+                    $(this.getElementsByTagName("span")).toggleClass("glyphicon glyphicon-arrow-down");
+                }
+                var table = $(this).parents('table').eq(0)
+                var rows = table.find('tr:gt(1)').toArray().sort(comparer($(this).index()))
+                this.asc = !this.asc
+                if (!this.asc) { rows = rows.reverse() }
+                for (var i = 0; i < rows.length; i++) { table.append(rows[i]) }
+      });
+    $("th[name=sortByRating]").click(function () {
+            console.log('CLICKEED RATING')
+                if ($(this.getElementsByTagName("span")).attr(`class`) == "glyphicon glyphicon-arrow-down") {
+                    $(this.getElementsByTagName("span")).removeClass("glyphicon glyphicon-arrow-down");
+                    $(this.getElementsByTagName("span")).toggleClass("glyphicon glyphicon-arrow-up");
+                } else {
+                    $(this.getElementsByTagName("span")).removeClass("glyphicon glyphicon-up-down");
+                    $(this.getElementsByTagName("span")).toggleClass("glyphicon glyphicon-arrow-down");
+                }
+                var table = $(this).parents('table').eq(0)
+                var rows = table.find('tr:gt(1)').toArray().sort(comparer($(this).index()))
+                this.asc = !this.asc
+                if (!this.asc) { rows = rows.reverse() }
+                for (var i = 0; i < rows.length; i++) { table.append(rows[i]) }
+      });
+    $("th[name=sortByPrice]").click(function () {
+                console.log('CLICKEED price')
+                    if ($(this.getElementsByTagName("span")).attr(`class`) == "glyphicon glyphicon-arrow-down") {
+                        $(this.getElementsByTagName("span")).removeClass("glyphicon glyphicon-arrow-down");
+                        $(this.getElementsByTagName("span")).toggleClass("glyphicon glyphicon-arrow-up");
+                    } else {
+                        $(this.getElementsByTagName("span")).removeClass("glyphicon glyphicon-up-down");
+                        $(this.getElementsByTagName("span")).toggleClass("glyphicon glyphicon-arrow-down");
+                    }
+                    var table = $(this).parents('table').eq(0)
+                    var rows = table.find('tr:gt(1)').toArray().sort(comparer($(this).index()))
+                    this.asc = !this.asc
+                    if (!this.asc) { rows = rows.reverse() }
+                    for (var i = 0; i < rows.length; i++) { table.append(rows[i]) }
+          });
+     /// mili end of ePRecription
 	$('a#reserved_medicine').click(function(){
 			$('#reserved_medicine_div').attr('hidden',false);
 			$('#search-box-medicine').attr('hidden',true);
@@ -379,9 +528,18 @@ function showMedicineType(data, selectedType){
 	for (i in data){
         if(data[i].type == selectedType)
         {
-		temp+=`<tr id="`+data[i].id+`">
-			<td>`+data[i].code+`</td>
-			<td>`+data[i].name+`</td>
+		    var averageRating= 0.0;
+        	    var countOfRatings = 0.0;
+                if(data[i].ratings.length    >0){
+                    for(x in data[i].ratings){
+                        countOfRatings += data[i].ratings[x].rating;
+                    }
+                    averageRating = countOfRatings/data[i].ratings.length ;
+                }
+        		temp+=`<tr id="`+data[i].id+`">
+        			<td>`+data[i].code+`</td>
+        			<td>`+data[i].name+`</td>
+        			<td>`+averageRating+`</td>
 			<td>`+data[i].shape+`</td>
 			<td>`+data[i].type+`</td>
              <td><button id="show-details" class="ui primary basic button">Details</button>
@@ -400,9 +558,18 @@ function showMedicineShape(data, selectedShape){
 	for (i in data){
         if(data[i].shape == selectedShape)
         {
-		temp+=`<tr id="`+data[i].id+`">
-			<td>`+data[i].code+`</td>
-			<td>`+data[i].name+`</td>
+		    var averageRating= 0.0;
+        	    var countOfRatings = 0.0;
+                if(data[i].ratings.length    >0){
+                    for(x in data[i].ratings){
+                        countOfRatings += data[i].ratings[x].rating;
+                    }
+                    averageRating = countOfRatings/data[i].ratings.length ;
+                }
+        		temp+=`<tr id="`+data[i].id+`">
+        			<td>`+data[i].code+`</td>
+        			<td>`+data[i].name+`</td>
+        			<td>`+averageRating+`</td>
 			<td>`+data[i].shape+`</td>
 			<td>`+data[i].type+`</td>
              <td><button id="show-details" class="ui primary basic button">Details</button>
@@ -422,9 +589,18 @@ function showMedicineShapeType(data,  selectedShape, selectedType){
 	for (i in data){
         if(data[i].type == selectedType && data[i].shape == selectedShape)
         {
-		temp+=`<tr id="`+data[i].id+`">
-			<td>`+data[i].code+`</td>
-			<td>`+data[i].name+`</td>
+	    var averageRating= 0.0;
+    	    var countOfRatings = 0.0;
+            if(data[i].ratings.length    >0){
+                for(x in data[i].ratings){
+                    countOfRatings += data[i].ratings[x].rating;
+                }
+                averageRating = countOfRatings/data[i].ratings.length ;
+            }
+    		temp+=`<tr id="`+data[i].id+`">
+    			<td>`+data[i].code+`</td>
+    			<td>`+data[i].name+`</td>
+    			<td>`+averageRating+`</td>
 			<td>`+data[i].shape+`</td>
 			<td>`+data[i].type+`</td>
              <td><button id="show-details" class="ui primary basic button">Details</button>
@@ -441,10 +617,18 @@ function showMedicineShapeType(data,  selectedShape, selectedType){
 function showMedicine(data){
 	let temp='';
 	for (i in data){
-
+	    var averageRating= 0.0;
+	    var countOfRatings = 0.0;
+        if(data[i].ratings.length    >0){
+            for(x in data[i].ratings){
+                countOfRatings += data[i].ratings[x].rating;
+            }
+            averageRating = countOfRatings/data[i].ratings.length ;
+        }
 		temp+=`<tr id="`+data[i].id+`">
 			<td>`+data[i].code+`</td>
 			<td>`+data[i].name+`</td>
+			<td>`+averageRating+`</td>
 			<td>`+data[i].shape+`</td>
 			<td>`+data[i].type+`</td>
              <td><button id="show-details" class="ui primary basic button">Details</button>
@@ -457,7 +641,33 @@ function showMedicine(data){
 	$('#medicine_show').attr('hidden',false);
 	$('#ph_con').attr('hidden',true)
 }
-
+//qr_pharmacy_table
+function showPharmaciesForQr(data){
+	let temp='';
+	for (i in data){
+	        var medicinesCodes = "";
+            var medicinesQuantities = "";
+    		for(x in data[i].medicineCodes){
+                medicinesCodes += "<b>" +data[i].medicineCodes[x] +"</b></br>"
+    		}
+    		for(x in data[i].medicineCodesQuantity){
+                medicinesQuantities += "<b>" +data[i].medicineCodesQuantity[x] +"</b></br>"
+            }
+		temp+=`<tr id="`+data[i].pharmacyId+`">
+			<td>`+data[i].pharmacyName+`</td>
+			<td>`+data[i].pharmacyAddress+`</td>
+			<td>`+data[i].pharmacyAverageRating+`</td>
+			<td id ="` + medicinesCodes + `">`+medicinesCodes+`</td>
+			<td id ="` + medicinesQuantities + `">`+medicinesQuantities+`</td>
+			<td>`+data[i].totalPrice+`</td>
+			 <td><button id="buy-medicine" class="ui primary basic button">Buy</button>
+      			</td>
+			</tr>`;
+	}
+	$('#qr_pharmacy_table').html(temp);
+	$('#pharamcies_with_medicine_show').attr('hidden',true);
+	$('#ph_con').attr('hidden',true)
+}
 function showPharmaciesWithMedicine(data){
 	$('#medicine_show').attr('hidden',true);
 	let temp='';
@@ -475,6 +685,15 @@ function showPharmaciesWithMedicine(data){
 	$('#pharamcies_with_medicine_show').attr('hidden',false);
 	$('#ph_con').attr('hidden',true)
 }
+function comparer(index) { //ZA SORTIRANJE!
+    return function (a, b) {
+        var valA = getCellValue(a, index), valB = getCellValue(b, index)
+        return $.isNumeric(valA) && $.isNumeric(valB) ? valA - valB : valA.toString().localeCompare(valB)
+    }
+};
+function getCellValue(row, index) {
+    return $(row).children('td').eq(index).text()
+};
 
 
 });

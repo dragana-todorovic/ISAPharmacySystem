@@ -231,19 +231,19 @@ let editProfile = function(user) {
 			email:email});
 
 			    customAjax({
-	      url: '/user/editProfile',
-	      method: 'POST',
-	      data:obj,
-		  contentType: 'application/json',
-		        success: function(){
-		        	alert("Sucess.")
-		        	location.href = "adminpharmacy.html";
+                    url: '/user/editProfile',
+                    method: 'POST',
+                    data:obj,
+                    contentType: 'application/json',
+                        success: function(){
+                            alert("Sucess.")
+                            location.href = "adminpharmacy.html";
 
-				},
-			      error: function(){
-			       	alert('Error');
-			      }
-	    });
+                        },
+                          error: function(){
+                            alert('Error');
+                          }
+                });
 	 });
 
 
