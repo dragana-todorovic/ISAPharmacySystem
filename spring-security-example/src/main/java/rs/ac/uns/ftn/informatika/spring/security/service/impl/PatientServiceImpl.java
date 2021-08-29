@@ -40,6 +40,7 @@ public class PatientServiceImpl implements PatientService {
 
 	@Autowired
 	private MedicineWithQuantityRepository medicineWithQuantityRepository;
+
 	
 	@Override
 	public List<Patient> findAll() {
@@ -147,8 +148,18 @@ public class PatientServiceImpl implements PatientService {
 		//update in pharmacy medicine quantity
 		for(MedicineWithQuantity myMed :medicineWithQuantities) {
 			updateMedicineQuantityInPharmacy(myMed, pharmacy);
+
+			//TODO: check this againg milica
+			updateUserPoints(myMed,patient );
+			this.loyaltyScaleService.updateCathegoryOfPatient(patient);
 		}
 	}
+
+	private void updateUserPoints(MedicineWithQuantity medicineWithQuantity, Patient patient) {
+		patient.setPoints(patient.getPoints() + medicineWithQuantity.getMedicine().getBuyingPoints()*(medicineWithQuantity.getQuantity() ==0 ? 1 : medicineWithQuantity.getQuantity()));
+		this.patientRepository.save(patient);
+	}
+
 	public void updateMedicineQuantityInPharmacy(MedicineWithQuantity myMed, Pharmacy pharmacy)  {
 
 		//prolazim kroz listu u apoteci

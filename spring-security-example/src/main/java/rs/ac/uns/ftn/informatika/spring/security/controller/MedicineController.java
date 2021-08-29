@@ -65,6 +65,11 @@ public class MedicineController {
     @PostMapping("/addNewMedicine")
     @PreAuthorize("hasRole('ADMIN_SYSTEM')")
     public ResponseEntity<?> addNewMedicine(@RequestBody MedicineView medicineView) {
+
+        if(this.medicineService.findByCode(medicineView.getCode()) != null)
+        {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         Medicine medicine = new Medicine();
         medicine.setCode(medicineView.getCode());
         medicine.setName(medicineView.getName());
@@ -98,6 +103,7 @@ public class MedicineController {
         medicine.setNotes(medicineView.getNotes());
         medicine.setContradiction(medicineView.getContradiction());
         medicine.setAdviseddailydose(medicineView.getAdviseddailydose());
+        medicine.setBuyingPoints(medicineView.getBuyingpoints());
         this.medicineService.save(medicine);
 
         return new ResponseEntity<>(HttpStatus.OK);

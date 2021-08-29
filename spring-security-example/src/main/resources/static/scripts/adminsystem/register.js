@@ -74,7 +74,7 @@ $(document).ready(function(e){
                      location.href = "adminsystem.html";
                 },
                error: function(){
-                      alert("Dermatologist with that email already exists.")
+                      alert("Pharmacy Admin with that email already exists.")
                       location.href = "registerPharmacyAdmin.html";
                }
          });
@@ -360,7 +360,7 @@ let editProfile = function(user) {
 		  contentType: 'application/json',
 		        success: function(){
 		        	alert("Sucess.")
-		        	location.href = "adminpharmacy.html";
+		        	location.href = "adminsystem.html";
 
 				},
 			      error: function(){
@@ -452,7 +452,7 @@ let changePassword = function(){
 		        success: function(){
 					localStorage.removeItem('email');
 		        	alert("Success changed password!")
-					location.href = "adminpharmacy.html";
+					location.href = "adminsystem.html";
 				},
 				error: function(){
 					localStorage.removeItem('email');

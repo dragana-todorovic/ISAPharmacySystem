@@ -17,15 +17,15 @@ INSERT INTO USERS (username, password, first_name, last_name, email, country, ci
 INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('knezevicljiljana12@gmail.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.Lrd4j8amcljStog3n4APU5EX3bGJIUK', 'Ljiljana', 'Knezevic', 'knezevicljiljana12@gmail.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
 --medicine
 
-INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,type,notes,adviseddailydose,contradiction) VALUES ('Code1','Midol',1,'content1','Galenika',false,0,'Ne konzumirati uz alkohol',1,'Contradiction0');
-INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,type,notes,adviseddailydose,contradiction) VALUES ('Code2','Rapten DUO',2,'content2','Galenika',false,0,'Ne konzumirati uz alkohol',2,'Contradiction1');
-INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,type,notes,adviseddailydose,contradiction) VALUES ('Code3','Paracetamol',3,'content3','HEMOFARM',false,1,'Ne konzumirati uz alkohol',2,'Contradiction2');
-INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,type,notes,adviseddailydose,contradiction) VALUES ('Code4','Andol',4,'content4','FARMAVITA',false,1,'Ne konzumirati uz alkohol',3,'Contradiction3');
-INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,type,notes,adviseddailydose,contradiction) VALUES ('Code5','Deksomen',5,'content5','Galenika',false,2,'Ne konzumirati uz alkohol',5,'Contradiction4');
-INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,type,notes,adviseddailydose,contradiction) VALUES ('Code6','Analgin',5,'content6','HEMOFARM',false,0,'Ne konzumirati uz alkohol',4,'Contradiction5');
+INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,type,notes,adviseddailydose,contradiction, buying_points) VALUES ('Code1','Midol',1,'content1','Galenika',false,0,'Ne konzumirati uz alkohol',1,'Contradiction0',0);
+INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,type,notes,adviseddailydose,contradiction,buying_points) VALUES ('Code2','Rapten DUO',2,'content2','Galenika',false,0,'Ne konzumirati uz alkohol',2,'Contradiction1',1);
+INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,type,notes,adviseddailydose,contradiction,buying_points) VALUES ('Code3','Paracetamol',3,'content3','HEMOFARM',false,1,'Ne konzumirati uz alkohol',2,'Contradiction2',2);
+INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,type,notes,adviseddailydose,contradiction,buying_points) VALUES ('Code4','Andol',4,'content4','FARMAVITA',false,1,'Ne konzumirati uz alkohol',3,'Contradiction3',3);
+INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,type,notes,adviseddailydose,contradiction,buying_points) VALUES ('Code5','Deksomen',5,'content5','Galenika',false,2,'Ne konzumirati uz alkohol',5,'Contradiction4',4);
+INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,type,notes,adviseddailydose,contradiction,buying_points) VALUES ('Code6','Analgin',5,'content6','HEMOFARM',false,0,'Ne konzumirati uz alkohol',4,'Contradiction5',5);
 
-INSERT INTO MEDICINE(code,name,shape,type,content,producer,withprescription,notes,adviseddailydose,contradiction) VALUES ('1234','Brufen',1,1,'nesto','Galenika',false,'Ne konzumirati uz alkohol', 2,'Contradiction');
-INSERT INTO MEDICINE(code,name,shape,type,content,producer,withprescription,notes,adviseddailydose,contradiction) VALUES ('12333','Aspirin',1,2,'nesto','Galenika',false,'Ne konzumirati uz alkohol',3,'Contradiction2');
+INSERT INTO MEDICINE(code,name,shape,type,content,producer,withprescription,notes,adviseddailydose,contradiction,buying_points) VALUES ('1234','Brufen',1,1,'nesto','Galenika',false,'Ne konzumirati uz alkohol', 2,'Contradiction',2);
+INSERT INTO MEDICINE(code,name,shape,type,content,producer,withprescription,notes,adviseddailydose,contradiction,buying_points) VALUES ('12333','Aspirin',1,2,'nesto','Galenika',false,'Ne konzumirati uz alkohol',3,'Contradiction2',2);
 
 
 INSERT INTO medicine_substitute_medicine_codes(medicine_id, substitute_medicine_codes) VALUES(1,'12333');
@@ -60,9 +60,9 @@ INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (13, 7);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (14, 7);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (15, 3);
 --patient
-INSERT INTO PATIENTS (id,user_id,points,category,penal,point) VALUES (1,5,10,2,0,0);
-INSERT INTO PATIENTS (id,user_id,points,category,penal,point) VALUES (2,6,100,0,0,0);
-INSERT INTO PATIENTS (id,user_id,points,category,penal,point) VALUES (3,15,100,0,0,0);
+INSERT INTO PATIENTS (id,user_id,points,category,penal,point) VALUES (1,5,10,0,0,0);
+INSERT INTO PATIENTS (id,user_id,points,category,penal,point) VALUES (2,6,100,1,0,0);
+INSERT INTO PATIENTS (id,user_id,points,category,penal,point) VALUES (3,15,200,2,0,0);
 INSERT INTO patients_allergies_medicine(patient_id, allergies_medicine_id) values (1,1);
 INSERT INTO patients_allergies_medicine(patient_id, allergies_medicine_id) values (2,2);
 

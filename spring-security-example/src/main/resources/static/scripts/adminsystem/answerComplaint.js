@@ -11,7 +11,7 @@ function drawComplaintTable(data) {
 			<td>`+ data[i].type + `</td>
 			<td>`+ data[i].complainedOnName + `</td>
 			<td>`+ data[i].content + `</td>
-            <td ><input name="medicinesButton" id="`+ data[i].userName + `"  type = 'button' style = "background-color:coral" class="btn btn-primary" value="Medicines" ></input ></td >
+            <td ><input name="medicinesButton" id="`+ data[i].userName + `"  type = 'button' style = "background-color:coral" class="btn btn-primary" value="Answer" ></input ></td >
 			</tr>`;
     }
     $('#complaintTable').html(table);
@@ -224,7 +224,7 @@ let editProfile = function(user) {
 		  contentType: 'application/json',
 		        success: function(){
 		        	alert("Sucess.")
-		        	location.href = "adminpharmacy.html";
+		        	location.href = "adminsystem.html";
 
 				},
 			      error: function(){
@@ -316,7 +316,7 @@ let changePassword = function(){
 		        success: function(){
 					localStorage.removeItem('email');
 		        	alert("Success changed password!")
-					location.href = "adminpharmacy.html";
+					location.href = "adminsystem.html";
 				},
 				error: function(){
 					localStorage.removeItem('email');
