@@ -200,6 +200,22 @@ INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (28, 6);
 --za offers 
 INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (55, 1);
 INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (44, 4);
+
+-- za supplier list
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (150, 1);
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (200, 2);
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (300, 3);
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (400, 4);
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (500, 5);
+-- supplier dragana 1
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (600, 3);
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (800, 4);
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (1000, 5);
+-- supplier maja.tepavcevic 3
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (200, 2);
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (100, 1);
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (350, 3);
+
 --pharmacy medicine prices
 
 --pharmacy medicine with quantity
@@ -217,6 +233,21 @@ INSERT INTO pharmacy_medicine_with_quantity (pharmacy_id, medicine_with_quantity
 INSERT INTO pharmacy_medicine_with_quantity (pharmacy_id, medicine_with_quantity_id) VALUES (4, 12);
 
 
+--supplier for medicine list - medicine with quantity
+-- suplier@gmail.com
+INSERT INTO suplier_medicine_with_quantity (suplier_id, medicine_with_quantity_id) VALUES (2, 15);
+INSERT INTO suplier_medicine_with_quantity (suplier_id, medicine_with_quantity_id) VALUES (2, 19);
+INSERT INTO suplier_medicine_with_quantity (suplier_id, medicine_with_quantity_id) VALUES (2, 18);
+INSERT INTO suplier_medicine_with_quantity (suplier_id, medicine_with_quantity_id) VALUES (2, 17);
+INSERT INTO suplier_medicine_with_quantity (suplier_id, medicine_with_quantity_id) VALUES (2, 16);
+-- suplier dragana suplier_id 1
+INSERT INTO suplier_medicine_with_quantity (suplier_id, medicine_with_quantity_id) VALUES (1, 22);
+INSERT INTO suplier_medicine_with_quantity (suplier_id, medicine_with_quantity_id) VALUES (1, 21);
+INSERT INTO suplier_medicine_with_quantity (suplier_id, medicine_with_quantity_id) VALUES (1, 20);
+-- supplier maja.tepavcevic13 supplier_id 3
+INSERT INTO suplier_medicine_with_quantity (suplier_id, medicine_with_quantity_id) VALUES (3, 23);
+INSERT INTO suplier_medicine_with_quantity (suplier_id, medicine_with_quantity_id) VALUES (3, 24);
+INSERT INTO suplier_medicine_with_quantity (suplier_id, medicine_with_quantity_id) VALUES (3, 25);
 --price list
 INSERT INTO pricelist(start_date) VALUES ('2021-07-07 21:58:58.508-07');
 INSERT INTO pricelist(start_date) VALUES ('2021-08-07 21:58:58.508-07');

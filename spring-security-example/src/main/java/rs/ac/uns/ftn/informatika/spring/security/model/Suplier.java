@@ -29,6 +29,11 @@ public class Suplier {
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<SuplierOffer> offers = new HashSet<SuplierOffer>();
 
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<MedicineWithQuantity> medicineWithQuantity = new HashSet<MedicineWithQuantity>();
+
+
 	public Suplier() {
 	}
 
@@ -36,6 +41,21 @@ public class Suplier {
 		this.id = id;
 		this.user = user;
 		this.offers = offers;
+	}
+
+	public Suplier(Long id, User user, Set<SuplierOffer> offers, Set<MedicineWithQuantity> medicineWithQuantity) {
+		this.id = id;
+		this.user = user;
+		this.offers = offers;
+		this.medicineWithQuantity = medicineWithQuantity;
+	}
+
+	public Set<MedicineWithQuantity> getMedicineWithQuantity() {
+		return medicineWithQuantity;
+	}
+
+	public void setMedicineWithQuantity(Set<MedicineWithQuantity> medicineWithQuantity) {
+		this.medicineWithQuantity = medicineWithQuantity;
 	}
 
 	public Long getId() {

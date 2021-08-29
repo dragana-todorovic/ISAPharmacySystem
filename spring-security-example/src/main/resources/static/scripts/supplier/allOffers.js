@@ -239,7 +239,7 @@ $(document).ready(function(e){
 
                      },
                     error: function(){
-                        $('#txtPrice').val('')
+                     //   $('#txtPrice').val('')
                         formatDate($('#validFrom').val(''));
                          //modalMedicines.style.display = "none";
                         alert('Delivery Date must be before Order Deadline.');

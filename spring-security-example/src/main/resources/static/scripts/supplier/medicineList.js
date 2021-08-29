@@ -1,35 +1,32 @@
-var substituteMedArray = new Array();
-
-
-function drawOrderTable(data) {
+var medicineWithQId = '';
+function drawMedicineListTable(data) {
     let table = '';
     for (i in data) {
-        var medicinesName = "";
-        var medicinesQuantities = "";
-       // console.log(data[i].medicines[0])
-        //console.log(data[i].medicines[1])
-        //console.log(data[i].medicines[0].medicine)
-		for(x in data[i].medicines){
-            medicinesName += "<b>" +data[i].medicines[x].medicine.name +"</b></br>"
-            medicinesQuantities += data[i].medicines[x].quantity +"</br>"
-		}
-	     var limit = data[i].timeLimit.split('T');
+
         table += `<tr>
-			<td>`+
-                medicinesName
-			 + `</td>
-			<td>`+ medicinesQuantities + `</td>
-            <td>`+ limit[0] + `</td>
-            <td>`+ data[i].status + `</td>
-             <td ><input name="medicinesButton" id="`+ data[i].id + `"  class="ui right floated primary basic button" type = "button"  style = "background-color:coral"  value="Make Offer" ></input ></td >
+			<td>`+ data[i].medicine.name + `</td>
+			<td>`+ data[i].quantity + `</td>
+             <td ><input name="medicinesButton" id="`+ data[i].id + `"  class="ui right floated primary basic button" type = "button"  style = "background-color:coral"  value="Edit" ></input ></td >
 			</tr>`;
     }
-    $('#orderTable').html(table);
+    $('#medicineListTable').html(table);
+}
+var newMedicineId = '';
+function drawAllMedicineTable(data) {
+    let table = '';
+    for (i in data) {
+        table += `<tr id="myform">
+			<td >
+                    <input type="radio" name = "newMedicineButton" id="` + data[i].id + `" value="` + data[i].id + `">
+			</td>
+			<td>`+ data[i].name + `</td>
+			</tr>`;
+    }
+    $('#allMedicineTable').html(table);
 
 }
-var medicineOrderId = '';
 $(document).ready(function(e){
-	var email = localStorage.getItem('email')
+    var email = localStorage.getItem('email')
     $("#profileInfo").click(function () {
       customAjax({
           url: '/user/getByEmail/' + email,
@@ -42,18 +39,60 @@ $(document).ready(function(e){
         });
     });
 
-  customAjax({
-        url: '/medicineOrder/getAllOrders',
+
+    $('#logout').click(function(){
+        localStorage.removeItem('jwt')
+        location.href = "login.html";
+    });
+
+    customAjax({
+          url: '/suplierOffer/getSupplierMedicines/' + email,
+          method: 'GET',
+          contentType: 'application/json',
+            success: function(data){
+                drawAllMedicineTable(data)
+           },
+          error: function(){
+          }
+    });
+
+
+     $('#submitAddNewMedicineWithQuantity').click(function(){
+            newMedicineId =$("input[name='newMedicineButton']:checked").val();
+          let quantity= $('#txtNewMedicineQuantity').val();
+           obj = JSON.stringify({
+                quantity:quantity,
+                email:email,
+                medicineWithQuantityId:newMedicineId
+           });
+           customAjax({
+                   url: '/suplierOffer/addNewMedicineToList',
+                   method: 'POST',
+                   data:obj,
+                   contentType: 'application/json',
+                   success: function(){
+                     $('#txtNewMedicineQuantity').val('')
+                       alert("Success added medicine to list.")
+                       location.href = "medicineList.html";
+                   },
+               error: function(){
+                   alert('Try again editing.');
+               }
+               })
+     })
+
+     customAjax({
+        url: '/suplierOffer/getSupplierMedicineList/' + email,
         method: 'GET',
         contentType: 'application/json',
         success: function(data){
-            drawOrderTable(data);
+            console.log(data)
+            drawMedicineListTable(data)
         },
         error: function (message) {
             //alert("Failed")
         }
     })
-
     var modalMedicines = document.getElementById('modal-medicines')
     var spanMedicine = document.getElementsByClassName("closeMedicine")[0];
       spanMedicine.onclick = function () {
@@ -65,68 +104,57 @@ $(document).ready(function(e){
             modalMedicines.style.display = "none";
         }
     }
-      $('#orderTable').on('click', 'input:button[name=medicinesButton]', function (event) {
-            modalMedicines.style.display = "block";
-          medicineOrderId = this.id;
+   $('#medicineListTable').on('click', 'input:button[name=medicinesButton]', function (event) {
+        medicineWithQId = this.id;
+       customAjax({
+              url: '/suplierOffer/getSupplierMedicineQuantityById/' + medicineWithQId + '/' + email,
+              method: 'GET',
+              contentType: 'application/json',
+                success: function(data){
+                   $('#txtMedicineName').val(data.medicine.name)
+                    $('#txtQuantity').val(data.quantity)
+               },
+              error: function(){
+              }
+        });
+           modalMedicines.style.display = "block";
+
       })
-        var today = new Date();
-	 $('#rangestart').calendar({
-		  type: 'date',
-		  minDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1),
-		});
-       $('#submitOffer').click(function(){
-          let price=$('#txtPrice').val()
-          let deliveryDate =formatDate($('#validFrom').val());
-          let time = $('#timeOfOrder').val()
 
-          obj = JSON.stringify({
-              medicineOrderId:medicineOrderId,
-              price:price,
-              deliveryDate:deliveryDate,
-              supplierEmail:email,
-              time:time
-          });
-      //if success modal.style.display = "none";
-      //$('#txtAnswer').value() = ''
 
-             customAjax({
-                    url: '/suplierOffer/makeOffer',
-                    method: 'POST',
-                    data:obj,
-                    contentType: 'application/json',
-                      success: function(){
-                         $('#txtPrice').val('')
-                        formatDate($('#validFrom').val(''));
-                         modalMedicines.style.display = "none";
-                          alert("Success make offer.")
-                     },
-                    error: function(){
-                        $('#txtPrice').val('')
-                        formatDate($('#validFrom').val(''));
-                         modalMedicines.style.display = "none";
-                        alert('You have already made offer for this order.');
-                    }
-              });
-          });
-	$('#logout').click(function(){
-		localStorage.removeItem('jwt')
-		location.href = "login.html";
-	});
+    $('#submitEdit').click(function(){
+          let quantity= $('#txtQuantity').val();
+          let medicineWithQuantityId = medicineWithQId;
+           obj = JSON.stringify({
+                quantity:quantity,
+                email:email,
+                medicineWithQuantityId:medicineWithQuantityId
+           });
+
+        customAjax({
+            url: '/suplierOffer/editSupplierMedicineQuantity',
+            method: 'POST',
+            data:obj,
+            contentType: 'application/json',
+            success: function(){
+              $('#txtMedicineName').val('')
+              $('#txtQuantity').val('')
+                modalMedicines.style.display = "none";
+                alert("Success edit medicine quantity.")
+                location.href = "medicineList.html";
+            },
+        error: function(){
+        //   $('#txtMedicineName').val('')
+                          $('#txtQuantity').val('')
+            //modalMedicines.style.display = "none";
+            alert('Try again editing.');
+        }
+        })
+    });
 
 });
-function formatDate(date) {
-    var d = new Date(date),
-        month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
-        year = d.getFullYear();
 
-    if (month.length < 2)
-        month = '0' + month;
-    if (day.length < 2)
-        day = '0' + day;
 
-    return [year, month, day].join('-');
-}
 let showProfile = function(user) {
 	 $("#showData").html(`<table class="ui large table" style="width:50%; margin-left:auto;
     margin-right:auto; margin-top: 40px;">
