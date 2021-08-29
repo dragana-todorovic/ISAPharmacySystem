@@ -267,7 +267,7 @@ let editProfile = function(user) {
 		  contentType: 'application/json',
 		        success: function(){
 		        	alert("Sucess.")
-		        	location.href = "adminpharmacy.html";
+		        	location.href = "supplier.html";
 
 				},
 			      error: function(){
@@ -359,7 +359,7 @@ let changePassword = function(){
 		        success: function(){
 					localStorage.removeItem('email');
 		        	alert("Success changed password!")
-					location.href = "adminpharmacy.html";
+					location.href = "supplier.html";
 				},
 				error: function(){
 					localStorage.removeItem('email');

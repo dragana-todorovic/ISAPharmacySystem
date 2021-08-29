@@ -72,7 +72,7 @@ $(document).ready(function() {
             }
         });
 	})
-	 $('#pharmacies_tableBody').on('click','button',function(event){
+	 $('#all_pharmacies_table').on('click','button',function(event){
 			trid = $(event.target).closest('tr').attr('id');
             if(this.id == 'details'){
                 customAjax({
@@ -124,7 +124,7 @@ $(document).ready(function() {
 				method:'GET',
 		        url:'/appointment/getAvailableAppointmentsByPharmacyId/' + trid,
 		        contentType: 'application/json',
-	    		success: function(data) { 	
+	    		success: function(data) {
 					console.log(data);
 					showAvailableAppointments(data);
 	    		},
@@ -132,7 +132,7 @@ $(document).ready(function() {
 					alert("Error")
 	    			console.log(message)
 	    		}
-	    	});	
+	    	});
 	})
 	 $('#appointments_dermatology_body').on('click','button',function(event){
 		pom = $(event.target).closest('tr').attr('id');
@@ -147,9 +147,9 @@ $(document).ready(function() {
                         alert("Could not schedule appointment,try later");
                     }
                 });
-		
+
 	})
-	
+
 	 $('#my_appointments_dermatology_body').on('click','button',function(event){
 		pom = $(event.target).closest('tr').attr('id');
         customAjax({
@@ -163,7 +163,7 @@ $(document).ready(function() {
                 alert("Could not cancel appointment,try later");
             }
         });
-		
+
 	})
 	$("th[name=sortByGrade]").click(function () {
         if ($(this.getElementsByTagName("span")).attr(`class`) == "glyphicon glyphicon-arrow-down") {
@@ -207,7 +207,7 @@ function showAvailableAppointments(data){
 			<td><button id="schedule_appointment" class="ui primary basic button">Schedule appointment</button>
 			</tr>`;
 	}
-	
+
 	$('#appointments_dermatology_body').html(temp);
 	$('#derm_appointments').attr('hidden',false);
 	$('#pharmacy-details').attr('hidden',true);
@@ -230,8 +230,8 @@ function showSubscribedPharmacies(data){
 			<td><button id="subscribed" class="ui primary basic button">Unsubscribed</button>
 			</tr>`;
 	}
-	$('#pharmacies_tableBody').html(temp);
-	$('#pharmacies_for_derm_appointments').attr('hidden',false);
+	$('#all_pharmacies_table').html(temp);
+	//$('#pharmacies_for_derm_appointments').attr('hidden',false);
 	$('#edit-profile').attr('hidden', true);
 	$('#show').attr('hidden',true);
 	$('#my_derm_appointments').attr('hidden',true);

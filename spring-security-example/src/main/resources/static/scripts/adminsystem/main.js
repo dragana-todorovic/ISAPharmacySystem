@@ -53,7 +53,7 @@ $(document).ready(function(e){
         let notes=$('#txtNotes').val()
         let adviseddailydose=$('#txtAdvisedDailyDose').val()
         let contradiction=$('#txtContradiction').val()
-
+        let buyingPoints = $('#txtBuyingPoints').val()
         var myArray = new Array();
         myArray.push("string 1");
         myArray.push("string 2");
@@ -74,6 +74,7 @@ $(document).ready(function(e){
         substituteMedicineCodes :substituteMedArray,
         notes:notes,
         adviseddailydose:adviseddailydose,
+        buyingpoints : buyingPoints,
         contradiction:contradiction
         });
         customAjax({
@@ -86,7 +87,8 @@ $(document).ready(function(e){
                     location.href = "adminsystem.html";
                },
               error: function(){
-                alert('Error by adding medicine');
+                alert('Medicine with that code already exists. Try with another code.');
+                    location.href = "addMedicine.html";
               }
         });
  });
@@ -237,7 +239,7 @@ let editProfile = function(user) {
                     contentType: 'application/json',
                         success: function(){
                             alert("Sucess.")
-                            location.href = "adminpharmacy.html";
+                            location.href = "adminsystem.html";
 
                         },
                           error: function(){
@@ -329,7 +331,7 @@ let changePassword = function(){
 		        success: function(){
 					localStorage.removeItem('email');
 		        	alert("Success changed password!")
-					location.href = "adminpharmacy.html";
+					location.href = "adminsystem.html";
 				},
 				error: function(){
 					localStorage.removeItem('email');

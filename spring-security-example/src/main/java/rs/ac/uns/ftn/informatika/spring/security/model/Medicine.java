@@ -58,6 +58,9 @@ public class Medicine {
 	@Column(name = "contradiction")
 	private String contradiction;
 
+	@Column(name = "buyingPoints")
+	private int buyingPoints;
+
 	public Set<Rating> getRatings() {
 		return ratings;
 	}
@@ -68,6 +71,23 @@ public class Medicine {
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<Rating> ratings = new HashSet<Rating>();
+
+	public Medicine(Long id, String code, String name, MedicineShape shape, MedicineType type, String content, String producer, boolean withprescription, Set<String> substituteMedicineCodes, String notes, int adviseddailydose, String contradiction, int buyingPoints, Set<Rating> ratings) {
+		this.id = id;
+		this.code = code;
+		this.name = name;
+		this.shape = shape;
+		this.type = type;
+		this.content = content;
+		this.producer = producer;
+		this.withprescription = withprescription;
+		this.substituteMedicineCodes = substituteMedicineCodes;
+		this.notes = notes;
+		this.adviseddailydose = adviseddailydose;
+		this.contradiction = contradiction;
+		this.buyingPoints = buyingPoints;
+		this.ratings = ratings;
+	}
 
 	public Medicine(Long id, String code, String name, MedicineShape shape, MedicineType type, String content, String producer, boolean withprescription, Set<String> substituteMedicineCodes, String notes, int adviseddailydose, String contradiction, Set<Rating> ratings) {
 		this.id = id;
@@ -117,7 +137,13 @@ public class Medicine {
 	this.substituteMedicineCodes = substituteMedicineCodes;
 	this.notes = notes;
 }
+	public int getBuyingPoints() {
+		return buyingPoints;
+	}
 
+	public void setBuyingPoints(int buyingPoints) {
+		this.buyingPoints = buyingPoints;
+	}
 	public MedicineType getType() {
 		return type;
 	}

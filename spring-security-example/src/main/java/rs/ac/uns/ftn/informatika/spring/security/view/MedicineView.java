@@ -13,7 +13,24 @@ public class MedicineView {
     private ArrayList<String> substituteMedicineCodes= new ArrayList<String>();
     private String notes;
     private int adviseddailydose;
+
+    private int buyingpoints;
     private String contradiction;
+    public MedicineView(String code, String name, String type, String shape, String content, String producer, boolean withPrescription, ArrayList<String> substituteMedicineCodes, String notes, int adviseddailydose, int buyingpoints, String contradiction) {
+        this.code = code;
+        this.name = name;
+        this.type = type;
+        this.shape = shape;
+        this.content = content;
+        this.producer = producer;
+        this.withPrescription = withPrescription;
+        this.substituteMedicineCodes = substituteMedicineCodes;
+        this.notes = notes;
+        this.adviseddailydose = adviseddailydose;
+        this.buyingpoints = buyingpoints;
+        this.contradiction = contradiction;
+    }
+
 
     public MedicineView(){super();}
     public MedicineView(String code, String name, String type, String shape, String content, String producer, boolean withPrescription, ArrayList<String> substituteMedicineCodes, String notes, int adviseddailydose, String contradiction) {
@@ -29,6 +46,14 @@ public class MedicineView {
         this.notes = notes;
         this.adviseddailydose = adviseddailydose;
         this.contradiction = contradiction;
+    }
+
+    public int getBuyingpoints() {
+        return buyingpoints;
+    }
+
+    public void setBuyingpoints(int buyingpoints) {
+        this.buyingpoints = buyingpoints;
     }
 
     public String getCode() {

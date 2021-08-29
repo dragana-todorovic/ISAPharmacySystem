@@ -159,8 +159,8 @@ public class PatientController {
 	@PostMapping("/saveLoyaltyScale")
 	@PreAuthorize("hasRole('ADMIN_SYSTEM')")
 	public ResponseEntity<?> saveLoyaltyScale(@RequestBody LoyaltyScaleView loyaltyScaleView) {
-		// pronadjem po kategoriji i posaljem dva podatka za cuvanje  i setovanje
 		this.loyaltyScaleService.editLoyalty(loyaltyScaleView);
+		this.loyaltyScaleService.updateCathegoryOfPatients();
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
