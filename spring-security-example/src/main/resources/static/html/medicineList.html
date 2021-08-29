@@ -6,9 +6,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"  />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+    <link href="https://cdn.rawgit.com/mdehoog/Semantic-UI/6e6d051d47b598ebab05857545f242caf2b4b48c/dist/semantic.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.rawgit.com/mdehoog/Semantic-UI/6e6d051d47b598ebab05857545f242caf2b4b48c/dist/semantic.min.js"></script>
     <script src="../scripts/customAjax.js"></script>
-    <script src="../scripts/supplier/makeOffer.js"></script>
+    <script src="../scripts/supplier/medicineList.js"></script>
     <script src="../scripts/jwt.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/modal.css">
     <title>Supplier Homepage</title>
     <style>
 ul {
@@ -109,6 +112,7 @@ div.container4 h2 {
 <div class="container_1">
     <ul style="background:skyblue">
         <li><a href=""><i class="home icon" style="color:white"></i></a></li>
+
         <li><a id="make_offer" href="makeOffer.html">Make Offer To Order</a></li>
         <li><a id="all_offers" href="allOffers.html">My Offers</a></li>
         <li><a id="medicine_list" href="medicineList.html">Medicine List</a></li>
@@ -124,59 +128,86 @@ div.container4 h2 {
 
 
     </ul>
-    <div id = "showData" class="container4" style = "color : white"><h2>You have successfully logged in as a supplier!</h2></div>
+    <div id = "showData" class="container4" style = "color : white">
+        <table class="ui large table" style="width:50%; margin-left:auto;
+			    margin-right:auto; margin-top: 40px;"  id="blabla">
+            <thead>
+            <th colspan="5" class = "text-info" style= "text-align:center;">Medicine List</th>
+            <tr class="success">
+                <th>Medicine Name</th>
+                <th>Medicine Quantity</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody id="medicineListTable">
+            </tbody>
+        </table>
+
+        <table class="ui large table" style="width:50%; margin-left:auto;
+			    margin-right:auto; margin-top: 40px;">
+            <thead>
+            <tr class="success">
+                <th colspan="2" class = "text-info" style= "text-align:center;">Add New Medicine With Quantity To Your List</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Select Medicine You Want Add:</td>
+                <td class="ui input small">
+                    <table  id="txtSubstituteMedicineCodes" >
+                        <thead>
+                        <tr class="success">
+                            <th></th>
+                            <th>Name</th>
+                        </tr>
+                        </thead>
+                        <tbody id="allMedicineTable">
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Enter Quantity:</td>
+                <td class="ui input small"> <input type="number" id="txtNewMedicineQuantity" /></td>
+            </tr>
+            </tbody>
+            <tfoot class="full-width">
+            <tr>
+                <th></th>
+                <th colspan="2">
+                    <input id = "submitAddNewMedicineWithQuantity" class="ui right floated basic button" type = "button" value = "Submit"></input>
+                </th>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
 
 
-    <div id="modal-medicines" class="modal" hidden = "true">
+    <div id="modal-medicines" class="modal">
         <div class="modal-content" style="text-align: center;">
             <span class="closeMedicine">&times;</span>
             <table class="centered">
                 <tbody>
                 <tr colspan="2">
-                    <td>Enter Your Offer: </td>
+                    <td>Medicine Name: </td>
+                    <td class="ui input small"> <input disabled type="text" id="txtMedicineName"/></td>
                 </tr>
                 <tr>
-                    <td>Total price:</td>
-                    <td class="ui input small"> <input type="number" id="txtPrice"/></td>
-                </tr>
-                <tr>
-                    <td>Delivery date:</td>
-                    <td >
-                        <div class="field">
-                            <div class="ui calendar" id="rangestart">
-                                <div class="ui input left icon">
-                                    <i class="calendar icon"></i>
-                                    <input type="text" placeholder="Select Date" id="validFrom"/>
-                                </div>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Delivery Time :</td>
-                    <td>
-                        <div class="ui input left icon">
-                            <div class="ui input left icon">
-                                <input type="time" value="07:30:00" placeholder="Time" id = "timeOfOrder">
-                                <div class="ui left pointing label">
-                                    Please enter deadline
-                                </div>
-                            </div></div>
-                    </td>
+                    <td>Quantity:</td>
+                    <td class="ui input small"> <input type="number" id="txtQuantity"/></td>
                 </tr>
                 </tbody>
                 <tfoot class="full-width">
                 <tr>
                     <th></th>
                     <th colspan="2">
-                        <input id = "submitOffer" class="ui right floated primary basic button" type = "button" value = "Submit"></input>
+                        <input id = "submitEdit" class="ui right floated primary basic button" type = "button" value = "Save"></input>
                     </th>
                 </tr>
                 </tfoot>
             </table>
         </div>
     </div>
-
 
 </div>
 </body>

@@ -24,6 +24,7 @@
 <script src="../scripts/patient/appointments.js"></script>
 <script src="../scripts/patient/medicine.js"></script>
 <script src="../scripts/patient/counseling.js"></script>
+<script src="../scripts/patient/complaint.js"></script>
 <script src="../scripts/jwt.js"></script>
 
 <link rel="stylesheet" type="text/css" href="../css/modal.css">
@@ -147,7 +148,14 @@ li.dropdown {
                     <a href="#" id="my_app_ph">My appointments at pharmacists </a>
             </li>
             <li><a href="#news">Penals</a></li>
-            <li><a href="#news">Complaints</a></li>
+            <li class="dropdown">
+                <a href="javascript:void(0)" class="dropbtn">Complaints</a>
+                <div class="dropdown-content">
+                    <a href="#" id="dermatologist_complaint">Dermatologist Complaint </a>
+                    <a href="#" id="pharmacist_complaint">Pharmacist Complaint</a>
+                    <a href="#" id="pharmacy_complaint">Pharmacy Complaint</a>
+                </div>
+            </li>
             <a id="schedule_consulting" href="#" class="dropbtn">Schedule counsuling with pharmacist</a>
             <li class="dropdown">
                 <a href="javascript:void(0)" class="dropbtn" id="all_pharamcies">Pharamices</a>
@@ -635,6 +643,143 @@ li.dropdown {
 
 </div>
 
+
+        <!-- ----- COMPLAINT ------------------->
+<div id="pharmacyComplaintDiv"  hidden="true">
+        <div class="container4"  style = "color : white">
+            <table class="ui large table" style="width:50%; margin-left:auto;
+                        margin-right:auto; margin-top: 40px;">
+                <thead>
+                <tr class="success">
+                    <th colspan="3" class = "text-info" style= "text-align:center;">Complaint</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Write Your Complaint:</td>
+                    <td class="ui input"> <input type="text" id="txtComplaintContent" /></td>
+                </tr>
+                <tr>
+                    <td>Select to which pharmacy the complaint is addressed:</td>
+                    <td class="ui input small">
+                        <table  id="txtPharmacyComplaint" >
+                            <thead>
+                            <tr class="success">
+                                <th></th>
+                                <th>Name</th>
+                                <th>Address</th>
+                            </tr>
+                            </thead>
+                            <tbody id="pharmacyComplaintTable">
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+
+                <tfoot class="full-width">
+                <tr>
+                    <th></th>
+                    <th colspan="2">
+                        <input id = "submitPharmacyComplaint" class="ui right floated positive basic button" type = "button" value = "Submit"></input>
+                    </th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+</div>
+
+    <!-- DERMATOLOGIST COMPLAINT-- -->
+
+<div id="dermatologistComplaintDiv"  hidden="true">
+        <div class="container4" style = "color : white">
+            <table class="ui large table" style="width:50%; margin-left:auto;
+                                margin-right:auto; margin-top: 40px;">
+                <thead>
+                <tr class="success">
+                    <th colspan="3" class = "text-info" style= "text-align:center;">Complaint</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Write Your Complaint:</td>
+                    <td class="ui input"> <input type="text" id="txtDermatologistComplaintContent" /></td>
+                </tr>
+                <tr>
+                    <td>Select to whom the complaint is addressed:</td>
+                    <td class="ui input small">
+                        <table  id="txtDermatologistComplaint" >
+                            <thead>
+                            <tr class="success">
+                                <th></th>
+                                <th>Name</th>
+                                <th>Surname</th>
+                            </tr>
+                            </thead>
+                            <tbody id="dermatologistComplaintTable">
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+
+                <tfoot class="full-width">
+                <tr>
+                    <th></th>
+                    <th colspan="2">
+                        <input id = "submitDermatologistComplaint" class="ui right floated positive basic button" type = "button" value = "Submit"></input>
+                    </th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+</div>
+
+
+        <!-- PHARMACIST COMPLAINT -->
+<div id = "pharmacistComplaintDiv"  hidden="true" >
+        <div class="container4" style = "color : white">
+            <table class="ui large table" style="width:50%; margin-left:auto;
+                                margin-right:auto; margin-top: 40px;">
+                <thead>
+                <tr class="success">
+                    <th colspan="3" class = "text-info" style= "text-align:center;">Complaint</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Write Your Complaint:</td>
+                    <td class="ui input"> <input type="text" id="txtPharmacistComplaintContent" /></td>
+                </tr>
+                <tr>
+                    <td>Select to whom the complaint is addressed:</td>
+                    <td class="ui input small">
+                        <table  id="txtPharmacistComplaint" >
+                            <thead>
+                            <tr class="success">
+                                <th></th>
+                                <th>Name</th>
+                                <th>Surname</th>
+                            </tr>
+                            </thead>
+                            <tbody id="pharmacistComplaintTable">
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+
+                <tfoot class="full-width">
+                <tr>
+                    <th></th>
+                    <th colspan="2">
+                        <input id = "submitPharmacistComplaint" class="ui right floated positive basic button" type = "button" value = "Submit"></input>
+                    </th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+</div>
 <div id="modal-medicines" class="modal">
     <div class="modal-content" style="text-align: center;">
         <span class="closeMedicine">&times;</span>

@@ -43,7 +43,7 @@ public class MedicineController {
     private MedicineReservationService medicineReservationService;
     
     @GetMapping("/getAllMedicine")
-    @PreAuthorize("hasRole('ADMIN_SYSTEM') || hasRole('ADMIN_PHARMACY') || hasRole('ROLE_PATIENT')")
+    @PreAuthorize("hasRole('ADMIN_SYSTEM') || hasRole('ADMIN_PHARMACY') || hasRole('ROLE_PATIENT') || hasRole('ROLE_SUPPLIER')")
     public List<Medicine> getAllMedicine()   {
         return this.medicineService.findAll();
     }

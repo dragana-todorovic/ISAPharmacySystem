@@ -7,15 +7,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import rs.ac.uns.ftn.informatika.spring.security.model.MedicineWithQuantity;
-import rs.ac.uns.ftn.informatika.spring.security.model.Suplier;
-import rs.ac.uns.ftn.informatika.spring.security.model.SuplierOffer;
-import rs.ac.uns.ftn.informatika.spring.security.model.User;
+import rs.ac.uns.ftn.informatika.spring.security.model.*;
 import rs.ac.uns.ftn.informatika.spring.security.repository.MedicineWithQuantityRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.SuplierOfferRepository;
 import rs.ac.uns.ftn.informatika.spring.security.service.*;
 import rs.ac.uns.ftn.informatika.spring.security.view.MedicineForOrderView;
 import rs.ac.uns.ftn.informatika.spring.security.view.NewOrderDTO;
+import rs.ac.uns.ftn.informatika.spring.security.view.OfferMedicineListView;
 import rs.ac.uns.ftn.informatika.spring.security.view.OfferView;
 
 import java.time.LocalDate;
@@ -43,6 +41,9 @@ public class SuplierOfferController {
     @Autowired
     private SuplierOfferRepository suplierOfferRepository;
 
+    @Autowired
+    private  MedicineService medicineService;
+
     @PostMapping("/makeOffer")
     @PreAuthorize("hasRole('ROLE_SUPPLIER')")
     public ResponseEntity<?> makeOffer(@RequestBody OfferView offerView) {
@@ -52,6 +53,7 @@ public class SuplierOfferController {
            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
     }
+
     @PostMapping("/editOffer")
     @PreAuthorize("hasRole('ROLE_SUPPLIER')")
     public ResponseEntity<?> editOffer(@RequestBody OfferView offerView) {
@@ -81,4 +83,68 @@ public class SuplierOfferController {
 
         return this.suplierOfferRepository.findById(Long.valueOf(supplierId)).get();
     }
+
+    @GetMapping("/getSupplierMedicineList/{email}")
+    @PreAuthorize("hasRole('ROLE_SUPPLIER')")
+    public List<MedicineWithQuantity> getSupplierMedicineList(@PathVariable(name="email") String email) {
+        User user = this.userService.findByEmail(email);
+        Suplier suplier = this.suplierService.findSuplierByUser(user);
+
+        List<MedicineWithQuantity> so = new ArrayList<>();
+        for (MedicineWithQuantity offer : suplier.getMedicineWithQuantity()) {
+            so.add(offer);
+        }
+        return so;
+    }
+
+    @GetMapping("/getSupplierMedicineQuantityById/{medicineWithQId}/{email}")
+    @PreAuthorize("hasRole('ROLE_SUPPLIER')")
+    public MedicineWithQuantity getSupplierMedicineQuantityById(@PathVariable(name="medicineWithQId") String medicineWithQId,@PathVariable(name="email") String email) {
+
+        User user = this.userService.findByEmail(email);
+        Suplier suplier = this.suplierService.findSuplierByUser(user);
+        for (MedicineWithQuantity mq : suplier.getMedicineWithQuantity()) {
+            if(mq.getId() == Long.parseLong(medicineWithQId)){
+                return mq;
+            }
+        }
+        return null;
+    }
+
+
+    @PostMapping("/editSupplierMedicineQuantity")
+    @PreAuthorize("hasRole('ROLE_SUPPLIER')")
+    public ResponseEntity<?> editSupplierMedicineQuantity(@RequestBody OfferMedicineListView medicineView) {
+         this.suplierService.editSupplierMedicineQuantity(medicineView) ;
+         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    //addNewMedicineToList
+    @PostMapping("/addNewMedicineToList")
+    @PreAuthorize("hasRole('ROLE_SUPPLIER')")
+    public ResponseEntity<?> addNewMedicineToList(@RequestBody OfferMedicineListView medicineView) {
+        //in this case medicineWithQuantity is just medicineId i want to add to my list
+        this.suplierService.addNewMedicineToList(medicineView) ;
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    // get All medicine for supplier (email)
+    @GetMapping("/getSupplierMedicines/{email}")
+    @PreAuthorize("hasRole('ROLE_SUPPLIER')")
+    public ResponseEntity<List<Medicine>> getSupplierMedicines(@PathVariable(name="email") String email) {
+
+        User user = this.userService.findByEmail(email);
+        Suplier suplier = this.suplierService.findSuplierByUser(user);
+
+        List<Medicine> allMedicines2 = this.medicineService.findAll();
+        List<Medicine> myMedicineList1 = new ArrayList<>();
+        for (MedicineWithQuantity mq : suplier.getMedicineWithQuantity()) {
+            myMedicineList1.add(mq.getMedicine());
+        }
+
+        List<Medicine> differences = new ArrayList<>(allMedicines2);
+        differences.removeAll(myMedicineList1);
+        return new ResponseEntity<>(differences,HttpStatus.OK);
+    }
+
 }
