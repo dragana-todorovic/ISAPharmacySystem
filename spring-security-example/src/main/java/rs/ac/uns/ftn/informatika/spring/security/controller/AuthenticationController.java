@@ -157,7 +157,7 @@ public class AuthenticationController {
 	@GetMapping("/getAllPharmacies")
 	public List<Pharmacy> getAll() {
 		return this.pharmacyService.findAll();
-
+	}
 	@GetMapping(value = "/getAllCities",produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<String> getAllCities() {
 		return addressService.getAllCities();
