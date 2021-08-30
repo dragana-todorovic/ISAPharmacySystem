@@ -67,6 +67,9 @@ public class User implements UserDetails {
 
     @Column( name = "phone")
     private String phoneNumber;
+
+    @Column (name = "logged")
+    private boolean logged;
     
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -84,7 +87,17 @@ public class User implements UserDetails {
 		this.phoneNumber = phoneNumber;
 	}
 
-	public Long getId() {
+
+    public boolean getLogged() {
+        return logged;
+    }
+
+    public void setLogged(boolean logged) {
+        this.logged = logged;
+    }
+
+
+    public Long getId() {
         return id;
     }
 

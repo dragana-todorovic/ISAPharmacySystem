@@ -36,7 +36,7 @@ $(document).ready(function(e){
   input_email = $('#id_email');
   input_password = $('#id_password');
   var btnLogin = document.getElementById("id_button")
-  btnLogin.disabled = true
+//  btnLogin.disabled = true
   
   input_email.keyup(function () {
 	  	if(validateEmail(input_email.val()) && validatePassword(input_password.val())) {
@@ -81,32 +81,102 @@ $(document).ready(function(e){
 	
     var email = input_email.val();
     var password = input_password.val();
-
+    localStorage.setItem('email', email);
     customAjax({
-      url: '/auth/login',
-      method: 'POST',
-      data: { email: email, password: password },
-      success: function(jwt, status, xhr){
-	        if(xhr.status == 200){
-	        var decoded = parseJwt(jwt.accessToken);
-            console.log(decoded);
-	        localStorage.setItem('email', email);
-	        localStorage.setItem('jwt', jwt.accessToken);
-	        localStorage.setItem('role', decoded.role)
-	        authentification();
-	      //  window.location.href = "/html/certificates.html";
-    	}
-	
-	
-      },
-      error: function(){
-	
-        p_log.text('Wrong credentials');
-      }
-    });
-    
+          url: '/auth/checkIfLogged',
+          method: 'GET',
+          data: { email: email, password: password },
+          success: function(){
+                 customAjax({
+                                     url: '/auth/login',
+                                     method: 'POST',
+                                     data: { email: email, password: password },
+                                     success: function(jwt, status, xhr){
+                               	        if(xhr.status == 200){
+                               	        var decoded = parseJwt(jwt.accessToken);
+                                           console.log(decoded);
+                               	        localStorage.setItem('email', email);
+                               	        localStorage.setItem('jwt', jwt.accessToken);
+                               	        localStorage.setItem('role', decoded.role)
+                               	        authentification();
+                                   	}
+
+
+
+                                     },
+                                     error: function(){
+
+                                       p_log.text('Wrong credentials');
+                                     }
+                                   });
+                  },
+          error: function(){
+        	  location.href = "changePassword.html"
+          }
+        });
+
+
     
   });
+  btnAcceptChange = document.getElementById("acceptChangeC")
+	//btnAcceptChange.disabled = true
+
+
+$('#txtNewPasswordC').keyup(function () {
+	  	if(!validatePassword($('#txtNewPasswordC').val())){
+	  		btnAcceptChange.disabled = true
+			$(this).addClass(`alert-danger`);
+	  		$('#txtNewPasswordC').css('border-color', 'red');
+	  		$("#errorPasswordC").text("Password must have at least 8 characters, lower case, upper case, digit, special character!")
+	  		$('#errorPasswordC').css('color', 'red');
+	  	}else {
+	  		$(this).removeClass(`alert-danger`);
+	  		$('#txtNewPasswordC').css('border-color', '');
+	  		$("#errorPasswordC").text("")
+	  	}
+});
+$('#txtNewPasswordRepeatC').keyup(function () {
+	  	if($('#txtNewPasswordC').val()!=$('#txtNewPasswordRepeatC').val()){
+	  		btnAcceptChange.disabled = true
+			$(this).addClass(`alert-danger`);
+	  		$('#txtNewPasswordRepeatC').css('border-color', 'red');
+	  		$("#errorPasswordC").text("Passwords must match!")
+	  		$('#errorPasswordC').css('color', 'red');
+	  	}else {
+
+	  		$(this).removeClass(`alert-danger`);
+	  		$('#txtNewPasswordRepeatC').css('border-color', '');
+	  		$("#errorPasswordC").text("")
+			btnAcceptChange.disabled = false;
+	  	}
+});
+
+$('#acceptChangeC').click(function() {
+		var newPassword = $('#txtNewPasswordC').val()
+		var confirmPassword = $('#txtNewPasswordRepeatC').val()
+		var email = localStorage.getItem('email')
+	
+		obj = JSON.stringify({email:email,newPass:newPassword,confirmPass:confirmPassword});
+		customAjax({
+	        method:'POST',
+	        url:'/auth/changePassword',
+	        data : obj,
+	        contentType: 'application/json',
+	        success: function(){
+	        	localStorage.removeItem('email')
+	        	alert("Success changed password!")
+				location.href = "login.html";
+			},
+			error: function(){
+				localStorage.removeItem('email');
+				alert("User with that email doesn't exist")
+			}
+	            });
+
+		});
+
+
+  
   
   function validateEmail(email) {
 	    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
