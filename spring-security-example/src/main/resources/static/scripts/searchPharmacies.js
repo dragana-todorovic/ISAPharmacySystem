@@ -1,3 +1,4 @@
+
 var isCitySelected = false;
 var isGradeSelected = false;
 var selectedGrade ='';
@@ -18,6 +19,7 @@ $(document).ready(function(){
 
 	});
 	$("#searchPharmacies").click(function () {
+
 		$('#all_pharmacies_show').attr('hidden',true);
 		$('#all_medicine_show').attr('hidden',true);
 		    customAjax({
@@ -312,6 +314,7 @@ function showPharmaciesCity(data,city){
 	$('#all_pharmacies_table').html(temp);
 	$('#all_pharmacies_show').attr('hidden',false);
 }
+
 function showPharmaciesCityGrade(data,city,grade){
 	let temp='';
 	for (i in data){
