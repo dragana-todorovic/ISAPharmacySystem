@@ -101,13 +101,25 @@ input[type=text]:focus {
            </div>
     	  <div class="ui icon input">
           <input  class="prompt" type="text" id="pharmaciesSearch" placeholder="Search pharmacies by name,city,address..">
-          <i class="search link icon" id="searchPharmacies"></i>
+          <i class="search link icon" name="searchPharmacies" id="searchPharmacies"></i>
           </div>
            <div class="ui icon input">
            <input class="prompt" type="text" id="medicineSearch" name="search" placeholder="Search medicine by name..">
            <i class="search link icon" id="searchMedicine"></i>
          </div>
     <div class="container_1" hidden='true' id="all_pharmacies_show">
+                   <h4 >Filter Pharmacy By Rating :</h4>
+        <p >
+            <input type="radio" id="1" name="ph_postageR" value="1" /> 0-1
+            <input type="radio" id="2" name="ph_postageR" value="2" /> 1-2
+            <input type="radio" id="3" name="ph_postageR" value="3" /> 2-3
+            <input type="radio" id="4" name="ph_postageR" value="4" /> 3-4
+            <input type="radio" id="5" name="ph_postageR" value="5" /> 4-5
+            <input type="radio" id="0" name="ph_postageR" value="NO_FILTER" /> NO FILTER
+        </p>
+       			 <h4 >Filter Pharmacy By City :</h4>
+       			 <p name="city_filters">
+       			 </p>
         <form class="border rounded px-2 py-1 text-center">       
         		 <table class="ui celled table" >
 		  	<thead>
@@ -115,6 +127,7 @@ input[type=text]:focus {
 		   		 <th>City</th>
 		   		 <th>Street</th>
 		   		 <th>Description</th>
+		   		  <th>Ratings</th>
 		 		 </tr></thead>
 		 	 <tbody id="all_pharmacies_table" >
 		 	 </tbody>

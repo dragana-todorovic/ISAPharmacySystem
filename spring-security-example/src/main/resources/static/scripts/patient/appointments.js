@@ -242,11 +242,22 @@ function showPharmacies(data){
 	$('#pharmacy-details').attr('hidden',true);
 	let temp='';
 	for (i in data){
+	    var averageRating= 0.0;
+	    var countOfRatings = 0.0;
+        if(data[i].ratings.length >0){
+            for(x in data[i].ratings){
+				console.log(x);
+                countOfRatings += data[i].ratings[x].rating;
+            }
+            averageRating = countOfRatings/data[i].ratings.length ;
+        }
+		console.log(averageRating);
 		temp+=`<tr id="`+data[i].id+`">
 			<td >`+data[i].name+`</td>
 			<td>`+data[i].address.city+`</td>
 			<td>`+data[i].address.street+`</td>
 			<td>`+data[i].description+`</td>
+			<td>`+averageRating+`</td>
 			<td><button id="details" class="ui primary basic button">Details</button>
 			</tr>`;
 	}

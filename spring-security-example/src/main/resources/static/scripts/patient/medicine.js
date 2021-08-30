@@ -695,11 +695,20 @@ function showPharmaciesWithMedicine(data){
 	$('#medicine_show').attr('hidden',true);
 	let temp='';
 	for (i in data){
+		 var averageRating= 0.0;
+    	    var countOfRatings = 0.0;
+            if(data[i].ratings.length    >0){
+                for(x in data[i].ratings){
+                    countOfRatings += data[i].ratings[x].rating;
+                }
+                averageRating = countOfRatings/data[i].ratings.length ;
+            }
 		temp+=`<tr id="`+data[i].id+`">
 			<td>`+data[i].pharmacyName+`</td>
 			<td>`+data[i].street+`</td>
 			<td>`+data[i].city+`</td>
 			<td>`+data[i].medicinePrice+`</td>
+			<td>`+averageRating+`</td>
 			 <td><button id="reserve-medicine" class="ui primary basic button">Reserve Medicine</button>
       			</td>
 			</tr>`;
