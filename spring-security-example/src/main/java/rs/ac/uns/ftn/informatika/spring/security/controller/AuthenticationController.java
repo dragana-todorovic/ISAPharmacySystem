@@ -30,6 +30,7 @@ import rs.ac.uns.ftn.informatika.spring.security.model.ChangePassword;
 import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.User;
+import rs.ac.uns.ftn.informatika.spring.security.service.AddressService;
 import rs.ac.uns.ftn.informatika.spring.security.service.AuthorityService;
 import rs.ac.uns.ftn.informatika.spring.security.service.MedicineService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyService;
@@ -67,6 +68,9 @@ public class AuthenticationController {
 
 	@Autowired
 	private AuthorityService authorityService;
+	
+	@Autowired
+	private AddressService addressService;
 	// Prvi endpoint koji pogadja korisnik kada se loguje.
 	// Tada zna samo svoje korisnicko ime i lozinku i to prosledjuje na backend.
 	@PostMapping("/login")
@@ -88,6 +92,24 @@ public class AuthenticationController {
 		int expiresIn = tokenUtils.getExpiredIn();
 		// Vrati token kao odgovor na uspesnu autentifikaciju
 		return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
+	}
+
+	@GetMapping("/checkIfLogged")
+	public ResponseEntity<?> checkIfLogged(JwtAuthenticationRequest authenticationRequest){
+		Authentication authentication = authenticationManager
+				.authenticate( new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(),
+						authenticationRequest.getPassword()));
+
+		// Ubaci korisnika u trenutni security kontekst
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+
+		// Kreiraj token za tog korisnika
+		User user = (User) authentication.getPrincipal();
+			if(!user.getLogged()) {
+				return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+			} else {
+				return new ResponseEntity<>(HttpStatus.OK);
+			}
 	}
 
 	// Endpoint za registraciju novog korisnika
@@ -116,6 +138,7 @@ public class AuthenticationController {
 		return medicineService.searchMedicine(let);
 	}
 
+
 	@GetMapping("/getAllMedicine")
 	public List<Medicine> getAllMedicine()   {
 		return this.medicineService.findAll();
@@ -134,6 +157,10 @@ public class AuthenticationController {
 	@GetMapping("/getAllPharmacies")
 	public List<Pharmacy> getAll() {
 		return this.pharmacyService.findAll();
+
+	@GetMapping(value = "/getAllCities",produces = MediaType.APPLICATION_JSON_VALUE)
+	public List<String> getAllCities() {
+		return addressService.getAllCities();
 
 	}
 /*

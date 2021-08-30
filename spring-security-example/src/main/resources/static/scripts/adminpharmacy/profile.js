@@ -54,7 +54,6 @@ $(document).ready(function(e){
             var iconFeature = new ol.Feature({
                 geometry: iconGeometry
             });
-
             iconFeatures.push(iconFeature);
 
             var vectorSource = new ol.source.Vector({
@@ -78,7 +77,7 @@ $(document).ready(function(e){
             });
 
             map.addLayer(vectorLayer);
-
+            
         });
     }
 
@@ -187,7 +186,7 @@ let showProfile = function(user) {
 	 });
 
 	 $("#changePassword").click(function () {
-		 changePassword()
+		 changePasswordC(user)
 	 });
 
 
@@ -289,7 +288,7 @@ let editProfile = function(user) {
 
 
 };
-let changePassword = function(){
+let changePasswordC = function(user){
 
 	$("#showData").html(`<table class="ui large basic table" style="width:50%; margin-left:auto;
 		    margin-right:auto; margin-top: 40px;">
@@ -360,7 +359,7 @@ let changePassword = function(){
 	  $('#acceptChange').click(function() {
 			var newPassword = $('#txtNewPassword').val()
 			var confirmPassword = $('#txtNewPasswordRepeat').val()
-			var email = localStorage.getItem('email')
+			var email = user.email
 			obj = JSON.stringify({email:email,newPass:newPassword,confirmPass:confirmPassword});
 			customAjax({
 		        method:'POST',
@@ -368,9 +367,10 @@ let changePassword = function(){
 		        data : obj,
 		        contentType: 'application/json',
 		        success: function(){
-					localStorage.removeItem('email');
-		        	alert("Success changed password!")
-					location.href = "adminpharmacy.html";
+		        	localStorage.removeItem('email');
+					localStorage.removeItem('jwt');
+		        	alert("Success changed password! Please login again")
+		        	location.href = "login.html";
 				},
 				error: function(){
 					localStorage.removeItem('email');
