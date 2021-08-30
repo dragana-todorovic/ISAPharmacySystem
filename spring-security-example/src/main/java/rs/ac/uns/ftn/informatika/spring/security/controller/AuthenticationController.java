@@ -33,6 +33,7 @@ import rs.ac.uns.ftn.informatika.spring.security.model.User;
 import rs.ac.uns.ftn.informatika.spring.security.service.AuthorityService;
 import rs.ac.uns.ftn.informatika.spring.security.service.MedicineService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyService;
+import rs.ac.uns.ftn.informatika.spring.security.view.PharmacyWithMedicationView;
 import rs.ac.uns.ftn.informatika.spring.security.view.UserRegisterView;
 import rs.ac.uns.ftn.informatika.spring.security.model.UserTokenState;
 import rs.ac.uns.ftn.informatika.spring.security.security.TokenUtils;
@@ -113,6 +114,27 @@ public class AuthenticationController {
 	@GetMapping(value = "/searchMedicine/{let}",produces = MediaType.APPLICATION_JSON_VALUE)
 	public Collection<Medicine> searchMedicine(@PathVariable("let") String let) {
 		return medicineService.searchMedicine(let);
+	}
+
+	@GetMapping("/getAllMedicine")
+	public List<Medicine> getAllMedicine()   {
+		return this.medicineService.findAll();
+	}
+
+	@GetMapping("/getMedicineById/{trid}")
+	public Medicine getMedicineById(@PathVariable("trid") String trid)   {
+		return this.medicineService.findById(Long.valueOf(trid));
+	}
+
+	@GetMapping(value = "/getPharamcyWithMedicine/{let}",produces = MediaType.APPLICATION_JSON_VALUE)
+	public Collection<PharmacyWithMedicationView> getPharamcyWithMedicine(@PathVariable("let") Long let) {
+		return pharmacyService.getPharamciesWithMedication(let);
+	}
+
+	@GetMapping("/getAllPharmacies")
+	public List<Pharmacy> getAll() {
+		return this.pharmacyService.findAll();
+
 	}
 /*
 	@PostMapping("/registerAdminSystem")
