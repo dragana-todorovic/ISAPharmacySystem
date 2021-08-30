@@ -44,6 +44,12 @@ public class UserServiceImpl implements UserService {
 		User u = userRepository.findByEmail(username);
 		return u;
 	}
+	@Override
+	public User findByEmailAndPassword(String email,String password) throws UsernameNotFoundException {
+		
+		User u = userRepository.findByEmailAndPassword(email, passwordEncoder.encode(password));
+		return u;
+	}
 	public User findById(Long id) throws AccessDeniedException {
 		User u = userRepository.findById(id).orElseGet(null);
 		return u;
@@ -160,10 +166,12 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public Boolean changePassword(String email, String password) {
 		User u = findByEmail(email);
-		System.out.println(u);
+		System.out.println("USAOOOOOOOOOOOOOOOOOOOOOO U CHANGEEEEE$$$$$$$$$$$$");
+		System.out.println("USEEEEEEEEEEEEER" + u);
 		if(u == null) {
 			return false;
 		}
+		u.setLogged(true);
 		u.setPassword(BCrypt.hashpw(password, BCrypt.gensalt(12)));
 		this.userRepository.save(u);
 		return true;

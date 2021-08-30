@@ -89,6 +89,24 @@ public class AuthenticationController {
 		return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
 	}
 
+	@GetMapping("/checkIfLogged")
+	public ResponseEntity<?> checkIfLogged(JwtAuthenticationRequest authenticationRequest){
+		Authentication authentication = authenticationManager
+				.authenticate( new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(),
+						authenticationRequest.getPassword()));
+
+		// Ubaci korisnika u trenutni security kontekst
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+
+		// Kreiraj token za tog korisnika
+		User user = (User) authentication.getPrincipal();
+			if(!user.getLogged()) {
+				return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+			} else {
+				return new ResponseEntity<>(HttpStatus.OK);
+			}
+	}
+
 	// Endpoint za registraciju novog korisnika
 	@PostMapping("/register")
 	public ResponseEntity<User> addUser(@RequestBody UserRegisterView userRequest, UriComponentsBuilder ucBuilder) {

@@ -529,6 +529,7 @@ public class PharmacyServiceImpl implements PharmacyService{
 		user.setEmail(newpharmacist.getEmail());
 		user.setPassword(passwordEncoder.encode(newpharmacist.getPassword()));
 		user.setUsername(newpharmacist.getEmail());
+		user.setLogged(false);
 		user.setEnabled(true);
 		List<Authority> auth = authService.findByname("ROLE_PHARMACIST");
 		user.setAuthorities(auth);

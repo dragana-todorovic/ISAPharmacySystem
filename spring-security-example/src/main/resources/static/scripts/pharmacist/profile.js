@@ -372,9 +372,10 @@ let changePassword = function(){
 		        data : obj,
 		        contentType: 'application/json',
 		        success: function(){
-					localStorage.removeItem('email');
-		        	alert("Success changed password!")
-					location.href = "pharmacist.html";
+		        	localStorage.removeItem('email');
+					localStorage.removeItem('jwt');
+		        	alert("Success changed password! Please login again")
+		        	location.href = "login.html";
 				},
 				error: function(){
 					localStorage.removeItem('email');
