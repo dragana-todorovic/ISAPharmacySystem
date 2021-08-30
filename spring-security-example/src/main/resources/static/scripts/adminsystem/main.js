@@ -15,7 +15,9 @@ function drawTableMedicine(data) {
     $('#medicineTable').html(table);
 
 }
+
 $(document).ready(function(e){
+
 	var email = localStorage.getItem('email')
     $("#profileInfo").click(function () {
       customAjax({

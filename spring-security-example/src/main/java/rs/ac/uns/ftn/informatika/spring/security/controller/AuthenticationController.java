@@ -30,6 +30,7 @@ import rs.ac.uns.ftn.informatika.spring.security.model.ChangePassword;
 import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.User;
+import rs.ac.uns.ftn.informatika.spring.security.service.AddressService;
 import rs.ac.uns.ftn.informatika.spring.security.service.AuthorityService;
 import rs.ac.uns.ftn.informatika.spring.security.service.MedicineService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyService;
@@ -66,6 +67,9 @@ public class AuthenticationController {
 
 	@Autowired
 	private AuthorityService authorityService;
+	
+	@Autowired
+	private AddressService addressService;
 	// Prvi endpoint koji pogadja korisnik kada se loguje.
 	// Tada zna samo svoje korisnicko ime i lozinku i to prosledjuje na backend.
 	@PostMapping("/login")
@@ -131,6 +135,10 @@ public class AuthenticationController {
 	@GetMapping(value = "/searchMedicine/{let}",produces = MediaType.APPLICATION_JSON_VALUE)
 	public Collection<Medicine> searchMedicine(@PathVariable("let") String let) {
 		return medicineService.searchMedicine(let);
+	}
+	@GetMapping(value = "/getAllCities",produces = MediaType.APPLICATION_JSON_VALUE)
+	public List<String> getAllCities() {
+		return addressService.getAllCities();
 	}
 /*
 	@PostMapping("/registerAdminSystem")
