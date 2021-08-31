@@ -2,6 +2,20 @@ let jsonObjekat;
 var pomocnaP;
 $(document).ready(function(e){
 	
+	
+
+	/*function getLocation() {
+	    if (navigator.geolocation) {
+	        navigator.geolocation.getCurrentPosition(showPosition);
+	    } else {
+	        x.innerHTML = "Geolocation is not supported by this browser.";
+	    }
+	}
+
+	function showPosition(position) {
+	    console.log(position);
+	}*/
+	
 	function reverseGeocode(coords) {
         fetch('https://nominatim.openstreetmap.org/reverse?format=json&lon=' + coords[0] + '&lat=' + coords[1])
             .then(function (response) {
@@ -43,8 +57,9 @@ $(document).ready(function(e){
             })
         });
         //var jsonObjekat;
-        map.on('click', function (evt) {
+        map.on('singleclick', function (evt) {
             var coord = ol.proj.toLonLat(evt.coordinate);
+            console.log(coord)
             reverseGeocode(coord);
             var iconFeatures = [];
             var lon = coord[0];

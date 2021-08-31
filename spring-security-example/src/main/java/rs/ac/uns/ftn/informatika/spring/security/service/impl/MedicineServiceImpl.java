@@ -116,6 +116,8 @@ public class MedicineServiceImpl implements MedicineService{
 
 	@Override
 	public void addMedicineWithQuatityInPharmacy(String email, String medicineName, int quantity) {
+		System.out.println("MEDICINE NAME"+ medicineName);
+		System.out.println("MEDICINE QUANTITY"+ quantity);
 		PharmacyAdmin pa = pharmacyAdminService.findPharmacyAdminByUser(userService.findByEmail(email));
 		
 		Pharmacy pharmacy = pa.getPharmacy();

@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import rs.ac.uns.ftn.informatika.spring.security.model.UserTokenState;
+import rs.ac.uns.ftn.informatika.spring.security.model.DTO.CheckIfLogged;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -21,6 +23,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -90,21 +94,25 @@ public class AuthenticationController {
 	}
 
 	@GetMapping("/checkIfLogged")
-	public ResponseEntity<?> checkIfLogged(JwtAuthenticationRequest authenticationRequest){
-		Authentication authentication = authenticationManager
-				.authenticate( new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(),
-						authenticationRequest.getPassword()));
-
-		// Ubaci korisnika u trenutni security kontekst
-		SecurityContextHolder.getContext().setAuthentication(authentication);
-
+	public CheckIfLogged checkIfLogged(JwtAuthenticationRequest authenticationRequest){
+		
 		// Kreiraj token za tog korisnika
-		User user = (User) authentication.getPrincipal();
+		User user = this.userService.findByEmail(authenticationRequest.getEmail());
+		 BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		 boolean result = passwordEncoder.matches(authenticationRequest.getPassword(), user.getPassword());
+		 CheckIfLogged ci = new CheckIfLogged();
+		 if(result) {
 			if(!user.getLogged()) {
-				return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+				ci.setResponseText("NOT LOGGED");
+				return ci;
 			} else {
-				return new ResponseEntity<>(HttpStatus.OK);
+				ci.setResponseText("LOGGED");
+				return ci;
 			}
+		 } else {
+			 ci.setResponseText("NOT FOUND");
+				return ci;
+		 }
 	}
 
 	// Endpoint za registraciju novog korisnika

@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,6 +38,7 @@ import rs.ac.uns.ftn.informatika.spring.security.view.WorkingDayDTO;
 
 import java.time.LocalTime;
 import java.time.Period;
+import java.time.format.DateTimeParseException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -118,7 +120,16 @@ public class PharmacyServiceImpl implements PharmacyService{
 	
 	@Override
 	public ActionAndBenefit addNew(ActionAndBenefitDTO actionAndBenefit) {
-		
+		try {
+			LocalDate start = LocalDate.parse(actionAndBenefit.getStartDate());
+		} catch(DateTimeParseException e) {
+			return null;
+		}
+		try {
+			LocalDate end = LocalDate.parse(actionAndBenefit.getEndDate());
+		} catch(DateTimeParseException e) {
+			return null;
+		}
 		PharmacyAdmin pa = pharmacyAdminService.findPharmacyAdminByUser(userService.findByEmail(actionAndBenefit.getPharmacyAdminEmail()));
 		
 		ActionAndBenefit ab = new ActionAndBenefit();
@@ -393,7 +404,9 @@ public class PharmacyServiceImpl implements PharmacyService{
 	@Override
 	public Boolean addDermatologistInPharmacy(String email, NewDermatologistDTO newDermatologist) {
 		Dermatologist dermatologist = this.dermatologistRepository.findById(Long.parseLong(newDermatologist.getDermatologistId())).get();
-
+		if(newDermatologist.getWorkingTimes().size() == 0) {
+			return false;
+		}
 		PharmacyAdmin pa = pharmacyAdminService.findPharmacyAdminByUser(userService.findByEmail(email));
 		Pharmacy p = pa.getPharmacy(); 
 		//da li se radno vrijeme poklapa sa drugim apotekama

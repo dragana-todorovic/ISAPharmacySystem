@@ -51,7 +51,7 @@ public class PriceListServiceImpl implements PriceListService {
 		
 		for(PriceList pl : list) {
 			if(pl.getStartDate().isBefore(LocalDate.now()) || pl.getStartDate().equals(LocalDate.now())) {
-				System.out.println("USAOOOOOO U IFFFF IFF IFFF");
+			
 				result.add(pl);
 			}
 		}

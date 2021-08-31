@@ -172,7 +172,7 @@ public class UserServiceImpl implements UserService {
 			return false;
 		}
 		u.setLogged(true);
-		u.setPassword(BCrypt.hashpw(password, BCrypt.gensalt(12)));
+		u.setPassword(passwordEncoder.encode(password));
 		this.userRepository.save(u);
 		return true;
 		

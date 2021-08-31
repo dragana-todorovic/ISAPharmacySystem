@@ -30,6 +30,9 @@ public class ActionsAndBenefitsController {
 	public ResponseEntity<?> editPharmacy(@RequestBody ActionAndBenefitDTO actionAndBenefit) {
 		
 		ActionAndBenefit ab = this.pharmacyService.addNew(actionAndBenefit);
+		if(ab == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		return new ResponseEntity<>(ab, HttpStatus.CREATED);
 		
 	}

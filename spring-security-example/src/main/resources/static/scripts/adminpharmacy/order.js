@@ -182,6 +182,10 @@ $('.ui.dropdown')
     </div>
   </div></div>
   </td></tr>
+   <tr>
+			    <td colspan="2">  <p id="errorAddOrder"></p></td>
+			    </tr>
+						           
 					    </table>
   </div>
   <div class="actions">
@@ -347,6 +351,7 @@ $('.ui.dropdown')
 		  .modal('show')
 	})
 	
+	
 	$('#addOrder').click(function() {
 		var date = formatDate($('#dateOfOrder').val())
 		var time = $('#timeOfOrder').val()
@@ -376,7 +381,7 @@ $('.ui.dropdown')
     	    	location.href = "adminpharmacy.html"
     	    },
     	    error: function(){
-    	    	alert("Failed")
+    	    	alert("Sorry! You cannot add new order because you didn't enter date or time, or medicine list is empty")
     	    }
 
     	});

@@ -26,7 +26,7 @@ let actionandbenefit = function() {
         <div class="ui calendar" id="rangestart">
           <div class="ui input left icon">
             <i class="calendar icon"></i>
-            <input type="text" placeholder="From" id="validFrom">
+            <input type="text" placeholder="From" id="validFrom" value="`+new Date()+`">
           </div>
         </div>
       </div>
@@ -34,7 +34,7 @@ let actionandbenefit = function() {
         <div class="ui calendar" id="rangeend">
           <div class="ui input left icon">
             <i class="calendar icon"></i>
-            <input type="text" placeholder="To" id="validTo">
+            <input type="text" placeholder="To" id="validTo" value="`+new Date()+`">
           </div>
         </div>
       </div>
@@ -54,6 +54,9 @@ let actionandbenefit = function() {
 					           
 					        </tbody>
 					        <tfoot class="full-width">
+					        <tr>
+			    <th colspan="2">  <p id="error"></p></th>
+			    </tr>
 			    <tr>
 			      <th></th>
 			      <th colspan="2">
@@ -61,18 +64,45 @@ let actionandbenefit = function() {
 			    
 			      </th>
 			    </tr>
+			    
 			  </tfoot>
-					    </table> <p id="er"> </p>`);
+			 
+					    </table>  `);
+	 
+	 
 	 var today = new Date();
 	 $('#rangestart').calendar({
 		  type: 'date',
 		  minDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1),
-		  endCalendar: $('#rangeend')
+		  endCalendar: $('#rangeend'),
+		  initialDate: new Date()
 		});
 		$('#rangeend').calendar({
 		  type: 'date',
 		  startCalendar: $('#rangestart')
 		});
+		
+		btnAdd = document.getElementById("addNew")
+		btnAdd.disabled = true
+
+
+	  $('#txtDescription').keyup(function () {
+		  	if($('#txtDescription').val() == ''){
+		  		btnAdd.disabled = true
+				$(this).addClass(`alert-danger`);
+		  		$('#txtDescription').css('border-color', 'red');
+		  		$("#error").text("Passwords must match!")
+		  		$('#error').css('color', 'red');
+		  	}else {
+		  		console.log( $('#txtDescription').val())
+
+		  		$(this).removeClass(`alert-danger`);
+		  		$('#txtDescription').css('border-color', '');
+		  		$("#error").text("")
+				btnAdd.disabled = false;
+		  	}
+	  });	
+		
 		
 	$('#addNew').click(function() {
 		
@@ -100,7 +130,8 @@ let actionandbenefit = function() {
 			        	
 					},
 				      error: function(){
-				       	alert('Error');
+				       	$("#error").text("Please enter valid date and time!")
+				  		$('#error').css('color', 'red');
 				      }
 		    });
 	});
