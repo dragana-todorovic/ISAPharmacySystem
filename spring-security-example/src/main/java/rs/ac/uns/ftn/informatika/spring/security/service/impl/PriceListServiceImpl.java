@@ -61,6 +61,27 @@ public class PriceListServiceImpl implements PriceListService {
 	}
 
 	@Override
+	public PriceList findPriceListByPharmacy(Pharmacy p) {
+
+		List<PriceList> list = new ArrayList<PriceList>(this.priceListRepository.findPriceListByPharmacy(p.getId()));
+		List<PriceList> result = new ArrayList<PriceList>();
+
+		for(PriceList pl : list) {
+			if(pl.getStartDate().isBefore(LocalDate.now()) || pl.getStartDate().equals(LocalDate.now())) {
+				System.out.println("USAOOOOOO U IFFFF IFF IFFF");
+				result.add(pl);
+			}
+		}
+
+		Collections.sort(result, new PriceListSort(-1));
+		if(result.size()>0){
+			return result.get(0);
+		}else{
+			return null;
+		}
+	}
+
+	@Override
 	public List<MedicinePrice> findMedicinePricesByPriceList(Long priceListId) {
 		
 		return this.priceListRepository.findMedicinePricesByPriceList(priceListId);
