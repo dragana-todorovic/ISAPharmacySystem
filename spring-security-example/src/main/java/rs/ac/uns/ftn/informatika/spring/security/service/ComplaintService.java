@@ -1,9 +1,6 @@
 package rs.ac.uns.ftn.informatika.spring.security.service;
 
-import rs.ac.uns.ftn.informatika.spring.security.model.DermatologistComplaint;
-import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
-import rs.ac.uns.ftn.informatika.spring.security.model.PharmacistComplaint;
-import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyComplaint;
+import rs.ac.uns.ftn.informatika.spring.security.model.*;
 import rs.ac.uns.ftn.informatika.spring.security.view.ComplaintView;
 
 import java.util.List;
@@ -13,4 +10,7 @@ public interface ComplaintService {
     List<DermatologistComplaint> findAllDermatologistComplaint();
     List<PharmacistComplaint> findAllPharmacistComplaint();
     List<ComplaintView> getAllComplaints();
+    DermatologistComplaint saveDerm(DermatologistComplaint dermatologistComplaint);
+    PharmacyComplaint savePharmacy(PharmacyComplaint pharmacyComplaint);
+    PharmacistComplaint savePharmacist(PharmacistComplaint pharmacistComplaint);
 }

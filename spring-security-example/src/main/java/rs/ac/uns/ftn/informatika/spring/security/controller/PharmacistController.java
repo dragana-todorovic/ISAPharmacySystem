@@ -25,16 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import rs.ac.uns.ftn.informatika.spring.security.model.Dermatologist;
-import rs.ac.uns.ftn.informatika.spring.security.model.DermatologistAppointment;
-import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
-import rs.ac.uns.ftn.informatika.spring.security.model.MedicineReservation;
-import rs.ac.uns.ftn.informatika.spring.security.model.MedicineReservationStatus;
-import rs.ac.uns.ftn.informatika.spring.security.model.Patient;
-import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacist;
-import rs.ac.uns.ftn.informatika.spring.security.model.PharmacistCounseling;
-import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
-import rs.ac.uns.ftn.informatika.spring.security.model.User;
+import rs.ac.uns.ftn.informatika.spring.security.model.*;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.AppointmentDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.CounselingDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.HolidayRequestDTO;
@@ -45,6 +36,10 @@ import rs.ac.uns.ftn.informatika.spring.security.repository.MedicineRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.MedicineReservationRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacistCounselingRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.UserRepository;
+
+import rs.ac.uns.ftn.informatika.spring.security.service.*;
+import rs.ac.uns.ftn.informatika.spring.security.view.ComplaintView;
+
 import rs.ac.uns.ftn.informatika.spring.security.service.DermatologistAppointmentService;
 import rs.ac.uns.ftn.informatika.spring.security.service.DermatologistService;
 import rs.ac.uns.ftn.informatika.spring.security.service.EmailService;
@@ -53,6 +48,7 @@ import rs.ac.uns.ftn.informatika.spring.security.service.PharmacistCounselingSer
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacistService;
 import rs.ac.uns.ftn.informatika.spring.security.service.UserService;
 import javax.persistence.LockModeType;
+
 import rs.ac.uns.ftn.informatika.spring.security.view.PharamcistForCounselingView;
 import rs.ac.uns.ftn.informatika.spring.security.view.RatingView;
 
@@ -76,6 +72,8 @@ public class PharmacistController {
 	private PharmacistCounselingService pharmacistCounselingService;
 	@Autowired
 	private MedicineReservationRepository medicineReservationRepository;
+	@Autowired
+	private ComplaintService complaintService;
 	
 	@RequestMapping(value = "/holidayRequest" , method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_PHARMACIST')")
@@ -519,4 +517,27 @@ public class PharmacistController {
 		 this.pharmacistService.changeRating(rating,patient,id);
 		 return new ResponseEntity<>(HttpStatus.OK);
 	 }
+
+	@PostMapping("/savePharmacistComplaint")
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	public ResponseEntity<?> savePharmacistComplaint(@RequestBody ComplaintView complaintView) {
+		// pronadjem po kategoriji i posaljem dva podatka za cuvanje  i setovanje
+		User user = this.userService.findByUsername(complaintView.getUserName());
+		Patient patient=this.patientService.findPatientByUser(user);
+// u ovom slucaju complaint on name saljem id dermatologa
+		Pharmacist pharmacist=null;
+		for(Pharmacist d:pharmacistService.findAll()) {
+			if(d.getId().equals(Long.parseLong( complaintView.getComplainedOnName()))) {
+				pharmacist= d;
+			}
+		}
+
+		PharmacistComplaint pharmacistComplaint = new PharmacistComplaint();
+		pharmacistComplaint.setPharmacist(pharmacist);
+		pharmacistComplaint.setContent(complaintView.getContent());
+		pharmacistComplaint.setAnswered(false);
+		pharmacistComplaint.setPatient(patient);
+		this.complaintService.savePharmacist(pharmacistComplaint);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
 }

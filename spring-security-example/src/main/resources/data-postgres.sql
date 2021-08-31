@@ -296,10 +296,9 @@ INSERT INTO pharmacy_actions_and_benefits(pharmacy_id,actions_and_benefits_id) V
 
 
 --dermatologist complaint
-INSERT INTO dermatologist_complaint(id,content,dermatologist_id,patient_id,is_answered) VALUES (1,'Nije ljubazan',1,1,false);
+INSERT INTO dermatologist_complaint(content,dermatologist_id,patient_id,is_answered) VALUES ('Nije ljubazan',1,1,false);
 
---patient dermatologist complaint
-INSERT INTO patients_dermatologist_complaints(patient_id,dermatologist_complaints_id) VALUES (1,1);
+
 
 --holiday request
 INSERT INTO holidayrequest(pharmacy_id,start_date,end_date,status) VALUES (2,'2021-10-20 21:58:58.508-07','2021-10-29 21:58:58.508-07',0);
@@ -381,7 +380,7 @@ INSERT INTO eprescription(issued_date,patient_id) VALUES ('2017-10-01',2);
 INSERT INTO eprescription_medicines(eprescription_id,medicines_id) values (1,1);
 INSERT INTO eprescription_medicines(eprescription_id,medicines_id) values (2,2);
 
---medicine rating 
+--medicine rating
 
 INSERT INTO medicine_ratings(medicine_id,ratings_id) VALUES (1,1);
 INSERT INTO medicine_ratings(medicine_id,ratings_id) VALUES (1,5);
@@ -433,18 +432,15 @@ INSERT INTO pharmacy_medicine_reservations(pharmacy_id,medicine_reservations_id)
 INSERT INTO pharmacy_medicine_reservations(pharmacy_id,medicine_reservations_id) VALUES (2,10);
 
 --pharmacist complaint
-INSERT INTO pharmacist_complaint(id,content,pharmacist_id,patient_id, is_answered) VALUES (1,'Skup',1, 1,false);
+INSERT INTO pharmacist_complaint(content,pharmacist_id,patient_id, is_answered) VALUES ('Skup',1, 1,false);
 
---VRV OBRISATI
---patients pharmacist complaint
-INSERT INTO patients_pharmacist_complaints(patient_id,pharmacist_complaints_id) VALUES (1,1);
+
 
 --pharmacy complaint
-INSERT INTO pharmacy_complaint(id,content,pharmacy_id,patient_id, is_answered) VALUES (1,'Lose osoblje',1,1, false);
-INSERT INTO pharmacy_complaint(id,content,pharmacy_id,patient_id, is_answered) VALUES (2,'Los pristup pacijentu.',1,2, false);
+INSERT INTO pharmacy_complaint(content,pharmacy_id,patient_id, is_answered) VALUES ('Lose osoblje',1,1, false);
+INSERT INTO pharmacy_complaint(content,pharmacy_id,patient_id, is_answered) VALUES ('Los pristup pacijentu.',1,2, false);
 
---patients phamracy complaint
-INSERT INTO patients_pharmacy_complaints(patient_id,pharmacy_complaints_id) VALUES (1,1);
+
 
 --request for medicine availabitlity
 INSERT INTO requestformedicineavailability(created_at,medicine_with_quantity_id,pharmacy_id) VALUES ('2021-07-05 21:58:58.508-07',1,2);
