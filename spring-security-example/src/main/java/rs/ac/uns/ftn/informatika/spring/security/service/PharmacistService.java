@@ -16,6 +16,7 @@ import rs.ac.uns.ftn.informatika.spring.security.model.DTO.CounselingDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.HolidayRequestDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.MyPatientDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.WorkCalendarDTO;
+import rs.ac.uns.ftn.informatika.spring.security.view.RatingView;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicineReservation;
 
 public interface PharmacistService {
@@ -32,4 +33,6 @@ public interface PharmacistService {
 	Boolean isAppointmentAvailableForScheduling(Pharmacist pharmacist,Patient patient,Integer duration,Pharmacy pharmacy,LocalDate startDate, LocalDateTime startDateTime,LocalDateTime endDateTime); 
 	double getAvrageGrade(Pharmacist pharmacist);
 	Pharmacist getPharmacistsById(Long id);
+	List<RatingView> getAllPharmacistsPatientCanEvaluate(Patient patient);
+	void changeRating(int rating,Patient patient,Long id);
 }

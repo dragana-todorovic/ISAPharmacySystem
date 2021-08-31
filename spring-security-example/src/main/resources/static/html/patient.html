@@ -25,6 +25,7 @@
 <script src="../scripts/patient/medicine.js"></script>
 <script src="../scripts/patient/counseling.js"></script>
 <script src="../scripts/patient/complaint.js"></script>
+<script src="../scripts/patient/evaluate.js"></script>
 <script src="../scripts/jwt.js"></script>
 
 <link rel="stylesheet" type="text/css" href="../css/modal.css">
@@ -185,10 +186,10 @@ li.dropdown {
              <li class="dropdown">
                 <a href="javascript:void(0)" class="dropbtn">Evaluate</a>
                 <div class="dropdown-content">
-                    <a href="#">Evaluate dermatologist </a>
-                    <a href="#">Evaluate pharmacist</a>
-                    <a href="#">Evaluate medicine</a>
-                    <a href="#">Evaluate pharmacy</a>
+                    <a href="#" id="ev_derm">Evaluate dermatologist </a>
+                    <a href="#" id="ev_pharmacist">Evaluate pharmacist</a>
+                    <a href="#" id="ev_med">Evaluate medicine</a>
+                    <a href="#" id="ev_pharmacy">Evaluate pharmacy</a>
                 </div>
             </li>
             <li class="dropdown" style="float:right;">
@@ -495,6 +496,23 @@ li.dropdown {
             </table>
         </form>
     </div>
+        <div id="modal_for_evaluation" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close_evaluation">&times;</span>
+            <label for="start">Rating:</label>
+            <select id="rating" class="ui dropdown">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+            <button id="send_rating" class="ui primary basic button">Send rating</button>
+        </div>
+
+    </div>
     <div id="myModal" class="modal">
 
         <!-- Modal content -->
@@ -628,6 +646,41 @@ li.dropdown {
                         <th></th>
                     </tr></thead>
                     <tbody id="my_ph_appointments_body" >
+                    </tbody>
+                </table>
+            </form>
+        </div></div>
+         <!--EVALUATE -->
+    <div id="eval"  hidden="true">
+        <div style="padding:100px 300px 500px 300px;" class="cloumn" >
+            <label style="color:black;font-weight: bold" >YOU CAN EVALUATE </label>
+            </br></br>
+            <form class="border rounded px-2 py-1 text-center">
+                <table class="table  table-bordered" id="ev_table" >
+                    <thead>
+                    <tr><th>Name</th>
+                        <th>Your grade</th>
+                        <th>Change/Add rating</th>
+                        <th></th>
+                    </tr></thead>
+                    <tbody id="ev_body" >
+                    </tbody>
+                </table>
+            </form>
+        </div></div>
+            <div id="pharmacist_eval"  hidden="true">
+        <div style="padding:100px 300px 500px 300px;" class="cloumn" >
+            <label style="color:black;font-weight: bold" >PHARMACIST YOU CAN EVALUATE </label>
+            </br></br>
+            <form class="border rounded px-2 py-1 text-center">
+                <table class="table  table-bordered" id="pharmacist_ev_table" >
+                    <thead>
+                    <tr><th>Pharmacist</th>
+                        <th>Your grade</th>
+                        <th>Change/Add rating</th>
+                        <th></th>
+                    </tr></thead>
+                    <tbody id="pharmacist_ev_body" >
                     </tbody>
                 </table>
             </form>
@@ -772,6 +825,7 @@ li.dropdown {
             </table>
         </div>
 </div>
+
 <div id="modal-medicines" class="modal">
     <div class="modal-content" style="text-align: center;">
         <span class="closeMedicine">&times;</span>

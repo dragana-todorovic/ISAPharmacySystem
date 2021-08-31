@@ -50,6 +50,7 @@ import rs.ac.uns.ftn.informatika.spring.security.service.DermatologistAppointmen
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacistCounselingService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacistService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyService;
+import rs.ac.uns.ftn.informatika.spring.security.view.RatingView;
 
 @Service
 public class PharmacistServiceImpl implements PharmacistService {
@@ -448,6 +449,54 @@ public class PharmacistServiceImpl implements PharmacistService {
 	@Override
 	public Pharmacist getPharmacistsById(Long id) {
 		return this.pharmacistRepository.findPharmacistById(id);
+	}
+
+	@Override
+	public List<RatingView> getAllPharmacistsPatientCanEvaluate(Patient patient) {
+		List<RatingView> result=new ArrayList<RatingView>();
+		List<Pharmacist> pom=new ArrayList<Pharmacist>();
+		for(PharmacistCounseling pc : pharmacistCounselingService.findAll()) {
+			if(pc.getPatient()==null) {
+				continue;
+			}
+			if(pc.getPatient().equals(patient)) {
+				if(pc.getStartDateTime().isBefore( LocalDateTime.now()) && !pom.contains(pc.getPharmacist())) {
+					pom.add(pc.getPharmacist());
+					}
+				}
+			}
+		for(Pharmacist d : pom) {
+			RatingView rdw=new RatingView(d.getId(),d.getUser().getFirstName(),
+					d.getUser().getLastName());
+			
+			for(Rating ra :d.getRatings()){
+				if(ra.getPatient().equals(patient)) {
+					rdw.setPatientsGrade(ra.getRating());
+								
+				} 
+			}
+			result.add(rdw);	
+		}
+		
+		return result;
+	}
+
+	@Override
+	public void changeRating(int rating, Patient patient, Long id) {
+		Pharmacist ph=pharmacistRepository.findPharmacistById(id);	
+		Rating rat=new Rating();
+		if(ph.getRatings().isEmpty()) {
+			rat.setPatient(patient);
+			rat.setRating(rating);
+			ph.getRatings().add(rat);
+		}
+		for(Rating r : ph.getRatings()) {
+			if(r.getPatient().equals(patient)) {
+				r.setRating(rating);
+			}
+		}
+		this.pharmacistRepository.save(ph);
+		
 	}
 	
 	

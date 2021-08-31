@@ -1,6 +1,7 @@
 package rs.ac.uns.ftn.informatika.spring.security.service.impl;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,16 +13,22 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import rs.ac.uns.ftn.informatika.spring.security.model.EPrescription;
 import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicinePrice;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicineReservation;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicineReservationStatus;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicineWithQuantity;
+import rs.ac.uns.ftn.informatika.spring.security.model.Patient;
+import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacist;
+import rs.ac.uns.ftn.informatika.spring.security.model.PharmacistCounseling;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
 import rs.ac.uns.ftn.informatika.spring.security.model.PriceList;
+import rs.ac.uns.ftn.informatika.spring.security.model.Rating;
 import rs.ac.uns.ftn.informatika.spring.security.model.User;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.MedicineReservationDTO;
+import rs.ac.uns.ftn.informatika.spring.security.repository.EPrescriptionRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.MedicineRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.MedicineReservationRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.MedicineWithQuantityRepository;
@@ -32,6 +39,7 @@ import rs.ac.uns.ftn.informatika.spring.security.service.PatientService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyAdminService;
 import rs.ac.uns.ftn.informatika.spring.security.service.UserService;
 import rs.ac.uns.ftn.informatika.spring.security.view.MedicineReservationView;
+import rs.ac.uns.ftn.informatika.spring.security.view.RatingView;
 
 @Service
 public class MedicineServiceImpl implements MedicineService{
@@ -49,6 +57,8 @@ public class MedicineServiceImpl implements MedicineService{
 	@Autowired
 	private PriceListRepository priceListRepository;
 	
+	@Autowired
+	private EPrescriptionRepository ePrescriptionRepository;
 	
 	@Autowired
 	private UserService userService;
@@ -206,6 +216,68 @@ public class MedicineServiceImpl implements MedicineService{
 		
 		return medicines;
 	
+		
+	}
+
+	@Override
+	public List<RatingView> getAllMedicinePatientCanEvaluate(Patient patient) {
+		List<RatingView> result=new ArrayList<RatingView>();
+		List<Medicine> pom=new ArrayList<Medicine>();
+		for(EPrescription ep : ePrescriptionRepository.findAll()) {
+			if(ep.getPatient()==null) {
+				continue;
+			}
+			if(ep.getPatient().equals(patient)) {
+				for(MedicineWithQuantity m : ep.getMedicines()) {
+					if(!pom.contains(m.getMedicine())) {
+						pom.add(m.getMedicine());
+					}
+				}
+			}
+		}
+		for(MedicineReservation mr : medicineReservationRepository.findAll()) {
+			if(mr.getPatient()==null) {
+				continue;
+			}
+			if(mr.getPatient().equals(patient)) {
+				if(mr.getStatus().equals(MedicineReservationStatus.TAKEN) && !pom.contains(mr.getMedicineWithQuantity().getMedicine())) {
+					
+					pom.add(mr.getMedicineWithQuantity().getMedicine());
+					}
+				}
+			}
+		for(Medicine d : pom) {
+			System.out.println(d.getName());
+			RatingView rdw=new RatingView(d.getId(),d.getName(),
+					"");
+						
+		
+			for(Rating ra :d.getRatings()){
+				if(ra.getPatient().equals(patient)) {
+					rdw.setPatientsGrade(ra.getRating());
+				} 
+			}
+			result.add(rdw);	
+		}
+		
+		return result;
+	}
+
+	@Override
+	public void changeRating(int rating, Patient patient, Long id) {
+		Medicine med=medicineRepository.findMedicineById(id);
+		Rating rat=new Rating();
+		if(med.getRatings().isEmpty()) {
+			rat.setPatient(patient);
+			rat.setRating(rating);
+			med.getRatings().add(rat);
+		}
+		for(Rating r : med.getRatings()) {
+			if(r.getPatient().equals(patient)) {
+				r.setRating(rating);
+			}
+		}
+		this.medicineRepository.save(med);
 		
 	}
 

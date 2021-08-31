@@ -32,7 +32,7 @@ public class Pharmacy {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<MedicineWithQuantity> medicineWithQuantity = new HashSet<MedicineWithQuantity>();
     
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<Rating> ratings = new HashSet<Rating>();
     
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

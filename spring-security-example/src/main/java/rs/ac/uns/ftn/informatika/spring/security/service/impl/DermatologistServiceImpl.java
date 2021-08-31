@@ -48,6 +48,8 @@ import rs.ac.uns.ftn.informatika.spring.security.service.DermatologistAppointmen
 import rs.ac.uns.ftn.informatika.spring.security.service.DermatologistService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacistCounselingService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyService;
+import rs.ac.uns.ftn.informatika.spring.security.service.RatingService;
+import rs.ac.uns.ftn.informatika.spring.security.view.RatingView;
 
 @Service
 public class DermatologistServiceImpl implements DermatologistService{
@@ -73,6 +75,11 @@ public class DermatologistServiceImpl implements DermatologistService{
 	private PharmacistCounselingService pharmacistCounselingService;
 	@Autowired
 	private PharmacyService pharmacyService;
+	
+	@Autowired
+	private RatingService ratingService;
+	
+	
 	@Override
 	public Boolean saveHolidayRequest(HolidayRequestDTO holidayRequest) {
 	
@@ -436,5 +443,52 @@ public class DermatologistServiceImpl implements DermatologistService{
 		return avrage_grade/pom;
 	}
 
+	@Override
+	public List<RatingView> getAllDermPatientCanEvaluate(Patient patient) {
+		List<RatingView> result=new ArrayList<RatingView>();
+		List<Dermatologist> pom=new ArrayList<Dermatologist>();
+		for(DermatologistAppointment app: this.dermatologistAppointmentRepository.findAll()) {
+			if(app.getPatient()==null) {
+				continue;
+			}
+			if(app.getPatient().equals(patient)) {
+				if(app.getStartDateTime().isBefore( LocalDateTime.now()) && !pom.contains(app.getDermatologist())) {
+					pom.add(app.getDermatologist());
+					}
+				}
+					
+			}
+		for(Dermatologist d : pom) {
+			RatingView rdw=new RatingView(d.getId(),d.getUser().getFirstName(),
+					d.getUser().getLastName());
+			
+			for(Rating ra :d.getRatings()){
+				if(ra.getPatient().equals(patient)) {
+					rdw.setPatientsGrade(ra.getRating());					
+				} 
+			}
+			result.add(rdw);
+		}
+		
+		return result;
+		
+	}
+
+	@Override
+	public void changeRating(int rating, Patient patient, Long dermatologistId) {
+		Dermatologist derm=dermatologistRepository.findDermatologistById(dermatologistId);	
+		Rating rat=new Rating();
+		if(derm.getRatings().isEmpty()) {
+			rat.setPatient(patient);
+			rat.setRating(rating);
+			derm.getRatings().add(rat);
+		}
+		for(Rating r : derm.getRatings()) {
+			if(r.getPatient().equals(patient)) {
+				r.setRating(rating);
+			}
+		}
+		this.dermatologistRepository.save(derm);
+	}
 
 }

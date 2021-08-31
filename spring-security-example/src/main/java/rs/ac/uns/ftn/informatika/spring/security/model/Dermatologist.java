@@ -28,7 +28,7 @@ public class Dermatologist {
 	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private User user;
 	
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<Rating> ratings = new HashSet<Rating>();
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

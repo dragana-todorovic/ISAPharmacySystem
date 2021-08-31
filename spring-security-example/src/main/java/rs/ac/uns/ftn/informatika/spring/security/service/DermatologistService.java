@@ -14,6 +14,7 @@ import rs.ac.uns.ftn.informatika.spring.security.model.DTO.AppointmentDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.HolidayRequestDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.MyPatientDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.WorkCalendarDTO;
+import rs.ac.uns.ftn.informatika.spring.security.view.RatingView;
 
 public interface DermatologistService {
 	Boolean saveHolidayRequest(HolidayRequestDTO holidayRequest);
@@ -28,4 +29,6 @@ public interface DermatologistService {
 	void saveAppointment(AppointmentDTO appointmantDTO,Pharmacy pharmacy);
 	Boolean isAppointmentAvailableForScheduling(Dermatologist dermatologist,Patient patient,Integer duration,Pharmacy pharmacy,LocalDate startDate, LocalDateTime startDateTime,LocalDateTime endDateTime);
 	Double getAvrageGrade(Dermatologist dermatologist);
+	List<RatingView> getAllDermPatientCanEvaluate(Patient patient);
+	void changeRating(int rating,Patient patient,Long dermatologistId);
 }

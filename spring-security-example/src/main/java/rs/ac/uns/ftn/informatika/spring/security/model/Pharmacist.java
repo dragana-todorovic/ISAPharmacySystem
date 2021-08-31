@@ -28,7 +28,7 @@ public class Pharmacist {
 	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private User user;
 	
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<Rating> ratings = new HashSet<Rating>();
 	
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

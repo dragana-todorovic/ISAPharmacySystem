@@ -22,11 +22,13 @@ import rs.ac.uns.ftn.informatika.spring.security.repository.UserRepository;
 import java.util.regex.Pattern;
 
 import javax.jws.soap.SOAPBinding.Use;
+import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,19 +43,23 @@ import rs.ac.uns.ftn.informatika.spring.security.model.Dermatologist;
 import rs.ac.uns.ftn.informatika.spring.security.model.DermatologistAppointment;
 import rs.ac.uns.ftn.informatika.spring.security.model.DermatologistComplaint;
 import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
+import rs.ac.uns.ftn.informatika.spring.security.model.MedicineReservation;
 import rs.ac.uns.ftn.informatika.spring.security.model.Patient;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
+import rs.ac.uns.ftn.informatika.spring.security.model.Rating;
 import rs.ac.uns.ftn.informatika.spring.security.model.User;
 import rs.ac.uns.ftn.informatika.spring.security.model.WorkingTime;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.AppointmentDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.AppointmentScheduleDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.HolidayRequestDTO;
+import rs.ac.uns.ftn.informatika.spring.security.model.DTO.MedicineReservationDTO;
 import rs.ac.uns.ftn.informatika.spring.security.service.DermatologistAppointmentService;
 import rs.ac.uns.ftn.informatika.spring.security.service.DermatologistService;
 import rs.ac.uns.ftn.informatika.spring.security.service.EmailService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PatientService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyService;
 import rs.ac.uns.ftn.informatika.spring.security.service.UserService;
+import rs.ac.uns.ftn.informatika.spring.security.view.RatingView;
 
 @RestController
 @RequestMapping(value = "/derm", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -71,6 +77,7 @@ public class DermatologistController {
 	private PharmacyService pharmacyService;
 	@Autowired
 	private EmailService emailService;
+
 	@Autowired
 	private DermatologistAppointmentRepository dermatologistAppointmentRepository;
 	@Autowired
@@ -506,6 +513,24 @@ public class DermatologistController {
 	return dermatologistService.getAppointmentsForCalendar(dermatologist,choosenPharmacy);
 		
 	}
+	
+	@GetMapping("/getAllDermPatientCanEvaluate/{email}")
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	public List<RatingView> getAllDermPatientCanEvaluate(@PathVariable String email) {
+		User user = this.userService.findByUsername(email);
+		Patient patient=this.patientService.findPatientByUser(user);
+		return dermatologistService.getAllDermPatientCanEvaluate(patient);
+		
+	}
+	
+	 @PostMapping("/changeRating/{rating}/{email}/{id}")
+	 @PreAuthorize("hasRole('ROLE_PATIENT')")
+	 public ResponseEntity<?> changeRating(@PathVariable int rating,@PathVariable String email,@PathVariable Long id){
+		 User user = this.userService.findByUsername(email);
+		 Patient patient=this.patientService.findPatientByUser(user);
+		 this.dermatologistService.changeRating(rating,patient,id);
+		 return new ResponseEntity<>(HttpStatus.OK);
+	 }
 	
 	
 	
