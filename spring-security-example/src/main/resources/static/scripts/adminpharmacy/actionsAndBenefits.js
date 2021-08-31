@@ -91,7 +91,7 @@ let actionandbenefit = function() {
 		  		btnAdd.disabled = true
 				$(this).addClass(`alert-danger`);
 		  		$('#txtDescription').css('border-color', 'red');
-		  		$("#error").text("Passwords must match!")
+		  		$("#error").text("Please, enter description!")
 		  		$('#error').css('color', 'red');
 		  	}else {
 		  		console.log( $('#txtDescription').val())
