@@ -10,7 +10,8 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import rs.ac.uns.ftn.informatika.spring.security.model.UserTokenState;
+import org.springframework.security.core.parameters.P;
+import rs.ac.uns.ftn.informatika.spring.security.model.*;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.CheckIfLogged;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,21 +30,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import rs.ac.uns.ftn.informatika.spring.security.exception.ResourceConflictException;
-import rs.ac.uns.ftn.informatika.spring.security.model.Authority;
-import rs.ac.uns.ftn.informatika.spring.security.model.ChangePassword;
-import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
-import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
-import rs.ac.uns.ftn.informatika.spring.security.model.User;
-import rs.ac.uns.ftn.informatika.spring.security.service.AddressService;
-import rs.ac.uns.ftn.informatika.spring.security.service.AuthorityService;
-import rs.ac.uns.ftn.informatika.spring.security.service.MedicineService;
-import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyService;
+import rs.ac.uns.ftn.informatika.spring.security.service.*;
 import rs.ac.uns.ftn.informatika.spring.security.view.PharmacyWithMedicationView;
 import rs.ac.uns.ftn.informatika.spring.security.view.UserRegisterView;
 import rs.ac.uns.ftn.informatika.spring.security.model.UserTokenState;
 import rs.ac.uns.ftn.informatika.spring.security.security.TokenUtils;
 import rs.ac.uns.ftn.informatika.spring.security.security.auth.JwtAuthenticationRequest;
-import rs.ac.uns.ftn.informatika.spring.security.service.UserService;
 import rs.ac.uns.ftn.informatika.spring.security.service.impl.CustomUserDetailsService;
 import rs.ac.uns.ftn.informatika.spring.security.model.UserTokenState;
 
@@ -72,6 +64,9 @@ public class AuthenticationController {
 
 	@Autowired
 	private AuthorityService authorityService;
+
+	@Autowired
+	private PatientService patientService;
 	
 	@Autowired
 	private AddressService addressService;
@@ -133,6 +128,9 @@ public class AuthenticationController {
 		}
 
 		User user = this.userService.save(userRequest);
+		Patient patient = new Patient();
+		patient.setUser(user);
+		this.patientService.savePatient(patient);
 		HttpHeaders headers = new HttpHeaders();
 		headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
 		return new ResponseEntity<>(user, HttpStatus.CREATED);

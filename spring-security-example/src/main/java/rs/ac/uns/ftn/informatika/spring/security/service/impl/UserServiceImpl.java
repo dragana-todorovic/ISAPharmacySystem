@@ -156,10 +156,11 @@ public class UserServiceImpl implements UserService {
 		u.setPhone(userRequest.getPhone());
 		u.setEnabled(true);
 
-		List<Authority> auth = authService.findByname("ROLE_USER");
+		List<Authority> auth = authService.findByname("ROLE_PATIENT");
 		u.setAuthorities(auth);
 		
 		u = this.userRepository.save(u);
+
 		return u;
 		
 	}

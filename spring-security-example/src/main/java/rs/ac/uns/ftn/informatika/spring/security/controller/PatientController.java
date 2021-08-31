@@ -52,6 +52,9 @@ public class PatientController {
 	@Autowired
 	private PharmacyService pharmacyService;
 
+	@Autowired
+	private  EmailService emailService;
+
 	@GetMapping("/getAll")
 	@PreAuthorize("hasRole('ROLE_PHARMACIST')  || hasRole('ROLE_DERMATOLOGIST')")
 	public List<Patient> loadAll() {
@@ -268,7 +271,15 @@ public class PatientController {
 		Patient patient = this.patientService.findPatientByUser(user);
 
 		Pharmacy pharmacy = this.pharmacyService.findById(Long.valueOf(ePrescriptionBuyPharmacyView.getPharmacyId())).get();
-		this.patientService.buyEPrescriptionInPharmacy(patient, pharmacy, ePrescriptionBuyPharmacyView.getMedicineCodes(), ePrescriptionBuyPharmacyView.getMedicineCodesQuantity());
+		try {
+
+			emailService.sendEmail(patient.getUser().getEmail(),"Successfully bought medicine by ePrescription","You have successfullbought medicine by ePrescription");
+			System.out.println("Mejl je poslat");
+			this.patientService.buyEPrescriptionInPharmacy(patient, pharmacy, ePrescriptionBuyPharmacyView.getMedicineCodes(), ePrescriptionBuyPharmacyView.getMedicineCodesQuantity());
+
+		}catch (Exception e){
+			e.printStackTrace();
+		}
 
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
