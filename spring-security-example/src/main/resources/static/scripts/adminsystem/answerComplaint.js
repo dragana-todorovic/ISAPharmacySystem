@@ -10,9 +10,14 @@ function drawComplaintTable(data) {
 			<td>`+ data[i].userName + `</td>
 			<td>`+ data[i].type + `</td>
 			<td>`+ data[i].complainedOnName + `</td>
-			<td>`+ data[i].content + `</td>
-            <td ><input name="medicinesButton" id="`+ data[i].userName + `"  type = 'button' style = "background-color:coral" class="btn btn-primary" value="Answer" ></input ></td >
-			</tr>`;
+			<td>`+ data[i].content + `</td>`;
+		if( data[i].answered){
+         table +=`<td ><input disabled name="medicinesButton" id="`+ data[i].id + ";" + data[i].type + `"  type = 'button' class="ui floated positive basic button" value="Answer" ></input ></td >
+			</tr>`}
+			else{
+                table +=`<td ><input name="medicinesButton" id="`+ data[i].id + ";" + data[i].type + `"  type = 'button' class="ui floated positive basic button" value="Answer" ></input ></td >
+			</tr>`
+			};
     }
     $('#complaintTable').html(table);
 }
@@ -30,27 +35,7 @@ $(document).ready(function(e){
           }
         });
     });
-   $('#submitSendAnswer').click(function(){
-            let answer=$('#txtAnswer').val()
-            let emailToSend = userEmail;
-            let emailFromSending = email;
-//if success modal.style.display = "none";
-//$('#txtAnswer').value() = ''
 
-         /*   customAjax({
-                  url: '/patient/saveLoyaltyProgram',
-                  method: 'POST',
-                  data:obj,
-                  contentType: 'application/json',
-                    success: function(){
-                        alert("Sucess defined loyalty Program.")
-                        location.href = "loyaltyScale.html";
-                   },
-                  error: function(){
-                    alert('Error by defining loyalty prorgam.');
-                  }
-            });*/
-        });
     customAjax({
       url: '/complaint/getAllComplaint',
       method: 'GET',
@@ -78,6 +63,35 @@ $(document).ready(function(e){
             userEmail = this.id;
       })
 
+
+        $('#submitSendAnswer').click(function(){
+            let answer=$('#txtAnswer').val()
+            let splitovano = userEmail.split(';')
+            let ide = splitovano[0]
+            let tip = splitovano[1]
+         //   let complaintId = userEmail;
+                        obj = JSON.stringify({
+                        answer : answer,
+                        complaintId:ide,
+                        complaintTip :tip
+
+                        })
+           customAjax({
+                  url: '/complaint/sendAnswer',
+                  method: 'POST',
+                   data: obj,
+                  contentType: 'application/json',
+                    success: function(){
+                          modalMedicines.style.display = "none";
+                        $('#txtAnswer').val('')
+                        alert("Sucess sent mail to users who wrote complaint.")
+                        location.href = "answerComplaint.html";
+                   },
+                  error: function(){
+                    alert('Error by sending email.');
+                  }
+            });
+        });
 	$('#logout').click(function(){
 		localStorage.removeItem('jwt')
 		location.href = "login.html";

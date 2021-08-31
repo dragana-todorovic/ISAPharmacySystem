@@ -1,7 +1,12 @@
 package rs.ac.uns.ftn.informatika.spring.security.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import rs.ac.uns.ftn.informatika.spring.security.model.DermatologistComplaint;
 import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacistComplaint;
@@ -87,4 +92,21 @@ public class ComplaintServiceImpl  implements ComplaintService {
 
         return result;
     }
+
+    @Override
+    public DermatologistComplaint saveDerm(DermatologistComplaint dermatologistComplaint) {
+        return this.dermatologistComplaintRepository.save(dermatologistComplaint);
+    }
+
+    @Override
+    public PharmacyComplaint savePharmacy(PharmacyComplaint pharmacyComplaint) {
+        return this.pharmacyComplaintRepository.save(pharmacyComplaint);
+    }
+
+    @Override
+    public PharmacistComplaint savePharmacist(PharmacistComplaint pharmacistComplaint) {
+        return this.pharmacistComplaintRepository.save(pharmacistComplaint);
+    }
+
+
 }

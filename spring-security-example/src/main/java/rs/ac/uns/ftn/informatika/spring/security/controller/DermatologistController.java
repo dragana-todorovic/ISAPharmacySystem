@@ -21,7 +21,6 @@ import rs.ac.uns.ftn.informatika.spring.security.repository.UserRepository;
 
 import java.util.regex.Pattern;
 
-import javax.jws.soap.SOAPBinding.Use;
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,12 +52,9 @@ import rs.ac.uns.ftn.informatika.spring.security.model.DTO.AppointmentDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.AppointmentScheduleDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.HolidayRequestDTO;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.MedicineReservationDTO;
-import rs.ac.uns.ftn.informatika.spring.security.service.DermatologistAppointmentService;
-import rs.ac.uns.ftn.informatika.spring.security.service.DermatologistService;
-import rs.ac.uns.ftn.informatika.spring.security.service.EmailService;
-import rs.ac.uns.ftn.informatika.spring.security.service.PatientService;
-import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyService;
-import rs.ac.uns.ftn.informatika.spring.security.service.UserService;
+import rs.ac.uns.ftn.informatika.spring.security.service.*;
+import rs.ac.uns.ftn.informatika.spring.security.view.ComplaintView;
+import rs.ac.uns.ftn.informatika.spring.security.view.LoyaltyProgramView;
 import rs.ac.uns.ftn.informatika.spring.security.view.RatingView;
 
 @RestController
@@ -82,6 +78,9 @@ public class DermatologistController {
 	private DermatologistAppointmentRepository dermatologistAppointmentRepository;
 	@Autowired
 	private DermatologistAppointmentService dermatologistAppointmentService;
+
+	@Autowired
+	private ComplaintService complaintService;
 	
 	@RequestMapping(value = "/holidayRequest" , method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
@@ -531,7 +530,28 @@ public class DermatologistController {
 		 this.dermatologistService.changeRating(rating,patient,id);
 		 return new ResponseEntity<>(HttpStatus.OK);
 	 }
-	
-	
+
+	@PostMapping("/saveDermatologistComplaint")
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	public ResponseEntity<?> saveDermatologistComplaint(@RequestBody ComplaintView complaintView) {
+		// pronadjem po kategoriji i posaljem dva podatka za cuvanje  i setovanje
+		User user = this.userService.findByUsername(complaintView.getUserName());
+		Patient patient=this.patientService.findPatientByUser(user);
+// u ovom slucaju complaint on name saljem id dermatologa
+		Dermatologist dermatologist= null;
+		for(Dermatologist d: dermatologistService.findAll()) {
+			if(d.getId().equals(Long.parseLong( complaintView.getComplainedOnName()))) {
+				dermatologist= d;
+			}
+		}
+
+		DermatologistComplaint dermatologistComplaint = new DermatologistComplaint();
+		dermatologistComplaint.setDermatologist(dermatologist);
+		dermatologistComplaint.setContent(complaintView.getContent());
+		dermatologistComplaint.setAnswered(false);
+		dermatologistComplaint.setPatient(patient);
+		this.complaintService.saveDerm(dermatologistComplaint);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
 	
 }
