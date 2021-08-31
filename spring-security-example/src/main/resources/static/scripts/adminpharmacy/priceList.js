@@ -505,8 +505,7 @@ let showPriceListPharmacy = function(data,medicineEx) {
 	    	    	location.href = "adminpharmacy.html"
 	    	    },
 	    	    error: function(){
-	    	    	  $('#errorAdd')
-					  .modal('show')
+	    	    	 alert("Sorry! You cannot add price list because you didn't enter date or medicine list is empty")
 	    	    }
 
 	    	});

@@ -794,7 +794,7 @@ public class StatisticServiceImpl implements StatisticService{
 			for(MedicineReservation r : medicineReservations) {
 				if(r.getDueTo().isBefore(LocalDate.now()) && r.getStatus().equals(MedicineReservationStatus.TAKEN)) {
 						for(PriceList ap : resultSet){
-							if(ap.getStartDate().isBefore(LocalDate.now()) && ap.getStartDate().isBefore(r.getDueTo())) {
+							if((ap.getStartDate().isBefore(LocalDate.now()) || ap.getStartDate().equals(LocalDate.now())) && ap.getStartDate().isBefore(r.getDueTo())) {
 								for(MedicinePrice mp : ap.getMedicinePriceList()) {
 									if(mp.getMedicine().equals(r.getMedicineWithQuantity().getMedicine())) {
 										if(r.getDueTo().getYear() == Integer.parseInt(day.split("\\.")[2]) && 

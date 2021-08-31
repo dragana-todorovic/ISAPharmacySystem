@@ -81,8 +81,9 @@ if(e.value!=""){
 			          id: data[i].id,
 			          title: data[i].patientName+" "+ data[i].patientLastName,
 			          start: data[i].startTime,
-					 description: "Duration: "+data[i].duration,
-					morecontent:"Start time:"+data[i].startDateTime.split("T")[1]
+					  description: "Duration: "+data[i].duration,
+					  morecontent:"Start time:"+data[i].startDateTime.split("T")[1],
+					 pharmacyName :"Pharmacy name:"+data[i].pharmacyName
 			          // end: doc.to_date
         });}
 
@@ -110,7 +111,7 @@ editable: false,
 			  events:{ events},
  
       eventRender: function(event, element) { 
-            element.find('.fc-title').append("<br/>" + event.description).append("<br/>" + event.morecontent); 
+            element.find('.fc-title').append("<br/>" + event.description).append("<br/>" + event.morecontent).append("<br/>" + event.pharmacyName); 
         },
 		eventClick: function(event){
 			$('#calendar').html(eventFire(document.getElementById('startAppointment'), 'click'));

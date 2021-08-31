@@ -10,6 +10,8 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import rs.ac.uns.ftn.informatika.spring.security.model.AppoitmentPrice;
 import rs.ac.uns.ftn.informatika.spring.security.model.Dermatologist;
@@ -61,6 +63,7 @@ public class AppointmentServiceImpl implements AppointmentService{
 	}
 	
 	@Override
+	@Transactional(readOnly = false)
 	public Boolean createPredefinedExamination(String email, PredefinedAppointmentDTO predefinedAppointment) {
 		PharmacyAdmin pa = pharmacyAdminService.findPharmacyAdminByUser(userService.findByEmail(email));
 		Pharmacy p = pa.getPharmacy();

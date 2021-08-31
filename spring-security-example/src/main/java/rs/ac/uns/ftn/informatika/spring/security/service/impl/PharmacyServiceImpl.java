@@ -732,6 +732,12 @@ public class PharmacyServiceImpl implements PharmacyService{
 		LocalDate pom = start.toLocalDate();
 		LocalTime pomTime = start.toLocalTime();
 		Pharmacy pharm;
+		if(d==null) {
+			return null;
+		}
+		if(d.getWorkingTimes()==null) {
+			return null;
+		}
 		for(WorkingTime t:d.getWorkingTimes()) {
 			for(WorkingDay day:t.getWorkingDays()) {
 				System.out.println("Working time"+t);

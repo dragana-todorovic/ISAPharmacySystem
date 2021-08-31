@@ -16,6 +16,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.springframework.data.annotation.Version;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -45,6 +47,9 @@ public class MedicineReservation {
 	@Column(name = "status", nullable = false)
 	private MedicineReservationStatus status;
 	
+	@Version
+	@Column(name = "version", nullable = false)
+	private Long version;
 
 	public LocalTime getDueToTime() {
 		return dueToTime;
