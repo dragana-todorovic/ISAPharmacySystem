@@ -82,12 +82,12 @@ INSERT INTO ADDRESS (street,city) VALUES ('Kralja Petra 20', 'Beograd');
 INSERT INTO ADDRESS (street,city) VALUES ('Neznanih Junaka 5', 'Beograd');
 INSERT INTO ADDRESS (street,city) VALUES ('Narodnog Fronta 37', 'Beograd');
 --pharmacy
-INSERT INTO PHARMACY (name, description, address_id) VALUES ('Jankovic', 'Opis Jankovic',2);
-INSERT INTO PHARMACY (name, description, address_id) VALUES ('Benu', 'Opis Benu',1);
+INSERT INTO PHARMACY (name, description, address_id, version) VALUES ('Jankovic', 'Opis Jankovic',2,1);
+INSERT INTO PHARMACY (name, description, address_id, version) VALUES ('Benu', 'Opis Benu',1,1);
 
 --pharmacy for qr codes
-INSERT INTO PHARMACY (name, description, address_id) VALUES ('Zdravlje', 'Opis Zdravlje',3);
-INSERT INTO PHARMACY (name, description, address_id) VALUES ('Super', 'Opis Super',4);
+INSERT INTO PHARMACY (name, description, address_id,version) VALUES ('Zdravlje', 'Opis Zdravlje',3,1);
+INSERT INTO PHARMACY (name, description, address_id,version) VALUES ('Super', 'Opis Super',4,1);
 
 --pharmacyadmin
 
@@ -105,7 +105,7 @@ INSERT INTO DERMATOLOGIST (user_id) VALUES (12);
 --appoitment
 
 INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id,pharmacy_id) VALUES (30,'2021-01-01 21:58:58.508-07','opis1',1,2);
-INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id,pharmacy_id) VALUES (30,'2021-01-01 21:58:58.508-07','opis2',1,2);
+INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id,pharmacy_id) VALUES (30,'2021-01-01 21:58:58.508-07','opis2',2,2);
 INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id,pharmacy_id) VALUES (30,'2021-03-01 21:58:58.508-07','opis1',1,2);
 INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id, patient_id,pharmacy_id) VALUES (30,'2020-02-02 21:58:58.508-07','opis2',1,2,2);
 INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id, patient_id,pharmacy_id) VALUES (30,'2020-01-01 21:58:58.508-07','opis1',1,1,2);

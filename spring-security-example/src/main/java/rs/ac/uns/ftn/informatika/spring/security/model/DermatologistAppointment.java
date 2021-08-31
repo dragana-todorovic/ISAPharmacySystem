@@ -12,9 +12,11 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name="APPOITMENT")
+@Table(name="APPOITMENT",
+uniqueConstraints = { @UniqueConstraint(columnNames = { "dermatologist_id", "startDateTime" }) })
 public class DermatologistAppointment {
 	
 	@Id

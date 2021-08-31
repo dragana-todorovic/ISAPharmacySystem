@@ -5,30 +5,8 @@ const days = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY","SATURDAY",
 
 
 let izaberiDermatologa;
-	customAjax({
-	    url: '/pharmacy/getAllDermatologistsExpectAlreadyExisted/' + email,
-	    method: 'GET',
-	    contentType: 'application/json',
-	    success: function(data){
-	  	  izaberiDermatologa = data
-	  	  console.log(izaberiDermatologa)
-	    },
-	    error: function(){
-	    }
-	});
-	
-	let izaberiFarmaceuta;
-	customAjax({
-	    url: '/pharmacy/getAllPharmacistsExpectAlreadyExisted/' + email,
-	    method: 'GET',
-	    contentType: 'application/json',
-	    success: function(data){
-	    	izaberiFarmaceuta = data
-	  	  console.log(izaberiFarmaceuta)
-	    },
-	    error: function(){
-	    }
-	});
+
+
 	
 	let sveApoteke;
 	customAjax({
@@ -121,11 +99,7 @@ let showDermatologists = function(data) {
 </td></tr>`
 	}
 	
-	let dermatologistCombo = ''
-		  for (i in izaberiDermatologa) {
-			  dermatologistCombo += `<div class="item" data-value="` + izaberiDermatologa[i].id + `">` + izaberiDermatologa[i].user.firstName + ` `+  izaberiDermatologa[i].user.lastName + `</div>`
-	      }
-	
+
 	let temp='';
 	for (i in data){
 		var apoteke = [];
@@ -142,7 +116,7 @@ let showDermatologists = function(data) {
 		averageRating = pomocna/(data[i].ratings.length)
 	
 		temp+=`<tr><td class="firstname">`+
-		data[i].user.firstName+`</td><td class="soba">`+data[i].user.lastName+`</td><td class="ocjena">${averageRating}</td>
+		data[i].user.firstName+`</td><td class="soba">`+data[i].user.lastName+`</td><td class="ocjena">`+ ((!Object.is(NaN, averageRating)) ? averageRating:`-`) +`</td>
 		<td class="ap">${apoteke}</td>								   
 		
 		<td>
@@ -231,8 +205,7 @@ let showDermatologists = function(data) {
   <input type="hidden" id="dermatologistCombo">
   <i class="dropdown icon"></i>
   <div class="default text">Choose dermatologist...</div>
-  <div class="menu">
-  `+dermatologistCombo+`
+  <div class="menu" id="divDermComb">
   </div>
 </div>
 <script>
@@ -454,6 +427,22 @@ $("button[name=izmijeniDermatologa]").click(function() {
 
 
 $('#addNew').click(function() {
+	customAjax({
+	    url: '/pharmacy/getAllDermatologistsExpectAlreadyExisted/' + email,
+	    method: 'GET',
+	    contentType: 'application/json',
+	    success: function(data){
+	  	  izaberiDermatologa = data
+	  	let dermatologistCombo = ''
+			  for (i in izaberiDermatologa) {
+				  dermatologistCombo += `<div class="item" data-value="` + izaberiDermatologa[i].id + `">` + izaberiDermatologa[i].user.firstName + ` `+  izaberiDermatologa[i].user.lastName + `</div>`
+		      }
+	  	  $('#divDermComb').html(dermatologistCombo)
+	  	  
+	    },
+	    error: function(){
+	    }
+	});
 	 $('#modalniZaNovogDermatologa')
 	  .modal('show')
 })
@@ -550,9 +539,9 @@ let showPharmacists = function(data) {
 			pomocna = pomocna + data[i].ratings[m].rating;
 		}
 		averageRating = pomocna/(data[i].ratings.length)
-		
+		console.log(averageRating)
 		temp+=`<tr><td class="firstname">`+
-		data[i].user.firstName+`</td><td class="soba">`+data[i].user.lastName+`</td><td class="ocjena">${averageRating}</td><td>${data[i].workingTimes.pharmacy.name}</td>								   
+		data[i].user.firstName+`</td><td class="soba">`+data[i].user.lastName+`</td><td class="ocjena">`+ ((!Object.is(NaN, averageRating)) ? averageRating:`-`) +`</td><td>${data[i].workingTimes.pharmacy.name}</td>								   
 		
 		<td>
 			<button id = "`+data[i].id+`" name="obrisiDermatologa" class="ui red button">

@@ -490,7 +490,7 @@ let editPharmacy = function (pharmacy) {
 					            </tr>
 					             <tr>
 					                <td>Average rating:</td>
-					                <td class="ui input"> <input type="text" disabled="true" id="txtRating" value="`+ averageRating+ `"/></td>
+					                <td class="ui input"> <input type="text" disabled="true" id="txtRating" value="`+ ((!Object.is(NaN, averageRating)) ? averageRating:`-`) +`"/></td>
 
 					            </tr>
 

@@ -66,19 +66,22 @@ $('.ui.dropdown')
 					            <tr>
 					                <td>Duration in minutes:</td>
 					                <td> <div class="ui input left icon">
-      <input type="number" placeholder="Duration..." id = "duration">
+      <input type="text" placeholder="Duration..." id = "duration">
   </div></td>
 
 					            </tr>
 					            <tr>
 					                <td>Price:</td>
 					                <td> <div class="ui input left icon">
-      <input type="number" placeholder="Price..." id = "price">
+      <input type="text" placeholder="Price..." id = "price">
   </div></td>
 
 					            </tr>
 					           
-					           
+					              <tr>
+			    <td colspan="2">  <p id="errorPredefined"></p></td>
+			    </tr>
+						           
 					        </tbody>
 					        <tfoot class="full-width">
 			    <tr>
@@ -113,6 +116,98 @@ $('.ui.dropdown')
 		  initialDate:  new Date(today.getFullYear(), today.getMonth(), today.getDate()),
 		  minDate: new Date(today.getFullYear(), today.getMonth(), today.getDate())
 		});
+	 
+	 btnPredefined = document.getElementById("addNew")
+		btnPredefined.disabled = true
+	 
+	 $('#dermatologistCombo').on('change', function(){
+		 if( $('#dermatologistCombo').val() == '' || $('#dateOfExamination').val() == '' || $('#timeOfExamination').val()==''
+			|| $('#duration').val() == '' || !validateNumber($('#duration').val()) || $('#price').val() == '' || 
+			!validateNumber2($('#price').val())
+		 ) {
+			 btnPredefined.disabled = true
+				$("#errorPredefined").text("Please enter all data!")
+		  		$('#errorPredefined').css('color', 'red');
+		 } else {
+			 $("#errorPredefined").text("")
+				btnPredefined.disabled = false;
+		 }
+	 })
+	 
+	  $('#dateOfExamination').keyup( function(){
+		 if( $('#dermatologistCombo').val() == '' || $('#dateOfExamination').val() == '' || $('#timeOfExamination').val()==''
+			|| $('#duration').val() == '' || !validateNumber($('#duration').val()) || $('#price').val() == '' || 
+			!validateNumber2($('#price').val())
+		 ) {
+			 btnPredefined.disabled = true
+				$("#errorPredefined").text("Please enter all data!")
+		  		$('#errorPredefined').css('color', 'red');
+		 } else {
+			 $("#errorPredefined").text("")
+				btnPredefined.disabled = false;
+		 }
+	 })
+	 
+	  $('#timeOfExamination').keyup( function(){
+		 if( $('#dermatologistCombo').val() == '' || $('#dateOfExamination').val() == '' || $('#timeOfExamination').val()==''
+			|| $('#duration').val() == '' || !validateNumber($('#duration').val()) || $('#price').val() == '' || 
+			!validateNumber2($('#price').val())
+		 ) {
+			 btnPredefined.disabled = true
+				$("#errorPredefined").text("Please enter all data!")
+		  		$('#errorPredefined').css('color', 'red');
+		 } else {
+			 $("#errorPredefined").text("")
+				btnPredefined.disabled = false;
+		 }
+	 })
+	 
+	  $('#duration').keyup( function(){
+		 if( $('#dermatologistCombo').val() == '' || $('#dateOfExamination').val() == '' || $('#timeOfExamination').val()==''
+			|| $('#duration').val() == '' || !validateNumber($('#duration').val()) || $('#price').val() == '' || 
+			!validateNumber2($('#price').val())
+		 ) {
+			 btnPredefined.disabled = true
+				$("#errorPredefined").text("Please enter all data!")
+		  		$('#errorPredefined').css('color', 'red');
+		 } else {
+			 $("#errorPredefined").text("")
+				btnPredefined.disabled = false;
+		 }
+	 })
+	 
+	 $('#duration').onChange( function(){
+		 if( $('#dermatologistCombo').val() == '' || $('#dateOfExamination').val() == '' || $('#timeOfExamination').val()==''
+			|| $('#duration').val() == '' || !validateNumber($('#duration').val()) || $('#price').val() == '' || 
+			!validateNumber2($('#price').val())
+		 ) {
+			 btnPredefined.disabled = true
+				$("#errorPredefined").text("Please enter all data!")
+		  		$('#errorPredefined').css('color', 'red');
+		 } else {
+			 $("#errorPredefined").text("")
+				btnPredefined.disabled = false;
+		 }
+	 })
+	 
+	 
+	   $('#price').keyup( function(){
+		 if( $('#dermatologistCombo').val() == '' || $('#dateOfExamination').val() == '' || $('#timeOfExamination').val()==''
+			|| $('#duration').val() == '' || !validateNumber($('#duration').val()) || $('#price').val() == '' || 
+			!validateNumber2($('#price').val())
+		 ) {
+			 btnPredefined.disabled = true
+				$("#errorPredefined").text("Please enter all data!")
+		  		$('#errorPredefined').css('color', 'red');
+		 } else {
+			 $("#errorPredefined").text("")
+				btnPredefined.disabled = false;
+		 }
+	 })
+	 
+	 
+	
+	 
 	 
 	 $('#addNew').click(function() {
 		 	var dermatologistId = $('#dermatologistCombo').val();
@@ -161,5 +256,16 @@ function formatDate(date) {
         day = '0' + day;
 
     return [year, month, day].join('-');
+}
+
+
+function validateNumber(name) {
+    const re = /^[0-9]{1,3}$/;
+    return re.test(String(name));
+}
+
+function validateNumber2(name) {
+    const re = /^[0-9]{1,10}$/;
+    return re.test(String(name));
 }
 

@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -310,6 +311,14 @@ public class PharmacyController {
 	public ResponseEntity<?> add(@PathVariable(name="email") String email,
 			@RequestBody PriceListDTO priceList) {
 		
+		try {
+			LocalDate tryDate = LocalDate.parse(priceList.getDate());
+		}catch (DateTimeParseException e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		if(priceList.getMedicines().size() == 0) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		LocalDate date = LocalDate.parse(priceList.getDate());
 		
 		Set<MedicinePrice> medicinePrices = new HashSet<MedicinePrice>();
