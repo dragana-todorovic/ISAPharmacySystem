@@ -1,24 +1,21 @@
 -- Lozinke su hesovane pomocu BCrypt algoritma https://www.dailycred.com/article/bcrypt-calculator
 -- Lozinka za adminsystem@example.com je Admin123#
+INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date,logged) VALUES ('adminsystem@example.com', '$2y$10$Dz4zbJOWPOfxHsjy2QgDk.SoBDiwsiQ3.2Vgxw0hhNfoDO4rZZB5i', 'Milica', 'Okiljevic', 'adminsystem@example.com','Republika Srbija', 'Novi Sad', 'Trg Dositeja Obradovica 60', '0694458924', true, '2017-10-01 21:58:58.508-07',true);
+INSERT INTO USERS (username, password, first_name, last_name, email,country, city, address, phone, enabled, last_password_reset_date,logged) VALUES ('user1@example.com', '$2y$10$Dz4zbJOWPOfxHsjy2QgDk.SoBDiwsiQ3.2Vgxw0hhNfoDO4rZZB5i', 'Nikola', 'Nikolic', 'user1@example.com', 'Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 18:57:58.508-07',true);
+INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date,logged) VALUES ('user2@example.com', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', 'Marko', 'Markovic', 'user2@example.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07',true);
+INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date,logged) VALUES ('user3@example.com', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', 'Marko', 'Markovic', 'userr@example.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07',true);
+INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date,logged) VALUES ('user@example.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.Lrd4j8amcljStog3n4APU5EX3bGJIUK', 'Marko', 'Markovic', 'user@example.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07',true);
+INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date,logged) VALUES ('maja.tepavcevic133@gmail.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.Lrd4j8amcljStog3n4APU5EX3bGJIUK', 'Nikola', 'Nikolic', 'maja.tepavcevic133@gmail.com','Republika Srbija', 'Nis', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07',true);
+INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date,logged) VALUES ('dermatologist@example.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.Lrd4j8amcljStog3n4APU5EX3bGJIUK', 'Marko', 'Markovic', 'dermatologist@example.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07',true);
+INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date,logged) VALUES ('pharmacist@example.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.Lrd4j8amcljStog3n4APU5EX3bGJIUK', 'Jovan', 'Jovanovic', 'pharmacist@example.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07',true);
+INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date,logged) VALUES ('adminpharmacyr@example.com', '$2y$10$Dz4zbJOWPOfxHsjy2QgDk.SoBDiwsiQ3.2Vgxw0hhNfoDO4rZZB5i', 'Dragana', 'Todorovic', 'adminpharmacyr@example.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07',false);
+INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date,logged) VALUES ('pharmacist1@example.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.Lrd4j8amcljStog3n4APU5EX3bGJIUK', 'Ivana', 'Ivanovic', 'pharmacist1@example.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07',true);
+INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date,logged) VALUES ('dermatologist1@example.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.Lrd4j8amcljStog3n4APU5EX3bGJIUK', 'Maja', 'Markovic', 'dermatologist1@example.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07',true);
+INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date,logged) VALUES ('dermatologist2@example.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.Lrd4j8amcljStog3n4APU5EX3bGJIUK', 'Jovana', 'Jovancic', 'dermatologist2@example.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07',true);
+INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date,logged) VALUES ('dragana123600@gmail.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.Lrd4j8amcljStog3n4APU5EX3bGJIUK', 'Jovana', 'Jovancic', 'dragana123600@gmail.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07',true);
+INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date,logged) VALUES ('suplier@gmail.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.Lrd4j8amcljStog3n4APU5EX3bGJIUK', 'Jovana', 'Jovancic', 'suplier@gmail.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07',true);
+INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date,logged) VALUES ('knezevicljiljana12@gmail.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.Lrd4j8amcljStog3n4APU5EX3bGJIUK', 'Ljiljana', 'Knezevic', 'knezevicljiljana12@gmail.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07',true);
 
-INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('adminsystem@example.com', '$2y$10$Dz4zbJOWPOfxHsjy2QgDk.SoBDiwsiQ3.2Vgxw0hhNfoDO4rZZB5i', 'Milica', 'Okiljevic', 'adminsystem@example.com','Republika Srbija', 'Novi Sad', 'Trg Dositeja Obradovica 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
-INSERT INTO USERS (username, password, first_name, last_name, email,country, city, address, phone, enabled, last_password_reset_date) VALUES ('user1@example.com', '$2y$10$Dz4zbJOWPOfxHsjy2QgDk.SoBDiwsiQ3.2Vgxw0hhNfoDO4rZZB5i', 'Nikola', 'Nikolic', 'user1@example.com', 'Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 18:57:58.508-07');
-INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('user2@example.com', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', 'Marko', 'Markovic', 'user2@example.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
-INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('user3@example.com', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', 'Marko', 'Markovic', 'userr@example.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
-INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('user@example.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.Lrd4j8amcljStog3n4APU5EX3bGJIUK', 'Marko', 'Markovic', 'user@example.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
-INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('maja.tepavcevic133@gmail.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.Lrd4j8amcljStog3n4APU5EX3bGJIUK', 'Nikola', 'Nikolic', 'maja.tepavcevic133@gmail.com','Republika Srbija', 'Nis', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
-INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('dermatologist@example.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.Lrd4j8amcljStog3n4APU5EX3bGJIUK', 'Marko', 'Markovic', 'dermatologist@example.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
-INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('pharmacist@example.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.Lrd4j8amcljStog3n4APU5EX3bGJIUK', 'Jovan', 'Jovanovic', 'pharmacist@example.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
-INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('adminpharmacyr@example.com', '$2y$10$Dz4zbJOWPOfxHsjy2QgDk.SoBDiwsiQ3.2Vgxw0hhNfoDO4rZZB5i', 'Dragana', 'Todorovic', 'adminpharmacyr@example.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
-INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('pharmacist1@example.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.Lrd4j8amcljStog3n4APU5EX3bGJIUK', 'Ivana', 'Ivanovic', 'pharmacist1@example.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
-INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('dermatologist1@example.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.Lrd4j8amcljStog3n4APU5EX3bGJIUK', 'Maja', 'Markovic', 'dermatologist1@example.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
-INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('dermatologist2@example.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.Lrd4j8amcljStog3n4APU5EX3bGJIUK', 'Jovana', 'Jovancic', 'dermatologist2@example.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
-INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('dragana123600@gmail.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.Lrd4j8amcljStog3n4APU5EX3bGJIUK', 'Jovana', 'Jovancic', 'dragana123600@gmail.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
-INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('suplier@gmail.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.Lrd4j8amcljStog3n4APU5EX3bGJIUK', 'Jovana', 'Jovancic', 'suplier@gmail.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
-INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('knezevicljiljana12@gmail.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.Lrd4j8amcljStog3n4APU5EX3bGJIUK', 'Ljiljana', 'Knezevic', 'knezevicljiljana12@gmail.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
-INSERT INTO USERS (username, password, first_name, last_name, email, country, city, address, phone, enabled, last_password_reset_date) VALUES ('knezevicljiljana12@gmail.com', '$2y$10$RobfH2HQtwTbwlvLgjTxA.Lrd4j8amcljStog3n4APU5EX3bGJIUK', 'Milka', 'Milkic', 'knezevicljiljana12@gmail.com','Republika Srbija', 'Novi Sad', 'NArodnog fronta 60', '0694458924', true, '2017-10-01 21:58:58.508-07');
-
---medicine
 
 INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,type,notes,adviseddailydose,contradiction, buying_points) VALUES ('Code1','Midol',1,'content1','Galenika',false,0,'Ne konzumirati uz alkohol',1,'Contradiction0',0);
 INSERT INTO MEDICINE(code,name,shape,content,producer,withprescription,type,notes,adviseddailydose,contradiction,buying_points) VALUES ('Code2','Rapten DUO',2,'content2','Galenika',false,0,'Ne konzumirati uz alkohol',2,'Contradiction1',1);
@@ -51,7 +48,6 @@ INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (4, 2);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (5, 3);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (6, 3);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (7, 5);
-INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (16, 5);
 
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (9, 6);
 
@@ -106,18 +102,17 @@ INSERT INTO patient_subscribe_pharmacy_ids(patient_id,subscribe_pharmacy_ids) VA
 INSERT INTO DERMATOLOGIST ( user_id) VALUES (7);
 INSERT INTO DERMATOLOGIST ( user_id) VALUES (11);
 INSERT INTO DERMATOLOGIST (user_id) VALUES (12);
-INSERT INTO DERMATOLOGIST (user_id) VALUES (16);
 --appoitment
 
 INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id,pharmacy_id) VALUES (30,'2021-01-01 21:58:58.508-07','opis1',1,2);
 INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id,pharmacy_id) VALUES (30,'2021-01-01 21:58:58.508-07','opis2',1,2);
-INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id,pharmacy_id) VALUES (30,'2022-03-01 21:58:58.508-07','opis1',4,2);
+INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id,pharmacy_id) VALUES (30,'2021-03-01 21:58:58.508-07','opis1',1,2);
 INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id, patient_id,pharmacy_id) VALUES (30,'2020-02-02 21:58:58.508-07','opis2',1,2,2);
 INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id, patient_id,pharmacy_id) VALUES (30,'2020-01-01 21:58:58.508-07','opis1',1,1,2);
 INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id, patient_id,pharmacy_id) VALUES (30,'2019-02-02 21:58:58.508-07','opis2',1,2,2);
 INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id, patient_id,pharmacy_id) VALUES (30,'2017-01-01 21:58:58.508-07','opis1',1,1,2);
 INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id, patient_id,pharmacy_id) VALUES (30,'2018-02-02 21:58:58.508-07','opis2',1,2,2);
-INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id, patient_id,pharmacy_id) VALUES (30,'2021-03-15 21:58:58.508-07','opis2',1,2,1);
+INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id, patient_id,pharmacy_id) VALUES (30,'2021-09-15 21:58:58.508-07','opis2',1,2,1);
 INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id, patient_id,pharmacy_id) VALUES (30,'2021-08-10 21:58:58.508-07','opis1',1,1,1);
 INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id, patient_id,pharmacy_id) VALUES (30,'2020-02-14 21:58:58.508-07','opis2',1,2,1);
 INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id, patient_id,pharmacy_id) VALUES (30,'2020-02-15 21:58:58.508-07','opis1',1,1,1);
@@ -156,42 +151,18 @@ INSERT INTO APPOITMENTPRICE (price,appoitment_id) VALUES (500,20);
 
 
 --rating
-INSERT INTO RATING (patient_id, rating) VALUES (1,1);
-INSERT INTO RATING (patient_id, rating) VALUES (2,2);
-INSERT INTO RATING (patient_id, rating) VALUES (1,3);
-INSERT INTO RATING ( patient_id,rating) VALUES (1,4);
-INSERT INTO RATING (patient_id, rating) VALUES (3,5);
-INSERT INTO RATING (patient_id, rating) VALUES (3,1);
-INSERT INTO RATING (patient_id, rating) VALUES (2,2);
-INSERT INTO RATING (patient_id, rating) VALUES (1,3);
-INSERT INTO RATING (patient_id, rating) VALUES (3,4);
-INSERT INTO RATING (patient_id, rating) VALUES (3,5);
-INSERT INTO RATING (patient_id, rating) VALUES (1,1);
-INSERT INTO RATING (patient_id, rating) VALUES (1,2);
-INSERT INTO RATING (patient_id, rating) VALUES (1,3);
-INSERT INTO RATING (patient_id, rating) VALUES (3,4);
-INSERT INTO RATING (patient_id, rating) VALUES (2,5);
-INSERT INTO RATING (patient_id, rating) VALUES (2,1);
-INSERT INTO RATING (patient_id, rating) VALUES (3,2);
-INSERT INTO RATING (patient_id, rating) VALUES (3,3);
-INSERT INTO RATING (patient_id, rating) VALUES (2,4);
-INSERT INTO RATING (patient_id, rating) VALUES (2,5);
-INSERT INTO RATING (patient_id, rating) VALUES (1,1);
-INSERT INTO RATING (patient_id, rating) VALUES (1,2);
-INSERT INTO RATING (patient_id, rating) VALUES (3,3);
-INSERT INTO RATING (patient_id, rating) VALUES (2,4);
-INSERT INTO RATING (patient_id, rating) VALUES (3,5);
+INSERT INTO RATING (id, rating) VALUES (1,1);
+INSERT INTO RATING (id, rating) VALUES (2,2);
+INSERT INTO RATING (id, rating) VALUES (3,3);
+INSERT INTO RATING (id, rating) VALUES (4,4);
+INSERT INTO RATING (id, rating) VALUES (5,5);
 
 --dermatologist rating
 INSERT INTO dermatologist_ratings (dermatologist_id, ratings_id) VALUES (1,1);
 INSERT INTO dermatologist_ratings (dermatologist_id, ratings_id) VALUES (1,2);
 INSERT INTO dermatologist_ratings (dermatologist_id, ratings_id) VALUES (1,5);
-INSERT INTO dermatologist_ratings (dermatologist_id, ratings_id) VALUES (2,7);
-INSERT INTO dermatologist_ratings (dermatologist_id, ratings_id) VALUES (2,3);
-INSERT INTO dermatologist_ratings (dermatologist_id, ratings_id) VALUES (2,10);
-INSERT INTO dermatologist_ratings (dermatologist_id, ratings_id) VALUES (3,8);
-INSERT INTO dermatologist_ratings (dermatologist_id, ratings_id) VALUES (3,15);
-INSERT INTO dermatologist_ratings (dermatologist_id, ratings_id) VALUES (3,14);
+INSERT INTO dermatologist_ratings (dermatologist_id, ratings_id) VALUES (3,3);
+INSERT INTO dermatologist_ratings (dermatologist_id, ratings_id) VALUES (3,4);
 
 --medicine price
 INSERT INTO MEDICINEPRICE ( price, medicine_id) VALUES ( 200, 1);
@@ -297,12 +268,10 @@ INSERT INTO pricelist_medicine_price_list(price_list_id,medicine_price_list_id) 
 --INSERT INTO pricelist_appoitment_price_list(price_list_id,appoitment_price_list_id) VALUES (1,1);
 --INSERT INTO pricelist_appoitment_price_list(price_list_id,appoitment_price_list_id) VALUES (1,2);
 --pharmacy rating
-INSERT INTO pharmacy_ratings (pharmacy_id, ratings_id) VALUES (1,13);
-INSERT INTO pharmacy_ratings (pharmacy_id, ratings_id) VALUES (1,20);
-INSERT INTO pharmacy_ratings (pharmacy_id, ratings_id) VALUES (2,23);
-INSERT INTO pharmacy_ratings (pharmacy_id, ratings_id) VALUES (2,24);
-INSERT INTO pharmacy_ratings (pharmacy_id, ratings_id) VALUES (2,12);
-INSERT INTO pharmacy_ratings (pharmacy_id, ratings_id) VALUES (1,25);
+INSERT INTO pharmacy_ratings (pharmacy_id, ratings_id) VALUES (1,3);
+INSERT INTO pharmacy_ratings (pharmacy_id, ratings_id) VALUES (1,5);
+INSERT INTO pharmacy_ratings (pharmacy_id, ratings_id) VALUES (2,4);
+INSERT INTO pharmacy_ratings (pharmacy_id, ratings_id) VALUES (2,2);
 
 --pharmacy price list
 INSERT INTO pharmacy_price_list(pharmacy_id, price_list_id) VALUES (2,1);
@@ -355,13 +324,10 @@ INSERT INTO workingday (day,end_time,start_time) VALUES (0,'15:00:00.000000', '0
 INSERT INTO workingday (day,end_time,start_time) VALUES (1,'15:00:00.000000', '07:00:00.000000');
 INSERT INTO workingday (day,end_time,start_time) VALUES (2,'15:00:00.000000', '07:00:00.000000');
 
-INSERT INTO workingday (day,end_time,start_time) VALUES (2,'15:00:00.000000', '07:00:00.000000');
-
 
 --working time
 INSERT INTO workingtime (pharmacy_id) VALUES (2);
 INSERT INTO workingtime (pharmacy_id) VALUES (2);
-INSERT INTO workingtime (pharmacy_id) VALUES (1);
 INSERT INTO workingtime (pharmacy_id) VALUES (1);
 INSERT INTO workingtime (pharmacy_id) VALUES (1);
 
@@ -374,20 +340,16 @@ INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (
 INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (3,5);
 INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (4,6);
 
-INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (5,7);
+INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (4,7);
 
 INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (1,10);
 INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (1,11);
 INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (1,12);
-
-INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (5,13);
 --dermatologist working time
 INSERT INTO dermatologist_working_times (dermatologist_id, working_times_id) VALUES (1,1); 
 INSERT INTO dermatologist_working_times (dermatologist_id, working_times_id) VALUES (1,3); 
 INSERT INTO dermatologist_working_times (dermatologist_id, working_times_id) VALUES (2,2); 
 INSERT INTO dermatologist_working_times (dermatologist_id, working_times_id) VALUES (3,4); 
-
-INSERT INTO dermatologist_working_times (dermatologist_id, working_times_id) VALUES (4,5); 
 
 
 --pharmacist
@@ -397,8 +359,8 @@ INSERT INTO PHARMACIST (user_id,working_time_id) VALUES (8,3);
 
 
 --pharmacist rating
-INSERT INTO pharmacist_ratings (pharmacist_id, ratings_id) VALUES (1,6);
-INSERT INTO pharmacist_ratings (pharmacist_id, ratings_id) VALUES (1,4);
+INSERT INTO pharmacist_ratings (pharmacist_id, ratings_id) VALUES (1,1);
+INSERT INTO pharmacist_ratings (pharmacist_id, ratings_id) VALUES (1,3);
 
 
 
@@ -416,10 +378,10 @@ INSERT INTO eprescription_medicines(eprescription_id,medicines_id) values (2,2);
 
 --medicine rating 
 
-INSERT INTO medicine_ratings(medicine_id,ratings_id) VALUES (1,11);
-INSERT INTO medicine_ratings(medicine_id,ratings_id) VALUES (1,19);
-INSERT INTO medicine_ratings(medicine_id,ratings_id) VALUES (1,17);
-INSERT INTO medicine_ratings(medicine_id,ratings_id) VALUES (2,18);
+INSERT INTO medicine_ratings(medicine_id,ratings_id) VALUES (1,1);
+INSERT INTO medicine_ratings(medicine_id,ratings_id) VALUES (1,5);
+INSERT INTO medicine_ratings(medicine_id,ratings_id) VALUES (1,4);
+INSERT INTO medicine_ratings(medicine_id,ratings_id) VALUES (2,3);
 
 --medicine order
 INSERT INTO medicineorder(status,time_limit) VALUES (0,'2017-10-01 21:58:58.508-07');
@@ -446,7 +408,7 @@ INSERT INTO medicineorder_medicines(medicine_order_id,medicines_id) VALUES (1,9)
 INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id) VALUES ('123e4567-e89b-12d3-a456-426614174000','2021-12-04','14:00:00.000000',0,1,2);
 INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id) VALUES ('123e4567-e89b-12d3-a456-426614174004','2021-08-26','14:00:00.000000',0,4,1);
 INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id) VALUES ('123e4567-e89b-12d3-a456-426614174003','2017-12-04','14:00:00.000000',0,1,2);
-INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id) VALUES ('123e4567-e89b-12d3-a456-426614174005','2017-12-04','14:00:00.000000',1,1,1);
+INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id) VALUES ('123e4567-e89b-12d3-a456-426614174005','2017-12-04','14:00:00.000000',0,1,1);
 INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id) VALUES ('123e4567-e89b-12d3-a456-426614174008','2021-08-22','14:00:00.000000',2,3,1);
 INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id) VALUES ('123e4567-e89b-12d3-a456-426614174011','2021-08-04','14:00:00.000000',2,1,2);
 INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id) VALUES ('123e4568-e89b-12d3-a456-426614174000','2018-08-04','14:00:00.000000',2,4,2);

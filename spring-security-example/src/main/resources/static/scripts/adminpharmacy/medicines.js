@@ -118,6 +118,7 @@ let showMedicines = function(data) {
     width: 100%;
     table-layout: fixed;
      width: calc( 100% - 1em )" class="full-width">
+     
 			    <tr>
 			      <th></th>
 			      <th colspan="4">
@@ -156,11 +157,14 @@ $('.ui.dropdown')
 						            </tr>
 						            <tr>
 						            <td>Quantity:</td>
-						            <td class="ui input"> <input type="number" id="txtQuantityAdd"/></td>
+						            <td class="ui input"> <input type="text" placeholder="Quantity..." id="txtQuantityAdd"/></td>
 
 						            </tr>
 						           
-						           
+						                  <tr>
+			    <td colspan="2">  <p id="error"></p></td>
+			    </tr>
+			    <tr>
 						        </tbody>
 						        
 						    </table>
@@ -187,9 +191,12 @@ $('.ui.dropdown')
 	    <tbody>
 						            <tr>
 						            <td>Quantity:</td>
-						           <td class="ui input"> <input type="number" id="txtQuantityEdit"></td>
+						           <td class="ui input"> <input type="text" placeholder="Quantity..." id="txtQuantityEdit"></td>
 
 						            </tr>
+						             <tr>
+			    <td colspan="2">  <p id="errorEdit"></p></td>
+			    </tr>
 						           
 						           
 						        </tbody>
@@ -247,10 +254,63 @@ $('.ui.dropdown')
 		  .modal('show')
 		
 	 });
+	btnAdd = document.getElementById("addMedicineWithQuantity")
+	btnAdd.disabled = true
+	 $('#txtQuantityAdd').keyup(function () {
+		 var medicineName = $('#medicineComboAdd').val()
+		var quantity = $('#txtQuantityAdd').val();
+		 if(medicineName == '' && (quantity == '' || !validateNumber(quantity))) {
+			 btnAdd.disabled= true;
+			  	$("#error").text("Please choose medicine and quantity!")
+		  		$('#error').css('color', 'red');
+			}
+			
+			else if(medicineName == '' && (quantity != '' || !validateNumber(quantity))) {
+				btnAdd.disabled= true;
+			  	$("#error").text("Please choose medicine!")
+		  		$('#error').css('color', 'red');
+			}
+			
+			else if(!medicineName == '' && (quantity == '' || !validateNumber(quantity))) {
+				btnAdd.disabled= true;
+			  	$("#error").text("Please enter quantity!")
+		  		$('#error').css('color', 'red');
+			} else {
+				$("#error").text("")
+				btnAdd.disabled = false;
+			}
+	 });
+	
+	 $('#medicineComboAdd').on('change' , function () {
+		 var medicineName = $('#medicineComboAdd').val()
+		var quantity = $('#txtQuantityAdd').val();
+		 if(medicineName == '' && (quantity == '' || !validateNumber(quantity))) {
+			 btnAdd.disabled= true;
+			  	$("#error").text("Please choose medicine and quantity!")
+		  		$('#error').css('color', 'red');
+			}
+			
+			else if(medicineName == '' && (quantity != '' || !validateNumber(quantity))) {
+				btnAdd.disabled= true;
+			  	$("#error").text("Please choose medicine!")
+		  		$('#error').css('color', 'red');
+			}
+			
+			else if(!medicineName == '' && (quantity == '' || !validateNumber(quantity))) {
+				btnAdd.disabled= true;
+			  	$("#error").text("Please enter quantity!")
+		  		$('#error').css('color', 'red');
+			} else {
+				$("#error").text("")
+				btnAdd.disabled = false;
+			}
+	 });
+
 	
 	$("#addMedicineWithQuantity").click(function() {
 		var medicineName = $('#medicineComboAdd').val()
 		var quantity = $('#txtQuantityAdd').val();
+		
 		customAjax({
 		    url: '/pharmacy/addMedicineWithQuantityInPharmacy/' + email + '/' + medicineName + '/' + quantity,
 		    method: 'POST',
@@ -265,7 +325,6 @@ $('.ui.dropdown')
 		    }
 
 		});
-		
 	 });
 	
 	$("#nameSearch").keyup(function () {
@@ -322,6 +381,22 @@ $('.ui.dropdown')
 		  editMedicine(idSelected)
 		
 	 });
+	btnEditMedicine = document.getElementById("editMedicine")
+	btnEditMedicine.disabled = true
+	 $('#txtQuantityEdit').keyup(function () {
+		var quantity = $('#txtQuantityEdit').val();
+		 if((quantity == '' || !validateNumber(quantity))){
+			 btnEditMedicine.disabled= true;
+			  	$("#errorEdit").text("Please enter valid quantity!")
+		  		$('#errorEdit').css('color', 'red');
+			}
+			
+			else {
+				$("#errorEdit").text("")
+				btnEditMedicine.disabled = false;
+			}
+	 });
+	
 	
 	let editMedicine = function(idSelected) {
 		
@@ -403,5 +478,9 @@ let showRequests = function(data) {
 });
 }*/
 
-
+function validateNumber(name) {
+	console.log(name)
+    const re = /^[0-9]{1,3}$/;
+    return re.test(String(name));
+}
 

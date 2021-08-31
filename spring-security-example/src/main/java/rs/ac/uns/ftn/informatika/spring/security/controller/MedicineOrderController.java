@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -80,7 +81,15 @@ public class MedicineOrderController {
 	public ResponseEntity<?> add(@PathVariable(name="email") String email,
 			@RequestBody NewOrderDTO newOrder) {
 		
-		
+		try {
+			LocalDate tryDate = LocalDate.parse(newOrder.getDate());
+			LocalTime tryTime = LocalTime.parse(newOrder.getTime());
+		}catch (DateTimeParseException e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		if(newOrder.getMedicines().size() == 0) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		String date = newOrder.getDate();
 		LocalDate datePart = LocalDate.parse(date);
 		LocalTime timePart = LocalTime.parse(newOrder.getTime());
@@ -134,6 +143,16 @@ public class MedicineOrderController {
 	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
 	public ResponseEntity<?> editMedicineOrder(@PathVariable(name="email") String email,@PathVariable(name="id") String id,
 			@RequestBody NewOrderDTO newOrder) {
+		
+		try {
+			LocalDate tryDate = LocalDate.parse(newOrder.getDate());
+			LocalTime tryTime = LocalTime.parse(newOrder.getTime());
+		}catch (DateTimeParseException e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		if(newOrder.getMedicines().size() == 0) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		
 		System.out.println(newOrder);
 		String date = newOrder.getDate();

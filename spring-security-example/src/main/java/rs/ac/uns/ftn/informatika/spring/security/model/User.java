@@ -228,7 +228,9 @@ public class User implements UserDetails {
 		return "User [id=" + id + ", username=" + username + ", password=" + password + ", firstName=" + firstName
 				+ ", lastName=" + lastName + ", email=" + email + ", enabled=" + enabled + ", lastPasswordResetDate="
 				+ lastPasswordResetDate + ", country=" + country + ", city=" + city + ", address=" + address
-				+ ", phoneNumber=" + phoneNumber + ", authorities=" + authorities + "]";
+				+ ", phoneNumber=" + phoneNumber + ", logged=" + logged + ", authorities=" + authorities + "]";
 	}
+
+
 
 }

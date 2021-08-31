@@ -86,8 +86,10 @@ $(document).ready(function(e){
           url: '/auth/checkIfLogged',
           method: 'GET',
           data: { email: email, password: password },
-          success: function(){
-                 customAjax({
+          success: function(data){
+        	  console.log(data)
+        	  if(data.responseText == "LOGGED") {
+               customAjax({
                                      url: '/auth/login',
                                      method: 'POST',
                                      data: { email: email, password: password },
@@ -108,15 +110,17 @@ $(document).ready(function(e){
 
                                        p_log.text('Wrong credentials');
                                      }
-                                   });
+               
+                                   }) }
+        	  else if (data.responseText == "NOT LOGGED") {
+        		  location.href = "changePassword.html";
+        	  } else {
+        		  p_log.text('Wrong credentials');
+        	  }
                   },
           error: function(){
-        	  location.href = "changePassword.html"
           }
         });
-
-
-    
   });
   btnAcceptChange = document.getElementById("acceptChangeC")
 	//btnAcceptChange.disabled = true

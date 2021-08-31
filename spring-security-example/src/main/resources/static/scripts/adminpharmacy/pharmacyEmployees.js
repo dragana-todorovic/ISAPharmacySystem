@@ -241,7 +241,9 @@ $('.ui.dropdown')
 ;
 </script></td>
     </tr>	
-    	`+radnoVrijeme+`
+    	`+radnoVrijeme+` <tr>
+			    <td colspan="2">  <p id="errorAddDerm"></p></td>
+			    </tr>
 					        </tbody>
 					        
 					    </table>
@@ -324,7 +326,7 @@ $('.ui.dropdown')
   <div class="header">
     We're sorry, you cannot add that dermatologist.
   </div>
-  <p>That dermatologist has already work in another pharmacy!
+  <p>That dermatologist has already work in another pharmacy, or you didn't define working times! 
 </p></div>
 	  </div>
 	</div>
@@ -464,6 +466,22 @@ $('#start').calendar({
 $('#end').calendar({
 	  type: 'time'
 	});
+btnAdd = document.getElementById("addDermatologist")
+btnAdd.disabled = true
+$('#dermatologistCombo').on('change' , function () {
+	 var dermatologistCombo = $('#dermatologistCombo').val()
+	
+	 if(dermatologistCombo == '') {
+		 btnAdd.disabled= true;
+		  	$("#errorAddDerm").text("Please choose dermatologist!")
+	  		$('#errorAddDerm').css('color', 'red');
+	
+		} else {
+			$("#errorAddDerm").text("")
+			btnAdd.disabled = false;
+		}
+});
+
 
 $("#addDermatologist").click(function() {
 	var dermatologistId = $('#dermatologistCombo').val()
@@ -629,6 +647,10 @@ let showPharmacists = function(data) {
 
 
     	`+radnoVrijeme+`
+    	   </tr>
+						             <tr>
+			    <td colspan="2">  <p id="errorAddPh"></p></td>
+			    </tr>
 					        </tbody>
 					        
 					    </table>
