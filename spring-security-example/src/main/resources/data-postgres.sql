@@ -60,9 +60,9 @@ INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (13, 7);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (14, 7);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (15, 3);
 --patient
-INSERT INTO PATIENTS (id,user_id,points,category,penal,point) VALUES (1,5,10,0,0,0);
-INSERT INTO PATIENTS (id,user_id,points,category,penal,point) VALUES (2,6,100,1,0,0);
-INSERT INTO PATIENTS (id,user_id,points,category,penal,point) VALUES (3,15,200,2,0,0);
+INSERT INTO PATIENTS (user_id,points,category,penal,point) VALUES (5,10,0,0,0);
+INSERT INTO PATIENTS (user_id,points,category,penal,point) VALUES (6,100,1,0,0);
+INSERT INTO PATIENTS (user_id,points,category,penal,point) VALUES (15,200,2,0,0);
 INSERT INTO patients_allergies_medicine(patient_id, allergies_medicine_id) values (1,1);
 INSERT INTO patients_allergies_medicine(patient_id, allergies_medicine_id) values (2,2);
 
