@@ -16,9 +16,7 @@ function parseJwt (token) {
 
 function authentification(){
     var role =localStorage.getItem('role');
-    if( role == 'ROLE_USER')
-        window.location.href = "/html/user.html";
-    else if (role == 'ROLE_ADMIN_SYSTEM')
+    if (role == 'ROLE_ADMIN_SYSTEM')
         window.location.href = "/html/adminsystem.html";
     else if ( role == 'ROLE_PATIENT')
         window.location.href = "/html/patient.html";
