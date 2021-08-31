@@ -12,6 +12,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -51,6 +52,7 @@ import rs.ac.uns.ftn.informatika.spring.security.service.PatientService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacistCounselingService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacistService;
 import rs.ac.uns.ftn.informatika.spring.security.service.UserService;
+import javax.persistence.LockModeType;
 import rs.ac.uns.ftn.informatika.spring.security.view.PharamcistForCounselingView;
 import rs.ac.uns.ftn.informatika.spring.security.view.RatingView;
 
@@ -101,13 +103,12 @@ public class PharmacistController {
 	@PreAuthorize("hasRole('ROLE_PHARMACIST')")
 	public List<WorkCalendarDTO> getPharmacistsCounseling(@PathVariable String email) {
 	Pharmacist pharmacist=null;
-	System.out.println("Pogodio metodu");
 	for(Pharmacist d:pharmacistService.findAll()) {
 		if(d.getUser().getEmail().equals(email)) {
 			pharmacist = d;
 		}
 	}
-	System.out.println(pharmacist.getUser().getEmail());
+	
 	return pharmacistService.getPharmacistsCounseling(pharmacist);
 		
 	}
@@ -170,11 +171,14 @@ public class PharmacistController {
 			}
 		}
 		System.out.println(pharmacist);
-		System.out.println("working time"+pharmacist.getWorkingTimes());
+
 		if(pharmacist.getWorkingTimes()==null) {
 			return new ArrayList<MedicineReservation>();
 		}
 		Pharmacy pharmacy = pharmacist.getWorkingTimes().getPharmacy();
+		if(pharmacy==null) {
+			return new ArrayList<MedicineReservation>();
+		}
 		//System.out.println(pharmacistService.searchReservedMedicnes(resNumber,pharmacy).size());
 		return pharmacistService.searchReservedMedicnes(resNumber,pharmacy);
 	}
@@ -215,6 +219,7 @@ public class PharmacistController {
 		return myPatientsDtos;
 		
 	}
+	@Lock(LockModeType.OPTIMISTIC_FORCE_INCREMENT) 
 	@GetMapping("/takeReservedMedicine/{id}")
 	public ResponseEntity<?> takeReservedMedicine(@PathVariable String id) {
 		System.out.println("ID"+id);
@@ -245,6 +250,9 @@ public class PharmacistController {
 			if(d.getUser().getEmail().equals(appointmentDTO.getDermatologistEmail())) {
 				pharmacist = d;
 			}
+		}
+		if(pharmacist.getWorkingTimes()==null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		Pharmacy pharmacy=pharmacist.getWorkingTimes().getPharmacy();
 		if(pharmacy==null) {
@@ -281,7 +289,7 @@ public class PharmacistController {
 		}
 		else
 			start=dto.getStartDate();
-	
+		try {
 		LocalDate datePart = LocalDate.parse(start);
 		System.out.println(datePart);
 		LocalTime timePart = LocalTime.parse(dto.getStartTime());
@@ -296,6 +304,7 @@ public class PharmacistController {
 		for(Pharmacist d: pharmacistService.findAll()) {
 			System.out.println("*******************************");
 			System.out.println(d.getUser().getFirstName());
+			System.out.println(d.getUser().getEmail());
 			System.out.println(dto.getPharmacistEmail());
 			if(d.getUser().getEmail().equals(dto.getPharmacistEmail())) {
 				System.out.println("Email farmaceuta"+d.getUser().getEmail());
@@ -310,12 +319,15 @@ public class PharmacistController {
 			}
 		}
 		//AKO JE PHARMACY NULL ZNACI DA NE RADI TRENUTNO U NJOJ
-
-		if(pharmacist.getWorkingTimes().getPharmacy()==null) {
-		System.out.println("da li je null"+pharmacist);
+		System.out.println(pharmacist);
+		if(pharmacist.getWorkingTimes()==null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
+		
 		Pharmacy pharmacy=pharmacist.getWorkingTimes().getPharmacy();
+		if(pharmacy==null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		 if(pharmacistService.isAppointmentAvailableForScheduling(pharmacist,patient,Integer.parseInt(dto.getDuration()), pharmacy, datePart, dt, dt.plusMinutes(Integer.parseInt((dto.getDuration()))))) {
 			 try {
 				 
@@ -332,6 +344,11 @@ public class PharmacistController {
 		 }
 		
 		return new ResponseEntity<>(HttpStatus.OK);
+		}catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+		
 	}
 	@PostMapping("/giveOnePenalForPatient/{id}")
 	@PreAuthorize("hasRole('ROLE_PHARMACIST')")
@@ -343,14 +360,7 @@ public class PharmacistController {
        	Patient p = patientService.findPatientById(ID);
        	patientService.giveOnePenalForPatient(p);
        	for(PharmacistCounseling ap: pharmacistCounselingService.findAll()) {
-       		System.out.println("Id pacijenta"+ap.getPatient().getId());
-       		System.out.println(p.getId());
-       		System.out.println("Start time ya ap "+ap.getStartDateTime().toString());
-       		System.out.println(startDateTime);
-       		if(ap.getPatient().getId().equals(p.getId()) && ap.getStartDateTime().toString().equals(startDateTime)) {      			
-       			System.out.println("IFFFFFFFFFFFFFFFFFFFFFFFFF");
-       			System.out.println(ap.getStartDateTime());
-       			System.out.println("Setovano vrijem");
+       		if(ap.getPatient().getId().equals(p.getId()) && ap.getStartDateTime().toString().equals(startDateTime)) {      			      	
        			ap.setStartDateTime(LocalDateTime.now());
        			pharmacistCounselingRepository.save(ap);
        			
@@ -383,7 +393,9 @@ public class PharmacistController {
 			}
 			}
 		//ne mora localDateTime.now() jer on radi samo u jednoj apoteci
-		
+		if(pharmacist.getWorkingTimes()==null) {
+			return false;
+		}
 		Pharmacy pharmacy=pharmacist.getWorkingTimes().getPharmacy(); 
 		if(pharmacy==null) {
 			System.out.println("APOTEKA JE NULL");

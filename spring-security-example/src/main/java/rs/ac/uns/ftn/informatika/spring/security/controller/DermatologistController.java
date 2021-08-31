@@ -95,9 +95,10 @@ public class DermatologistController {
 	@RequestMapping(value = "/getStartDateTime" , method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public LocalDateTime getStartDateTime(@RequestBody StartDateTimeDTO startDateTimeDTO) {
 		for(DermatologistAppointment d: dermatologistAppointmentService.findAll()) {
+			if(d.getPatient()!=null) {
 			if(d.getDermatologist().getUser().getEmail().equals(startDateTimeDTO.getDermatologistEmail()) && d.getPatient().getUser().getEmail().equals(startDateTimeDTO.getPatientEmail()))
 				return d.getStartDateTime();
-		}
+		}}
 		return null;
 	}
 
@@ -108,7 +109,6 @@ public class DermatologistController {
 		System.out.println(email);
 		List<MyPatientDTO> myPatientsDtos;
 		myPatientsDtos=this.dermatologistService.getPatientsForAppointment(email);
-		System.out.println("PACIJENTIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII "+myPatientsDtos);
 		return myPatientsDtos;
 		
 	}
@@ -177,18 +177,11 @@ public class DermatologistController {
 	@GetMapping("/getPatientById/{id}")
 	@PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
 	public User getPatientById(@PathVariable String id) {
-		System.out.println("IDDDDDDDDDD"+id);
 		String pom1 = id.substring(8,id.length());
 		String pom=pom1.split("k")[0];
 		String startDate = pom1.split("k")[1];
-		
-       	//int ID = Integer.parseInt(pom);
-       	System.out.println("POOM"+pom);
-       	System.out.println(startDate);
        	Long ID = Long.parseLong(pom);
        	Patient p = patientService.findPatientById(ID);
-       	System.out.println(p.getUser().getFirstName());
-       	System.out.println(p.getUser().getEmail());
 		return p.getUser();
 		
 	}
@@ -224,11 +217,13 @@ public class DermatologistController {
 			}
 		}
 		List <DermatologistAppointment> appointments = dermatologistAppointmentService.findAll();
+		if(appointments==null) {
+			return new ArrayList<DermatologistAppointment>();
+		}
 		List<DermatologistAppointment> result = new ArrayList<DermatologistAppointment>();
 		for(DermatologistAppointment da:appointments) {
 			if(da.getDermatologist().getId().equals(dermatologist.getId()) && da.getPatient()==null) {
-				result.add(da);
-				
+				result.add(da);			
 			}
 		}
 		
@@ -242,7 +237,9 @@ public class DermatologistController {
 		startDate = dto.getStartDate().replace('/', '-');	
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
 		DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		try{
 		String start = LocalDate.parse(startDate, formatter).format(formatter2);
+	
 		LocalDate datePart = LocalDate.parse(start);
 		LocalTime timePart = LocalTime.parse(dto.getStartTime());
 		LocalDateTime dt = LocalDateTime.of(datePart, timePart);
@@ -288,7 +285,11 @@ public class DermatologistController {
 			 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		 }
 		
-		return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.OK);		}
+		 catch (Exception e){
+	         e.printStackTrace();
+	         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);	
+	     }
 	}
 	@RequestMapping(value = "/scheduleAPredefinedAppointment" , method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
@@ -346,24 +347,22 @@ public class DermatologistController {
 	@PostMapping("/giveOnePenalForPatient/{id}")
 	@PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
 	public ResponseEntity<?> giveOnePenalForPatient(@PathVariable String id) {
+		System.out.println("ID"+id);
 		String pom = id.substring(9,id.length()).split("k")[0];
 		String startDateTime =id.substring(9,id.length()).split("k")[1]; 
 		System.out.println("start"+startDateTime);
        	Long ID = Long.parseLong(pom);
        	Patient p = patientService.findPatientById(ID);
        	patientService.giveOnePenalForPatient(p);
-       	for(DermatologistAppointment ap: dermatologistAppointmentService.findAll()) {
-       		System.out.println("Id pacijenta"+ap.getPatient().getId());
-       		System.out.println(p.getId());
-       		System.out.println("Start time ya ap "+ap.getStartDateTime().toString());
-       		System.out.println(startDateTime);
-       		if(ap.getPatient().getId().equals(p.getId()) && ap.getStartDateTime().toString().equals(startDateTime)) {      			
-       			System.out.println("IFFFFFFFFFFFFFFFFFFFFFFFFF");
-       			System.out.println(ap.getStartDateTime());
-       			System.out.println("Setovano vrijem");
-       			ap.setStartDateTime(LocalDateTime.now());
-       			dermatologistAppointmentRepository.save(ap);
-       			
+       	List<DermatologistAppointment> appointments = new ArrayList<DermatologistAppointment>();
+       	appointments = dermatologistAppointmentService.findAll();
+       	for(DermatologistAppointment ap: appointments) {
+       		if(ap.getPatient()!=null) {
+	       		if(ap.getPatient().getId().equals(p.getId()) && ap.getStartDateTime().toString().equals(startDateTime)) {      			
+	       			ap.setStartDateTime(LocalDateTime.now());
+	       			dermatologistAppointmentRepository.save(ap);
+	       			
+	       		}
        		}
        	}
 		return new ResponseEntity<>(HttpStatus.OK);
@@ -375,7 +374,6 @@ public class DermatologistController {
 		String id = idStart.substring(8,idStart.length()).split("k")[0];
 		for (Patient p: patientService.findAll()) {
 			if(p.getId().equals(Long.parseLong(id))) {
-				System.out.println("Usao u return"+p.getUser().getEmail());
 				return p.getUser();
 			}
 		}
@@ -385,7 +383,6 @@ public class DermatologistController {
 	@PostMapping("/checkMedicineAvailability/{medicineId}/{email}")
 	@PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
 	public Boolean checkMedicineAvailability(@PathVariable String medicineId,@PathVariable String email) {
-		System.out.println("Medicine availability");
 		Dermatologist dermatologist=null;
 		for(Dermatologist d: dermatologistService.findAll()) {
 			if(d.getUser().getEmail().equals(email)) {
@@ -397,7 +394,7 @@ public class DermatologistController {
 			System.out.println("APOTEKA JE NULL");
 			return false;
 		}
-		System.out.println("Pharmacy"+pharmacy.getName());
+		System.out.println("Pharmacy"+pharmacy.getName()+pharmacy.getId());
 		Boolean result = dermatologistService.isMedicineAvailable(pharmacy,medicineId);
 		System.out.println("Result"+result);
 		return result;
@@ -469,7 +466,7 @@ public class DermatologistController {
 		return medicine;
 		
 	}
-	//PROVJERITI DA LI JE OSTALA
+	
 	@RequestMapping(value = "/saveAppointment" , method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
 	public ResponseEntity<?> saveAppointment(@RequestBody AppointmentDTO appointmentDTO) {
@@ -502,7 +499,6 @@ public class DermatologistController {
 	@GetMapping("/getDermatologistAppointments/{email}/{pharmacy}")
 	@PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
 	public List<WorkCalendarDTO> getDermatologistAppointments(@PathVariable String email,@PathVariable String pharmacy) {
-	System.out.println("********************"+pharmacy);
 	Pharmacy choosenPharmacy = pharmacyService.findById(Long.parseLong(pharmacy.split(",sifra ")[1])).get();
 	Dermatologist dermatologist=null;
 	for(Dermatologist d:dermatologistService.findAll()) {

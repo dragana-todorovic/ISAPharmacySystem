@@ -27,10 +27,13 @@ public class MedicineWithQuantity {
 	@Column(name = "quantity", nullable = false)
 	private int quantity;
 
+
 	public MedicineWithQuantity() {
 	}
 
-	public MedicineWithQuantity(Medicine medicine, int quantity) {
+
+	public MedicineWithQuantity( Medicine medicine, int quantity) {
+		super();
 		this.medicine = medicine;
 		this.quantity = quantity;
 	}

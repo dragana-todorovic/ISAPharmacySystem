@@ -12,8 +12,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import rs.ac.uns.ftn.informatika.spring.security.model.DermatologistAppointment;
 import rs.ac.uns.ftn.informatika.spring.security.model.HolidayRequest;
@@ -79,6 +82,7 @@ public class PharmacistCounselingServiceImpl implements PharmacistCounselingServ
 		return appointments;
 	}
 	@Override
+	@Transactional(readOnly=false)
 	public void saveAppointment(CounselingDTO appointmentDTO,Patient patient, LocalDateTime startDateTime) {
 		try{
 			User u = userRepository.findByEmail(appointmentDTO.getPharmacistEmail());
