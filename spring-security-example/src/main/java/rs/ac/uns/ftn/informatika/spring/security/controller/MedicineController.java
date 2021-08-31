@@ -12,13 +12,18 @@ import rs.ac.uns.ftn.informatika.spring.security.model.MedicineReservation;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicineShape;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicineType;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicineWithQuantity;
+import rs.ac.uns.ftn.informatika.spring.security.model.Patient;
+import rs.ac.uns.ftn.informatika.spring.security.model.User;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.MedicineReservationDTO;
 import rs.ac.uns.ftn.informatika.spring.security.service.EmailService;
 import rs.ac.uns.ftn.informatika.spring.security.service.MedicineReservationService;
 import rs.ac.uns.ftn.informatika.spring.security.service.MedicineService;
+import rs.ac.uns.ftn.informatika.spring.security.service.PatientService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyService;
+import rs.ac.uns.ftn.informatika.spring.security.service.UserService;
 import rs.ac.uns.ftn.informatika.spring.security.view.MedicineReservationView;
 import rs.ac.uns.ftn.informatika.spring.security.view.MedicineView;
+import rs.ac.uns.ftn.informatika.spring.security.view.RatingView;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -42,6 +47,14 @@ public class MedicineController {
     @Autowired
     private MedicineReservationService medicineReservationService;
 
+    
+    @Autowired
+	private UserService userService;
+    
+    @Autowired
+	private PatientService patientService;
+    
+    
     @GetMapping("/getAllMedicine")
     @PreAuthorize("hasRole('ADMIN_SYSTEM') || hasRole('ADMIN_PHARMACY') || hasRole('ROLE_PATIENT') || hasRole('ROLE_SUPPLIER')")
     public List<Medicine> getAllMedicine()   {
@@ -152,5 +165,23 @@ public class MedicineController {
     public Medicine getMedicineById(@PathVariable("trid") String trid)   {
         return this.medicineService.findById(Long.valueOf(trid));
     }
+    
+	@GetMapping("/getAllMedicinePatientCanEvaluate/{email}")
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	public List<RatingView> getAllMedicinePatientCanEvaluate(@PathVariable String email) {
+		User user = this.userService.findByUsername(email);
+		Patient patient=this.patientService.findPatientByUser(user);
+		return medicineService.getAllMedicinePatientCanEvaluate(patient);
+		
+	}
+	
+	 @PostMapping("/changeRating/{rating}/{email}/{id}")
+	 @PreAuthorize("hasRole('ROLE_PATIENT')")
+	 public ResponseEntity<?> changeRating(@PathVariable int rating,@PathVariable String email,@PathVariable Long id){
+		 User user = this.userService.findByUsername(email);
+		 Patient patient=this.patientService.findPatientByUser(user);
+		 this.medicineService.changeRating(rating,patient,id);
+		 return new ResponseEntity<>(HttpStatus.OK);
+	 }
 
 }

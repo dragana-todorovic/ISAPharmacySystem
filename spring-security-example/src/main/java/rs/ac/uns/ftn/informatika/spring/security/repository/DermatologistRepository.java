@@ -15,7 +15,7 @@ import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
 public interface DermatologistRepository extends JpaRepository<Dermatologist, Long>{
 	List<Dermatologist> findAll();
 	Optional<Dermatologist> findById(Long id);	
-
+	Dermatologist findDermatologistById(Long id);	
 }
 
 

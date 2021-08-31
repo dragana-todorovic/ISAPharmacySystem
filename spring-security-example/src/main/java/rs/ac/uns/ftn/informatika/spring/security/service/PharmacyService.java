@@ -17,7 +17,7 @@ import rs.ac.uns.ftn.informatika.spring.security.view.EditPharmacyView;
 
 import rs.ac.uns.ftn.informatika.spring.security.view.MedicineReservationView;
 import rs.ac.uns.ftn.informatika.spring.security.view.PharmacyWithMedicationView;
-
+import rs.ac.uns.ftn.informatika.spring.security.view.RatingView;
 import rs.ac.uns.ftn.informatika.spring.security.view.NewDermatologistDTO;
 import rs.ac.uns.ftn.informatika.spring.security.view.NewPharmacistDTO;
 
@@ -83,5 +83,5 @@ public interface PharmacyService {
 	Boolean acceptHolidayRequestP(long parseLong, long pharmacistId);
 	void declineHolidayRequestP(long parseLong, long pharmacistId, String reason);
 	List<RequestForMedicineAvailability> findRequestsByPharmacy(String email);
-
+	List<RatingView> getAllPharmaciesPatientCanEvaluate(Patient patient);
 }

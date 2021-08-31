@@ -66,6 +66,7 @@ import rs.ac.uns.ftn.informatika.spring.security.view.NewPharmacistDTO;
 import rs.ac.uns.ftn.informatika.spring.security.view.PatientsCounslingView;
 import rs.ac.uns.ftn.informatika.spring.security.view.PharmacyForCounselingView;
 import rs.ac.uns.ftn.informatika.spring.security.view.PriceListDTO;
+import rs.ac.uns.ftn.informatika.spring.security.view.RatingView;
 import rs.ac.uns.ftn.informatika.spring.security.view.StatisticDTO;
 import rs.ac.uns.ftn.informatika.spring.security.view.UserRegisterView;
 
@@ -102,7 +103,7 @@ public class PharmacyController {
 		
 	}
 	@GetMapping("/getAll")
-  @PreAuthorize("hasRole('ROLE_PATIENT') || hasRole('ADMIN_PHARMACY') || hasRole('ADMIN_SYSTEM')")
+	@PreAuthorize("hasRole('ROLE_PATIENT') || hasRole('ADMIN_PHARMACY') || hasRole('ADMIN_SYSTEM')")
 	public List<Pharmacy> getAll() {
 		return this.pharmacyService.findAll();
 		
@@ -503,6 +504,13 @@ public class PharmacyController {
 		
 		return this.pharmacyService.findRequestsByPharmacy(email);
 	}
-	
+	@GetMapping("/getAllPharmaciesPatientCanEvaluate/{email}")
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	public List<RatingView> getAllPharmaciesPatientCanEvaluate(@PathVariable String email) {
+		User user = this.userService.findByUsername(email);
+		Patient patient=this.patientService.findPatientByUser(user);
+		return pharmacyService.getAllPharmaciesPatientCanEvaluate(patient);
+		
+	}
 }
 

@@ -52,6 +52,7 @@ import rs.ac.uns.ftn.informatika.spring.security.service.PharmacistCounselingSer
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacistService;
 import rs.ac.uns.ftn.informatika.spring.security.service.UserService;
 import rs.ac.uns.ftn.informatika.spring.security.view.PharamcistForCounselingView;
+import rs.ac.uns.ftn.informatika.spring.security.view.RatingView;
 
 @RestController
 @RequestMapping(value = "/pharm", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -489,4 +490,21 @@ public class PharmacistController {
 		return this.pharmacistService.getPharmacistsById(id);
 		
 	}
+	
+	@GetMapping("/getAllPharmacistsPatientCanEvaluate/{email}")
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	public List<RatingView> getAllPharmacistsPatientCanEvaluate(@PathVariable String email) {
+		User user = this.userService.findByUsername(email);
+		Patient patient=this.patientService.findPatientByUser(user);
+		return pharmacistService.getAllPharmacistsPatientCanEvaluate(patient);
+		
+	}
+	 @PostMapping("/changeRating/{rating}/{email}/{id}")
+	 @PreAuthorize("hasRole('ROLE_PATIENT')")
+	 public ResponseEntity<?> changeRating(@PathVariable int rating,@PathVariable String email,@PathVariable Long id){
+		 User user = this.userService.findByUsername(email);
+		 Patient patient=this.patientService.findPatientByUser(user);
+		 this.pharmacistService.changeRating(rating,patient,id);
+		 return new ResponseEntity<>(HttpStatus.OK);
+	 }
 }

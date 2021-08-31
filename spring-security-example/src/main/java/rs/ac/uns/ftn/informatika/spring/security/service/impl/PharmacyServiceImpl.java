@@ -29,7 +29,7 @@ import rs.ac.uns.ftn.informatika.spring.security.view.EditPharmacyView;
 
 import rs.ac.uns.ftn.informatika.spring.security.view.MedicineReservationView;
 import rs.ac.uns.ftn.informatika.spring.security.view.PharmacyWithMedicationView;
-
+import rs.ac.uns.ftn.informatika.spring.security.view.RatingView;
 import rs.ac.uns.ftn.informatika.spring.security.view.NewDermatologistDTO;
 import rs.ac.uns.ftn.informatika.spring.security.view.NewPharmacistDTO;
 import rs.ac.uns.ftn.informatika.spring.security.view.WorkingDayDTO;
@@ -42,10 +42,9 @@ import java.util.Set;
 
 import javax.mail.MessagingException;
 
-import rs.ac.uns.ftn.informatika.spring.security.model.Dermatologist;
-import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacist;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.MedicineReservationDTO;
 import rs.ac.uns.ftn.informatika.spring.security.repository.DermatologistRepository;
+import rs.ac.uns.ftn.informatika.spring.security.repository.EPrescriptionRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.HolidayRequestRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PatientRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacistCounselingRepository;
@@ -100,6 +99,9 @@ public class PharmacyServiceImpl implements PharmacyService{
 
 	@Autowired
 	private  PriceListServiceImpl priceListService;
+	
+	@Autowired
+	private EPrescriptionRepository ePrescriptionRepository;
 	
 	@Override
 	public Optional<Pharmacy> findById(Long id) {
@@ -816,6 +818,13 @@ public class PharmacyServiceImpl implements PharmacyService{
 		long pharmacyId = p.getId();
 		
 		return this.requestForMedicineAvailabilityRepository.findRequestsByPharmacy(pharmacyId);
+	}
+
+	@Override
+	public List<RatingView> getAllPharmaciesPatientCanEvaluate(Patient patient) {
+		List<RatingView> result=new ArrayList<RatingView>();
+		List<Pharmacy> pom=new ArrayList<Pharmacy>();
+		return result;
 	}
 }
 
