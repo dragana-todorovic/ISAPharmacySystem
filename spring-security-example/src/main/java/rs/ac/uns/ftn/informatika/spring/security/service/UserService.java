@@ -2,6 +2,8 @@ package rs.ac.uns.ftn.informatika.spring.security.service;
 
 import java.util.List;
 
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
 import  rs.ac.uns.ftn.informatika.spring.security.model.User;
 import rs.ac.uns.ftn.informatika.spring.security.view.RegisterPharmacyAdminView;
 import rs.ac.uns.ftn.informatika.spring.security.view.RegisterView;
@@ -19,4 +21,5 @@ public interface UserService {
     User saveUserDermatologist(RegisterView userRequest);
     Boolean changePassword(String email, String password);
     void editPersonalData(UserRegisterView u);
+	User findByEmailAndPassword(String email, String password) throws UsernameNotFoundException;
 }

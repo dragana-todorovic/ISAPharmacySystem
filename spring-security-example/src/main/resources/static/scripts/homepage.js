@@ -1,5 +1,5 @@
 $(document).ready(function(){
-	$("#searchMedicine").click(function () {
+	/*$("#searchMedicine").click(function () {
 		$('#pharmacies_show').attr('hidden',true);
 		$('#medicine_show').attr('hidden',true);
 	        var let= $("#medicineSearch").val();
@@ -35,5 +35,5 @@ function showMedicine(data){
 	$('#medicine_table').html(temp);
 	$('#medicine_show').attr('hidden',false);
 }
- 
+ */
 });

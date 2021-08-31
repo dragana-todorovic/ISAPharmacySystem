@@ -46,6 +46,7 @@ public class MedicineController {
     
     @Autowired
     private MedicineReservationService medicineReservationService;
+
     
     @Autowired
 	private UserService userService;
@@ -160,7 +161,7 @@ public class MedicineController {
 		}
 
     @GetMapping("/getMedicineById/{trid}")
-    @PreAuthorize("hasRole('ROLE_PATIENT')")
+    @PreAuthorize("hasRole('ROLE_PATIENT') || hasRole('ROLE_ADMIN_SYSTEM')")
     public Medicine getMedicineById(@PathVariable("trid") String trid)   {
         return this.medicineService.findById(Long.valueOf(trid));
     }

@@ -34,6 +34,7 @@ import rs.ac.uns.ftn.informatika.spring.security.service.AddressService;
 import rs.ac.uns.ftn.informatika.spring.security.service.AuthorityService;
 import rs.ac.uns.ftn.informatika.spring.security.service.MedicineService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyService;
+import rs.ac.uns.ftn.informatika.spring.security.view.PharmacyWithMedicationView;
 import rs.ac.uns.ftn.informatika.spring.security.view.UserRegisterView;
 import rs.ac.uns.ftn.informatika.spring.security.model.UserTokenState;
 import rs.ac.uns.ftn.informatika.spring.security.security.TokenUtils;
@@ -93,6 +94,24 @@ public class AuthenticationController {
 		return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
 	}
 
+	@GetMapping("/checkIfLogged")
+	public ResponseEntity<?> checkIfLogged(JwtAuthenticationRequest authenticationRequest){
+		Authentication authentication = authenticationManager
+				.authenticate( new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(),
+						authenticationRequest.getPassword()));
+
+		// Ubaci korisnika u trenutni security kontekst
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+
+		// Kreiraj token za tog korisnika
+		User user = (User) authentication.getPrincipal();
+			if(!user.getLogged()) {
+				return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+			} else {
+				return new ResponseEntity<>(HttpStatus.OK);
+			}
+	}
+
 	// Endpoint za registraciju novog korisnika
 	@PostMapping("/register")
 	public ResponseEntity<User> addUser(@RequestBody UserRegisterView userRequest, UriComponentsBuilder ucBuilder) {
@@ -118,9 +137,31 @@ public class AuthenticationController {
 	public Collection<Medicine> searchMedicine(@PathVariable("let") String let) {
 		return medicineService.searchMedicine(let);
 	}
+
+
+	@GetMapping("/getAllMedicine")
+	public List<Medicine> getAllMedicine()   {
+		return this.medicineService.findAll();
+	}
+
+	@GetMapping("/getMedicineById/{trid}")
+	public Medicine getMedicineById(@PathVariable("trid") String trid)   {
+		return this.medicineService.findById(Long.valueOf(trid));
+	}
+
+	@GetMapping(value = "/getPharamcyWithMedicine/{let}",produces = MediaType.APPLICATION_JSON_VALUE)
+	public Collection<PharmacyWithMedicationView> getPharamcyWithMedicine(@PathVariable("let") Long let) {
+		return pharmacyService.getPharamciesWithMedication(let);
+	}
+
+	@GetMapping("/getAllPharmacies")
+	public List<Pharmacy> getAll() {
+		return this.pharmacyService.findAll();
+	}
 	@GetMapping(value = "/getAllCities",produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<String> getAllCities() {
 		return addressService.getAllCities();
+
 	}
 /*
 	@PostMapping("/registerAdminSystem")

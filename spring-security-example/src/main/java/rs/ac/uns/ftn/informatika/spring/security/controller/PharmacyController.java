@@ -328,6 +328,7 @@ public class PharmacyController {
 	}
 	
 
+
 	@GetMapping(value = "/getPharamcyWithMedicine/{let}",produces = MediaType.APPLICATION_JSON_VALUE)
 	public Collection<PharmacyWithMedicationView> getPharamcyWithMedicine(@PathVariable("let") Long let) {
 		return pharmacyService.getPharamciesWithMedication(let);

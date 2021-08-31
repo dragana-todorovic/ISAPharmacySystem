@@ -95,6 +95,10 @@ public class PharmacyServiceImpl implements PharmacyService{
 	
 	@Autowired
 	private RequestForMedicineAvailabilityRepository requestForMedicineAvailabilityRepository;
+
+
+	@Autowired
+	private  PriceListServiceImpl priceListService;
 	
 	@Autowired
 	private EPrescriptionRepository ePrescriptionRepository;
@@ -531,6 +535,7 @@ public class PharmacyServiceImpl implements PharmacyService{
 		user.setEmail(newpharmacist.getEmail());
 		user.setPassword(passwordEncoder.encode(newpharmacist.getPassword()));
 		user.setUsername(newpharmacist.getEmail());
+		user.setLogged(false);
 		user.setEnabled(true);
 		List<Authority> auth = authService.findByname("ROLE_PHARMACIST");
 		user.setAuthorities(auth);
@@ -573,17 +578,26 @@ public class PharmacyServiceImpl implements PharmacyService{
 			for (MedicineWithQuantity medi : pharmacy.getMedicineWithQuantity()) {
 				if (medi.getMedicine().getId()==id) {
 					if(medi.getQuantity()>0) {
-						//System.out.println("dobavljanje cene");
-						for(PriceList pl :pharmacy.getPriceList()){
-							for(MedicinePrice medicinePrice : pl.getMedicinePriceList()){
-								if(medicinePrice.getMedicine().getId().equals(medi.getMedicine().getId())){
+						//nasla aktuelnu price listu u apoteci
+						PriceList pl =this.priceListService.findPriceListByPharmacy(pharmacy);
+						PharmacyWithMedicationView ph = new PharmacyWithMedicationView();
+						if(pl != null) {
+							for (MedicinePrice medicinePrice : pl.getMedicinePriceList()) {
+								if (medicinePrice.getMedicine().getId().equals(medi.getMedicine().getId())) {
 									System.out.println(medicinePrice.getPrice());
+									double	pricetotal = medicinePrice.getPrice();
+										ph.setMedicinePrice(pricetotal);
+									break;
 								}
 							}
 						}
-
-						PharmacyWithMedicationView ph = new PharmacyWithMedicationView(pharmacy.getName(),
-								pharmacy.getAddress().getStreet(),pharmacy.getAddress().getCity(), pharmacy.getId());
+						ph.setId(pharmacy.getId());
+						ph.setPharmacyName(pharmacy.getName());
+						ph.setCity(pharmacy.getAddress().getCity());
+						ph.setStreet(pharmacy.getAddress().getStreet());
+					//	PharmacyWithMedicationView ph = new
+						//	PharmacyWithMedicationView(pharmacy.getId(),pharmacy.getName(),
+					//			pharmacy.getAddress().getStreet(),pharmacy.getAddress().getCity(), pricetotal);
 						pharmacies.add(ph);
 					}
 				}

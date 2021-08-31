@@ -5,26 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 <script src="../jquery-3.3.1.min.js"></script>
-<script src="../scripts/searchPharmacies.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"  />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" type="text/css" href="../css/modal.css">
+    <script src="../scripts/searchMedicine/searchMedicine.js"></script>
+    <script src="../scripts/searchPharmacies.js"></script>
+
  <script src="../scripts/homepage.js"></script> 
  <script src="../scripts/customAjax.js"></script>
-<taglib uri="http://coverity.com/security" prefix="cov" />
 
- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-          crossorigin="anonymous"></script>
-
-
-  <!-- fontovi -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
-        crossorigin="anonymous">
-        
-  <!--za bootstrap-->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-        crossorigin="anonymous">
-    <link href="http://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.css" rel="stylesheet"/>
-        
-       
 
 <title>Homepage</title>
 
@@ -37,7 +28,6 @@ input[type=text] {
   border-radius: 4px;
   font-size: 16px;
   background-color: white;
-  background-image: url('searchicon.png');
   background-position: 10px 10px; 
   background-repeat: no-repeat;
   padding: 12px 20px 12px 40px;
@@ -58,8 +48,7 @@ input[type=text]:focus {
     .container_1 {
     height: 100vh;
     width: 207.4vh;
-    background: url('../images/medicine-generic-banner.jpg') no-repeat center center/cover;
-    color: #fff;
+ color: #fff;
 }
 
 .btn_1 {
@@ -88,17 +77,118 @@ input[type=text]:focus {
 }
   </style>
 </head>
-<body>
+<body style="background:skyblue">
  <div class="container_1" id="loginTab">
-    <div class="column">
-    	 <h1 class="ui header" style="color:white;font-weight: bold" >WELCOME</h1>
-    	 </div>
-    	   <div class="form-group ">
-          <button onClick="window.location='/html/login.html';" type="button" class="btn btn-info" id="login_button" style="width:20%;">LOG IN</button>
+    	   <div  style="width:50%; margin-left:auto;
+			    margin-right:auto; margin-top: 40px;">
+                <button onClick="window.location='/html/login.html';" type="button" class="ui primary button" id="login_button" style="width:20%;">LOG IN</button>
           </div>
-		   <div class="form-group">
-          <button onClick="window.location='/html/registration.html';" type="button" class="btn btn-info" id="register_button" style="width:20%;">REGISTER</button>
+            <br/>
+		   <div  style="width:50%; margin-left:auto;
+			    margin-right:auto; margin-top: 40px;">
+                 <button onClick="window.location='/html/registration.html';" type="button" class="ui primary button" id="register_button" style="width:20%;">REGISTER</button>
            </div>
+
+
+
+     <div  class="container4" style = "color : white">
+         <table  class="ui large table"
+                 style="width:50%; margin-left:auto;
+			    margin-right:auto; margin-top: 40px;"
+                 id="searchMedTable" >
+             <thead >
+             <tr>
+                 <th colspan="7">
+                     <div class="ui input left">
+                         <input type="text" placeholder="Search by name..." id="nameSearchMedicine">
+                     </div>
+                     <h4 >Filter Medicine By Type :</h4>
+                     <p >
+                         <input type="radio" id="ON_HOLD" name="postage" value="ANTIBIOTIC" /> ANTIBIOTIC
+                         <input type="radio" id="ACCEPTED" name="postage" value="ANESTHETIC" /> ANESTHETIC
+                         <input type="radio" id="REJECTED" name="postage" value="ANTIHISTAMINE" /> ANTIHISTAMINE
+                         <input type="radio" id="NO_FILTER" name="postage" value="NO_FILTER" /> NO FILTER
+                     </p>
+                     <h4 >Filter Medicine By Shape :</h4>
+                     <p >
+                         <input type="radio" id="CAPSULE" name="postageS" value="CAPSULE" /> CAPSULE
+                         <input type="radio" id="TABLET" name="postageS" value="TABLET" /> TABLET
+                         <input type="radio" id="POWDER" name="postageS" value="POWDER" /> POWDER
+                         <input type="radio" id="CREAM" name="postageS" value="CREAM" /> CREAM
+                         <input type="radio" id="OIL" name="postageS" value="OIL" /> OIL
+                         <input type="radio" id="SYRUP" name="postageS" value="SYRUP" /> SYRUP
+                         <input type="radio" id="NO_FILTER_SHAPE" name="postageS" value="NO_FILTER_SHAPE" /> NO FILTER
+                     </p>
+                 </th>
+             </tr>
+             <tr class="success"><th>Code</th>
+                 <th>Name</th>
+                 <th>Ratings</th>
+                 <th>Shape</th>
+                 <th>Type</th>
+                 <th></th>
+                 <th></th>
+             </tr>
+             </thead>
+             <tbody
+                     id="searchMedicineTable">
+             </tbody>
+         </table>
+     </div>
+
+
+     <div id="modal-search-medicines" class="modal">
+         <div class="modal-content" style="width:40%;text-align:center">
+             <span class="closeSearchMedicine">&times;</span>
+             <table   class="ui centered large table"
+                      style="width:50%; margin-left:auto;
+			    margin-right:auto; margin-top: 40px;">
+                 <thead >
+                 <tr>
+                     <th colspan="2">
+                         <div>
+                             <b>Details About Medicine </b>
+                         </div>
+                     </th>
+                 </tr>
+                 </thead>
+                 <tbody>
+                 <tr>
+                     <td>Content:</td>
+                     <td class="ui input small"> <input disabled type="text" id="txtContent" /></td>
+
+                 </tr>
+                 <tr>
+                     <td>Producer:</td>
+                     <td class="ui input small"> <input disabled type="text" id="txtProducer" /></td>
+
+                 </tr>
+                 <tr>
+                     <td>Can Medicine be Taken With Prescription:</td>
+                     <td class="ui input small"> <input disabled type="text" id="withPrescriptionTrue" /></td>
+                 </tr>
+                 <tr>
+                     <td>Substitute Medicine Codes:</td>
+                     <td class="ui input small"> <input disabled type="text" id="txtSubstituteMedicineCodes" /></td>
+
+                 </tr>
+                 <tr>
+                     <td>Notes: </td>
+                     <td class="ui input small"> <input disabled type="text" id="txtNotes" /></td>
+                 </tr>
+                 <tr>
+                     <td>Contradiction: </td>
+                     <td class="ui input small"> <input disabled type="text" id="txtContradiction" /></td>
+                 </tr>
+                 <tr>
+                     <td>Advised daily dose: </td>
+                     <td class="ui input small"> <input disabled type="number" id="txtAdvisedDailyDose" /></td>
+                 </tr>
+                 </tbody>
+             </table>
+         </div>
+           </div>
+
     	  <div class="ui icon input">
           <input  class="prompt" type="text" id="pharmaciesSearch" placeholder="Search pharmacies by name,city,address..">
           <i class="search link icon" name="searchPharmacies" id="searchPharmacies"></i>
@@ -106,7 +196,35 @@ input[type=text]:focus {
            <div class="ui icon input">
            <input class="prompt" type="text" id="medicineSearch" name="search" placeholder="Search medicine by name..">
            <i class="search link icon" id="searchMedicine"></i>
+
+           </div>
+      
+
+     <!-- modal for all pharamcies-->
+     <div id="modal-search-pharmacy" class="modal">
+         <div class="modal-content" style="text-align: center;">
+             <span class="closeSearchPharmacy">&times;</span>
+             <table  class="ui centered large table"
+                     style="width:50%; margin-left:auto;
+			    margin-right:auto; margin-top: 40px;">
+                 <thead>
+                 <tr>
+                     <th colspan="4">
+                         <b>All Pharmacies Where Medicine Is Available</b>
+                     </th>
+                 </tr>
+                 <tr><th>Pharmacy Name</th>
+                     <th colspan="2">Address</th>
+                     <th>Price</th>
+                 </tr></thead>
+                 <tbody id="searchPharmacyTable" >
+                 </tbody>
+             </table>
          </div>
+     </div>
+
+
+
     <div class="container_1" hidden='true' id="all_pharmacies_show">
                    <h4 >Filter Pharmacy By Rating :</h4>
         <p >
@@ -134,24 +252,7 @@ input[type=text]:focus {
 		</table>  
         </form>
       </div>
-      	    <div class="container_1" hidden='true' id="medicine_show">
-        <form class="border rounded px-2 py-1 text-center">       
-        		 <table class="ui celled table" >
-		  	<thead>
-		    	<tr><th>Code</th>
-		   		 <th>Name</th>
-		   		 <th>Shape</th>
-		   		 <th>Content</th>
-		   		 <th>Produces</th>
-		   		 <th>With prescription?</th>
-		   		 <th>Notes</th>
-		 		 </tr></thead>
-		 	 <tbody id="medicine_table" >
-		 	 </tbody>
-		</table>  
-        </form>
-      </div>
-    </div>
+
 
 </body>
 </html>
