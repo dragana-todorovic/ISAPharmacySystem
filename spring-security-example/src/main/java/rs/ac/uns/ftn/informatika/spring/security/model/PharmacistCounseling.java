@@ -12,9 +12,11 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name="PHARMACISTCOUNSELING")
+@Table(name="PHARMACISTCOUNSELING"
+,uniqueConstraints = { @UniqueConstraint(columnNames = { "pharmacist_id", "startDateTime" })})
 public class PharmacistCounseling {
 	
 	@Id

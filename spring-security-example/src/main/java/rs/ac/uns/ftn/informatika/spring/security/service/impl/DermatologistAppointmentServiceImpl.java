@@ -4,7 +4,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.LockModeType;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
 
 import rs.ac.uns.ftn.informatika.spring.security.model.AppoitmentPrice;
@@ -81,6 +84,7 @@ public class DermatologistAppointmentServiceImpl implements DermatologistAppoint
 		}
 			
 	}
+	@Lock(LockModeType.OPTIMISTIC_FORCE_INCREMENT)
 	@Override
 	public void savePredefinedAppointment(PredefinedAppointmentScheduleDTO appointmentDTO,Patient patient) {
 		// TODO Auto-generated method stub

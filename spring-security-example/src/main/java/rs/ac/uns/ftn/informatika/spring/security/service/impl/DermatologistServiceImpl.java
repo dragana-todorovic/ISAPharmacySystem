@@ -173,24 +173,20 @@ public class DermatologistServiceImpl implements DermatologistService{
 				System.out.println("Dermatolog"+d.getUser().getEmail());
 				if(d.getUser().getEmail().equals(email))
 				{
-					System.out.println("Usao u if");
+				System.out.println("Usao u if");
 				List <MyPatientDTO> myPatients =new ArrayList<MyPatientDTO>();
 				List<DermatologistAppointment> appointments = dermatologistAppointmentService.findById(d.getId());
 				for (DermatologistAppointment da :appointments) {
-					
-					System.out.println("Usao u for"+da.getDermatologist().getUser().getFirstName());
 					if(da.getPatient()!=null && da.getStartDateTime().isAfter(LocalDateTime.now())) {
-						System.out.println("Usao u if"+"#################################");
 						MyPatientDTO myPatientDTO = new MyPatientDTO();
 						myPatientDTO.setMyPatientId(da.getPatient().getId());
 						myPatientDTO.setName(da.getPatient().getUser().getFirstName());
 						myPatientDTO.setSurname(da.getPatient().getUser().getLastName());
 						myPatientDTO.setStartDateTime(da.getStartDateTime());
 						myPatients.add(myPatientDTO);
-						System.out.println("My patients*********************************"+myPatients.size());
+
 					}
 				}
-				System.out.println("Broooooj jeee"+myPatients.size());
 				return myPatients;
 				}
 				}
@@ -209,8 +205,25 @@ public class DermatologistServiceImpl implements DermatologistService{
 		@Override
 		public Boolean isMedicineAvailable(Pharmacy pharmacy, String medicineId) {
 			Set<MedicineWithQuantity> medicines = pharmacy.getMedicineWithQuantity();
+			Boolean hasMedicine = false;
 			for(MedicineWithQuantity mq:medicines) {
-				System.out.println("Quantity"+mq.getMedicine().getName()+mq.getQuantity());
+				if(mq.getMedicine().getId().equals(Long.parseLong(medicineId))) {
+					hasMedicine=true;
+				}
+				
+			}
+			if(hasMedicine==false) {
+				RequestForMedicineAvailability rq = new RequestForMedicineAvailability();
+				rq.setCreatedAt(LocalDateTime.now());
+				Medicine medicine = medicineRepository.findById(Long.parseLong(medicineId)).get();
+				MedicineWithQuantity medicineWithQuantity = new MedicineWithQuantity(medicine,0);
+				rq.setMedicineWithQuantity(medicineWithQuantity);
+				rq.getMedicineWithQuantity().setQuantity(0);
+						
+				rq.setPharmacy(pharmacy);
+				requestForMedicineAvailabilityRepository.save(rq);
+				
+				return false;
 			}
 			for(MedicineWithQuantity mq: medicines) {
 				
@@ -240,15 +253,18 @@ public class DermatologistServiceImpl implements DermatologistService{
 		System.out.println("AppointmentDTO"+appointmantDTO.getPatientId());
 		LocalDateTime startDateTime=LocalDateTime.parse(appointmantDTO.getStartDate());
 		try{
+			System.out.println("Usao u try");
 			for(DermatologistAppointment d:dermatologistAppointmentRepository.findAll()) {
+				if(d.getPatient()!=null) {
+				
+				
 				if(d.getDermatologist().getUser().getEmail().equals(appointmantDTO.getDermatologistEmail()) && d.getPatient().getUser().getEmail().equals(appointmantDTO.getPatientEmail()) && d.getStartDateTime().equals(startDateTime)) {
+					System.out.println("Usao u if");
 					d.setDescription(appointmantDTO.getDiagnosis());
-					d.setStartDateTime(LocalDateTime.now());
+					d.setStartDateTime(LocalDateTime.now());					
 					
-					System.out.println("Medicineee namee"+appointmantDTO.getMedicineName());
 					if(appointmantDTO.getMedicineName()!="") {
 					Therapy therapy = new Therapy();
-					System.out.println("Ispod medicine"+medicineRepository.findById(Long.parseLong(appointmantDTO.getMedicineName().split(",sifra ")[1])).get().getName());
 					therapy.setMedicine(medicineRepository.findById(Long.parseLong(appointmantDTO.getMedicineName().split(",sifra ")[1])).get());
 					therapy.setDuration(Integer.parseInt(appointmantDTO.getTherapyDuration()));
 					d.setTherapy(therapy);
@@ -273,6 +289,7 @@ public class DermatologistServiceImpl implements DermatologistService{
 					
 				}
 			}
+				}
 	
 		}catch (Exception e) {
 			return;

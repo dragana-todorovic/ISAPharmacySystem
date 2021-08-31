@@ -82,10 +82,12 @@ public class PharmacistServiceImpl implements PharmacistService {
 		User u = userRepository.findByEmail(holidayRequest.getEmail());
 		System.out.println("U"+u);
 		for (Pharmacist d: pharmacistRepository.findAll()) {
-			d.getUser().getEmail();
 			if(d.getUser().getEmail().equals(u.getEmail()))
 			{
-	   Pharmacy pharmacy = d.getWorkingTimes().getPharmacy();
+		if(d.getWorkingTimes()==null) {
+			return false;
+		}
+	    Pharmacy pharmacy = d.getWorkingTimes().getPharmacy();
 		if(pharmacy==null) {
 					 return false;
 				 }
@@ -198,25 +200,21 @@ public class PharmacistServiceImpl implements PharmacistService {
 					d.setDescription(appointmantDTO.getDiagnosis());
 					d.setStartDateTime(LocalDateTime.now());
 					
-					System.out.println("Medicineee namee"+appointmantDTO.getMedicineName());
+			
 					if(appointmantDTO.getMedicineName()!="") {
 					Therapy therapy = new Therapy();
-					System.out.println("Ispod medicine"+medicineRepository.findById(Long.parseLong(appointmantDTO.getMedicineName().split(",sifra ")[1])).get().getName());
 					therapy.setMedicine(medicineRepository.findById(Long.parseLong(appointmantDTO.getMedicineName().split(",sifra ")[1])).get());
 					therapy.setDuration(Integer.parseInt(appointmantDTO.getTherapyDuration()));
 					d.setTherapy(therapy);
 					}
 					
 					pharmacistCounselingRepository.save(d);
-					System.out.println("DDDDDDDDDDDDDD"+d);
-					System.out.println("DDDDDDDDDDDDDDDDDDDD"+d.getId());
 					PharmacistCounselingPrice price = new PharmacistCounselingPrice();
 					price.setPrice(Double.parseDouble(appointmantDTO.getPrice()));
 					price.setCounseling(d);
 					pharmacistCounselingPriceRepository.save(price);
 			
-					Medicine  prescribedMedicine = medicineRepository.findById(Long.parseLong(appointmantDTO.getMedicineName().split(",sifra ")[1])).get();
-					
+					Medicine  prescribedMedicine = medicineRepository.findById(Long.parseLong(appointmantDTO.getMedicineName().split(",sifra ")[1])).get();				
 					
 					for(MedicineWithQuantity m:pharmacy.getMedicineWithQuantity()) {
 						if(m.getMedicine().getId().equals(prescribedMedicine.getId())) {
@@ -280,7 +278,7 @@ public class PharmacistServiceImpl implements PharmacistService {
 		System.out.println("Apointments################+++++++++++++"+appointments.size());
 		for(PharmacistCounseling da:appointments) {
 			if (da.getStartDateTime().toLocalDate().equals(startDateTime.toLocalDate())) {
-				if (isTimeFine(startDateTime.toLocalTime(), duration, da.getStartDateTime().toLocalTime(),
+				if (isTimeIncluded(startDateTime.toLocalTime(), duration, da.getStartDateTime().toLocalTime(),
 						da.getStartDateTime().toLocalTime().plusMinutes(da.getDuration())) && da.getPatient()!=null)
 				{
 					return false;}
@@ -300,7 +298,7 @@ public class PharmacistServiceImpl implements PharmacistService {
 		for(PharmacistCounseling da:counselings) {
 			System.out.println("Counseling" + da);
 			if (da.getStartDateTime().toLocalDate().equals(startDateTime.toLocalDate())) {
-				if (isTimeFine(startDateTime.toLocalTime(), duration, da.getStartDateTime().toLocalTime(),
+				if (isTimeIncluded(startDateTime.toLocalTime(), duration, da.getStartDateTime().toLocalTime(),
 						da.getStartDateTime().toLocalTime().plusMinutes(da.getDuration())) && da.getPatient()!=null)
 					return false;
 			}
@@ -310,7 +308,7 @@ public class PharmacistServiceImpl implements PharmacistService {
 		List<DermatologistAppointment> appointments = dermatologistAppointmentService.findByPatientId(patient.getId());
 		for(DermatologistAppointment da:appointments) {
 			if (da.getStartDateTime().toLocalDate().equals(startDateTime.toLocalDate())) {
-				if (isTimeFine(startDateTime.toLocalTime(), duration, da.getStartDateTime().toLocalTime(),
+				if (isTimeIncluded(startDateTime.toLocalTime(), duration, da.getStartDateTime().toLocalTime(),
 						da.getStartDateTime().toLocalTime().plusMinutes(da.getDuration())))
 					return false;
 			}
@@ -318,7 +316,7 @@ public class PharmacistServiceImpl implements PharmacistService {
 		return true;
 		
 	}
-	private Boolean isTimeFine(LocalTime time, int duration, LocalTime startTime, LocalTime endTime){
+	private Boolean isTimeIncluded(LocalTime time, int duration, LocalTime startTime, LocalTime endTime){
 		if (!time.isBefore(startTime) && !time.plusMinutes(duration).isAfter(endTime))
 			return true;
 		if (time.isAfter(startTime) && time.isBefore(endTime))
@@ -348,7 +346,7 @@ public class PharmacistServiceImpl implements PharmacistService {
 			if(work.getDay().equals(day)) {				
 					isPharmacistWorking = true;	
 			}
-			if(!isTimeFine(startDateTime.toLocalTime(), duration, work.getStartTime(), work.getEndTime())) {
+			if(!isTimeIncluded(startDateTime.toLocalTime(), duration, work.getStartTime(), work.getEndTime())) {
 				return false;
 			}
 		}
@@ -371,8 +369,23 @@ public class PharmacistServiceImpl implements PharmacistService {
 	@Override
 	public Boolean isMedicineAvailable(Pharmacy pharmacy, String medicineId) {
 		Set<MedicineWithQuantity> medicines = pharmacy.getMedicineWithQuantity();
+		Boolean hasMedicine = false;
 		for(MedicineWithQuantity mq:medicines) {
-			System.out.println("****************Quantity"+mq.getMedicine().getName()+mq.getQuantity());
+			if(mq.getMedicine().getId().equals(Long.parseLong(medicineId))) {
+				hasMedicine=true;
+			}
+		}
+		if(hasMedicine==false) {
+			RequestForMedicineAvailability rq = new RequestForMedicineAvailability();
+			rq.setCreatedAt(LocalDateTime.now());
+			Medicine medicine = medicineRepository.findById(Long.parseLong(medicineId)).get();
+			MedicineWithQuantity medicineWithQuantity = new MedicineWithQuantity(medicine,0);
+			rq.setMedicineWithQuantity(medicineWithQuantity);
+			rq.getMedicineWithQuantity().setQuantity(0);					
+			rq.setPharmacy(pharmacy);
+			requestForMedicineAvailabilityRepository.save(rq);
+			
+			return false;
 		}
 		for(MedicineWithQuantity mq: medicines) {
 			
@@ -425,6 +438,9 @@ public class PharmacistServiceImpl implements PharmacistService {
 	public List<WorkCalendarDTO> getPharmacistsCounseling(Pharmacist pharmacist) {
 		List<WorkCalendarDTO> result = new ArrayList<WorkCalendarDTO>();
 		List<PharmacistCounseling> appointments =pharmacistCounselingService.findAll();
+		if(appointments==null) {
+			return new ArrayList<WorkCalendarDTO>();
+		}
 		System.out.println("Size"+appointments.size());
 		List<PharmacistCounseling> app = new ArrayList<PharmacistCounseling>();
 		for(PharmacistCounseling da :appointments ) {
@@ -434,6 +450,9 @@ public class PharmacistServiceImpl implements PharmacistService {
 				
 				app.add(da);
 			}
+		}
+		if(app==null) {
+			return new ArrayList<WorkCalendarDTO>();
 		}
 		for(PharmacistCounseling d:app) {
 			if(d.getPatient()!=null) {

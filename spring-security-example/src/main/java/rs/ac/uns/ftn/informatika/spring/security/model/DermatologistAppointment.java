@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.springframework.data.annotation.Version;
+
 @Entity
 @Table(name="APPOITMENT")
 public class DermatologistAppointment {
@@ -45,6 +47,9 @@ public class DermatologistAppointment {
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Therapy therapy;
 	
+	@Version
+	@Column(name = "version", nullable = false)
+	private Long version;
 
 
 	public Long getId() {

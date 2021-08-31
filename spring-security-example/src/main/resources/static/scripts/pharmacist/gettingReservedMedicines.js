@@ -79,7 +79,7 @@ $("input:button[name=start]").click(function () {
 		      url: '/pharm/takeReservedMedicine/' + id,
 		      method: 'GET',
 		      success: function(medicines){
-			alert("Successfully taken rezervation")
+			alert("Successfully taken reservation")
 			location.href= "pharmacist.html";
 		},
 				error:function(){
