@@ -471,7 +471,7 @@ public class PharmacistServiceImpl implements PharmacistService {
 	}
 
 	@Override
-	public List<RatingView> getAllPharmacistsPatientCanEvaluate(Patient patient) {
+	public List<RatingView> getAllPharmacistsPatientCanEvaluate(long patient) {
 		List<RatingView> result=new ArrayList<RatingView>();
 		List<Pharmacist> pom=new ArrayList<Pharmacist>();
 		for(PharmacistCounseling pc : pharmacistCounselingService.findAll()) {
@@ -489,7 +489,7 @@ public class PharmacistServiceImpl implements PharmacistService {
 					d.getUser().getLastName());
 			
 			for(Rating ra :d.getRatings()){
-				if(ra.getPatient().equals(patient)) {
+				if(ra.getPatient() == patient) {
 					rdw.setPatientsGrade(ra.getRating());
 								
 				} 
@@ -501,7 +501,7 @@ public class PharmacistServiceImpl implements PharmacistService {
 	}
 
 	@Override
-	public void changeRating(int rating, Patient patient, Long id) {
+	public void changeRating(int rating, long patient, Long id) {
 		Pharmacist ph=pharmacistRepository.findPharmacistById(id);	
 		Rating rat=new Rating();
 		if(ph.getRatings().isEmpty()) {
@@ -510,7 +510,7 @@ public class PharmacistServiceImpl implements PharmacistService {
 			ph.getRatings().add(rat);
 		}
 		for(Rating r : ph.getRatings()) {
-			if(r.getPatient().equals(patient)) {
+			if(r.getPatient() ==patient) {
 				r.setRating(rating);
 			}
 		}

@@ -22,9 +22,9 @@ public class Rating {
 	 @Column(name = "rating", nullable = false)
 	private int rating;
 	 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	private Patient patient;
-	 
+	 @Column(name = "patient_id", nullable = false)
+	 private long patient_id;
+		 
 	public Long getId() {
 		return id;
 	}
@@ -41,12 +41,12 @@ public class Rating {
 		this.rating = rating;
 	}
 
-	public Patient getPatient() {
-		return patient;
+	public long getPatient() {
+		return patient_id;
 	}
 
-	public void setPatient(Patient patient) {
-		this.patient = patient;
+	public void setPatient(long patient) {
+		this.patient_id = patient;
 	}
 	
 }

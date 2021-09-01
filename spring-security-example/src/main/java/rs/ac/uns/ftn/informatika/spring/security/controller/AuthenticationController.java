@@ -213,7 +213,7 @@ public class AuthenticationController {
 		}
 	}
 
-	@RequestMapping(value = "/change-password", method = RequestMethod.POST)
+	/*@RequestMapping(value = "/change-password", method = RequestMethod.POST)
 	@PreAuthorize("hasRole('USER')")
 	public ResponseEntity<?> changePassword(@RequestBody PasswordChanger passwordChanger) {
 		userDetailsService.changePassword(passwordChanger.oldPassword, passwordChanger.newPassword);
@@ -221,7 +221,7 @@ public class AuthenticationController {
 		Map<String, String> result = new HashMap<>();
 		result.put("result", "success");
 		return ResponseEntity.accepted().body(result);
-	}
+	}*/
 	@GetMapping("/profilePharmacist/{id}")
 	@PreAuthorize("hasRole('ROLE_PHARMACIST')")
 	public ResponseEntity<User> pharmacistDetails(@PathVariable(name="id") String id)  {

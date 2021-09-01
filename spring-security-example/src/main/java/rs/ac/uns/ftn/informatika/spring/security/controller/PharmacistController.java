@@ -508,7 +508,7 @@ public class PharmacistController {
 	public List<RatingView> getAllPharmacistsPatientCanEvaluate(@PathVariable String email) {
 		User user = this.userService.findByUsername(email);
 		Patient patient=this.patientService.findPatientByUser(user);
-		return pharmacistService.getAllPharmacistsPatientCanEvaluate(patient);
+		return pharmacistService.getAllPharmacistsPatientCanEvaluate(patient.getId());
 		
 	}
 	 @PostMapping("/changeRating/{rating}/{email}/{id}")
@@ -516,7 +516,7 @@ public class PharmacistController {
 	 public ResponseEntity<?> changeRating(@PathVariable int rating,@PathVariable String email,@PathVariable Long id){
 		 User user = this.userService.findByUsername(email);
 		 Patient patient=this.patientService.findPatientByUser(user);
-		 this.pharmacistService.changeRating(rating,patient,id);
+		 this.pharmacistService.changeRating(rating,patient.getId(),id);
 		 return new ResponseEntity<>(HttpStatus.OK);
 	 }
 }

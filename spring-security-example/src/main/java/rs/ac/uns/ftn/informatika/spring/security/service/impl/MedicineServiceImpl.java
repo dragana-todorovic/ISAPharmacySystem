@@ -222,14 +222,14 @@ public class MedicineServiceImpl implements MedicineService{
 	}
 
 	@Override
-	public List<RatingView> getAllMedicinePatientCanEvaluate(Patient patient) {
+	public List<RatingView> getAllMedicinePatientCanEvaluate(long patient) {
 		List<RatingView> result=new ArrayList<RatingView>();
 		List<Medicine> pom=new ArrayList<Medicine>();
 		for(EPrescription ep : ePrescriptionRepository.findAll()) {
 			if(ep.getPatient()==null) {
 				continue;
 			}
-			if(ep.getPatient().equals(patient)) {
+			if(ep.getPatient().getId() == patient) {
 				for(MedicineWithQuantity m : ep.getMedicines()) {
 					if(!pom.contains(m.getMedicine())) {
 						pom.add(m.getMedicine());
@@ -241,7 +241,7 @@ public class MedicineServiceImpl implements MedicineService{
 			if(mr.getPatient()==null) {
 				continue;
 			}
-			if(mr.getPatient().equals(patient)) {
+			if(mr.getPatient().getId() == patient) {
 				if(mr.getStatus().equals(MedicineReservationStatus.TAKEN) && !pom.contains(mr.getMedicineWithQuantity().getMedicine())) {
 					
 					pom.add(mr.getMedicineWithQuantity().getMedicine());
@@ -255,7 +255,7 @@ public class MedicineServiceImpl implements MedicineService{
 						
 		
 			for(Rating ra :d.getRatings()){
-				if(ra.getPatient().equals(patient)) {
+				if(ra.getPatient() == patient) {
 					rdw.setPatientsGrade(ra.getRating());
 				} 
 			}
@@ -266,16 +266,16 @@ public class MedicineServiceImpl implements MedicineService{
 	}
 
 	@Override
-	public void changeRating(int rating, Patient patient, Long id) {
+	public void changeRating(int rating, long patient_id, Long id) {
 		Medicine med=medicineRepository.findMedicineById(id);
 		Rating rat=new Rating();
 		if(med.getRatings().isEmpty()) {
-			rat.setPatient(patient);
+			rat.setPatient(patient_id);
 			rat.setRating(rating);
 			med.getRatings().add(rat);
 		}
 		for(Rating r : med.getRatings()) {
-			if(r.getPatient().equals(patient)) {
+			if(r.getPatient() == (patient_id)) {
 				r.setRating(rating);
 			}
 		}
