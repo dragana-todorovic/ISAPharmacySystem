@@ -46,9 +46,9 @@ public class Pharmacy {
     
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<ActionAndBenefit> actionsAndBenefits = new HashSet<ActionAndBenefit>();
-    
-    @Column(name = "version")
+   
     @Version
+    @Column(name = "version")
     private long version;
 
 	public Long getId() {

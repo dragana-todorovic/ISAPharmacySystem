@@ -179,8 +179,8 @@ li.dropdown {
             <li class="dropdown">
                 <a href="javascript:void(0)" class="dropbtn">Appointments history</a>
                 <div class="dropdown-content">
-                    <a href="#">Dermatology </a>
-                    <a href="#">Pharamcy</a>
+                    <a href="#" id="history_derm">Dermatology </a>
+                    <a href="#" id="history_cons">Pharamcy</a>
                 </div>
             </li>
              <li class="dropdown">
@@ -366,11 +366,11 @@ li.dropdown {
        			 </p>
             <thead>
             <tr>
-            <tr><th>Name</th>
-                <th>City</th>
+            <tr> <th name="sortByName">Name<span  name="strelica" class="glyphicon glyphicon-arrow-down"></span></th>
+                 <th name="sortByCity">City<span  name="strelica" class="glyphicon glyphicon-arrow-down"></span></th>
                 <th>Street</th>
                 <th>Description</th>
-                 <th>Ratings</th>
+                  <th name="sortByGrade">Rating<span  name="strelica" class="glyphicon glyphicon-arrow-down"></span></th>
                 <th></th>
             </tr>
             </thead>
@@ -567,7 +567,7 @@ li.dropdown {
     <!-- MY DERMATOLOGIST APPOINTMENT -->
     <div id="my_derm_appointments"  hidden="true">
         <div style="padding:100px 300px 500px 300px;" class="cloumn" >
-            <label style="color:black;font-weight: bold" >MY APPOINTMENTS AT DERMATOLOGISTS </label>
+            <label id="label_derm" style="color:black;font-weight: bold" >MY APPOINTMENTS AT DERMATOLOGISTS </label>
             </br></br>
             <form class="border rounded px-2 py-1 text-center">
                 <table class="table  table-bordered" id="appointments_dermatology_table" >
@@ -576,9 +576,9 @@ li.dropdown {
                         <th>Pharmacy</th>
                         <th>Pharmacy City</th>
                         <th>Pharmacy Street</th>
-                        <th>Start date and time</th>
-                        <th>Duration</th>
-                        <th>Price</th>
+                         <th name="sortByDate">Start date and time<span  name="strelica" class="glyphicon glyphicon-arrow-down"></span></th>
+                         <th name="sortByDuration">Duration<span  name="strelica" class="glyphicon glyphicon-arrow-down"></span></th>
+                         <th name="sortByPrice">Price<span  name="strelica" class="glyphicon glyphicon-arrow-down"></span></th>
                         <th></th>
                     </tr></thead>
                     <tbody id="my_appointments_dermatology_body" >
@@ -631,7 +631,7 @@ li.dropdown {
     <!-- MY APPOINTMENTS AT PHARMACISTS -->
     <div id="my_ph_appointments"  hidden="true">
         <div style="padding:100px 300px 500px 300px;" class="cloumn" >
-            <label style="color:black;font-weight: bold" >MY APPOINTMENTS AT PHARMACISTS </label>
+            <label id="label_couns" style="color:black;font-weight: bold" >MY APPOINTMENTS AT PHARMACISTS </label>
             </br></br>
             <form class="border rounded px-2 py-1 text-center">
                 <table class="table  table-bordered" id="appointments_dermatology_table" >
@@ -640,9 +640,9 @@ li.dropdown {
                         <th>Pharmacy</th>
                         <th>Pharmacy City</th>
                         <th>Pharmacy Street</th>
-                        <th>Start date and time</th>
-                        <th>Duration</th>
-                        <th>Price</th>
+                          <th name="sortByDate">Start date and time<span  name="strelica" class="glyphicon glyphicon-arrow-down"></span></th>
+                         <th name="sortByDuration">Duration<span  name="strelica" class="glyphicon glyphicon-arrow-down"></span></th>
+                         <th name="sortByPrice">Price<span  name="strelica" class="glyphicon glyphicon-arrow-down"></span></th>
                         <th></th>
                     </tr></thead>
                     <tbody id="my_ph_appointments_body" >

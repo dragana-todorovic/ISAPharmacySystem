@@ -170,7 +170,7 @@ public class AppointmentServiceImpl implements AppointmentService{
 	public List<DermatologistAppointment> getAvailableAppointmentsByPharmacyId(Long id) {
 		List<DermatologistAppointment> appointments=new ArrayList<DermatologistAppointment>();
 		for(DermatologistAppointment da : dermatologistAppointmentRepository.findAll()) {
-			if(da.getPharmacy().getId().equals(id)) {
+			if(da.getPharmacy().getId().equals(id) && da.getStartDateTime().isAfter(LocalDateTime.now())) {
 				if(da.getPatient()==null) {
 					appointments.add(da);
 				}

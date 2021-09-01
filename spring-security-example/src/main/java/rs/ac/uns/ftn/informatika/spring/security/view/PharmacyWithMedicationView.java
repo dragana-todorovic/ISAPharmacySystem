@@ -6,6 +6,7 @@ public class PharmacyWithMedicationView {
 	private String street;
     private String city; 
     private double medicinePrice;
+    private double avrageGrade;
    
 	public PharmacyWithMedicationView() {
 		super();
@@ -19,12 +20,13 @@ public class PharmacyWithMedicationView {
 		
 	}
 
-	public PharmacyWithMedicationView(Long id, String pharmacyName, String street, String city, double medicinePrice) {
+	public PharmacyWithMedicationView(Long id, String pharmacyName, String street, String city, double medicinePrice,double avrageGrade) {
 		this.id = id;
 		this.pharmacyName = pharmacyName;
 		this.street = street;
 		this.city = city;
 		this.medicinePrice = medicinePrice;
+		this.avrageGrade=avrageGrade;
 	}
 
 	public double getMedicinePrice() {
@@ -65,6 +67,12 @@ public class PharmacyWithMedicationView {
 		this.city = city;
 	}
 
+	public double getAvrageGrade() {
+		return avrageGrade;
+	}
+	public void setAvrageGrade(double avrageGrade) {
+		this.avrageGrade = avrageGrade;
+	}
 	/*public double getMedicinePrice() {
 		return medicinePrice;
 	}

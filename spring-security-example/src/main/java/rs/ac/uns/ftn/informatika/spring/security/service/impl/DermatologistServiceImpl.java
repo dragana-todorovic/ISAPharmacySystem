@@ -506,6 +506,7 @@ public class DermatologistServiceImpl implements DermatologistService{
 			}
 		}
 		this.dermatologistRepository.save(derm);
+		
 	}
 
 }

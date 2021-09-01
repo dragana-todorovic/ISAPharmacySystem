@@ -15,12 +15,13 @@ public class PatientsCounslingView {
 	private int duration;
 	private String price;
 	private Boolean isCounslingExpired;
+	private Boolean isHistory;
 	public PatientsCounslingView() {
 		super();
 	}
 	public PatientsCounslingView(Long id, String pharmacistsFirstName, String pharmacistsLastName, String pharmacyName,
 			String pharmacyCity, String pharmacyStreet, LocalDateTime dateAndtime, int duration, String price,
-			Boolean isCounslingExpired) {
+			Boolean isCounslingExpired,Boolean isHistory) {
 		super();
 		this.id = id;
 		this.pharmacistsFirstName = pharmacistsFirstName;
@@ -32,6 +33,7 @@ public class PatientsCounslingView {
 		this.duration = duration;
 		this.price = price;
 		this.isCounslingExpired = isCounslingExpired;
+		this.isHistory=isHistory;
 	}
 	public Long getId() {
 		return id;
@@ -93,13 +95,28 @@ public class PatientsCounslingView {
 	public void setIsCounslingExpired(Boolean isCounslingExpired) {
 		this.isCounslingExpired = isCounslingExpired;
 	}
+	
+	public LocalDateTime getDateAndtime() {
+		return dateAndtime;
+	}
+	public void setDateAndtime(LocalDateTime dateAndtime) {
+		this.dateAndtime = dateAndtime;
+	}
+	public Boolean getIsHistory() {
+		return isHistory;
+	}
+	public void setIsHistory(Boolean isHistory) {
+		this.isHistory = isHistory;
+	}
 	@Override
 	public String toString() {
 		return "PatientsCounslingView [id=" + id + ", pharmacistsFirstName=" + pharmacistsFirstName
 				+ ", pharmacistsLastName=" + pharmacistsLastName + ", pharmacyName=" + pharmacyName + ", pharmacyCity="
-				+ pharmacyCity + ", pharmacyStreet=" + pharmacyStreet + ", date and time=" + dateAndtime + 
-				 ", duration=" + duration + ", price=" + price + ", isCounslingExpired=" + isCounslingExpired + "]";
+				+ pharmacyCity + ", pharmacyStreet=" + pharmacyStreet + ", dateAndtime=" + dateAndtime + ", duration="
+				+ duration + ", price=" + price + ", isCounslingExpired=" + isCounslingExpired + ", isHistory="
+				+ isHistory + "]";
 	}
+	
 	
 	
 	

@@ -121,11 +121,15 @@ public class AppointmentController {
 		for(DermatologistAppointment da: appointmentService.getAllDermAppointmentsByPatient(email)) {
 			String price=Double.toString(appointmentPriceService.getPriceByAppointment(da));
 			boolean isExpaired=false;
+			boolean isHistory=false;
 			if(da.getStartDateTime().isBefore(today.minusDays(1))) {
 				isExpaired=true;
 			}
+			if(da.getStartDateTime().isBefore(today)) {
+				isHistory=true;
+			}
 			PatientDermatologistAppointmentView view=new PatientDermatologistAppointmentView(da.getId(),da.getDermatologist().getUser().getFirstName(),da.getDermatologist().getUser().getLastName(),da.getPharmacy().getName(),
-					da.getPharmacy().getAddress().getCity(),da.getPharmacy().getAddress().getStreet(),da.getStartDateTime(),da.getDuration(),price,isExpaired);
+					da.getPharmacy().getAddress().getCity(),da.getPharmacy().getAddress().getStreet(),da.getStartDateTime(),da.getDuration(),price,isExpaired,isHistory);
 			result.add(view);
 		}
 		return result;

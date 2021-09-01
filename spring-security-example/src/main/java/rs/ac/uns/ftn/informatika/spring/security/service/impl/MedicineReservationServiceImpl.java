@@ -45,7 +45,6 @@ public class MedicineReservationServiceImpl implements MedicineReservationServic
 	
 	@Override
 	public MedicineReservation saveReservation(MedicineReservationDTO medicineReservationDto) {
-		 //reservation.getMedicineWithQuantity().setQuantity(reservation.getMedicineWithQuantity().getQuantity()-1);
 		 UUID numberOfReservation=UUID.randomUUID();
 		 User user = this.userService.findByUsername(medicineReservationDto.getPatientEmail());
 		 MedicineWithQuantity med = new MedicineWithQuantity();
