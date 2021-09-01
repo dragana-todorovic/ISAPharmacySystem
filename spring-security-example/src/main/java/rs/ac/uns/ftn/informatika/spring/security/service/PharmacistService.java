@@ -33,6 +33,6 @@ public interface PharmacistService {
 	Boolean isAppointmentAvailableForScheduling(Pharmacist pharmacist,Patient patient,Integer duration,Pharmacy pharmacy,LocalDate startDate, LocalDateTime startDateTime,LocalDateTime endDateTime); 
 	double getAvrageGrade(Pharmacist pharmacist);
 	Pharmacist getPharmacistsById(Long id);
-	List<RatingView> getAllPharmacistsPatientCanEvaluate(Patient patient);
-	void changeRating(int rating,Patient patient,Long id);
+	List<RatingView> getAllPharmacistsPatientCanEvaluate(long patient);
+	void changeRating(int rating,long patient,Long id);
 }

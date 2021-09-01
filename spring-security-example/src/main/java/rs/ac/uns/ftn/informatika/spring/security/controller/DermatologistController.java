@@ -514,7 +514,7 @@ public class DermatologistController {
 	public List<RatingView> getAllDermPatientCanEvaluate(@PathVariable String email) {
 		User user = this.userService.findByUsername(email);
 		Patient patient=this.patientService.findPatientByUser(user);
-		return dermatologistService.getAllDermPatientCanEvaluate(patient);
+		return dermatologistService.getAllDermPatientCanEvaluate(patient.getId());
 		
 	}
 	
@@ -523,7 +523,7 @@ public class DermatologistController {
 	 public ResponseEntity<?> changeRating(@PathVariable int rating,@PathVariable String email,@PathVariable Long id){
 		 User user = this.userService.findByUsername(email);
 		 Patient patient=this.patientService.findPatientByUser(user);
-		 this.dermatologistService.changeRating(rating,patient,id);
+		 this.dermatologistService.changeRating(rating,patient.getId(),id);
 		 return new ResponseEntity<>(HttpStatus.OK);
 	 }
 

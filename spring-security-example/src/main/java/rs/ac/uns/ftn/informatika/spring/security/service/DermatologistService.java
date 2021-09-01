@@ -29,6 +29,6 @@ public interface DermatologistService {
 	void saveAppointment(AppointmentDTO appointmantDTO,Pharmacy pharmacy);
 	Boolean isAppointmentAvailableForScheduling(Dermatologist dermatologist,Patient patient,Integer duration,Pharmacy pharmacy,LocalDate startDate, LocalDateTime startDateTime,LocalDateTime endDateTime);
 	Double getAvrageGrade(Dermatologist dermatologist);
-	List<RatingView> getAllDermPatientCanEvaluate(Patient patient);
-	void changeRating(int rating,Patient patient,Long dermatologistId);
+	List<RatingView> getAllDermPatientCanEvaluate(long patient);
+	void changeRating(int rating,long patient,Long dermatologistId);
 }
