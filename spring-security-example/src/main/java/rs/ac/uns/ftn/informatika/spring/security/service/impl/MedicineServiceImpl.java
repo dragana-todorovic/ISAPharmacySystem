@@ -249,7 +249,6 @@ public class MedicineServiceImpl implements MedicineService{
 				}
 			}
 		for(Medicine d : pom) {
-			System.out.println(d.getName());
 			RatingView rdw=new RatingView(d.getId(),d.getName(),
 					"");
 						

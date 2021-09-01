@@ -518,8 +518,15 @@ public class PharmacyController {
 	public List<RatingView> getAllPharmaciesPatientCanEvaluate(@PathVariable String email) {
 		User user = this.userService.findByUsername(email);
 		Patient patient=this.patientService.findPatientByUser(user);
-		return pharmacyService.getAllPharmaciesPatientCanEvaluate(patient);
-		
+		return pharmacyService.getAllPharmaciesPatientCanEvaluate(patient.getId());
 	}
+	 @PostMapping("/changeRating/{rating}/{email}/{id}")
+	 @PreAuthorize("hasRole('ROLE_PATIENT')")
+	 public ResponseEntity<?> changeRating(@PathVariable int rating,@PathVariable String email,@PathVariable Long id){
+		 User user = this.userService.findByUsername(email);
+		 Patient patient=this.patientService.findPatientByUser(user);
+		 this.pharmacyService.changeRating(rating,patient.getId(),id);
+		 return new ResponseEntity<>(HttpStatus.OK);
+	 }
 }
 

@@ -1,23 +1,26 @@
 $(document).ready(function() {
 	var trid;
 	var email = localStorage.getItem('email')
-	$('a#all_pharmacies').click(function(){
-				customAjax({
-		        method:'GET',
-		        url:'/pharmacy/getAll',
-		        contentType: 'application/json',
-		        success: function(data){
-					showPharmacies(data)
-				},
-				error: function(){
-					console.log("error");
-				}
-		     });
+	var tableToShow;
+	$('a#history_derm').click(function(){
+		tableToShow="history"
+			customAjax({
+	        method:'GET',
+	        url:'/appointment/getAllDermAppointmentsByPatient/'+email,
+	        contentType: 'application/json',
+	        success: function(data){
+				console.log(data)
+				showMyAppointmentsAtDermatologists(data)
+			},
+			error: function(){
+				console.log("error");
+			}
+	     });
 
 	});
 	
 	$('a#my_app_derm').click(function(){
-		console.log(email);
+		tableToShow="current"
 			customAjax({
 	        method:'GET',
 	        url:'/appointment/getAllDermAppointmentsByPatient/'+email,
@@ -40,6 +43,20 @@ $(document).ready(function() {
             contentType: 'application/json',
             success: function(data){
                 showSubscribedPharmacies(data)
+            },
+            error: function(){
+                console.log("error");
+            }
+         });
+
+    });
+	$('a#all_pharmacies').click(function(){
+        customAjax({
+            method:'GET',
+            url:'/pharmacy/getAll/' ,
+            contentType: 'application/json',
+            success: function(data){
+                showPharmacies(data)
             },
             error: function(){
                 console.log("error");
@@ -193,6 +210,62 @@ $(document).ready(function() {
         if (!this.asc) { rows = rows.reverse() }
         for (var i = 0; i < rows.length; i++) { table.append(rows[i]) }
     });
+	$("th[name=sortByCity]").click(function () {
+        if ($(this.getElementsByTagName("span")).attr(`class`) == "glyphicon glyphicon-arrow-down") {
+            $(this.getElementsByTagName("span")).removeClass("glyphicon glyphicon-arrow-down");
+            $(this.getElementsByTagName("span")).toggleClass("glyphicon glyphicon-arrow-up");
+        } else {
+            $(this.getElementsByTagName("span")).removeClass("glyphicon glyphicon-up-down");
+            $(this.getElementsByTagName("span")).toggleClass("glyphicon glyphicon-arrow-down");
+        }
+        var table = $(this).parents('table').eq(0)
+        var rows = table.find('tr:gt(1)').toArray().sort(comparer($(this).index()))
+        this.asc = !this.asc
+        if (!this.asc) { rows = rows.reverse() }
+        for (var i = 0; i < rows.length; i++) { table.append(rows[i]) }
+    });
+	$("th[name=sortByName]").click(function () {
+        if ($(this.getElementsByTagName("span")).attr(`class`) == "glyphicon glyphicon-arrow-down") {
+            $(this.getElementsByTagName("span")).removeClass("glyphicon glyphicon-arrow-down");
+            $(this.getElementsByTagName("span")).toggleClass("glyphicon glyphicon-arrow-up");
+        } else {
+            $(this.getElementsByTagName("span")).removeClass("glyphicon glyphicon-up-down");
+            $(this.getElementsByTagName("span")).toggleClass("glyphicon glyphicon-arrow-down");
+        }
+        var table = $(this).parents('table').eq(0)
+        var rows = table.find('tr:gt(1)').toArray().sort(comparer($(this).index()))
+        this.asc = !this.asc
+        if (!this.asc) { rows = rows.reverse() }
+        for (var i = 0; i < rows.length; i++) { table.append(rows[i]) }
+    });
+	$("th[name=sortByDuration]").click(function () {
+        if ($(this.getElementsByTagName("span")).attr(`class`) == "glyphicon glyphicon-arrow-down") {
+            $(this.getElementsByTagName("span")).removeClass("glyphicon glyphicon-arrow-down");
+            $(this.getElementsByTagName("span")).toggleClass("glyphicon glyphicon-arrow-up");
+        } else {
+            $(this.getElementsByTagName("span")).removeClass("glyphicon glyphicon-up-down");
+            $(this.getElementsByTagName("span")).toggleClass("glyphicon glyphicon-arrow-down");
+        }
+        var table = $(this).parents('table').eq(0)
+        var rows = table.find('tr:gt(1)').toArray().sort(comparer($(this).index()))
+        this.asc = !this.asc
+        if (!this.asc) { rows = rows.reverse() }
+        for (var i = 0; i < rows.length; i++) { table.append(rows[i]) }
+    });
+	$("th[name=sortByDate]").click(function () {
+        if ($(this.getElementsByTagName("span")).attr(`class`) == "glyphicon glyphicon-arrow-down") {
+            $(this.getElementsByTagName("span")).removeClass("glyphicon glyphicon-arrow-down");
+            $(this.getElementsByTagName("span")).toggleClass("glyphicon glyphicon-arrow-up");
+        } else {
+            $(this.getElementsByTagName("span")).removeClass("glyphicon glyphicon-up-down");
+            $(this.getElementsByTagName("span")).toggleClass("glyphicon glyphicon-arrow-down");
+        }
+        var table = $(this).parents('table').eq(0)
+        var rows = table.find('tr:gt(1)').toArray().sort(comparer($(this).index()))
+        this.asc = !this.asc
+        if (!this.asc) { rows = rows.reverse() }
+        for (var i = 0; i < rows.length; i++) { table.append(rows[i]) }
+    });
 
 function showAvailableAppointments(data){
 	$('#pharmacy-details').attr('hidden',true);
@@ -210,13 +283,25 @@ function showAvailableAppointments(data){
 
 	$('#appointments_dermatology_body').html(temp);
 	$('#derm_appointments').attr('hidden',false);
-	$('#pharmacy-details').attr('hidden',true);
-	$('#pharmacies_for_derm_appointments').attr('hidden',true);
+	$('#eval').attr('hidden',true);	
+	$('#my_derm_appointments').attr('hidden',true);
+	$('#pharmacy-details').attr('hidden',true);		
+	$('#all_pharmacies_show').attr('hidden',true);	
 	$('#edit-profile').attr('hidden', true);
 	$('#show').attr('hidden',true);
-	$('#my_derm_appointments').attr('hidden',true);
 	$('#ph_av_con').attr('hidden',true)
 	$('#ph_con').attr('hidden',true)
+	$('#pharmacies_for_derm_appointments').attr('hidden',true);
+	$('#shedule_consulting').attr('hidden',true);
+	$('#my_ph_appointments').attr('hidden',true);
+	$('#medicine_show').attr('hidden',true);
+	$('#reserved_medicine_div').attr('hidden',true);
+	$('#search-box-medicine').attr('hidden',true);
+	$('#qr_code_show').attr('hidden', true);
+	$('#pharamcies_with_medicine_show').attr('hidden',true);
+    $('#pharmacyComplaintDiv').attr('hidden', true);
+    $('#dermatologistComplaintDiv').attr('hidden', true);
+    $('#pharmacistComplaintDiv').attr('hidden', true);
 }
 function showSubscribedPharmacies(data){
 	$('#pharmacy-details').attr('hidden',true);
@@ -231,12 +316,25 @@ function showSubscribedPharmacies(data){
 			</tr>`;
 	}
 	$('#all_pharmacies_table').html(temp);
-	//$('#pharmacies_for_derm_appointments').attr('hidden',false);
+	$('#eval').attr('hidden',true);	
+	$('#my_derm_appointments').attr('hidden',true);
+	$('#pharmacy-details').attr('hidden',true);		
+	$('#all_pharmacies_show').attr('hidden',true);	
 	$('#edit-profile').attr('hidden', true);
 	$('#show').attr('hidden',true);
-	$('#my_derm_appointments').attr('hidden',true);
+	$('#derm_appointments').attr('hidden',true);
 	$('#ph_av_con').attr('hidden',true)
 	$('#ph_con').attr('hidden',true)
+	$('#shedule_consulting').attr('hidden',true);
+	$('#my_ph_appointments').attr('hidden',true);
+	$('#medicine_show').attr('hidden',true);
+	$('#reserved_medicine_div').attr('hidden',true);
+	$('#search-box-medicine').attr('hidden',true);
+	$('#qr_code_show').attr('hidden', true);
+	$('#pharamcies_with_medicine_show').attr('hidden',true);
+    $('#pharmacyComplaintDiv').attr('hidden', true);
+    $('#dermatologistComplaintDiv').attr('hidden', true);
+    $('#pharmacistComplaintDiv').attr('hidden', true);
 }
 function showPharmacies(data){
 	$('#pharmacy-details').attr('hidden',true);
@@ -263,11 +361,25 @@ function showPharmacies(data){
 	}
 	$('#all_pharmacies_table').html(temp);
 	$('#all_pharmacies_show').attr('hidden',false);	
+	$('#eval').attr('hidden',true);	
+	$('#my_derm_appointments').attr('hidden',true);
+	$('#pharmacy-details').attr('hidden',true);		
 	$('#edit-profile').attr('hidden', true);
 	$('#show').attr('hidden',true);
-	$('#my_derm_appointments').attr('hidden',true);
+	$('#derm_appointments').attr('hidden',true);
 	$('#ph_av_con').attr('hidden',true)
 	$('#ph_con').attr('hidden',true)
+	$('#pharmacies_for_derm_appointments').attr('hidden',true);
+	$('#shedule_consulting').attr('hidden',true);
+	$('#my_ph_appointments').attr('hidden',true);
+	$('#medicine_show').attr('hidden',true);
+	$('#reserved_medicine_div').attr('hidden',true);
+	$('#search-box-medicine').attr('hidden',true);
+	$('#qr_code_show').attr('hidden', true);
+	$('#pharamcies_with_medicine_show').attr('hidden',true);
+    $('#pharmacyComplaintDiv').attr('hidden', true);
+    $('#dermatologistComplaintDiv').attr('hidden', true);
+    $('#pharmacistComplaintDiv').attr('hidden', true);
 }
 function showPharmacy(data){
 	$('#pharmacy-name').text("Name:"+data.name);
@@ -275,10 +387,25 @@ function showPharmacy(data){
 	$('#pharmacy-city').text("City:"+data.address.city);
 	$('#pharmacy-address').text("Street:"+data.address.street);
 	$('#pharmacy-details').attr('hidden',false);
-	$('#pharmacies_for_derm_appointments').attr('hidden',true);
-	$('#my_derm_appointments').attr('hidden',true);	
+	$('#eval').attr('hidden',true);	
+	$('#my_derm_appointments').attr('hidden',true);
+	$('#all_pharmacies_show').attr('hidden',true);	
+	$('#edit-profile').attr('hidden', true);
+	$('#show').attr('hidden',true);
+	$('#derm_appointments').attr('hidden',true);
 	$('#ph_av_con').attr('hidden',true)
 	$('#ph_con').attr('hidden',true)
+	$('#pharmacies_for_derm_appointments').attr('hidden',true);
+	$('#shedule_consulting').attr('hidden',true);
+	$('#my_ph_appointments').attr('hidden',true);
+	$('#medicine_show').attr('hidden',true);
+	$('#reserved_medicine_div').attr('hidden',true);
+	$('#search-box-medicine').attr('hidden',true);
+	$('#qr_code_show').attr('hidden', true);
+	$('#pharamcies_with_medicine_show').attr('hidden',true);
+    $('#pharmacyComplaintDiv').attr('hidden', true);
+    $('#dermatologistComplaintDiv').attr('hidden', true);
+    $('#pharmacistComplaintDiv').attr('hidden', true);
 	
 }
 
@@ -288,41 +415,88 @@ function showMyAppointmentsAtDermatologists(data){
 	for (i in data){
 		var date=data[i].dateAndtime.split("T")[0];
 		var time=data[i].dateAndtime.split("T")[1];
-		if(data[i].isAppointmentExpired){
-		temp+=`<tr id="`+data[i].id+`">
-			<td >`+data[i].dermatologistsFirstName+` `+data[i].dermatologistsLastName+`</td>
-			<td>`+data[i].pharmacyName+`</td>
-			<td>`+data[i].pharmacyCity+`</td>
-			<td>`+data[i].pharmacyStreet+`</td>
-			<td>`+date+` `+time+`</td>
-			<td>`+data[i].duration+` min </td>
-			<td>`+data[i].price+` din </td>
-			<td><button id="cancel_appointment" class="ui primary basic button" disabled>Cancel appointment</button>
-			</tr>`;
+		if(tableToShow=="history"){
+			if(data[i].isHistory){
+				$('#label_derm').text("HISTORY OF MY APPOINTMENTS AT DERMATOLOGIST");
+				if(data[i].isAppointmentExpired){
+				temp+=`<tr id="`+data[i].id+`">
+					<td >`+data[i].dermatologistsFirstName+` `+data[i].dermatologistsLastName+`</td>
+					<td>`+data[i].pharmacyName+`</td>
+					<td>`+data[i].pharmacyCity+`</td>
+					<td>`+data[i].pharmacyStreet+`</td>
+					<td>`+date+` `+time+`</td>
+					<td>`+data[i].duration+` min </td>
+					<td>`+data[i].price+` din </td>
+					<td><button id="cancel_appointment" class="ui primary basic button" disabled>Cancel appointment</button>
+					</tr>`;
+				}
+				else{
+					
+				temp+=`<tr id="`+data[i].id+`">
+					<td >`+data[i].dermatologistsFirstName+` `+data[i].dermatologistsLastName+`</td>
+					<td>`+data[i].pharmacyName+`</td>
+					<td>`+data[i].pharmacyCity+`</td>
+					<td>`+data[i].pharmacyStreet+`</td>
+					<td>`+date+` `+time+`</td>
+					<td>`+data[i].duration+` min </td>
+					<td>`+data[i].price+` din </td>
+					<td><button id="cancel_appointment" class="ui primary basic button">Cancel appointment</button>
+					</tr>`;
+				}
+			}
+		}else{
+			$('#label_derm').text("MY APPOINTMENTS AT DERMATOLOGISTS");
+			if(!data[i].isHistory){
+				if(data[i].isAppointmentExpired){
+				temp+=`<tr id="`+data[i].id+`">
+					<td >`+data[i].dermatologistsFirstName+` `+data[i].dermatologistsLastName+`</td>
+					<td>`+data[i].pharmacyName+`</td>
+					<td>`+data[i].pharmacyCity+`</td>
+					<td>`+data[i].pharmacyStreet+`</td>
+					<td>`+date+` `+time+`</td>
+					<td>`+data[i].duration+` min </td>
+					<td>`+data[i].price+` din </td>
+					<td><button id="cancel_appointment" class="ui primary basic button" disabled>Cancel appointment</button>
+					</tr>`;
+				}
+				else{
+				temp+=`<tr id="`+data[i].id+`">
+					<td >`+data[i].dermatologistsFirstName+` `+data[i].dermatologistsLastName+`</td>
+					<td>`+data[i].pharmacyName+`</td>
+					<td>`+data[i].pharmacyCity+`</td>
+					<td>`+data[i].pharmacyStreet+`</td>
+					<td>`+date+` `+time+`</td>
+					<td>`+data[i].duration+` min </td>
+					<td>`+data[i].price+` din </td>
+					<td><button id="cancel_appointment" class="ui primary basic button">Cancel appointment</button>
+					</tr>`;
+				}
+			}
 		}
-		else{
-		temp+=`<tr id="`+data[i].id+`">
-			<td >`+data[i].dermatologistsFirstName+` `+data[i].dermatologistsLastName+`</td>
-			<td>`+data[i].pharmacyName+`</td>
-			<td>`+data[i].pharmacyCity+`</td>
-			<td>`+data[i].pharmacyStreet+`</td>
-			<td>`+date+` `+time+`</td>
-			<td>`+data[i].duration+` min </td>
-			<td>`+data[i].price+` din </td>
-			<td><button id="cancel_appointment" class="ui primary basic button">Cancel appointment</button>
-			</tr>`;
-		}
+
 	}
 	
 	$('#my_appointments_dermatology_body').html(temp);
 	$('#my_derm_appointments').attr('hidden',false);
-	$('#derm_appointments').attr('hidden',true);
-	$('#pharmacy-details').attr('hidden',true);
-	$('#pharmacies_for_derm_appointments').attr('hidden',true);
+	$('#eval').attr('hidden',true);	
+	$('#pharmacy-details').attr('hidden',true);		
+	$('#all_pharmacies_show').attr('hidden',true);	
 	$('#edit-profile').attr('hidden', true);
 	$('#show').attr('hidden',true);
+	$('#derm_appointments').attr('hidden',true);
 	$('#ph_av_con').attr('hidden',true)
 	$('#ph_con').attr('hidden',true)
+	$('#pharmacies_for_derm_appointments').attr('hidden',true);
+	$('#shedule_consulting').attr('hidden',true);
+	$('#my_ph_appointments').attr('hidden',true);
+	$('#medicine_show').attr('hidden',true);
+	$('#reserved_medicine_div').attr('hidden',true);
+	$('#search-box-medicine').attr('hidden',true);
+	$('#qr_code_show').attr('hidden', true);
+	$('#pharamcies_with_medicine_show').attr('hidden',true);
+    $('#pharmacyComplaintDiv').attr('hidden', true);
+    $('#dermatologistComplaintDiv').attr('hidden', true);
+    $('#pharmacistComplaintDiv').attr('hidden', true);
 }
 function comparer(index) { //ZA SORTIRANJE!
     return function (a, b) {

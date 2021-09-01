@@ -61,7 +61,7 @@ $(document).ready(function() {
 
 	});
 		$('a#ev_pharmacy').click(function(){
-				pom="derm";
+				pom="pharmacy";
 				customAjax({
 		        method:'GET',
 		        url:'/pharmacy/getAllPharmaciesPatientCanEvaluate/'+email,
@@ -84,18 +84,15 @@ $(document).ready(function() {
 
 	})
 		$('#send_rating').click(function(){
-		var decoded = parseJwt(localStorage.getItem('jwt'));
-		var patientEmail = decoded.email
 		var rating=$("#rating :selected").text();
-		console.log(id);
-		console.log(rating)
-		console.log(patientEmail);	
 		if(pom=="derm"){
 		    customAjax({
 	            url: '/derm/changeRating/' + rating + '/'+ email + '/' + id ,
 	            method: 'POST',
 	            success: function () {
 	               alert("Sucessfully changed dermatologists rating!");
+					modalEv.style.display = "none"
+					window.location.href = "/html/patient.html";
 	            },
 	            error: function () {
 					console.log("error")
@@ -108,19 +105,36 @@ $(document).ready(function() {
 	            method: 'POST',
 	            success: function () {
 	               alert("Sucessfully changed pharmacists rating!");
+				  modalEv.style.display = "none"
+				  window.location.href = "/html/patient.html";
 	            },
 	            error: function () {
 					console.log("error")
 	            }
 	
 	    	});
-		}
-		else if(pom=="med"){
+		}else if(pom=="med"){
 			 customAjax({
 	            url: '/medicine/changeRating/' + rating + '/'+ email + '/' +id ,
 	            method: 'POST',
 	            success: function () {
 	               alert("Sucessfully changed medicines rating!");
+					modalEv.style.display = "none"
+				  window.location.href = "/html/patient.html";
+	            },
+	            error: function () {
+					console.log("error")
+	            }
+	
+	    	});
+		}else if(pom=="pharmacy"){
+			 customAjax({
+	            url: '/pharmacy/changeRating/' + rating + '/'+ email + '/' +id ,
+	            method: 'POST',
+	            success: function () {
+	               alert("Sucessfully changed pharmacy rating!");
+					modalEv.style.display = "none"
+				  window.location.href = "/html/patient.html";
 	            },
 	            error: function () {
 					console.log("error")
@@ -160,6 +174,18 @@ function show(data){
 	$('#edit-profile').attr('hidden', true);
 	$('#show').attr('hidden',true);
 	$('#my_derm_appointments').attr('hidden',true);
+	$('#derm_appointments').attr('hidden',true);
 	$('#ph_av_con').attr('hidden',true)
 	$('#ph_con').attr('hidden',true)
+	$('#pharmacies_for_derm_appointments').attr('hidden',true);
+	$('#shedule_consulting').attr('hidden',true);
+	$('#my_ph_appointments').attr('hidden',true);
+	$('#medicine_show').attr('hidden',true);
+	$('#reserved_medicine_div').attr('hidden',true);
+	$('#search-box-medicine').attr('hidden',true);
+	$('#qr_code_show').attr('hidden', true);
+	$('#pharamcies_with_medicine_show').attr('hidden',true);
+    $('#pharmacyComplaintDiv').attr('hidden', true);
+    $('#dermatologistComplaintDiv').attr('hidden', true);
+    $('#pharmacistComplaintDiv').attr('hidden', true);
 }

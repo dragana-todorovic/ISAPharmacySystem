@@ -57,10 +57,7 @@ public class PharmacistServiceImpl implements PharmacistService {
 
 	@Autowired
 	private PharmacistRepository pharmacistRepository;
-	@Autowired
-	private HolidayRequestRepository holidayRequestRepository;
-	@Autowired
-	private AppointmentPriceRepository appointmentPriceRepository;
+
 	@Autowired
 	private PharmacistCounselingPriceRepository pharmacistCounselingPriceRepository;
 	@Autowired
@@ -478,7 +475,7 @@ public class PharmacistServiceImpl implements PharmacistService {
 			if(pc.getPatient()==null) {
 				continue;
 			}
-			if(pc.getPatient().equals(patient)) {
+			if(pc.getPatient().getId().equals(patient)) {
 				if(pc.getStartDateTime().isBefore( LocalDateTime.now()) && !pom.contains(pc.getPharmacist())) {
 					pom.add(pc.getPharmacist());
 					}
