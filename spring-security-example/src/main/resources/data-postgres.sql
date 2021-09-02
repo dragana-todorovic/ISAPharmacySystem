@@ -433,16 +433,16 @@ INSERT INTO medicineorder_medicines(medicine_order_id,medicines_id) VALUES (5,9)
 --medicine reservation
 
 
-INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id,version) VALUES ('123e4567-e89b-12d3-a456-426614174000','2021-09-27','14:00:00.000000',0,1,2,1);
-INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id,version) VALUES ('123e4567-e89b-12d3-a456-426614174004','2021-09-26','08:00:00.000000',0,4,1,1);
-INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id,version) VALUES ('123e4567-e89b-12d3-a456-426614174003','2021-10-04','14:00:00.000000',0,1,2,1);
-INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id,version) VALUES ('123e4567-e89b-12d3-a456-426614174005','2021-12-04','14:00:00.000000',0,1,1,1);
-INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id,version) VALUES ('123e4567-e89b-12d3-a456-426614174008','2021-10-22','14:00:00.000000',0,3,1,1);
-INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id,version) VALUES ('123e4567-e89b-12d3-a456-426614174011','2021-10-04','14:00:00.000000',2,1,1,1);
-INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id,version) VALUES ('123e4568-e89b-12d3-a456-426614174000','2021-08-04','14:00:00.000000',2,4,2,1);
-INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id,version) VALUES ('133e4567-e89b-12d3-a456-426614174000','2021-03-05','14:00:00.000000',2,1,1,1);
-INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id,version) VALUES ('123e4567-e89b-12d3-a456-426614174030','2021-12-06','14:00:00.000000',2,1,2,1);
-INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id,version) VALUES ('123e4566-e89b-12d3-a456-426614174000','2021-10-15','14:00:00.000000',2,1,2,1);
+INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id,version,is_penal_given) VALUES ('123e4567-e89b-12d3-a456-426614174000','2021-09-27','14:00:00.000000',0,1,2,1,false);
+INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id,version,is_penal_given) VALUES ('123e4567-e89b-12d3-a456-426614174004','2021-09-26','08:00:00.000000',0,4,1,1,false);
+INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id,version,is_penal_given) VALUES ('123e4567-e89b-12d3-a456-426614174003','2021-10-04','14:00:00.000000',0,1,2,1,false);
+INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id,version,is_penal_given) VALUES ('123e4567-e89b-12d3-a456-426614174005','2021-12-04','14:00:00.000000',0,1,1,1,false);
+INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id,version,is_penal_given) VALUES ('123e4567-e89b-12d3-a456-426614174008','2021-10-22','14:00:00.000000',0,3,1,1,false);
+INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id,version,is_penal_given) VALUES ('123e4567-e89b-12d3-a456-426614174011','2021-10-04','14:00:00.000000',2,1,1,1,false);
+INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id,version,is_penal_given) VALUES ('123e4568-e89b-12d3-a456-426614174000','2021-08-04','14:00:00.000000',2,4,2,1,false);
+INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id,version,is_penal_given) VALUES ('133e4567-e89b-12d3-a456-426614174000','2021-03-05','14:00:00.000000',0,1,1,1,false);
+INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id,version,is_penal_given) VALUES ('123e4567-e89b-12d3-a456-426614174030','2021-02-06','14:00:00.000000',0,1,2,1,false);
+INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id,version,is_penal_given) VALUES ('123e4566-e89b-12d3-a456-426614174000','2021-10-15','14:00:00.000000',2,1,2,1,false);
 
 
 --pharmacy medicine reservations

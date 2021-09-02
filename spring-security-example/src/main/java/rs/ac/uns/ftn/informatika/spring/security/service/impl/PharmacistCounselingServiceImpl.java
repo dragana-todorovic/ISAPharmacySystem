@@ -141,7 +141,7 @@ public class PharmacistCounselingServiceImpl implements PharmacistCounselingServ
 					grade="";
 				}
 				result.add(new PharmacyForCounselingView(pharmacist.getWorkingTimes().getPharmacy().getId(),pharmacist.getWorkingTimes().getPharmacy().getName(),pharmacist.getWorkingTimes().getPharmacy().getAddress().getCity(),pharmacist.getWorkingTimes().getPharmacy().getAddress().getStreet(),
-						grade,"cena"));
+						grade));
 			}
 			else {
 				continue;
@@ -179,7 +179,14 @@ public class PharmacistCounselingServiceImpl implements PharmacistCounselingServ
 					}
 				}
 				if(isWorking) {
-					result.add(new PharamcistForCounselingView(pharmacist.getId(),pharmacist.getUser().getFirstName(),pharmacist.getUser().getLastName(),pharmacistService.getAvrageGrade(pharmacist)));
+					double avrageGrade;
+					if(Double.isNaN(pharmacistService.getAvrageGrade(pharmacist))) {
+						avrageGrade=0;
+					}
+					else {
+						avrageGrade=pharmacistService.getAvrageGrade(pharmacist);
+					}
+					result.add(new PharamcistForCounselingView(pharmacist.getId(),pharmacist.getUser().getFirstName(),pharmacist.getUser().getLastName(),avrageGrade));
 				}
 				else {
 					continue;
@@ -205,7 +212,7 @@ public class PharmacistCounselingServiceImpl implements PharmacistCounselingServ
 				isHistory=true;
 			}
 			PatientsCounslingView pcv=new PatientsCounslingView(pc.getId(),pc.getPharmacist().getUser().getFirstName(),pc.getPharmacist().getUser().getLastName(),
-					pharmacy.getName(),pharmacy.getAddress().getCity(),pharmacy.getAddress().getStreet(),pc.getStartDateTime(),pc.getDuration(),"cena",isExpaired,isHistory);
+					pharmacy.getName(),pharmacy.getAddress().getCity(),pharmacy.getAddress().getStreet(),pc.getStartDateTime(),pc.getDuration(),isExpaired,isHistory);
 			result.add(pcv);
 		}
 		return result;

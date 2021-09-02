@@ -293,4 +293,13 @@ public class PatientController {
 			return null;
 		}
 	}
+	@PostMapping("/checkAndAddPenals/{email}")
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	public ResponseEntity<?> checkAndAddPenals(@PathVariable(name="email") String email) {
+		User user = this.userService.findByEmail(email);
+		Patient patient = this.patientService.findPatientByUser(user);
+		this.patientService.checkAndAddPenals(patient);
+		return  new ResponseEntity<>(HttpStatus.OK);
+	
+	}
 }
