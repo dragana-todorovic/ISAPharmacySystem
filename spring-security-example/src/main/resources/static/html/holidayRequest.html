@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <script src="../scripts/customAjax.js"></script>
-    <script src="../scripts/adminsystem/register.js"></script>   
+    <link rel="stylesheet" type="text/css" href="../css/modal.css">
+    <script src="../scripts/adminsystem/holidayRequest.js"></script>
     <script src="../scripts/searchPharmacies.js"></script>
     <script src="../scripts/jwt.js"></script>
     <title>Admin system Homepage</title>
@@ -126,7 +127,7 @@ div.container4 h2 {
                 <a id="register_admin_system" href="registerAdminSystem.html" >Admin System</a>
             </div>
         </li>
-		<li><a id="s_p" href="loyaltyScale.html">Search Pharmacies</a></li>
+        <li><a id="s_p" href="loyaltyScale.html">Search Pharmacies</a></li>
         <li class="dropdown" style="float:right;">
             <a href="javascript:void(0)" class="dropbtn">Profile</a>
             <div class="dropdown-content" style="right:0;">
@@ -135,63 +136,70 @@ div.container4 h2 {
             </div>
 
         </li>
-
-
     </ul>
     <div id = "showData" class="container4" style = "color : white">
         <table class="ui large table" style="width:50%; margin-left:auto;
 			    margin-right:auto; margin-top: 40px;">
-            <thead>
-            <tr class="success">
-                <th colspan="2" class = "text-info" style= "text-align:center;">Register New System Admin</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>Email:</td>
-                <td class="ui input small"> <input type="text" id="txtEmail" /></td>
-            </tr>
-            <tr>
-                <td>Password:</td>
-                <td class="ui input small"> <input type="text" id="txtPassword" /></td>
-
-            </tr>
-            <tr>
-                <td>First Name:</td>
-                <td class="ui input small"> <input type="text" id="txtFirstName" /></td>
-            </tr>
-            <tr>
-                <td>Last Name:</td>
-                <td class="ui input small"> <input type="text" id="txtLastName" /></td>
-            </tr>
-
-            <tr>
-                <td>Country:</td>
-                <td class="ui input small"> <input type="text" id="txtCountry" /></td>
-            </tr>
-            <tr>
-                <td>City:</td>
-                <td class="ui input small"> <input type="text" id="txtCity" /></td>
-            </tr>
-            <tr>
-                <td>Address:</td>
-                <td class="ui input small"> <input type="text" id="txtAddress" /></td>
-            </tr>
-            <tr>
-                <td>Phone Number:</td>
-                <td class="ui input small"> <input type="number" id="txtNumber" /></td>
-            </tr>
+                <thead>
+                <tr><th>First name</th>
+                    <th>Last name</th>
+                    <th>Avarage rating</th>
+                    <th>Pharmacies</th>
+                    <th>Vaction requests</th>
+                </tr></thead><tbody id="tabelaDermatologa">
             </tbody>
-            <tfoot class="full-width">
-            <tr>
-                <th></th>
-                <th colspan="2">
-                    <input id = "submitRegisterSystemAdmin" class="ui right floated positive basic button" type = "button" value = "Submit"></input>
-
-                </th>
-            </tr>
-            </tfoot>
         </table> <p id="er"> </p>
+    </div>
+
+
+
+
+    <div id="modal-allRequest" class="modal">
+        <div class="modal-content" style="text-align: center;">
+            <span class="closeAllRequest">&times;</span>
+                <div class="header">
+                    All requests
+                </div>
+                <div class="content">
+
+                    <table class="ui table" style="width:50%; margin-left:auto;
+			    margin-right:auto; margin-top: 40px;">
+                        <thead>
+                        <tr><th>Start date</th>
+                            <th>End date</th>
+                            <th>Status</th>
+                            <th></th>
+                        </tr></thead><tbody id="zahtjeviTabela">
+
+                    </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    <div id="modal-declineRequest" class="modal">
+        <div class="modal-content" style="text-align: center;">
+            <span class="closeDeclineRequest">&times;</span>
+            <table class="centered">
+                <tbody>
+                <tr colspan="2">
+                    <th colspan="2">Enter reason why you decline that request: </th>
+                </tr>
+                <tr >
+                    <td class="ui input" style="width:150%">
+                        <input type="text" id="reason" />
+                    </td>
+                </tr>
+                </tbody>
+                <tfoot class="full-width">
+                <tr>
+                    <th></th>
+                    <th colspan="2">
+                        <input id = "decline" class="ui right floated positive basic button" type = "button" value = "Send Answer"></input>
+                    </th>
+                </tr>
+                </tfoot>
+            </table>
     </div>
 </div>
 </body>

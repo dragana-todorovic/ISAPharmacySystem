@@ -658,6 +658,18 @@ public class PharmacyServiceImpl implements PharmacyService{
 		return holidayRequests;
 	}
 
+
+	public Set<HolidayRequest> getHolidayRequestsForDerm(long id) {
+		Dermatologist dermatologist = this.dermatologistRepository.findById(id).get();
+
+
+		Set<HolidayRequest> holidayRequests = new HashSet<HolidayRequest>();
+		for(HolidayRequest hr : dermatologist.getHolidayRequests()) {
+				holidayRequests.add(hr);
+
+		}
+		return holidayRequests;
+	}
 	@Override
 	public Boolean acceptHolidayRequest(long id,long dermatologistId) {
 		Dermatologist dermatologist = this.dermatologistRepository.findById(dermatologistId).get();
@@ -686,6 +698,7 @@ public class PharmacyServiceImpl implements PharmacyService{
 		return true;
 		
 	}
+
 
 	@Override
 	public void declineHolidayRequest(long id,long dermatologistId, String reason) {

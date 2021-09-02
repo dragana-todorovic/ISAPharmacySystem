@@ -350,9 +350,15 @@ public class PharmacyController {
 	public Set<HolidayRequest> getHolidayRequests(@PathVariable(name="id") String id,@PathVariable(name="email") String email) {
 		return this.pharmacyService.getHolidayRequestsByPharmacy(Long.parseLong(id),email);
 	}
+
+	@GetMapping("/getHolidayRequestsForDerm/{id}")
+	@PreAuthorize("hasRole('ADMIN_SYSTEM')")
+	public Set<HolidayRequest> getHolidayRequestsForDerm(@PathVariable(name="id") String id) {
+		return this.pharmacyService.getHolidayRequestsForDerm(Long.parseLong(id));
+	}
 	
 	@PostMapping("/acceptHolidayRequest/{id}/{dermatologistId}")
-	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY') || hasRole('ADMIN_SYSTEM')")
 	public ResponseEntity<?> acceptHolidayRequest(@PathVariable(name="id") String id,
 			@PathVariable(name="dermatologistId") String dermatologistId) {
 		if(this.pharmacyService.acceptHolidayRequest(Long.parseLong(id), Long.parseLong(dermatologistId))) {
@@ -362,7 +368,7 @@ public class PharmacyController {
 		}
 	}
 	@PostMapping("/declineHolidayRequest/{id}/{dermatologistId}/{reason}")
-	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY') || hasRole('ADMIN_SYSTEM')")
 	public ResponseEntity<?> declineHolidayRequest(@PathVariable(name="id") String id,
 			@PathVariable(name="dermatologistId") String dermatologistId,
 			@PathVariable(name="reason") String reason) {
