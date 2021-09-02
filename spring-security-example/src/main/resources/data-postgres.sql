@@ -396,8 +396,8 @@ INSERT INTO pharmacist_holiday_requests(pharmacist_id,holiday_requests_id) VALUE
 
 
 --eprescription
-INSERT INTO eprescription(issued_date,patient_id) VALUES ('2017-10-01',1);
-INSERT INTO eprescription(issued_date,patient_id) VALUES ('2017-10-01',2);
+INSERT INTO eprescription(issued_date,patient_id, pharmacy_id) VALUES ('2017-10-01',1,1);
+INSERT INTO eprescription(issued_date,patient_id,pharmacy_id) VALUES ('2017-10-01',2,2);
 
 --eprescription medicine
 INSERT INTO eprescription_medicines(eprescription_id,medicines_id) values (1,1);

@@ -140,6 +140,7 @@ public class PatientServiceImpl implements PatientService {
 		}
 
 		ePrescription.setMedicines(mqSet);
+		ePrescription.setPharmacy(pharmacy);
 		this.ePrescriptionService.save(ePrescription);
 
 		//update in pharmacy medicine quantity
