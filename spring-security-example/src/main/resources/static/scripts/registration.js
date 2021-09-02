@@ -115,7 +115,7 @@ $(document).ready(function(e){
 	var country=input_country.val();
 	var city=input_city.val();
 	var address=input_address.val();
-	var phoneNumber=input_phone.val();
+	var phonennumber=input_phone.val();
     var email = input_email.val();
     var password = input_password.val();
 	
@@ -125,7 +125,7 @@ $(document).ready(function(e){
 		country: country,
 		city:city,
 		address:address,
-		phone :phoneNumber,
+		phoneNumber :phonennumber,
 		email:email,
 		password:password});
 	
@@ -135,12 +135,13 @@ $(document).ready(function(e){
       data:obj,
 	  contentType: 'application/json',
 	        success: function(){
-		  	p_log.text('')
-	        	alert("Sucess registration.")
-	        	
+	            localStorage.setItem('obj', obj);
+		  	    p_log.text('')
+	        	alert("Check your email to configure your registration.")
+	        	setInterval(timer, 60000);
 			},
-		      error: function(){
-		       	p_log.text('Error');
+		    error: function(){
+		       	p_log.text('User with that email already exists');
 		      }
     });
     

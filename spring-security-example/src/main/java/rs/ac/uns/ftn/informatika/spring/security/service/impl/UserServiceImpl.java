@@ -155,6 +155,7 @@ public class UserServiceImpl implements UserService {
 		u.setAddress(userRequest.getAddress());
 		u.setPhone(userRequest.getPhone());
 		u.setEnabled(true);
+		u.setLogged(true);
 
 		List<Authority> auth = authService.findByname("ROLE_PATIENT");
 		u.setAuthorities(auth);

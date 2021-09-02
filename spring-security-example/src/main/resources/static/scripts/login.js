@@ -106,14 +106,14 @@ $(document).ready(function(e){
                                      },
                                      error: function(){
 
-                                       p_log.text('Wrong credentials');
+                                       p_log.text('You entered wrong email or password. Try again!');
                                      }
                
                                    }) }
         	  else if (data.responseText == "NOT LOGGED") {
         		  location.href = "changePassword.html";
         	  } else {
-        		  p_log.text('Wrong credentials');
+        		  p_log.text('You entered wrong email or password. Try again!');
         	  }
                   },
           error: function(){
