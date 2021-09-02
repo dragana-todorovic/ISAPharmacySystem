@@ -48,6 +48,21 @@ $(document).ready(function() {
             modalMedicines.style.display = "none";
         }
     }
+	$(window).on('load', function() {
+ 		 customAjax({
+            url: '/patient/checkAndAddPenals/'+email ,
+            method: 'POST',
+            success: function () {
+               console.log("success")
+            },
+            error: function () {
+                console.log("error")
+            }
+
+        });
+	});
+
+
     $('input:radio[name="postage"]').change(function(){
             if ($(this).is(':checked') ) {
                 selectedType = $(this).val();

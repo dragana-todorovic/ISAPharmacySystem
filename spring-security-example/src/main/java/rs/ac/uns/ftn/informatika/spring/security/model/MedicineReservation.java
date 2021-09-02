@@ -46,6 +46,9 @@ public class MedicineReservation {
 	@Column(name = "status", nullable = false)
 	private MedicineReservationStatus status;
 	
+	@Column(name = "isPenalGiven",nullable = false)
+	private Boolean isPenalGiven;
+	
 	@Version
 	@Column(name = "version", nullable = false,columnDefinition = "int default 1")
 	private long version;
@@ -112,6 +115,22 @@ public class MedicineReservation {
 
 	public void setNumberOfReservation(UUID numberOfReservation) {
 		this.numberOfReservation = numberOfReservation;
+	}
+
+	public Boolean getIsPenalGiven() {
+		return isPenalGiven;
+	}
+
+	public void setIsPenalGiven(Boolean isPenalGiven) {
+		this.isPenalGiven = isPenalGiven;
+	}
+
+	public Long getVersion() {
+		return version;
+	}
+
+	public void setVersion(Long version) {
+		this.version = version;
 	}
 	
 }

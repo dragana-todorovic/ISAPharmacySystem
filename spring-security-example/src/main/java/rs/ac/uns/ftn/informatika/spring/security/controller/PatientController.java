@@ -294,6 +294,7 @@ public class PatientController {
 		}
 	}
 
+
 	@GetMapping("/getAllEprescriptionByUser/{email}")
 	@PreAuthorize("hasRole('ROLE_PATIENT') ")
 	public ResponseEntity<List<EPrescription>> getAllEprescriptionByUser(@PathVariable(name="email") String email)  {
@@ -308,6 +309,14 @@ public class PatientController {
 
 
 
-
+	@PostMapping("/checkAndAddPenals/{email}")
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	public ResponseEntity<?> checkAndAddPenals(@PathVariable(name="email") String email) {
+		User user = this.userService.findByEmail(email);
+		Patient patient = this.patientService.findPatientByUser(user);
+		this.patientService.checkAndAddPenals(patient);
+		return  new ResponseEntity<>(HttpStatus.OK);
+	
+	}
 
 }
