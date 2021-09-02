@@ -181,7 +181,7 @@ public class PharmacistController {
 		if(pharmacy==null) {
 			return new ArrayList<MedicineReservation>();
 		}
-		//System.out.println(pharmacistService.searchReservedMedicnes(resNumber,pharmacy).size());
+		
 		return pharmacistService.searchReservedMedicnes(resNumber,pharmacy);
 	}
 	@GetMapping("/getMyPatients/{email}")
@@ -217,7 +217,7 @@ public class PharmacistController {
 		System.out.println(email);
 		List<MyPatientDTO> myPatientsDtos;
 		myPatientsDtos=this.pharmacistService.getPatientsForAppointment(email);
-		System.out.println("PACIJENTIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII "+myPatientsDtos);
+		System.out.println("PACIJENTI "+myPatientsDtos);
 		return myPatientsDtos;
 		
 	}

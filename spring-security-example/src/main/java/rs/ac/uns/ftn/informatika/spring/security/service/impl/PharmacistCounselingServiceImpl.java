@@ -18,18 +18,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import rs.ac.uns.ftn.informatika.spring.security.model.AppoitmentPrice;
 import rs.ac.uns.ftn.informatika.spring.security.model.DermatologistAppointment;
 import rs.ac.uns.ftn.informatika.spring.security.model.HolidayRequest;
 import rs.ac.uns.ftn.informatika.spring.security.model.HolidayRequestStatus;
 import rs.ac.uns.ftn.informatika.spring.security.model.Patient;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacist;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacistCounseling;
+import rs.ac.uns.ftn.informatika.spring.security.model.PharmacistCounselingPrice;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.User;
 import rs.ac.uns.ftn.informatika.spring.security.model.WorkingDay;
 import rs.ac.uns.ftn.informatika.spring.security.model.WorkingTime;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.CounselingDTO;
 import rs.ac.uns.ftn.informatika.spring.security.repository.DermatologistAppointmentRepository;
+import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacistCounselingPriceRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacistCounselingRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacistRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.UserRepository;
@@ -50,6 +53,8 @@ public class PharmacistCounselingServiceImpl implements PharmacistCounselingServ
 	private PharmacistService pharmacistService;
 	@Autowired
 	private PharmacistRepository pharmacistRepository;
+	@Autowired
+	private PharmacistCounselingPriceRepository pharmacistCounselingPriceRepository;
 	@Override
 	public List<PharmacistCounseling> findById(Long id) {
 		List <PharmacistCounseling> appointments = new ArrayList<PharmacistCounseling>();
@@ -99,6 +104,9 @@ public class PharmacistCounselingServiceImpl implements PharmacistCounselingServ
 			ap.setStartDateTime(startDateTime);
 			System.out.println("Usao prije save");
 			pharmacistCounselingRepository.save(ap);
+			PharmacistCounselingPrice price = new PharmacistCounselingPrice();
+			price.setCounseling(ap);
+			pharmacistCounselingPriceRepository.save(price);
 			break;
 			
 				}}} catch (Exception e) {

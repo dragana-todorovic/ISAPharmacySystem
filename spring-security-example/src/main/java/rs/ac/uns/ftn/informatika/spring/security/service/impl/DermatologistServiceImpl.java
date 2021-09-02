@@ -202,11 +202,11 @@ public class DermatologistServiceImpl implements DermatologistService{
 				}
 			
 	} catch (Exception e) {
-		System.out.println("CATCHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
+		System.out.println("CATCH");
 		List <MyPatientDTO> myPatients =new ArrayList<MyPatientDTO>();
 		return myPatients;
 	}
-		System.out.println("NULLLLLLLLLLLLLLLLLLLLLLLLLLL");
+		System.out.println("NULL");
 		return null;
 	}
 	//startDate za provjeru da li je taj dan 
@@ -215,6 +215,9 @@ public class DermatologistServiceImpl implements DermatologistService{
 		@Override
 		public Boolean isMedicineAvailable(Pharmacy pharmacy, String medicineId) {
 			Set<MedicineWithQuantity> medicines = pharmacy.getMedicineWithQuantity();
+			if(medicines==null) {
+				return false;
+			}
 			Boolean hasMedicine = false;
 			for(MedicineWithQuantity mq:medicines) {
 				if(mq.getMedicine().getId().equals(Long.parseLong(medicineId))) {
@@ -281,7 +284,7 @@ public class DermatologistServiceImpl implements DermatologistService{
 					}
 					
 					dermatologistAppointmentRepository.save(d);
-					AppoitmentPrice price = new AppoitmentPrice();
+					AppoitmentPrice price = appointmentPriceRepository.findByAppintmentId(d.getId());
 					price.setAppoitment(d);
 					price.setPrice(Double.parseDouble(appointmantDTO.getPrice()));
 					appointmentPriceRepository.save(price);
@@ -331,7 +334,7 @@ public class DermatologistServiceImpl implements DermatologistService{
 	private Boolean isDermatologistAvailable(Dermatologist dermatologist,Integer duration, LocalDateTime startDateTime) {
 		System.out.println("Dermatologist id"+dermatologist.getId());
 		List<DermatologistAppointment> appointments = dermatologistAppointmentService.findById(dermatologist.getId());
-		System.out.println("Apointments################+++++++++++++"+appointments.size());
+		System.out.println("Apointments"+appointments.size());
 		for(DermatologistAppointment da:appointments) {
 			if (da.getStartDateTime().toLocalDate().equals(startDateTime.toLocalDate())) {
 				if (isTimeFine(startDateTime.toLocalTime(), duration, da.getStartDateTime().toLocalTime(),
@@ -391,7 +394,7 @@ public class DermatologistServiceImpl implements DermatologistService{
 		return false;
 		
 	}
-	private Boolean isDermatologistWorkingTime(Dermatologist dermatologist,Integer duration,Pharmacy pharmacy,LocalDate startDate,LocalDateTime startDateTime) {
+private Boolean isDermatologistWorkingTime(Dermatologist dermatologist,Integer duration,Pharmacy pharmacy,LocalDate startDate,LocalDateTime startDateTime) {
 		Boolean isDermatologistWorking = false;
 		DayOfWeek day = startDateTime.getDayOfWeek();
 		System.out.println("Usao u funkciju");
@@ -424,7 +427,7 @@ public class DermatologistServiceImpl implements DermatologistService{
 				System.out.println(d.getEndTime());
 				System.out.println(d.getStartTime());
 				if(!isTimeFine(startDateTime.toLocalTime(), duration, d.getStartTime(), d.getEndTime())) {
-					System.out.println("+++++++++++Usao u false");
+					System.out.println("Usao u false za preklapanje termina");
 					return false;
 				}
 				
@@ -432,7 +435,7 @@ public class DermatologistServiceImpl implements DermatologistService{
 		}
 		
 		if(!isDermatologistWorking) {
-			System.out.println("+++++++++++Usao u false 111111111");
+			System.out.println("Usao u false za radno vrijeme");
 			return false;
 		}
 		

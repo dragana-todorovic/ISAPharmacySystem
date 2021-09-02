@@ -127,27 +127,27 @@ public class PharmacistServiceImpl implements PharmacistService {
 					
 					System.out.println("Usao u for"+da.getPharmacist().getUser().getFirstName());
 					if(da.getPatient()!=null && da.getStartDateTime().isAfter(LocalDateTime.now())) {
-						System.out.println("Usao u if"+"#################################");
+						System.out.println("Usao u if");
 						MyPatientDTO myPatientDTO = new MyPatientDTO();
 						myPatientDTO.setMyPatientId(da.getPatient().getId());
 						myPatientDTO.setName(da.getPatient().getUser().getFirstName());
 						myPatientDTO.setSurname(da.getPatient().getUser().getLastName());
 						myPatientDTO.setStartDateTime(da.getStartDateTime());
 						myPatients.add(myPatientDTO);
-						System.out.println("My patients*********************************"+myPatients.size());
+						System.out.println("My patients"+myPatients.size());
 					}
 				}
-				System.out.println("Broooooj jeee"+myPatients.size());
+				
 				return myPatients;
 				}
 				}
 			
 	} catch (Exception e) {
-		System.out.println("CATCHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
+		System.out.println("CATCH");
 		List <MyPatientDTO> myPatients =new ArrayList<MyPatientDTO>();
 		return myPatients;
 	}
-		System.out.println("NULLLLLLLLLLLLLLLLLLLLLLLLLLL");
+		System.out.println("NULL");
 		return null;
 	}
 	@Override
@@ -160,10 +160,9 @@ public class PharmacistServiceImpl implements PharmacistService {
 	public List<MyPatientDTO> myPatients(String email) {
 		try {
 			for (Pharmacist d: pharmacistRepository.findAll()) {
-				System.out.println("Dermatolog"+d.getUser().getEmail());
 				if(d.getUser().getEmail().equals(email))
 				{
-					System.out.println("Usao u if");
+				System.out.println("Usao u if");
 				List <MyPatientDTO> myPatients =new ArrayList<MyPatientDTO>();
 				List<PharmacistCounseling> appointments = pharmacistCounselingService.findById(d.getId());
 				if(appointments==null) {
@@ -210,7 +209,7 @@ public class PharmacistServiceImpl implements PharmacistService {
 					}
 					
 					pharmacistCounselingRepository.save(d);
-					PharmacistCounselingPrice price = new PharmacistCounselingPrice();
+					PharmacistCounselingPrice price = pharmacistCounselingPriceRepository.findByAppintmentId(d.getId());
 					price.setPrice(Double.parseDouble(appointmantDTO.getPrice()));
 					price.setCounseling(d);
 					pharmacistCounselingPriceRepository.save(price);
@@ -274,9 +273,9 @@ public class PharmacistServiceImpl implements PharmacistService {
 		return true;
 	}
 	private Boolean isPharmacistAvailable(Pharmacist pharmacist,Integer duration, LocalDateTime startDateTime) {
-		System.out.println("Dermatologist id"+pharmacist.getId());
+		System.out.println("Pharmacist id"+pharmacist.getId());
 		List<PharmacistCounseling> appointments = pharmacistCounselingService.findById(pharmacist.getId());
-		System.out.println("Apointments################+++++++++++++"+appointments.size());
+		System.out.println("Apointments"+appointments.size());
 		for(PharmacistCounseling da:appointments) {
 			if (da.getStartDateTime().toLocalDate().equals(startDateTime.toLocalDate())) {
 				if (isTimeIncluded(startDateTime.toLocalTime(), duration, da.getStartDateTime().toLocalTime(),
@@ -333,7 +332,7 @@ public class PharmacistServiceImpl implements PharmacistService {
 		Boolean isPharmacistWorking = false;
 		DayOfWeek day = startDateTime.getDayOfWeek();
 		System.out.println("Usao u funkciju");
-		System.out.println("Dermatolog"+pharmacist);
+		System.out.println("Pharmacist"+pharmacist);
 		System.out.println("Pharmacy"+pharmacy);
 		System.out.println("Start date"+startDate);
 		System.out.println("Start date time"+startDateTime);
@@ -369,9 +368,14 @@ public class PharmacistServiceImpl implements PharmacistService {
 	}
 	@Override
 	public Boolean isMedicineAvailable(Pharmacy pharmacy, String medicineId) {
+		System.out.println("MEDICINE ID"+medicineId);
 		Set<MedicineWithQuantity> medicines = pharmacy.getMedicineWithQuantity();
+		if(medicines==null) {
+			return false;
+		}
 		Boolean hasMedicine = false;
 		for(MedicineWithQuantity mq:medicines) {
+			System.out.println("Medicine with quantity"+mq.getMedicine().getId());
 			if(mq.getMedicine().getId().equals(Long.parseLong(medicineId))) {
 				hasMedicine=true;
 			}
