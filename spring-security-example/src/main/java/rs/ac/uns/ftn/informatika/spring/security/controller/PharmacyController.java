@@ -21,6 +21,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,47 +31,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
-import rs.ac.uns.ftn.informatika.spring.security.model.Dermatologist;
-import rs.ac.uns.ftn.informatika.spring.security.model.HolidayRequest;
-import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
-import rs.ac.uns.ftn.informatika.spring.security.model.MedicinePrice;
-import rs.ac.uns.ftn.informatika.spring.security.model.MedicineWithQuantity;
-import rs.ac.uns.ftn.informatika.spring.security.model.Patient;
-import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacist;
-import rs.ac.uns.ftn.informatika.spring.security.model.PharmacistCounseling;
-import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
-import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
-import rs.ac.uns.ftn.informatika.spring.security.model.PriceList;
-import rs.ac.uns.ftn.informatika.spring.security.model.RequestForMedicineAvailability;
-import rs.ac.uns.ftn.informatika.spring.security.model.User;
-import rs.ac.uns.ftn.informatika.spring.security.model.WorkingDay;
-import rs.ac.uns.ftn.informatika.spring.security.model.WorkingTime;
+import rs.ac.uns.ftn.informatika.spring.security.model.*;
 import rs.ac.uns.ftn.informatika.spring.security.repository.MedicinePriceRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacyAdminRepository;
-import rs.ac.uns.ftn.informatika.spring.security.service.MedicineService;
-import rs.ac.uns.ftn.informatika.spring.security.service.PatientService;
-import rs.ac.uns.ftn.informatika.spring.security.service.PharmacistCounselingService;
-import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyAdminService;
-import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyService;
-import rs.ac.uns.ftn.informatika.spring.security.service.PriceListService;
-import rs.ac.uns.ftn.informatika.spring.security.service.StatisticService;
-import rs.ac.uns.ftn.informatika.spring.security.service.UserService;
-import rs.ac.uns.ftn.informatika.spring.security.view.AlreadyExistsMedicinePrice;
-import rs.ac.uns.ftn.informatika.spring.security.view.EditPharmacyView;
-
-import rs.ac.uns.ftn.informatika.spring.security.view.PharmacyWithMedicationView;
-
-import rs.ac.uns.ftn.informatika.spring.security.view.MedicineForOrderView;
-import rs.ac.uns.ftn.informatika.spring.security.view.MedicinePriceDTO;
-import rs.ac.uns.ftn.informatika.spring.security.view.NewDermatologistDTO;
-import rs.ac.uns.ftn.informatika.spring.security.view.NewOrderDTO;
-import rs.ac.uns.ftn.informatika.spring.security.view.NewPharmacistDTO;
-import rs.ac.uns.ftn.informatika.spring.security.view.PatientsCounslingView;
-import rs.ac.uns.ftn.informatika.spring.security.view.PharmacyForCounselingView;
-import rs.ac.uns.ftn.informatika.spring.security.view.PriceListDTO;
-import rs.ac.uns.ftn.informatika.spring.security.view.RatingView;
-import rs.ac.uns.ftn.informatika.spring.security.view.StatisticDTO;
-import rs.ac.uns.ftn.informatika.spring.security.view.UserRegisterView;
+import rs.ac.uns.ftn.informatika.spring.security.service.*;
+import rs.ac.uns.ftn.informatika.spring.security.view.*;
 
 @RestController
 @RequestMapping(value = "/pharmacy", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -90,6 +55,9 @@ public class PharmacyController {
 	private PriceListService priceListService;
 	@Autowired
 	private StatisticService statisticService;
+
+	@Autowired
+	private ComplaintService complaintService;
 	
 	@Autowired
 	private PharmacistCounselingService pharmacistCounselingService;
@@ -548,5 +516,27 @@ public class PharmacyController {
 		 this.pharmacyService.changeRating(rating,patient.getId(),id);
 		 return new ResponseEntity<>(HttpStatus.OK);
 	 }
+
+	@PostMapping("/savePharmacyComplaint")
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	public ResponseEntity<?> savePharmacyComplaint(@RequestBody ComplaintView complaintView) {
+		// pronadjem po kategoriji i posaljem dva podatka za cuvanje  i setovanje
+		User user = this.userService.findByUsername(complaintView.getUserName());
+		Patient patient=this.patientService.findPatientByUser(user);
+// u ovom slucaju complaint on name saljem id pharmacy
+		Pharmacy pharmacy=null;
+		for(Pharmacy d:pharmacyService.findAll()) {
+			if(d.getId().equals(Long.parseLong( complaintView.getComplainedOnName()))) {
+				pharmacy= d;
+			}
+		}
+		PharmacyComplaint pharmacyComplaint = new PharmacyComplaint();
+		pharmacyComplaint.setPharmacy(pharmacy);
+		pharmacyComplaint.setContent(complaintView.getContent());
+		pharmacyComplaint.setAnswered(false);
+		pharmacyComplaint.setPatient(patient);
+		this.complaintService.savePharmacy(pharmacyComplaint);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
 }
 

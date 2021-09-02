@@ -77,6 +77,14 @@ public class ComplaintController {
         }
         System.out.println("USAOOOOOOOOOOO DA POSALJE AAAAAAADMIN MEJL naaaaaa");
         System.out.println(sendToEmail);
+        try {
+
+            emailService.sendEmail(sendToEmail,"We value your opinion for our services",answerInfo.getAnswer());
+            System.out.println("Mejl je poslat");
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

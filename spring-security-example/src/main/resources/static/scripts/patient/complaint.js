@@ -15,7 +15,7 @@ function drawDermatologistComplaintTable(data) {
 function drawPharmacistComplaintTable(data) {
     let table = '';
     for (i in data) {
-        table += `<tr id="myform">
+        table += `<tr id="myform2">
 			<td >
                     <input type="radio" name = "pharmacistButton" id="` + data[i].id + `" value="` + data[i].id + `">
 			</td>
@@ -24,6 +24,20 @@ function drawPharmacistComplaintTable(data) {
 			</tr>`;
     }
     $('#pharmacistComplaintTable').html(table);
+}
+
+
+function drawPharmacyComplaintTable(data) {
+    let table = '';
+    for (i in data) {
+        table += `<tr id="myform">
+			<td >
+                    <input type="radio" name = "pharmacyButton" id="` + data[i].id + `" value="` + data[i].id + `">
+			</td>
+			<td>`+ data[i].firstName + `</td>
+			</tr>`;
+    }
+    $('#pharmacyComplaintTable').html(table);
 }
 $(document).ready(function() {
 	var email = localStorage.getItem('email')
@@ -39,7 +53,20 @@ $(document).ready(function() {
             }
          });
 
-          customAjax({
+
+
+
+       customAjax({
+                  method:'GET',
+                     url:'/pharmacy/getAllPharmaciesPatientCanEvaluate/'+email,
+                  success: function(data){
+                      drawPharmacyComplaintTable(data)
+                  },
+                  error: function(){
+                      console.log("error");
+                  }
+               });
+         customAjax({
                  method:'GET',
                  url:'/pharm/getAllPharmacistsPatientCanEvaluate/'+email,
                  contentType: 'application/json',
@@ -50,20 +77,6 @@ $(document).ready(function() {
                      console.log("error");
                  }
               });
-
-
-    /*   customAjax({
-                  method:'GET',
-                  url:'/derm/getAllDermPatientCanEvaluate/'+email,
-                  contentType: 'application/json',
-                  success: function(data){
-                      drawDermatologistComplaintTable(data)
-                  },
-                  error: function(){
-                      console.log("error");
-                  }
-               });*/
-
     $('a#dermatologist_complaint').click(function(){
          $('#dermatologistComplaintDiv').attr('hidden', false);
 
@@ -141,6 +154,32 @@ $(document).ready(function() {
 
         })
 
+
+      $('#submitPharmacyComplaint').click(function(){
+                let content=$('#txtComplaintContent').val()
+
+                let complainOnId =    $("input[name='pharmacyButton']:checked").val();
+                obj = JSON.stringify({
+                    content:content,
+                    complainedOnName:complainOnId,
+                    userName:email
+                });
+                console.log(obj)
+                customAjax({
+                      url: '/pharmacy/savePharmacyComplaint',
+                      method: 'POST',
+                      data:obj,
+                      contentType: 'application/json',
+                        success: function(){
+                            alert("Sucess written complain. Check your email to admins answer.")
+                            location.href = "patient.html";
+                       },
+                      error: function(){
+                             alert("Error by writing complain.")
+                         }
+                });
+
+        })
 
       $('a#pharmacist_complaint').click(function(){
          $('#pharmacistComplaintDiv').attr('hidden', false);

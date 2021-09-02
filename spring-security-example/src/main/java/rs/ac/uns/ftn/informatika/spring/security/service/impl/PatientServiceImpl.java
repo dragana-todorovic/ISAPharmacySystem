@@ -12,7 +12,7 @@ import rs.ac.uns.ftn.informatika.spring.security.model.*;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PatientRepository;
 import rs.ac.uns.ftn.informatika.spring.security.service.*;
 import rs.ac.uns.ftn.informatika.spring.security.view.EPrescriptionPharmacyView;
-
+import rs.ac.uns.ftn.informatika.spring.security.view.PharmacyWithMedicationView;
 
 
 @Service
@@ -35,6 +35,8 @@ public class PatientServiceImpl implements PatientService {
 	@Autowired
 	private MedicineReservationService medicineReservationService;
 
+	@Autowired
+	private PriceListService priceListService;
 	
 	@Override
 	public List<Patient> findAll() {
@@ -101,9 +103,9 @@ public class PatientServiceImpl implements PatientService {
 		List<EPrescriptionPharmacyView> foundedPharmacies = new ArrayList<>();
 		for(Pharmacy pharmacy: pharmacyService.findAll()){
 			if(checkIfPharmacyHaveAllMedicines(pharmacy,medicineWithQuantities)){
-			//	double totalPrice = findTotalPrice(pharmacy,medicines);
+				double totalPrice = findTotalPrice(pharmacy,medicineWithQuantities);
 				double pharmacyAverageRating = getPharmacyAverageRating(pharmacy);
-				foundedPharmacies.add(new EPrescriptionPharmacyView(medicineCodes, medicineQuantity,pharmacy.getId(),0.0 ,pharmacyAverageRating,pharmacy.getName(), pharmacy.getAddress().getCity() + " " + pharmacy.getAddress().getStreet()));
+				foundedPharmacies.add(new EPrescriptionPharmacyView(medicineCodes, medicineQuantity,pharmacy.getId(),totalPrice ,pharmacyAverageRating,pharmacy.getName(), pharmacy.getAddress().getCity() + " " + pharmacy.getAddress().getStreet()));
 			}
 		}
 
@@ -192,10 +194,23 @@ public class PatientServiceImpl implements PatientService {
 		return averageRating;
 	}
 
-	private double findTotalPrice(Pharmacy pharmacy, List<Medicine> medicines) {
+	private double findTotalPrice(Pharmacy pharmacy, List<MedicineWithQuantity> medicineWithQuantities) {
 		double totalPrice = 0.0;
-		for(Medicine m : medicines) {
+		for(MedicineWithQuantity m : medicineWithQuantities) {
+
 			//totalPrice += pharmacy.getCurrentPrice(m);
+			PriceList pl =this.priceListService.findPriceListByPharmacy(pharmacy);
+			if(pl != null) {
+				for (MedicinePrice medicinePrice : pl.getMedicinePriceList()) {
+					if (medicinePrice.getMedicine().getId().equals(m.getMedicine().getId())) {
+						System.out.println(medicinePrice.getPrice());
+						if(medicinePrice.getPrice() !=0) {
+							totalPrice += medicinePrice.getPrice() * m.getQuantity();
+							break;
+						}
+					}
+				}
+			}
 		}
 		return totalPrice;
 	}
