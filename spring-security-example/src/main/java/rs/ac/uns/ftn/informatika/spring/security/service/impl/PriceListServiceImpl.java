@@ -105,14 +105,14 @@ public class PriceListServiceImpl implements PriceListService {
 
 	@Override
 	@Lock(LockModeType.OPTIMISTIC_FORCE_INCREMENT)
-	public void createNewPriceList(String email, Set<MedicinePrice> medicinePrice, LocalDate date) {
+	public boolean createNewPriceList(String email, Set<MedicinePrice> medicinePrice, LocalDate date) {
 		PharmacyAdmin pa = pharmacyAdminService.findPharmacyAdminByUser(userService.findByEmail(email));
 		Pharmacy p = pa.getPharmacy();
 		for(PriceList priceList : p.getPriceList()) {
 			if(priceList.getStartDate().equals(date)) {
 				priceList.setMedicinePriceList(medicinePrice);
 				this.pharmacyRepository.save(p);
-				return;
+				return true;
 			}
 		}
 		
@@ -123,7 +123,7 @@ public class PriceListServiceImpl implements PriceListService {
 		p.getPriceList().add(pl);
 		
 		this.pharmacyRepository.save(p);
-		return;
+		return true;
 		
 	}
 

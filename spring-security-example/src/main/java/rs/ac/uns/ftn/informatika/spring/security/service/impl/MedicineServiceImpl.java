@@ -1,33 +1,24 @@
 package rs.ac.uns.ftn.informatika.spring.security.service.impl;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
 
 import rs.ac.uns.ftn.informatika.spring.security.model.EPrescription;
 import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
-import rs.ac.uns.ftn.informatika.spring.security.model.MedicinePrice;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicineReservation;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicineReservationStatus;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicineWithQuantity;
-import rs.ac.uns.ftn.informatika.spring.security.model.Patient;
-import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacist;
-import rs.ac.uns.ftn.informatika.spring.security.model.PharmacistCounseling;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.PharmacyAdmin;
 import rs.ac.uns.ftn.informatika.spring.security.model.PriceList;
 import rs.ac.uns.ftn.informatika.spring.security.model.Rating;
-import rs.ac.uns.ftn.informatika.spring.security.model.User;
-import rs.ac.uns.ftn.informatika.spring.security.model.DTO.MedicineReservationDTO;
 import rs.ac.uns.ftn.informatika.spring.security.repository.EPrescriptionRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.MedicineRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.MedicineReservationRepository;
@@ -38,8 +29,9 @@ import rs.ac.uns.ftn.informatika.spring.security.service.MedicineService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PatientService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyAdminService;
 import rs.ac.uns.ftn.informatika.spring.security.service.UserService;
-import rs.ac.uns.ftn.informatika.spring.security.view.MedicineReservationView;
 import rs.ac.uns.ftn.informatika.spring.security.view.RatingView;
+
+import javax.persistence.LockModeType;
 
 @Service
 public class MedicineServiceImpl implements MedicineService{
@@ -183,10 +175,12 @@ public class MedicineServiceImpl implements MedicineService{
 
 	
 	@Override
-	public void editMedicineWithQuatityInPharmacy(String email, long id, int quantity) {
+	public boolean editMedicineWithQuatityInPharmacy(String email, long id, int quantity) {
+
 		PharmacyAdmin pa = pharmacyAdminService.findPharmacyAdminByUser(userService.findByEmail(email));
-		
+
 		Pharmacy pharmacy = pa.getPharmacy();
+
 		
 	//	MedicineWithQuantity medicineWithQuantity = this.medicineWithQuantityRepository.findByMedicineId(id);
 		MedicineWithQuantity medicineWithQuantity = this.medicineWithQuantityRepository.findById(id).get();
@@ -198,6 +192,7 @@ public class MedicineServiceImpl implements MedicineService{
 		}
 		
 		this.pharmacyRepository.save(pharmacy);
+		return true;
 		
 	}
 

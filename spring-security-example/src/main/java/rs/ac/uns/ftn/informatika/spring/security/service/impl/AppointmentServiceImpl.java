@@ -151,10 +151,12 @@ public class AppointmentServiceImpl implements AppointmentService{
 				
 			}
 		}
+		Long version = 1L;
 		appointment.setDermatologist(dermatologist);
 		appointment.setDuration(Integer.parseInt(predefinedAppointment.getDuration()));
 		appointment.setStartDateTime(dt);
 		appointment.setPharmacy(p);
+		appointment.setVersion(version);
 		
 		this.dermatologistAppointmentRepository.save(appointment);
 		

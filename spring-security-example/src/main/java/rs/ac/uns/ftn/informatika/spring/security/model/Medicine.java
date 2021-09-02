@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -60,6 +61,8 @@ public class Medicine {
 
 	@Column(name = "buyingPoints")
 	private int buyingPoints;
+	
+	
 
 	public Set<Rating> getRatings() {
 		return ratings;

@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -26,6 +27,10 @@ public class MedicineWithQuantity {
 	
 	@Column(name = "quantity", nullable = false)
 	private int quantity;
+	
+	@Version
+	@Column(name = "version", nullable = false, columnDefinition = "int default 1")
+	private Long version;
 
 
 	public MedicineWithQuantity() {

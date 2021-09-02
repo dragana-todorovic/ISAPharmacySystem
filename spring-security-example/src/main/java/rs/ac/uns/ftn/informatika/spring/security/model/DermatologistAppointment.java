@@ -50,7 +50,7 @@ public class DermatologistAppointment {
 	private Therapy therapy;
 	
 	@Version
-	@Column(name = "version", nullable = false)
+	@Column(name = "version", nullable = false, columnDefinition="int default 1")
 	private Long version;
 
 
@@ -116,6 +116,14 @@ public class DermatologistAppointment {
 
 	public void setTherapy(Therapy therapy) {
 		this.therapy = therapy;
+	}
+
+	public Long getVersion() {
+		return version;
+	}
+
+	public void setVersion(Long version) {
+		this.version = version;
 	}
 	
 	

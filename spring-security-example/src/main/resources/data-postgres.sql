@@ -203,40 +203,40 @@ INSERT INTO MEDICINEPRICE ( price, medicine_id) VALUES ( 127, 3);
 INSERT INTO MEDICINEPRICE (	price, medicine_id) VALUES ( 5555, 7);
 INSERT INTO MEDICINEPRICE (	price, medicine_id) VALUES ( 700, 8);
 --medicine with quantity
-INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (55, 1);
-INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (50, 2);
-INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (100, 3);
-INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (30, 4);
-INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (25, 5);
-INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (28, 6);
-INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (3, 6);
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id,version) VALUES (55, 1,1);
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id,version) VALUES (50, 2,1);
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id,version) VALUES (100,3,1);
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id,version) VALUES (30,4,1);
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id,version) VALUES (25,5,1);
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id,version) VALUES (28,6,1);
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id,version) VALUES (3,6,1);
 
 --za qr
-INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (30, 4);
-INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (25, 5);
-INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (100, 2);
-INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (20, 1);
-INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (28, 6);
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id,version) VALUES (30,4,1);
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id,version) VALUES (25,5,1);
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id,version) VALUES (100,2,1);
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id,version) VALUES (20,1,1);
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id,version) VALUES (28,6,1);
 
 
 --za offers 
-INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (55, 1);
-INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (44, 4);
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id,version) VALUES (55, 1,1);
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id,version) VALUES (44, 4,1);
 
 -- za supplier list
-INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (150, 1);
-INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (200, 2);
-INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (300, 3);
-INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (400, 4);
-INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (500, 5);
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id,version) VALUES (150, 1,1);
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id,version) VALUES (200, 2,1);
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id,version) VALUES (300, 3,1);
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id,version) VALUES (400, 4,1);
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id,version) VALUES (500, 5,1);
 -- supplier dragana 1
-INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (600, 3);
-INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (800, 4);
-INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (1000, 5);
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id,version) VALUES (600, 3,1);
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id,version) VALUES (800, 4,1);
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id,version) VALUES (1000, 5,1);
 -- supplier maja.tepavcevic 3
-INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (200, 2);
-INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (100, 1);
-INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (350, 3);
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id,version) VALUES (200, 2,1);
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id,version) VALUES (100, 1,1);
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id,version) VALUES (350, 3,1);
 
 --pharmacy medicine prices
 
