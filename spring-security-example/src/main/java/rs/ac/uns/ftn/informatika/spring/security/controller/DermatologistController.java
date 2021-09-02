@@ -555,5 +555,12 @@ public class DermatologistController {
 		this.complaintService.saveDerm(dermatologistComplaint);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-	
+
+
+	@GetMapping("/getAllDermatologist")
+	@PreAuthorize("hasRole('ADMIN_SYSTEM')")
+	public List<Dermatologist> getDermatologsts() {
+		return this.dermatologistService.findAll();
+
+	}
 }

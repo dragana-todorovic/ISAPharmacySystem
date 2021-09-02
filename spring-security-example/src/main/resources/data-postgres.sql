@@ -1,7 +1,9 @@
 -- Lozinke su hesovane pomocu BCrypt algoritma https://www.dailycred.com/article/bcrypt-calculator
 -- Lozinka za adminsystem@gmail.com je Admin123#
 -- Lozinka za dermatologist@gmail.com je User123#
+
 -- Lozinka za pharmacist@gmail.com je User123# 
+
 -- Lozinka za adminpharmacy@gmail.com je Admin123#
 -- Lozinka za user@gmail.com je User123#
 -- Lozinka za suplier@gmail.com je User123#
@@ -70,7 +72,7 @@ INSERT INTO PATIENTS (user_id,points,category,penal,point) VALUES (12,200,2,0,0)
 INSERT INTO patients_allergies_medicine(patient_id, allergies_medicine_id) values (1,1);
 INSERT INTO patients_allergies_medicine(patient_id, allergies_medicine_id) values (2,2);
 INSERT INTO patients_allergies_medicine(patient_id, allergies_medicine_id) values (2,3);
---suplier 
+--suplier
 
 INSERT INTO suplier(user_id) VALUES (11);
 INSERT INTO suplier(user_id) VALUES (14);
@@ -100,7 +102,9 @@ INSERT INTO patient_subscribe_pharmacy_ids(patient_id,subscribe_pharmacy_ids) VA
 INSERT INTO patient_subscribe_pharmacy_ids(patient_id,subscribe_pharmacy_ids) VALUES (1,1);
 INSERT INTO patient_subscribe_pharmacy_ids(patient_id,subscribe_pharmacy_ids) VALUES (2,2);
 
+
 --dermatologist 
+
 INSERT INTO DERMATOLOGIST ( user_id) VALUES (4);
 INSERT INTO DERMATOLOGIST ( user_id) VALUES (8);
 INSERT INTO DERMATOLOGIST (user_id) VALUES (9);
@@ -116,13 +120,17 @@ INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_i
 INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id, patient_id,pharmacy_id,version) VALUES (30,'2021-03-15 12:58:58.508-07','opis2',1,2,2,1);
 INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id, patient_id,pharmacy_id,version) VALUES (30,'2022-08-10 11:58:58.508-07','opis1',1,1,2,1);
 INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id, patient_id,pharmacy_id,version) VALUES (30,'2022-02-14 11:58:58.508-07','opis2',1,2,2,1);
+
 INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id, patient_id,pharmacy_id,version) VALUES (30,'2021-02-18 10:58:58.508-07','opis1',1,1,1,1);
+
 INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id, patient_id,pharmacy_id,version) VALUES (30,'2022-03-16 10:58:58.508-07','opis2',2,2,2,1);
 INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id, patient_id,pharmacy_id,version) VALUES (30,'2022-11-11 11:58:58.508-07','opis2',1,2,1,1);
 INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id, patient_id,pharmacy_id,version) VALUES (30,'2021-12-09 11:58:58.508-07','opis1',1,1,1,1);
 INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id, patient_id,pharmacy_id,version) VALUES (30,'2021-10-29 10:58:58.508-07','opis2',1,2,1,1);
 INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id, patient_id,pharmacy_id,version) VALUES (30,'2021-10-27 11:58:58.508-07','opis1',2,1,2,1);
+
 INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id,pharmacy_id,version) VALUES (30,'2022-05-19 08:58:58.508-07','opis2',1,1,1);
+
 INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id,pharmacy_id,version) VALUES (30,'2021-09-01 08:00:00.508-07','opis2',2,2,1);
 INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id,pharmacy_id,version) VALUES (30,'2022-08-31 12:55:00.508-07','opis2',2,2,1);
 
@@ -219,7 +227,7 @@ INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (20, 1);
 INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (28, 6);
 
 
---za offers 
+--za offers
 INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (55, 1);
 INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (44, 4);
 
@@ -364,10 +372,10 @@ INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (
 INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (1,10);
 INSERT INTO workingtime_working_days (working_time_id, working_days_id) VALUES (1,11);
 --dermatologist working time
-INSERT INTO dermatologist_working_times (dermatologist_id, working_times_id) VALUES (1,1); 
-INSERT INTO dermatologist_working_times (dermatologist_id, working_times_id) VALUES (1,3); 
-INSERT INTO dermatologist_working_times (dermatologist_id, working_times_id) VALUES (2,2); 
-INSERT INTO dermatologist_working_times (dermatologist_id, working_times_id) VALUES (3,4); 
+INSERT INTO dermatologist_working_times (dermatologist_id, working_times_id) VALUES (1,1);
+INSERT INTO dermatologist_working_times (dermatologist_id, working_times_id) VALUES (1,3);
+INSERT INTO dermatologist_working_times (dermatologist_id, working_times_id) VALUES (2,2);
+INSERT INTO dermatologist_working_times (dermatologist_id, working_times_id) VALUES (3,4);
 
 
 --pharmacist
@@ -395,7 +403,9 @@ INSERT INTO eprescription(issued_date,patient_id) VALUES ('2017-10-01',2);
 INSERT INTO eprescription_medicines(eprescription_id,medicines_id) values (1,1);
 INSERT INTO eprescription_medicines(eprescription_id,medicines_id) values (2,2);
 
+
 --medicine rating 
+
 INSERT INTO medicine_ratings(medicine_id,ratings_id) VALUES (1,11);
 INSERT INTO medicine_ratings(medicine_id,ratings_id) VALUES (1,19);
 INSERT INTO medicine_ratings(medicine_id,ratings_id) VALUES (1,17);
@@ -475,12 +485,12 @@ INSERT INTO requestformedicineavailability(created_at,medicine_with_quantity_id,
 INSERT INTO requestformedicineavailability(created_at,medicine_with_quantity_id,pharmacy_id) VALUES ('2021-08-21 21:58:58.508-07',3,1);
 
 
---suplier offer 
+--suplier offer
 INSERT INTO suplieroffer(delevery_time,price,medicine_order_id, status) VALUES ('2020-10-01 21:58:58.508-07',400,1,0);
 INSERT INTO suplieroffer(delevery_time,price,medicine_order_id, status) VALUES ('2021-08-08 21:58:58.508-07',500,1,0);
 INSERT INTO suplieroffer(delevery_time,price,medicine_order_id, status) VALUES ('2021-11-11 07:58:58.508-07',300,2,1);
 
---suplier offers 
+--suplier offers
 INSERT INTO suplier_offers(suplier_id,offers_id) VALUES (1,1);
 INSERT INTO suplier_offers(suplier_id,offers_id) VALUES (2,2);
 INSERT INTO suplier_offers(suplier_id,offers_id) VALUES (2,3);
