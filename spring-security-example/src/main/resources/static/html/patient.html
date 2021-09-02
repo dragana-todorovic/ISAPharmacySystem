@@ -26,6 +26,7 @@
 <script src="../scripts/patient/counseling.js"></script>
 <script src="../scripts/patient/complaint.js"></script>
 <script src="../scripts/patient/evaluate.js"></script>
+<script src="../scripts/patient/ePres.js"></script>
 <script src="../scripts/jwt.js"></script>
 
 <link rel="stylesheet" type="text/css" href="../css/modal.css">
@@ -169,8 +170,9 @@ li.dropdown {
                 <div class="dropdown-content">
                     <a href="#" id="reserve_medicine">Reserve medicine </a>
                     <a href="#" id="reserved_medicine">Reserved medicine</a>
-                    <a href="#" id="ePrescription">My ePrescription medicine</a>
-                    <a href="#">Issued ePrescription medicine </a>      
+
+                    <a href="#" id="ePrescription">Upload ePrescription medicine for buying</a>
+                    <a href="#" id="historyEpres">Issued ePrescription medicine </a>
 
                 </div>
             </li>
@@ -344,6 +346,24 @@ li.dropdown {
         </table>
     </div>
 
+
+    <!-- HISTORY BUYING MEDICINE-->
+    <div class="ui list" id="history_div" hidden="true" class="cloumn">
+        <table class="table  table-bordered">
+            <thead>
+            <tr>History of taken Medicines by Eprescription</tr>
+            <tr>
+                <th>Medicines names</th>
+                <th>Medicines codes</th>
+                <th>Qunatitis</th>
+                <th>Pharmacy</th>
+                <th>Date of Buying</th>
+            </tr>
+            </thead>
+            <tbody id="history_table">
+            </tbody>
+        </table>
+    </div>
     <!-- SHOW ALL PHARMACIES-->
     <div class="ui list" id="all_pharmacies_show" hidden="true" style="padding:100px 300px 500px 300px;" class="cloumn">
         <div class="ui icon input" style="width:40%;" >

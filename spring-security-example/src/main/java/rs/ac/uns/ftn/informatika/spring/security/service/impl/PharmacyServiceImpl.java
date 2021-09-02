@@ -607,7 +607,7 @@ public class PharmacyServiceImpl implements PharmacyService{
 							for (MedicinePrice medicinePrice : pl.getMedicinePriceList()) {
 								if (medicinePrice.getMedicine().getId().equals(medi.getMedicine().getId())) {
 									System.out.println(medicinePrice.getPrice());
-									double	pricetotal = medicinePrice.getPrice();
+										double	pricetotal = medicinePrice.getPrice();
 										ph.setMedicinePrice(pricetotal);
 									break;
 								}

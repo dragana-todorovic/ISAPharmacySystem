@@ -125,6 +125,5 @@ public class MedicineReservation {
 		this.isPenalGiven = isPenalGiven;
 	}
 
-
 	
 }
