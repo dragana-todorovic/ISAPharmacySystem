@@ -78,10 +78,10 @@ INSERT INTO suplier(user_id) VALUES (14);
 INSERT INTO systemadmin(user_id) VALUES (1);
 
 
-INSERT INTO ADDRESS (street,city) VALUES ('Bulevar oslobodjenja 4', 'Novi Sad');
-INSERT INTO ADDRESS (street,city) VALUES ('Kralja Petra 20', 'Beograd');
-INSERT INTO ADDRESS (street,city) VALUES ('Neznanih Junaka 5', 'Beograd');
-INSERT INTO ADDRESS (street,city) VALUES ('Narodnog Fronta 37', 'Beograd');
+INSERT INTO ADDRESS (street,city,coordX, coordY) VALUES ('Bulevar oslobodjenja 4', 'Novi Sad','19.833549','45.267136');
+INSERT INTO ADDRESS (street,city,coordX, coordY) VALUES ('Kralja Petra 20', 'Beograd',	'19.8424', '45.2541');
+INSERT INTO ADDRESS (street,city,coordX, coordY) VALUES ('Neznanih Junaka 5', 'Beograd','19.833549','45.2541');
+INSERT INTO ADDRESS (street,city,coordX, coordY) VALUES ('Narodnog Fronta 37', 'Beograd','19.8424', '45.2541');
 --pharmacy
 INSERT INTO PHARMACY (name, description, address_id, version) VALUES ('Jankovic', 'Opis Jankovic',2,1);
 INSERT INTO PHARMACY (name, description, address_id, version) VALUES ('Benu', 'Opis Benu',1,1);
@@ -210,6 +210,7 @@ INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (30, 4);
 INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (25, 5);
 INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (28, 6);
 INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (3, 6);
+INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (66, 7);
 
 --za qr
 INSERT INTO MEDICINEWITHQUANTITY (quantity, medicine_id) VALUES (30, 4);
@@ -247,12 +248,11 @@ INSERT INTO pharmacy_medicine_with_quantity (pharmacy_id, medicine_with_quantity
 INSERT INTO pharmacy_medicine_with_quantity (pharmacy_id, medicine_with_quantity_id) VALUES (1, 5);
 INSERT INTO pharmacy_medicine_with_quantity (pharmacy_id, medicine_with_quantity_id) VALUES (2, 6);
 INSERT INTO pharmacy_medicine_with_quantity (pharmacy_id, medicine_with_quantity_id) VALUES (1, 2);
-INSERT INTO pharmacy_medicine_with_quantity (pharmacy_id, medicine_with_quantity_id) VALUES (3, 8);
+INSERT INTO pharmacy_medicine_with_quantity (pharmacy_id, medicine_with_quantity_id) VALUES (2, 8);
 INSERT INTO pharmacy_medicine_with_quantity (pharmacy_id, medicine_with_quantity_id) VALUES (3, 9);
 INSERT INTO pharmacy_medicine_with_quantity (pharmacy_id, medicine_with_quantity_id) VALUES (3, 10);
 INSERT INTO pharmacy_medicine_with_quantity (pharmacy_id, medicine_with_quantity_id) VALUES (4, 11);
 INSERT INTO pharmacy_medicine_with_quantity (pharmacy_id, medicine_with_quantity_id) VALUES (4, 12);
-
 
 --supplier for medicine list - medicine with quantity
 -- suplier@gmail.com 2
@@ -269,7 +269,7 @@ INSERT INTO suplier_medicine_with_quantity (suplier_id, medicine_with_quantity_i
 --price list
 INSERT INTO pricelist(start_date) VALUES ('2021-08-28 21:58:58.508-07');
 INSERT INTO pricelist(start_date) VALUES ('2021-08-07 21:58:58.508-07');
-INSERT INTO pricelist(start_date) VALUES ('2021-08-08 21:58:58.508-07');
+INSERT INTO pricelist(start_date) VALUES ('2021-08-10 21:58:58.508-07');
 INSERT INTO pricelist(start_date) VALUES ('2021-08-14 21:58:58.508-07');
 
 --price list medicine price list
@@ -439,8 +439,8 @@ INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,
 INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id,version) VALUES ('123e4567-e89b-12d3-a456-426614174005','2021-12-04','14:00:00.000000',0,1,1,1);
 INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id,version) VALUES ('123e4567-e89b-12d3-a456-426614174008','2021-10-22','14:00:00.000000',0,3,1,1);
 INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id,version) VALUES ('123e4567-e89b-12d3-a456-426614174011','2021-10-04','14:00:00.000000',2,1,1,1);
-INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id,version) VALUES ('123e4568-e89b-12d3-a456-426614174000','2021-08-04','14:00:00.000000',2,4,2,1);
-INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id,version) VALUES ('133e4567-e89b-12d3-a456-426614174000','2021-03-05','14:00:00.000000',2,1,1,1);
+INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id,version) VALUES ('123e4568-e89b-12d3-a456-426614174000','2021-08-08','14:00:00.000000',2,4,2,1);
+INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id,version) VALUES ('133e4567-e89b-12d3-a456-426614174000','2021-08-07','14:00:00.000000',2,1,1,1);
 INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id,version) VALUES ('123e4567-e89b-12d3-a456-426614174030','2021-12-06','14:00:00.000000',2,1,2,1);
 INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id,version) VALUES ('123e4566-e89b-12d3-a456-426614174000','2021-10-15','14:00:00.000000',2,1,2,1);
 

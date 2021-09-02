@@ -11,7 +11,9 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import rs.ac.uns.ftn.informatika.spring.security.model.EPrescription;
 import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
@@ -137,6 +139,7 @@ public class MedicineServiceImpl implements MedicineService{
 		MedicineWithQuantity medicineWithQuantity = new MedicineWithQuantity();
 		medicineWithQuantity.setMedicine(medicine);
 		medicineWithQuantity.setQuantity(quantity);
+		medicineWithQuantity.setVersion(1L);
 
 		
 		pharmacy.getMedicineWithQuantity().add(medicineWithQuantity);
@@ -183,14 +186,20 @@ public class MedicineServiceImpl implements MedicineService{
 
 	
 	@Override
-	public void editMedicineWithQuatityInPharmacy(String email, long id, int quantity) {
+	@Transactional(readOnly = false)
+	public void editMedicineWithQuatityInPharmacy(String email, long id, int quantity, Long v) {
 		PharmacyAdmin pa = pharmacyAdminService.findPharmacyAdminByUser(userService.findByEmail(email));
 		
 		Pharmacy pharmacy = pa.getPharmacy();
 		
 	//	MedicineWithQuantity medicineWithQuantity = this.medicineWithQuantityRepository.findByMedicineId(id);
 		MedicineWithQuantity medicineWithQuantity = this.medicineWithQuantityRepository.findById(id).get();
-
+		
+		if(medicineWithQuantity.getVersion() != v) {
+			throw new ObjectOptimisticLockingFailureException("Versions don't match", MedicineWithQuantity.class);
+		}
+		
+		
 		for(MedicineWithQuantity mq : pharmacy.getMedicineWithQuantity()) {
 			if(mq.equals(medicineWithQuantity)) {
 				mq.setQuantity(quantity);
@@ -280,6 +289,11 @@ public class MedicineServiceImpl implements MedicineService{
 		}
 		this.medicineRepository.save(med);
 		
+	}
+
+	@Override
+	public MedicineWithQuantity getMedicineById(Long iD) {
+		return this.medicineWithQuantityRepository.findById(iD).get();
 	}
 
 

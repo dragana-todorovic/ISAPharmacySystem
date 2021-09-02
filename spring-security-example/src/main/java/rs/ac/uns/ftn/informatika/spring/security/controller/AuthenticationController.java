@@ -95,12 +95,17 @@ public class AuthenticationController {
 
 	@GetMapping("/checkIfLogged")
 	public CheckIfLogged checkIfLogged(JwtAuthenticationRequest authenticationRequest){
-		
+		CheckIfLogged ci = new CheckIfLogged();
 		// Kreiraj token za tog korisnika
 		User user = this.userService.findByEmail(authenticationRequest.getEmail());
+		System.out.println(user);
+		if(user == null) {
+			ci.setResponseText("NOT FOUND");
+			return ci;
+		}
 		 BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		 boolean result = passwordEncoder.matches(authenticationRequest.getPassword(), user.getPassword());
-		 CheckIfLogged ci = new CheckIfLogged();
+		 
 		 if(result) {
 			if(!user.getLogged()) {
 				ci.setResponseText("NOT LOGGED");

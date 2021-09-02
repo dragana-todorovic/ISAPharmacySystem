@@ -19,6 +19,7 @@ import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -218,13 +219,19 @@ public class PharmacyController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	@PostMapping("/editMedicineWithQuantityInPharmacy/{email}/{medicineId}/{quantity}")
+	@PostMapping("/editMedicineWithQuantityInPharmacy/{email}/{medicineId}/{quantity}/{version}")
 	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
 	public ResponseEntity<?> editMedicineWithQuantityInPharmacy(@PathVariable(name="email") String email,
-			@PathVariable(name="medicineId") String medicineId,@PathVariable(name="quantity") String quantity) {
+			@PathVariable(name="medicineId") String medicineId,@PathVariable(name="quantity") String quantity,
+			@PathVariable(name="version") String version) {
 		int q = Integer.parseInt(quantity);
 		long id = Long.parseLong(medicineId);
-		this.medicineService.editMedicineWithQuatityInPharmacy(email, id, q);
+		Long v = Long.parseLong(version);
+		try {
+			this.medicineService.editMedicineWithQuatityInPharmacy(email, id, q,v);
+		} catch (ObjectOptimisticLockingFailureException e) {
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
+		}
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
@@ -485,6 +492,13 @@ public class PharmacyController {
 	@PreAuthorize("hasRole('ROLE_PATIENT')")
 	public List<PharmacyForCounselingView> getPharamciesWithAvailablePharmacists(@PathVariable(name="term") String term) {
 		return this.pharmacistCounselingService.getPharamciesWithAvailablePharmacists(term);
+	}
+	
+	@GetMapping("/getSelectedMedicine/{id}")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	public MedicineWithQuantity getSelectedMedicine(@PathVariable(name="id") String id) {
+		Long ID = Long.parseLong(id);
+		return this.medicineService.getMedicineById(ID);
 	}
 	
 	@GetMapping("/getCounselingByPatienetId/{email}")

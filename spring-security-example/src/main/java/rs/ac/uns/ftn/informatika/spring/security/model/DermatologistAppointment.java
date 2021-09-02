@@ -35,8 +35,6 @@ public class DermatologistAppointment {
 	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Patient patient;
 	
-
-	
 	@Column(name = "startDateTime", nullable = false)
 	private LocalDateTime startDateTime;
 	
@@ -116,6 +114,14 @@ public class DermatologistAppointment {
 
 	public void setTherapy(Therapy therapy) {
 		this.therapy = therapy;
+	}
+
+	public Long getVersion() {
+		return version;
+	}
+
+	public void setVersion(Long version) {
+		this.version = version;
 	}
 	
 	

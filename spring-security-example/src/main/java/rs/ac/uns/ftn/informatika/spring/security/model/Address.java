@@ -22,6 +22,12 @@ public class Address {
 
     @Column(name = "city", nullable = false)
     private String city;
+    
+    @Column(name = "coordX", nullable = false)
+    private String coordX;
+    
+    @Column(name = "coordY", nullable = false)
+    private String coordY;
     public String getStreet() {
         return street;
     }
@@ -44,5 +50,21 @@ public class Address {
     public void setCity(String city) {
         this.city = city;
     }
+
+	public String getCoordX() {
+		return coordX;
+	}
+
+	public void setCoordX(String coordX) {
+		this.coordX = coordX;
+	}
+
+	public String getCoordY() {
+		return coordY;
+	}
+
+	public void setCoordY(String coordY) {
+		this.coordY = coordY;
+	}
 
 }

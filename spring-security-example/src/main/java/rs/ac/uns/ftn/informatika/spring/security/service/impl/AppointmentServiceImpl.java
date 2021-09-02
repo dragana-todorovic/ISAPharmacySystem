@@ -76,7 +76,7 @@ public class AppointmentServiceImpl implements AppointmentService{
 		Boolean workInPharmacy = false;
 		
 		DermatologistAppointment appointment = new DermatologistAppointment();
-		Dermatologist dermatologist = this.dermatologistRepository.findById(Long.parseLong(predefinedAppointment.getDermatologistId())).get();
+		Dermatologist dermatologist = this.dermatologistRepository.findDermatologistByID(Long.parseLong(predefinedAppointment.getDermatologistId()));
 		
 		Set<WorkingTime> workingTimes = dermatologist.getWorkingTimes();
 		if(workingTimes.isEmpty()) {
@@ -155,6 +155,7 @@ public class AppointmentServiceImpl implements AppointmentService{
 		appointment.setDuration(Integer.parseInt(predefinedAppointment.getDuration()));
 		appointment.setStartDateTime(dt);
 		appointment.setPharmacy(p);
+		appointment.setVersion(1L);
 		
 		this.dermatologistAppointmentRepository.save(appointment);
 		

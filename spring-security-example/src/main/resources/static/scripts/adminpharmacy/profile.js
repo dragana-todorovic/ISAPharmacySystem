@@ -1,5 +1,8 @@
 let jsonObjekat;
 var pomocnaP;
+var mapa;
+var coordXF
+var coordYF
 $(document).ready(function(e){
 	
 	
@@ -27,7 +30,8 @@ $(document).ready(function(e){
             //let location = json["address"]["road"] + ` ` + json["address"]["house_number"] + ` , ` + json["address"]["city"] + ` , ` + json["address"]["country"];
             $('#txtStreet').val(street)
             $('#txtCity').val(city)
-
+             $('#txtCoordX').val(coords[0])
+            $('#txtCoordY').val(coords[1])
 
             // $('#street-number').val(json["address"]["house_number"])
             //$('#city').val(json["address"]["city"])
@@ -41,30 +45,71 @@ $(document).ready(function(e){
             jsonObjekat = json;
         });
     };
+    pomocnaP = function (coordX,coordY) {
+    	   var mapId = "map";
+    	   coordXF = parseFloat(coordX)
+    	   coordYF = parseFloat(coordY)
+    	   function createMap() {
+    	     var coordinate = [coordXF, coordYF];
+    	     console.log(coordinate)
+    	     var vectorSource = new ol.source.Vector({});
+    	     var vectorLayer = new ol.layer.Vector({
+    	       source: vectorSource
+    	     });
+    	     var view = new ol.View({
+    	    	
+    	       center: ol.proj.fromLonLat(coordinate),
+    	       zoom: 17,
+    	       maxZoom: 19,
+    	       minZoom: 5
+    	     });
+    	     mapa = new ol.Map({
+    	       layers: [new ol.layer.Tile({
+    	         source: new ol.source.OSM({
+    	           key: 'myKey',
+    	           crossOrigin: ''
+    	         })
+    	       }), vectorLayer, ],
+    	       target: document.getElementById(mapId),
+    	       controls: ol.control.defaults(),
+    	       view: view
+    	     });
 
-    pomocnaP = function () {
-        var map = new ol.Map({
+    	     // create custom marker image with custom text in bottom
+    	     var iconStyle = new ol.style.Style({
+    	       image: new ol.style.Icon({
+    	         anchor: [12, 37],
+    	         anchorXUnits: 'pixels', //'fraction'
+    	         anchorYUnits: 'pixels',
+    	         opacity: 0.8,
+    	         src: 'https://maps.google.com/mapfiles/ms/micons/blue.png'
+    	       })
+    	     });
 
-            target: 'map',
-            layers: [
-                new ol.layer.Tile({
-                    source: new ol.source.OSM()
-                })
-            ],
-            view: new ol.View({
-                center: ol.proj.fromLonLat([19.8424, 45.2541]),
-                zoom: 15
-            })
-        });
+    	     var marker;
+    	     console.log(coordinate)
+    	     this.setMarker = function() {
+    	    
+    	       marker = new ol.Feature(
+    	         new ol.geom.Point(ol.proj.fromLonLat([coordXF,coordYF]))
+    	       );
+    	       marker.setStyle(iconStyle);
+    	       vectorSource.addFeature(marker);
+    	     }
+    	     return this;
+    	   }
+
+    	   var map = createMap();
+    	   map.setMarker([coordXF, coordYF])
         //var jsonObjekat;
-        map.on('singleclick', function (evt) {
+        mapa.on('singleclick', function (evt) {
             var coord = ol.proj.toLonLat(evt.coordinate);
             console.log(coord)
             reverseGeocode(coord);
             var iconFeatures = [];
             var lon = coord[0];
             var lat = coord[1];
-           var icon = "https://img.icons8.com/ios-glyphs/30/000000/marker--v1.png";
+           var icon = 'https://maps.google.com/mapfiles/ms/micons/blue.png';
             var iconGeometry = new ol.geom.Point(ol.proj.transform([lon, lat], 'EPSG:4326', 'EPSG:3857'));
             var iconFeature = new ol.Feature({
                 geometry: iconGeometry
@@ -91,7 +136,7 @@ $(document).ready(function(e){
                 style: iconStyle
             });
 
-            map.addLayer(vectorLayer);
+            mapa.addLayer(vectorLayer);
             
         });
     }
@@ -429,7 +474,9 @@ let showPharmacyBasicInfo = function(pharmacy){
 
 				            <tr>
 				                <td>` + ((pharmacy.name != null) ? pharmacy.name:`-`) + `</td>
-				               <td>` + ((pharmacy.address != null) ? pharmacy.address:`-`) + `</td>
+				               <td>` + ((pharmacy.address != null) ? pharmacy.address:`-`) + `<br>
+				               `+((pharmacy.coordX != null) ? pharmacy.coordX:`-`)+`<br>
+				               `+((pharmacy.coordY != null) ? pharmacy.coordY:`-`)+`</td>
 				              <td>` + ((pharmacy.description != null) ? pharmacy.description:`-`) + `</td>
 
 				            </tr>
@@ -480,8 +527,11 @@ let editPharmacy = function (pharmacy) {
 					                <td>Address:</td>
 					                <td class="ui fluid icon input"> <input type="text" disabled="true" id="txtStreet" value="`+ ((pharmacy.address != null) ? pharmacy.address.street:`` ) + `"/></td>
 					                <td class="ui fluid icon input"> <input type="text" disabled="true" id="txtCity" value="`+ ((pharmacy.address != null) ? pharmacy.address.city:`` ) + `"/></td>
+					                <td class="ui fluid icon input"> <input type="text" disabled="true" id="txtCoordX" value="`+ ((pharmacy.address != null) ? pharmacy.address.coordX:`` ) + `"/></td>
+					                <td class="ui fluid icon input"> <input type="text" disabled="true" id="txtCoordY" value="`+ ((pharmacy.address != null) ? pharmacy.address.coordY:`` ) + `"/></td>
+					                
 					                <td><div id="map" class="map"  style="width:350px;"></div>
-                                            <script>pomocnaP();</script></td>
+                                            <script>pomocnaP(${pharmacy.address.coordX}, ${pharmacy.address.coordY});</script></td>
 					            </tr>
 					            <tr>
 					                <td>Description:</td>
@@ -513,13 +563,18 @@ let editPharmacy = function (pharmacy) {
 			let street=$('#txtStreet').val()
 			let city = $('#txtCity').val()
 			let description=$('#txtDescription').val()
+			let coordX = $('#txtCoordX').val()
+			let coordY=$('#txtCoordY').val()
 
 			obj = JSON.stringify({
 			id:pharmacy.id,
 			name:name,
 			street:street,
 			city:city,
-			description: description,
+			coordX: coordX,
+			coordY: coordY,
+			description: description
+			
 			});
 			
 			console.log(obj)

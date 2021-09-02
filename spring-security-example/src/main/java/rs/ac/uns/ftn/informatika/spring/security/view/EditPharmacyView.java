@@ -14,6 +14,8 @@ public class EditPharmacyView {
     private String street;
     private String city;
     private String description;
+    private String coordX;
+    private String coordY;
 
     public Long getId() {
         return id;
@@ -53,6 +55,22 @@ public class EditPharmacyView {
     public void setCity(String city) {
         this.city = city;
     }
+
+	public String getCoordX() {
+		return coordX;
+	}
+
+	public void setCoordX(String coordX) {
+		this.coordX = coordX;
+	}
+
+	public String getCoordY() {
+		return coordY;
+	}
+
+	public void setCoordY(String coordY) {
+		this.coordY = coordY;
+	}
 
 
 }

@@ -115,6 +115,8 @@ public class PharmacyServiceImpl implements PharmacyService{
 		Address a = new Address();
 		a.setStreet(p.getStreet());
 		a.setCity(p.getCity());
+		a.setCoordX(p.getCoordX());
+		a.setCoordY(p.getCoordY());
 		Pharmacy pharmacy = findById(p.getId()).get();
 		pharmacy.setName(p.getName());
 		pharmacy.setAddress(a);

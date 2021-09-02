@@ -397,14 +397,27 @@ $('.ui.dropdown')
 			}
 	 });
 	
-	
+	let version
 	let editMedicine = function(idSelected) {
+		customAjax({
+		    url: '/pharmacy/getSelectedMedicine/' + idSelected,
+		    method: 'GET',
+		    async: false,
+		    contentType: 'application/json',
+		    success: function(data){
+		    	version = data.version
+		    },
+		    error: function(){
+		    	alert("Failed")
+		    }
+
+		});
 		
 		$('#editMedicine').click(function() {
 			var quantity = $('#txtQuantityEdit').val()
 			console.log(quantity)
 			customAjax({
-			    url: '/pharmacy/editMedicineWithQuantityInPharmacy/' + email + '/' + idSelected + '/' + quantity,
+			    url: '/pharmacy/editMedicineWithQuantityInPharmacy/' + email + '/' + idSelected + '/' + quantity + '/' + version,
 			    method: 'POST',
 			    contentType: 'application/json',
 			    success: function(){
