@@ -582,7 +582,16 @@ public class PharmacyServiceImpl implements PharmacyService{
 			   }
 		        return pharmacies;
 		}
-
+	@Override
+	public double getAvrageGrade(Pharmacy pharmacy) {
+		double avrage_grade=0;
+		int pom=0;
+		for(Rating ratings : pharmacy.getRatings()) {
+			pom++;
+			avrage_grade+=ratings.getRating();
+		}
+		return avrage_grade/pom;
+  }
 	@Override
 	public Collection<PharmacyWithMedicationView> getPharamciesWithMedication(Long id) {
 		ArrayList<PharmacyWithMedicationView> pharmacies = new ArrayList <PharmacyWithMedicationView>();
@@ -608,6 +617,12 @@ public class PharmacyServiceImpl implements PharmacyService{
 						ph.setPharmacyName(pharmacy.getName());
 						ph.setCity(pharmacy.getAddress().getCity());
 						ph.setStreet(pharmacy.getAddress().getStreet());
+						double grade=getAvrageGrade(pharmacy);
+						System.out.println(grade);
+						if(Double.isNaN(grade)) {
+							ph.setAvrageGrade(0);
+						}else
+							ph.setAvrageGrade(getAvrageGrade(pharmacy));
 					//	PharmacyWithMedicationView ph = new
 						//	PharmacyWithMedicationView(pharmacy.getId(),pharmacy.getName(),
 					//			pharmacy.getAddress().getStreet(),pharmacy.getAddress().getCity(), pricetotal);
@@ -629,11 +644,9 @@ public class PharmacyServiceImpl implements PharmacyService{
 					MedicineReservationView myRes=new MedicineReservationView(mR.getId(),mR.getNumberOfReservation(),mR.getMedicineWithQuantity().getMedicine().getName(),ph.getName(),ph.getAddress().getCity(),ph.getAddress().getStreet(),mR.getDueToTime(),mR.getDueTo(),mR.getMedicineWithQuantity().getQuantity());
 				 	LocalDateTime dt = LocalDateTime.of(myRes.getDueTo(), myRes.getDueToTime());
 			       	if(LocalDateTime.now().isBefore(dt.minus(Period.ofDays(1)))) {
-			       		System.out.println("nije istekla");
 			       		myRes.setIsReservationExpired(false);
 			       	}
 			       	else {
-			       		System.out.println("istekla");
 			       		myRes.setIsReservationExpired(true);
 			       	}
 					reservations.add(myRes);
@@ -853,10 +866,84 @@ public class PharmacyServiceImpl implements PharmacyService{
 	}
 
 	@Override
-	public List<RatingView> getAllPharmaciesPatientCanEvaluate(Patient patient) {
+	public List<RatingView> getAllPharmaciesPatientCanEvaluate(long patient) {
 		List<RatingView> result=new ArrayList<RatingView>();
 		List<Pharmacy> pom=new ArrayList<Pharmacy>();
+		for(Pharmacy pharmacy : this.pharmacyRepository.findAll()) {
+			//PROVERA DA LI JE REZERVISAO I PREUZEO LEK U APOTECI
+			for(MedicineReservation mr : pharmacy.getMedicineReservations()) {
+				if(mr.getPatient()==null) {
+					continue;
+				}
+				if(mr.getPatient().getId() == patient) {
+					if(mr.getStatus().equals(MedicineReservationStatus.TAKEN) && !pom.contains(pharmacy)) {
+	
+						pom.add(pharmacy);
+						}
+					}
+			}
+			//PROVERA DA LI JE IMAO PREGLED KOD DERMATOLOGA U APOTECI
+			for(DermatologistAppointment da : this.dermatologistAppoitmentRepository.findAll()) {
+				if(da.getPatient()==null) {
+					continue;
+				}
+				if(da.getPatient().getId() == patient) {
+					if(da.getStartDateTime().isBefore( LocalDateTime.now())) {
+						if(da.getPharmacy()==null) {
+							continue;
+							}
+						if(da.getPharmacy().equals(pharmacy) && !pom.contains(pharmacy)) {
+							pom.add(pharmacy);
+							}
+						}
+					}
+		}
+		//PROVERA DA LI JE IMAO KONSULATACIJE KOD APOTEKARA U APOTECI
+		for(PharmacistCounseling pc : this.pharmacistConselingRepository.findAll()) {
+			Pharmacy ph=new Pharmacy();		
+			if(pc.getPatient()==null) {
+				continue;
+			}
+			if(pc.getPatient().getId()==patient) {
+				if(pc.getStartDateTime().isBefore(LocalDateTime.now()) && !pom.contains(pc.getPharmacist().getWorkingTimes().getPharmacy())) {
+					ph=pc.getPharmacist().getWorkingTimes().getPharmacy();
+						pom.add(ph);
+				}
+			}
+			
+		}
+}
+		for(Pharmacy p : pom) {
+			RatingView rdw=new RatingView(p.getId(),p.getName(),
+					"");
+						
+		
+			for(Rating ra :p.getRatings()){
+				if(ra.getPatient() == patient) {
+					rdw.setPatientsGrade(ra.getRating());
+				} 
+			}
+			result.add(rdw);	
+		}
 		return result;
+	}
+
+	@Override
+	public void changeRating(int rating, long patient, Long id) {
+		Pharmacy ph=pharmacyRepository.findPharmacyById(id);	
+		Rating rat=new Rating();
+		if(ph.getRatings().isEmpty()) {
+			rat.setPatient(patient);
+			rat.setRating(rating);
+			ph.getRatings().add(rat);
+		}
+		for(Rating r : ph.getRatings()) {
+			if(r.getPatient() ==patient) {
+				r.setRating(rating);
+			}
+		}
+		this.pharmacyRepository.save(ph);
+		
 	}
 }
 

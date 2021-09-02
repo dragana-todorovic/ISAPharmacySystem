@@ -57,10 +57,7 @@ public class PharmacistServiceImpl implements PharmacistService {
 
 	@Autowired
 	private PharmacistRepository pharmacistRepository;
-	@Autowired
-	private HolidayRequestRepository holidayRequestRepository;
-	@Autowired
-	private AppointmentPriceRepository appointmentPriceRepository;
+
 	@Autowired
 	private PharmacistCounselingPriceRepository pharmacistCounselingPriceRepository;
 	@Autowired
@@ -169,6 +166,9 @@ public class PharmacistServiceImpl implements PharmacistService {
 					System.out.println("Usao u if");
 				List <MyPatientDTO> myPatients =new ArrayList<MyPatientDTO>();
 				List<PharmacistCounseling> appointments = pharmacistCounselingService.findById(d.getId());
+				if(appointments==null) {
+					return new ArrayList<MyPatientDTO>();
+				}
 				for (PharmacistCounseling da :appointments) {
 					System.out.println("Usao u for"+da.getPharmacist().getUser().getFirstName());
 					if(da.getPatient()!=null  && da.getStartDateTime().isBefore(LocalDateTime.now())) {
@@ -471,14 +471,14 @@ public class PharmacistServiceImpl implements PharmacistService {
 	}
 
 	@Override
-	public List<RatingView> getAllPharmacistsPatientCanEvaluate(Patient patient) {
+	public List<RatingView> getAllPharmacistsPatientCanEvaluate(long patient) {
 		List<RatingView> result=new ArrayList<RatingView>();
 		List<Pharmacist> pom=new ArrayList<Pharmacist>();
 		for(PharmacistCounseling pc : pharmacistCounselingService.findAll()) {
 			if(pc.getPatient()==null) {
 				continue;
 			}
-			if(pc.getPatient().equals(patient)) {
+			if(pc.getPatient().getId().equals(patient)) {
 				if(pc.getStartDateTime().isBefore( LocalDateTime.now()) && !pom.contains(pc.getPharmacist())) {
 					pom.add(pc.getPharmacist());
 					}
@@ -489,7 +489,7 @@ public class PharmacistServiceImpl implements PharmacistService {
 					d.getUser().getLastName());
 			
 			for(Rating ra :d.getRatings()){
-				if(ra.getPatient().equals(patient)) {
+				if(ra.getPatient() == patient) {
 					rdw.setPatientsGrade(ra.getRating());
 								
 				} 
@@ -501,7 +501,7 @@ public class PharmacistServiceImpl implements PharmacistService {
 	}
 
 	@Override
-	public void changeRating(int rating, Patient patient, Long id) {
+	public void changeRating(int rating, long patient, Long id) {
 		Pharmacist ph=pharmacistRepository.findPharmacistById(id);	
 		Rating rat=new Rating();
 		if(ph.getRatings().isEmpty()) {
@@ -510,7 +510,7 @@ public class PharmacistServiceImpl implements PharmacistService {
 			ph.getRatings().add(rat);
 		}
 		for(Rating r : ph.getRatings()) {
-			if(r.getPatient().equals(patient)) {
+			if(r.getPatient() ==patient) {
 				r.setRating(rating);
 			}
 		}

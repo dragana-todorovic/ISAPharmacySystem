@@ -171,7 +171,7 @@ public class MedicineController {
 	public List<RatingView> getAllMedicinePatientCanEvaluate(@PathVariable String email) {
 		User user = this.userService.findByUsername(email);
 		Patient patient=this.patientService.findPatientByUser(user);
-		return medicineService.getAllMedicinePatientCanEvaluate(patient);
+		return medicineService.getAllMedicinePatientCanEvaluate(patient.getId());
 		
 	}
 	
@@ -180,7 +180,7 @@ public class MedicineController {
 	 public ResponseEntity<?> changeRating(@PathVariable int rating,@PathVariable String email,@PathVariable Long id){
 		 User user = this.userService.findByUsername(email);
 		 Patient patient=this.patientService.findPatientByUser(user);
-		 this.medicineService.changeRating(rating,patient,id);
+		 this.medicineService.changeRating(rating,patient.getId(),id);
 		 return new ResponseEntity<>(HttpStatus.OK);
 	 }
 

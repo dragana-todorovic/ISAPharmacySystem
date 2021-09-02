@@ -10,8 +10,25 @@ $(document).ready(function() {
 
 		$('a#changePassword').click(function(){
 		$('#show').attr('hidden',false);
-		$('#pharmacies_for_derm_appointments').attr('hidden',true);	
-		$('#edit-profile').attr('hidden', true);
+		$('#eval').attr('hidden',true);	
+	$('#my_derm_appointments').attr('hidden',true);
+	$('#pharmacy-details').attr('hidden',true);		
+	$('#all_pharmacies_show').attr('hidden',true);	
+	$('#edit-profile').attr('hidden', true);
+	$('#derm_appointments').attr('hidden',true);
+	$('#ph_av_con').attr('hidden',true)
+	$('#ph_con').attr('hidden',true)
+	$('#pharmacies_for_derm_appointments').attr('hidden',true);
+	$('#shedule_consulting').attr('hidden',true);
+	$('#my_ph_appointments').attr('hidden',true);
+	$('#medicine_show').attr('hidden',true);
+	$('#reserved_medicine_div').attr('hidden',true);
+	$('#search-box-medicine').attr('hidden',true);
+	$('#qr_code_show').attr('hidden', true);
+	$('#pharamcies_with_medicine_show').attr('hidden',true);
+    $('#pharmacyComplaintDiv').attr('hidden', true);
+    $('#dermatologistComplaintDiv').attr('hidden', true);
+    $('#pharmacistComplaintDiv').attr('hidden', true);
 		input_password = $('#id_password');
 		console.log(input_password)
 		input_passwordConf = $('#id_passwordConf');
@@ -201,6 +218,7 @@ $(document).ready(function() {
 		 		contentType: 'application/json',
 				success:function(){
 					alert("Successfully removed allergie. ");
+					window.location.href="/html/patient.html";
 				}
 			})
 		}
@@ -232,6 +250,7 @@ $(document).ready(function() {
 		 		contentType: 'application/json',
 				success:function(){
 					alert("Successfully added allergie. ");
+					window.location.href="/html/patient.html";
 				}
 			})
 		}
@@ -247,9 +266,9 @@ function showAllergies(data){
 	let temp='';
 	for (i in data){
 		temp+=`<tr id="`+data[i].name+`">
-			<td><h4 class="ui image header"> <div class="content">
+			<td> <div class="content">
              `+data[i].name+`</div>
-      			</h4></td>
+      			</td>
      			 <td><button id="add-allergie" class="ui primary basic button">Add Allergie</button>
       			</td></tr>`;
 	}
@@ -257,10 +276,27 @@ function showAllergies(data){
 	
 };
 function showProfile(data,result){
-	
-	$('#pharmacies_for_derm_appointments').attr('hidden',true);	
+	console.log(result)
 	$('#edit-profile').attr('hidden', false);
-		$('#show').attr('hidden',true);
+		$('#eval').attr('hidden',true);	
+	$('#my_derm_appointments').attr('hidden',true);
+	$('#pharmacy-details').attr('hidden',true);		
+	$('#all_pharmacies_show').attr('hidden',true);	
+	$('#show').attr('hidden',true);
+	$('#derm_appointments').attr('hidden',true);
+	$('#ph_av_con').attr('hidden',true)
+	$('#ph_con').attr('hidden',true)
+	$('#pharmacies_for_derm_appointments').attr('hidden',true);
+	$('#shedule_consulting').attr('hidden',true);
+	$('#my_ph_appointments').attr('hidden',true);
+	$('#medicine_show').attr('hidden',true);
+	$('#reserved_medicine_div').attr('hidden',true);
+	$('#search-box-medicine').attr('hidden',true);
+	$('#qr_code_show').attr('hidden', true);
+	$('#pharamcies_with_medicine_show').attr('hidden',true);
+    $('#pharmacyComplaintDiv').attr('hidden', true);
+    $('#dermatologistComplaintDiv').attr('hidden', true);
+    $('#pharmacistComplaintDiv').attr('hidden', true);
     			    $('#id_first_name').val(data.firstName);
     		    	$('#id_last_name').val(data.lastName);
     		    	$('#id_country').val(data.country);
@@ -270,13 +306,15 @@ function showProfile(data,result){
 					$('#id_email').val(data.email);
 		let temp='';
 			for (i in result){
+				if(result[i]!=null){
 				temp+=`<tr id="`+result[i]+`">
-					<td><h4 class="ui image header"> <div class="content">
+					<td> <div class="content">
 		             `+result[i]+`</div>
-		      			</h4></td>
+		      			</td>
 		     			 <td><button id="remove-allergie" class="ui negative basic button">Remove Allergie</button>
 		      			</td></tr>`;
-			}
+				}
+		}
 		$('#my_allergies').html(temp);
 };
 function parseJwt (token) {

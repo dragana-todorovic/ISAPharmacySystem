@@ -176,19 +176,7 @@ $('.ui.dropdown')
 		 }
 	 })
 	 
-	 $('#duration').onChange( function(){
-		 if( $('#dermatologistCombo').val() == '' || $('#dateOfExamination').val() == '' || $('#timeOfExamination').val()==''
-			|| $('#duration').val() == '' || !validateNumber($('#duration').val()) || $('#price').val() == '' || 
-			!validateNumber2($('#price').val())
-		 ) {
-			 btnPredefined.disabled = true
-				$("#errorPredefined").text("Please enter all data!")
-		  		$('#errorPredefined').css('color', 'red');
-		 } else {
-			 $("#errorPredefined").text("")
-				btnPredefined.disabled = false;
-		 }
-	 })
+
 	 
 	 
 	   $('#price').keyup( function(){

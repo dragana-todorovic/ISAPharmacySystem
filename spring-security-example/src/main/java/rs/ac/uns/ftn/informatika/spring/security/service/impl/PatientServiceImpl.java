@@ -38,8 +38,7 @@ public class PatientServiceImpl implements PatientService {
 	@Autowired
 	private EPrescriptionService ePrescriptionService;
 
-	@Autowired
-	private MedicineWithQuantityRepository medicineWithQuantityRepository;
+	
 
 	
 	@Override
@@ -49,8 +48,6 @@ public class PatientServiceImpl implements PatientService {
 	}
 	@Override
 	public ArrayList<String> findPatientsAllergies(Long user_id) {
-		System.out.println("//////////////////////////////");
-		System.out.println("Service"+ this.patientRepository.findPatientsAllergies(user_id));
 		return this.patientRepository.findPatientsAllergies(user_id);
 	}
 	@Override

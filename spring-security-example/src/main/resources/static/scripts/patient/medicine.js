@@ -203,22 +203,51 @@ $(document).ready(function() {
 
         })
 	$('a#reserve_medicine').click(function(){
-				$('#search-box-medicine').attr('hidden',false);
-				$('#edit-profile').attr('hidden', true);
-				$('#show').attr('hidden',true);
-				$('#pharmacy-details').attr('hidden',true);
-				$('#pharmacies_for_derm_appointments').attr('hidden',true);
-				$('#reserved_medicine_div').attr('hidden',true);
+		
+	$('#search-box-medicine').attr('hidden',false);
+	$('#eval').attr('hidden',true);	
+	$('#my_derm_appointments').attr('hidden',true);
+	$('#pharmacy-details').attr('hidden',true);		
+	$('#all_pharmacies_show').attr('hidden',true);	
+	$('#edit-profile').attr('hidden', true);
+	$('#show').attr('hidden',true);
+	$('#derm_appointments').attr('hidden',true);
+	$('#ph_av_con').attr('hidden',true)
+	$('#ph_con').attr('hidden',true)
+	$('#pharmacies_for_derm_appointments').attr('hidden',true);
+	$('#shedule_consulting').attr('hidden',true);
+	$('#my_ph_appointments').attr('hidden',true);
+	$('#medicine_show').attr('hidden',true);
+	$('#reserved_medicine_div').attr('hidden',true);
+	$('#qr_code_show').attr('hidden', true);
+	$('#pharamcies_with_medicine_show').attr('hidden',true);
+    $('#pharmacyComplaintDiv').attr('hidden', true);
+    $('#dermatologistComplaintDiv').attr('hidden', true);
+    $('#pharmacistComplaintDiv').attr('hidden', true);
 		     });
 		     //mili for ePrecription
     $('a#ePrescription').click(function(){
-	    $('#qr_code_show').attr('hidden', false);
-        $('#search-box-medicine').attr('hidden',true);
-        $('#edit-profile').attr('hidden', true);
-        $('#show').attr('hidden',true);
-        $('#pharmacy-details').attr('hidden',true);
-        $('#pharmacies_for_derm_appointments').attr('hidden',true);
-        $('#reserved_medicine_div').attr('hidden',true);
+	
+	  $('#qr_code_show').attr('hidden', false);
+      $('#eval').attr('hidden',true);	
+	$('#my_derm_appointments').attr('hidden',true);
+	$('#pharmacy-details').attr('hidden',true);		
+	$('#all_pharmacies_show').attr('hidden',true);	
+	$('#edit-profile').attr('hidden', true);
+	$('#show').attr('hidden',true);
+	$('#derm_appointments').attr('hidden',true);
+	$('#ph_av_con').attr('hidden',true)
+	$('#ph_con').attr('hidden',true)
+	$('#pharmacies_for_derm_appointments').attr('hidden',true);
+	$('#shedule_consulting').attr('hidden',true);
+	$('#my_ph_appointments').attr('hidden',true);
+	$('#medicine_show').attr('hidden',true);
+	$('#reserved_medicine_div').attr('hidden',true);
+	$('#search-box-medicine').attr('hidden',true);
+	$('#pharamcies_with_medicine_show').attr('hidden',true);
+    $('#pharmacyComplaintDiv').attr('hidden', true);
+    $('#dermatologistComplaintDiv').attr('hidden', true);
+    $('#pharmacistComplaintDiv').attr('hidden', true);
      });
 
      $("#file").change(function() {
@@ -365,11 +394,25 @@ $(document).ready(function() {
      /// mili end of ePRecription
 	$('a#reserved_medicine').click(function(){
 			$('#reserved_medicine_div').attr('hidden',false);
-			$('#search-box-medicine').attr('hidden',true);
-			$('#edit-profile').attr('hidden', true);
-			$('#show').attr('hidden',true);
-			$('#pharmacy-details').attr('hidden',true);
-			$('#pharmacies_for_derm_appointments').attr('hidden',true);
+			$('#eval').attr('hidden',true);	
+	$('#my_derm_appointments').attr('hidden',true);
+	$('#pharmacy-details').attr('hidden',true);		
+	$('#all_pharmacies_show').attr('hidden',true);	
+	$('#edit-profile').attr('hidden', true);
+	$('#show').attr('hidden',true);
+	$('#derm_appointments').attr('hidden',true);
+	$('#ph_av_con').attr('hidden',true)
+	$('#ph_con').attr('hidden',true)
+	$('#pharmacies_for_derm_appointments').attr('hidden',true);
+	$('#shedule_consulting').attr('hidden',true);
+	$('#my_ph_appointments').attr('hidden',true);
+	$('#medicine_show').attr('hidden',true);
+	$('#search-box-medicine').attr('hidden',true);
+	$('#qr_code_show').attr('hidden', true);
+	$('#pharamcies_with_medicine_show').attr('hidden',true);
+    $('#pharmacyComplaintDiv').attr('hidden', true);
+    $('#dermatologistComplaintDiv').attr('hidden', true);
+    $('#pharmacistComplaintDiv').attr('hidden', true);
 			customAjax({
 		            url: '/medicine/getReservationsByPatient/' + email ,
 		            method: 'GET',
@@ -569,7 +612,25 @@ function showMedicineType(data, selectedType){
 	}
 	$('#medicine_table').html(temp);
 	$('#medicine_show').attr('hidden',false);
+	$('#eval').attr('hidden',true);	
+	$('#my_derm_appointments').attr('hidden',true);
+	$('#pharmacy-details').attr('hidden',true);		
+	$('#all_pharmacies_show').attr('hidden',true);	
+	$('#edit-profile').attr('hidden', true);
+	$('#show').attr('hidden',true);
+	$('#derm_appointments').attr('hidden',true);
+	$('#ph_av_con').attr('hidden',true)
 	$('#ph_con').attr('hidden',true)
+	$('#pharmacies_for_derm_appointments').attr('hidden',true);
+	$('#shedule_consulting').attr('hidden',true);
+	$('#my_ph_appointments').attr('hidden',true);
+	$('#reserved_medicine_div').attr('hidden',true);
+	$('#search-box-medicine').attr('hidden',true);
+	$('#qr_code_show').attr('hidden', true);
+	$('#pharamcies_with_medicine_show').attr('hidden',true);
+    $('#pharmacyComplaintDiv').attr('hidden', true);
+    $('#dermatologistComplaintDiv').attr('hidden', true);
+    $('#pharmacistComplaintDiv').attr('hidden', true);
 }
 function showMedicineShape(data, selectedShape){
 	let temp='';
@@ -599,7 +660,25 @@ function showMedicineShape(data, selectedShape){
 	}
 	$('#medicine_table').html(temp);
 	$('#medicine_show').attr('hidden',false);
+	$('#eval').attr('hidden',true);	
+	$('#my_derm_appointments').attr('hidden',true);
+	$('#pharmacy-details').attr('hidden',true);		
+	$('#all_pharmacies_show').attr('hidden',true);	
+	$('#edit-profile').attr('hidden', true);
+	$('#show').attr('hidden',true);
+	$('#derm_appointments').attr('hidden',true);
+	$('#ph_av_con').attr('hidden',true)
 	$('#ph_con').attr('hidden',true)
+	$('#pharmacies_for_derm_appointments').attr('hidden',true);
+	$('#shedule_consulting').attr('hidden',true);
+	$('#my_ph_appointments').attr('hidden',true);
+	$('#reserved_medicine_div').attr('hidden',true);
+	$('#search-box-medicine').attr('hidden',true);
+	$('#qr_code_show').attr('hidden', true);
+	$('#pharamcies_with_medicine_show').attr('hidden',true);
+    $('#pharmacyComplaintDiv').attr('hidden', true);
+    $('#dermatologistComplaintDiv').attr('hidden', true);
+    $('#pharmacistComplaintDiv').attr('hidden', true);
 }
 
 function showMedicineShapeType(data,  selectedShape, selectedType){
@@ -630,7 +709,25 @@ function showMedicineShapeType(data,  selectedShape, selectedType){
 	}
 	$('#medicine_table').html(temp);
 	$('#medicine_show').attr('hidden',false);
+	$('#eval').attr('hidden',true);	
+	$('#my_derm_appointments').attr('hidden',true);
+	$('#pharmacy-details').attr('hidden',true);		
+	$('#all_pharmacies_show').attr('hidden',true);	
+	$('#edit-profile').attr('hidden', true);
+	$('#show').attr('hidden',true);
+	$('#derm_appointments').attr('hidden',true);
+	$('#ph_av_con').attr('hidden',true)
 	$('#ph_con').attr('hidden',true)
+	$('#pharmacies_for_derm_appointments').attr('hidden',true);
+	$('#shedule_consulting').attr('hidden',true);
+	$('#my_ph_appointments').attr('hidden',true);
+	$('#reserved_medicine_div').attr('hidden',true);
+	$('#search-box-medicine').attr('hidden',true);
+	$('#qr_code_show').attr('hidden', true);
+	$('#pharamcies_with_medicine_show').attr('hidden',true);
+    $('#pharmacyComplaintDiv').attr('hidden', true);
+    $('#dermatologistComplaintDiv').attr('hidden', true);
+    $('#pharmacistComplaintDiv').attr('hidden', true);
 }
 function showMedicine(data){
 	let temp='';
@@ -657,7 +754,25 @@ function showMedicine(data){
 	}
 	$('#medicine_table').html(temp);
 	$('#medicine_show').attr('hidden',false);
+	$('#eval').attr('hidden',true);	
+	$('#my_derm_appointments').attr('hidden',true);
+	$('#pharmacy-details').attr('hidden',true);		
+	$('#all_pharmacies_show').attr('hidden',true);	
+	$('#edit-profile').attr('hidden', true);
+	$('#show').attr('hidden',true);
+	$('#derm_appointments').attr('hidden',true);
+	$('#ph_av_con').attr('hidden',true)
 	$('#ph_con').attr('hidden',true)
+	$('#pharmacies_for_derm_appointments').attr('hidden',true);
+	$('#shedule_consulting').attr('hidden',true);
+	$('#my_ph_appointments').attr('hidden',true);
+	$('#reserved_medicine_div').attr('hidden',true);
+	$('#search-box-medicine').attr('hidden',true);
+	$('#qr_code_show').attr('hidden', true);
+	$('#pharamcies_with_medicine_show').attr('hidden',true);
+    $('#pharmacyComplaintDiv').attr('hidden', true);
+    $('#dermatologistComplaintDiv').attr('hidden', true);
+    $('#pharmacistComplaintDiv').attr('hidden', true);
 }
 //qr_pharmacy_table
 function showPharmaciesForQr(data){
@@ -697,25 +812,44 @@ function showPharmaciesWithMedicine(data){
 	for (i in data){
 		 var averageRating= 0.0;
     	    var countOfRatings = 0.0;
-            if(data[i].ratings.length    >0){
+			console.log(data[i])
+         /*   if(data[i].ratings.lenght >0){
                 for(x in data[i].ratings){
                     countOfRatings += data[i].ratings[x].rating;
                 }
                 averageRating = countOfRatings/data[i].ratings.length ;
-            }
+            }*/
 		temp+=`<tr id="`+data[i].id+`">
 			<td>`+data[i].pharmacyName+`</td>
 			<td>`+data[i].street+`</td>
 			<td>`+data[i].city+`</td>
 			<td>`+data[i].medicinePrice+`</td>
-			<td>`+averageRating+`</td>
+			<td>`+data[i].avrageGrade+`</td>
 			 <td><button id="reserve-medicine" class="ui primary basic button">Reserve Medicine</button>
       			</td>
 			</tr>`;
 	}
 	$('#ph_med_table').html(temp);
 	$('#pharamcies_with_medicine_show').attr('hidden',false);
+	$('#eval').attr('hidden',true);	
+	$('#my_derm_appointments').attr('hidden',true);
+	$('#pharmacy-details').attr('hidden',true);		
+	$('#all_pharmacies_show').attr('hidden',true);	
+	$('#edit-profile').attr('hidden', true);
+	$('#show').attr('hidden',true);
+	$('#derm_appointments').attr('hidden',true);
+	$('#ph_av_con').attr('hidden',true)
 	$('#ph_con').attr('hidden',true)
+	$('#pharmacies_for_derm_appointments').attr('hidden',true);
+	$('#shedule_consulting').attr('hidden',true);
+	$('#my_ph_appointments').attr('hidden',true);
+	$('#medicine_show').attr('hidden',true);
+	$('#reserved_medicine_div').attr('hidden',true);
+	$('#search-box-medicine').attr('hidden',true);
+	$('#qr_code_show').attr('hidden', true);
+    $('#pharmacyComplaintDiv').attr('hidden', true);
+    $('#dermatologistComplaintDiv').attr('hidden', true);
+    $('#pharmacistComplaintDiv').attr('hidden', true);
 }
 function comparer(index) { //ZA SORTIRANJE!
     return function (a, b) {

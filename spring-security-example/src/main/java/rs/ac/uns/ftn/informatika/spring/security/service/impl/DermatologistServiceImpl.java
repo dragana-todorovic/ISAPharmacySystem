@@ -150,6 +150,9 @@ public class DermatologistServiceImpl implements DermatologistService{
 					System.out.println("Usao u if");
 				List <MyPatientDTO> myPatients =new ArrayList<MyPatientDTO>();
 				List<DermatologistAppointment> appointments = dermatologistAppointmentService.findById(d.getId());
+				if(appointments==null) {
+					return new ArrayList<MyPatientDTO>();
+				}
 				for (DermatologistAppointment da :appointments) {
 					
 					System.out.println("Usao u for"+da.getDermatologist().getUser().getFirstName());
@@ -461,14 +464,14 @@ public class DermatologistServiceImpl implements DermatologistService{
 	}
 
 	@Override
-	public List<RatingView> getAllDermPatientCanEvaluate(Patient patient) {
+	public List<RatingView> getAllDermPatientCanEvaluate(long patient) {
 		List<RatingView> result=new ArrayList<RatingView>();
 		List<Dermatologist> pom=new ArrayList<Dermatologist>();
 		for(DermatologistAppointment app: this.dermatologistAppointmentRepository.findAll()) {
 			if(app.getPatient()==null) {
 				continue;
 			}
-			if(app.getPatient().equals(patient)) {
+			if(app.getPatient().getId() == patient) {
 				if(app.getStartDateTime().isBefore( LocalDateTime.now()) && !pom.contains(app.getDermatologist())) {
 					pom.add(app.getDermatologist());
 					}
@@ -480,7 +483,7 @@ public class DermatologistServiceImpl implements DermatologistService{
 					d.getUser().getLastName());
 			
 			for(Rating ra :d.getRatings()){
-				if(ra.getPatient().equals(patient)) {
+				if(ra.getPatient() == patient) {
 					rdw.setPatientsGrade(ra.getRating());					
 				} 
 			}
@@ -492,7 +495,7 @@ public class DermatologistServiceImpl implements DermatologistService{
 	}
 
 	@Override
-	public void changeRating(int rating, Patient patient, Long dermatologistId) {
+	public void changeRating(int rating, long patient, Long dermatologistId) {
 		Dermatologist derm=dermatologistRepository.findDermatologistById(dermatologistId);	
 		Rating rat=new Rating();
 		if(derm.getRatings().isEmpty()) {
@@ -501,11 +504,12 @@ public class DermatologistServiceImpl implements DermatologistService{
 			derm.getRatings().add(rat);
 		}
 		for(Rating r : derm.getRatings()) {
-			if(r.getPatient().equals(patient)) {
+			if(r.getPatient() ==patient) {
 				r.setRating(rating);
 			}
 		}
 		this.dermatologistRepository.save(derm);
+		
 	}
 
 }

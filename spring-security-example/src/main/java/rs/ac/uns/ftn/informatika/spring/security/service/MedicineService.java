@@ -35,6 +35,6 @@ public interface MedicineService {
 	Boolean deleteMedicineFromPharmacy(Long id, String email);
 	void editMedicineWithQuatityInPharmacy(String email, long id, int quantity);
 	Set<Medicine> getAllMedicinePricesExpectedExsitedInPriceList(String email, List<Long> existed, String priceListId);
-	List<RatingView> getAllMedicinePatientCanEvaluate(Patient patient);
-	void changeRating(int rating,Patient patient,Long id);
+	List<RatingView> getAllMedicinePatientCanEvaluate(long patient);
+	void changeRating(int rating,long patient,Long id);
 }

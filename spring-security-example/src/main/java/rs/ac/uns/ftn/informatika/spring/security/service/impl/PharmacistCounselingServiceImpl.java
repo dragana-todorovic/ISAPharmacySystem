@@ -196,12 +196,16 @@ public class PharmacistCounselingServiceImpl implements PharmacistCounselingServ
 		LocalDateTime today=LocalDateTime.now();
 		for(PharmacistCounseling pc: findByPatientId(id)) {
 			boolean isExpaired=false;
+			boolean isHistory=false;
 			Pharmacy pharmacy=pc.getPharmacist().getWorkingTimes().getPharmacy();
 			if(pc.getStartDateTime().isBefore(today.minusDays(1))) {
 				isExpaired=true;
 			}
+			if(pc.getStartDateTime().isBefore(today)) {
+				isHistory=true;
+			}
 			PatientsCounslingView pcv=new PatientsCounslingView(pc.getId(),pc.getPharmacist().getUser().getFirstName(),pc.getPharmacist().getUser().getLastName(),
-					pharmacy.getName(),pharmacy.getAddress().getCity(),pharmacy.getAddress().getStreet(),pc.getStartDateTime(),pc.getDuration(),"cena",isExpaired);
+					pharmacy.getName(),pharmacy.getAddress().getCity(),pharmacy.getAddress().getStreet(),pc.getStartDateTime(),pc.getDuration(),"cena",isExpaired,isHistory);
 			result.add(pcv);
 		}
 		return result;

@@ -142,20 +142,16 @@ public class PatientController {
 	@PreAuthorize("hasRole('ROLE_PATIENT')  || hasRole('ADMIN_SYSTEM')"+"|| hasRole('ROLE_PHARMACIST')"
 	        +
 	        "|| hasRole('ROLE_DERMATOLOGIST')")
-	public ResponseEntity<ArrayList<String>> addAllergie(@PathVariable(name="id") String id,@RequestBody UserRegisterView userRequest) {
+	public ResponseEntity<?> addAllergie(@PathVariable(name="id") String id,@RequestBody UserRegisterView userRequest) {
 		User existUser = this.userService.findByUsername(userRequest.getEmail());
 		Patient patient = this.patientService.findPatientByUser(existUser);
-		List<Medicine> medicine=this.medicineService.findAll();
-		Set<Medicine> allergies = patient.getAllergies();
 		for(Medicine s:this.medicineService.findAll()) {
 			if(s.getName().equalsIgnoreCase(id)) {
-				allergies.add(s);
-				System.out.println(s.getName());
+				patient.getAllergies().add(s);
 			}
 		}
-		patient.setAllergies(allergies);
 		this.patientService.savePatient(patient);
-		return null;
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	//mili for loyaltyScale

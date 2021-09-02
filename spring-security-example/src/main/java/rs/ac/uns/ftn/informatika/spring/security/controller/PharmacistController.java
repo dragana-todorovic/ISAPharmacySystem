@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,6 +36,7 @@ import rs.ac.uns.ftn.informatika.spring.security.model.DTO.WorkCalendarDTO;
 import rs.ac.uns.ftn.informatika.spring.security.repository.MedicineRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.MedicineReservationRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacistCounselingRepository;
+import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacistRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.UserRepository;
 
 import rs.ac.uns.ftn.informatika.spring.security.service.*;
@@ -66,6 +68,8 @@ public class PharmacistController {
 	private MedicineRepository medicineRepository;
 	@Autowired
 	private EmailService emailService;
+	@Autowired
+	private PharmacistRepository pharmacistRepository;
 	@Autowired
 	private PharmacistCounselingRepository pharmacistCounselingRepository;
 	@Autowired
@@ -217,13 +221,24 @@ public class PharmacistController {
 		return myPatientsDtos;
 		
 	}
+	@GetMapping("/getVersion/{id}")
+	@PreAuthorize("hasRole('ROLE_PHARMACIST')")
+	public MedicineReservation getVersion(@PathVariable String id) {
+		System.out.println("MEDICINE RESERVATION");
+		Long ID = Long.parseLong(id.substring(8,id.length()));
+		return medicineReservationRepository.findById(ID).get();		
+	}
+	
 	@Lock(LockModeType.OPTIMISTIC_FORCE_INCREMENT) 
-	@GetMapping("/takeReservedMedicine/{id}")
-	public ResponseEntity<?> takeReservedMedicine(@PathVariable String id) {
+	@GetMapping("/takeReservedMedicine/{id}/{version}")
+	public ResponseEntity<?> takeReservedMedicine(@PathVariable String id,@PathVariable String version) {
 		System.out.println("ID"+id);
 		String pom = id.substring(8,id.length());
        	Long ID = Long.parseLong(pom);
        	MedicineReservation reservation = medicineReservationRepository.findById(ID).get();
+       	if(reservation.getVersion()!=Long.parseLong(version)) {
+       		return new ResponseEntity<>(HttpStatus.CONFLICT);
+       	}
        	reservation.setStatus(MedicineReservationStatus.TAKEN);	
        	LocalDateTime dt = LocalDateTime.of(reservation.getDueTo(), reservation.getDueToTime());
        	if(LocalDateTime.now().isBefore(dt.minus(Period.ofDays(1)))) {
@@ -273,6 +288,7 @@ public class PharmacistController {
 	}
 	@PreAuthorize("hasRole('ROLE_PHARMACIST') || hasRole('ROLE_PATIENT') ")
 	@RequestMapping(value = "/scheduleAnAppointment" , method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@Transactional(readOnly=false)
 	public ResponseEntity<?> scheduleAnAppointment(@RequestBody CounselingDTO dto)  {
 		System.out.println(dto.getDuration());
 		System.out.println(dto.getStartDate());
@@ -295,10 +311,11 @@ public class PharmacistController {
 		if(dt.isBefore(LocalDateTime.now())) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		Pharmacist pharmacist=null;
+		
 		LocalDate startDateDPharmacist=dt.toLocalDate();
 		System.out.println("Farmaceut"+dto.getPharmacistEmail());
 	
+		Long ID=0L;
 		for(Pharmacist d: pharmacistService.findAll()) {
 			System.out.println("*******************************");
 			System.out.println(d.getUser().getFirstName());
@@ -306,9 +323,11 @@ public class PharmacistController {
 			System.out.println(dto.getPharmacistEmail());
 			if(d.getUser().getEmail().equals(dto.getPharmacistEmail())) {
 				System.out.println("Email farmaceuta"+d.getUser().getEmail());
-				pharmacist= d;
+				ID= d.getId();
 			}
 			}
+		Pharmacist pharmacist=this.pharmacistRepository.findPharmacistByID(ID);
+		
 		Patient patient=null;	
 		for(Patient p:patientService.findAll()) {
 			System.out.println("Email pacijenta"+p.getUser().getEmail());
@@ -506,7 +525,7 @@ public class PharmacistController {
 	public List<RatingView> getAllPharmacistsPatientCanEvaluate(@PathVariable String email) {
 		User user = this.userService.findByUsername(email);
 		Patient patient=this.patientService.findPatientByUser(user);
-		return pharmacistService.getAllPharmacistsPatientCanEvaluate(patient);
+		return pharmacistService.getAllPharmacistsPatientCanEvaluate(patient.getId());
 		
 	}
 	 @PostMapping("/changeRating/{rating}/{email}/{id}")
@@ -514,7 +533,7 @@ public class PharmacistController {
 	 public ResponseEntity<?> changeRating(@PathVariable int rating,@PathVariable String email,@PathVariable Long id){
 		 User user = this.userService.findByUsername(email);
 		 Patient patient=this.patientService.findPatientByUser(user);
-		 this.pharmacistService.changeRating(rating,patient,id);
+		 this.pharmacistService.changeRating(rating,patient.getId(),id);
 		 return new ResponseEntity<>(HttpStatus.OK);
 	 }
 

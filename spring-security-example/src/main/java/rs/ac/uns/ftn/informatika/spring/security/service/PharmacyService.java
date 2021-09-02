@@ -61,7 +61,7 @@ public interface PharmacyService {
 	Boolean deletePharmacistFromPharmacy(String id, String email);
 
 
-	
+	double getAvrageGrade(Pharmacy pharmacy);
 	Set<Dermatologist> getAllDermatologistExpectAlreadyExisted(String email);
 	Boolean addDermatologistInPharmacy(String email, NewDermatologistDTO newDermatologist);
 	void addPharmacistInPharmacy(String email, NewPharmacistDTO newPharmacist);
@@ -83,8 +83,13 @@ public interface PharmacyService {
 	Boolean acceptHolidayRequestP(long parseLong, long pharmacistId);
 	void declineHolidayRequestP(long parseLong, long pharmacistId, String reason);
 	List<RequestForMedicineAvailability> findRequestsByPharmacy(String email);
+
 	List<RatingView> getAllPharmaciesPatientCanEvaluate(Patient patient);
 
 
 	Set<HolidayRequest> getHolidayRequestsForDerm(long id);
+
+	List<RatingView> getAllPharmaciesPatientCanEvaluate(long patient);
+	void changeRating(int rating,long patient,Long id);
+
 }

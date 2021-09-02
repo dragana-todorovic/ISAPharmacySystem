@@ -13,6 +13,7 @@ public class PatientDermatologistAppointmentView {
 	private int duration;
 	private String price;
 	private Boolean isAppointmentExpired;
+	private Boolean isHistory;
 	
 	
 	
@@ -22,7 +23,7 @@ public class PatientDermatologistAppointmentView {
 
 	public PatientDermatologistAppointmentView(Long id, String dermatologistsFirstName, String dermatologistsLastName,
 			String pharmacyName, String pharmacyCity, String pharmacyStreet, LocalDateTime dateAndtime, int duration,
-			String price, Boolean isAppointmentExpired) {
+			String price, Boolean isAppointmentExpired,Boolean isHistory) {
 		super();
 		this.id = id;
 		this.dermatologistsFirstName = dermatologistsFirstName;
@@ -34,6 +35,7 @@ public class PatientDermatologistAppointmentView {
 		this.duration = duration;
 		this.price = price;
 		this.isAppointmentExpired = isAppointmentExpired;
+		this.isHistory = isHistory;
 	}
 
 	public Long getId() {
@@ -116,13 +118,23 @@ public class PatientDermatologistAppointmentView {
 		this.isAppointmentExpired = isAppointmentExpired;
 	}
 
+	public Boolean getIsHistory() {
+		return isHistory;
+	}
+
+	public void setIsHistory(Boolean isHistory) {
+		this.isHistory = isHistory;
+	}
+
 	@Override
 	public String toString() {
 		return "PatientDermatologistAppointmentView [id=" + id + ", dermatologistsFirstName=" + dermatologistsFirstName
 				+ ", dermatologistsLastName=" + dermatologistsLastName + ", pharmacyName=" + pharmacyName
 				+ ", pharmacyCity=" + pharmacyCity + ", pharmacyStreet=" + pharmacyStreet + ", dateAndtime="
 				+ dateAndtime + ", duration=" + duration + ", price=" + price + ", isAppointmentExpired="
-				+ isAppointmentExpired + "]";
+				+ isAppointmentExpired + ", isHistory=" + isHistory + "]";
 	}
+
+
 
 }
