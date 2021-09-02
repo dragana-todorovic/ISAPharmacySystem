@@ -1,25 +1,19 @@
 package rs.ac.uns.ftn.informatika.spring.security.service.impl;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.*;
 
-import com.google.zxing.*;
-import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
-import com.google.zxing.common.HybridBinarizer;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import rs.ac.uns.ftn.informatika.spring.security.model.*;
-import rs.ac.uns.ftn.informatika.spring.security.repository.MedicineWithQuantityRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PatientRepository;
 import rs.ac.uns.ftn.informatika.spring.security.service.*;
 import rs.ac.uns.ftn.informatika.spring.security.view.EPrescriptionPharmacyView;
 
-import javax.imageio.ImageIO;
+
 
 @Service
 public class PatientServiceImpl implements PatientService {
@@ -38,7 +32,8 @@ public class PatientServiceImpl implements PatientService {
 	@Autowired
 	private EPrescriptionService ePrescriptionService;
 
-	
+	@Autowired
+	private MedicineReservationService medicineReservationService;
 
 	
 	@Override
@@ -140,6 +135,7 @@ public class PatientServiceImpl implements PatientService {
 		}
 
 		ePrescription.setMedicines(mqSet);
+		ePrescription.setPharmacy(pharmacy);
 		this.ePrescriptionService.save(ePrescription);
 
 		//update in pharmacy medicine quantity
@@ -150,6 +146,18 @@ public class PatientServiceImpl implements PatientService {
 			updateUserPoints(myMed,patient );
 			this.loyaltyScaleService.updateCathegoryOfPatient(patient);
 		}
+	}
+
+	@Override
+	public List<EPrescription> findAllEpresForUser(Patient patient) {
+		List<EPrescription> allE = this.ePrescriptionService.findAll();
+		List<EPrescription> newAll = new ArrayList<>();
+		for(EPrescription e: allE){
+			if(e.getPatient().equals(patient)){
+				newAll.add(e);
+			}
+		}
+		return newAll;
 	}
 
 	private void updateUserPoints(MedicineWithQuantity medicineWithQuantity, Patient patient) {
@@ -217,6 +225,28 @@ public class PatientServiceImpl implements PatientService {
 			return  false;
 		}
 	}
-
+	@Override
+	public void checkAndAddPenals(Patient patient) {
+		for(MedicineReservation reservation : this.medicineReservationService.getAll()) {
+			if(reservation.getPatient()==null) {
+				continue;
+			}
+				if(reservation.getPatient().equals(patient)) {
+					if(LocalDate.now().getDayOfMonth()==1) {
+						patient.setPenal(0);
+						this.patientRepository.save(patient);
+						break;
+					}
+					if(!reservation.getIsPenalGiven()) {
+						if(reservation.getDueTo().isBefore(LocalDate.now()) && reservation.getDueToTime().isBefore(LocalTime.now()) && reservation.getStatus().equals(MedicineReservationStatus.RESERVED)) {
+							patient.setPenal(patient.getPenal()+1);
+							reservation.setIsPenalGiven(true);
+							this.medicineReservationService.saveReservation(reservation);
+							this.patientRepository.save(patient);
+						}
+					}
+				}
+		}
+	}
 
 }

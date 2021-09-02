@@ -245,7 +245,6 @@ function showPharmaciesForConsulting(data){
 			<td>`+data[i].pharmacyCity+`</td>
 			<td>`+data[i].pharmacyStreet+`</td>
 			<td>`+data[i].pharmacyGrade+`</td>
-			<td>`+data[i].phramacyPrice+`</td>
 			<td><button id="show_pharmacists" class="ui primary basic button">Show available pharmacists</button>
 			</tr>`;
 	}

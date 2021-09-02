@@ -21,6 +21,7 @@ import rs.ac.uns.ftn.informatika.spring.security.repository.DermatologistAppoint
 import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacyRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.RequestForMedicineAvailabilityRepository;
 import rs.ac.uns.ftn.informatika.spring.security.service.AuthorityService;
+import rs.ac.uns.ftn.informatika.spring.security.service.EPrescriptionService;
 import rs.ac.uns.ftn.informatika.spring.security.service.EmailService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyAdminService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyService;
@@ -85,6 +86,9 @@ public class PharmacyServiceImpl implements PharmacyService{
 	
 	@Autowired
 	private AuthorityService authService;
+	
+	@Autowired
+	private EPrescriptionService ePrescriptionService;
 	
 	@Autowired
 	private DermatologistAppointmentRepository dermatologistAppoitmentRepository;
@@ -609,7 +613,7 @@ public class PharmacyServiceImpl implements PharmacyService{
 							for (MedicinePrice medicinePrice : pl.getMedicinePriceList()) {
 								if (medicinePrice.getMedicine().getId().equals(medi.getMedicine().getId())) {
 									System.out.println(medicinePrice.getPrice());
-									double	pricetotal = medicinePrice.getPrice();
+										double	pricetotal = medicinePrice.getPrice();
 										ph.setMedicinePrice(pricetotal);
 									break;
 								}
@@ -673,6 +677,18 @@ public class PharmacyServiceImpl implements PharmacyService{
 		return holidayRequests;
 	}
 
+
+	public Set<HolidayRequest> getHolidayRequestsForDerm(long id) {
+		Dermatologist dermatologist = this.dermatologistRepository.findById(id).get();
+
+
+		Set<HolidayRequest> holidayRequests = new HashSet<HolidayRequest>();
+		for(HolidayRequest hr : dermatologist.getHolidayRequests()) {
+				holidayRequests.add(hr);
+
+		}
+		return holidayRequests;
+	}
 	@Override
 	public Boolean acceptHolidayRequest(long id,long dermatologistId) {
 		Dermatologist dermatologist = this.dermatologistRepository.findById(dermatologistId).get();
@@ -701,6 +717,7 @@ public class PharmacyServiceImpl implements PharmacyService{
 		return true;
 		
 	}
+
 
 	@Override
 	public void declineHolidayRequest(long id,long dermatologistId, String reason) {
@@ -900,6 +917,18 @@ public class PharmacyServiceImpl implements PharmacyService{
 				}
 			}
 			
+		}
+		//PROVERA DA LI MU JE PREPISAN LEK PREKO ERECEPTA
+		for(EPrescription ep:ePrescriptionService.findAll()) {
+			if(ep.getPharmacy().equals(pharmacy)) {
+				if(ep.getPatient()==null) {
+					continue;
+				}
+				if(ep.getPatient().getId()==patient) {
+					if(ep.getPharmacy().equals(pharmacy) && !pom.contains(pharmacy))
+							pom.add(pharmacy);
+					}
+			}
 		}
 }
 		for(Pharmacy p : pom) {

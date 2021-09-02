@@ -293,4 +293,30 @@ public class PatientController {
 			return null;
 		}
 	}
+
+
+	@GetMapping("/getAllEprescriptionByUser/{email}")
+	@PreAuthorize("hasRole('ROLE_PATIENT') ")
+	public ResponseEntity<List<EPrescription>> getAllEprescriptionByUser(@PathVariable(name="email") String email)  {
+		//List<EPrescription> allEpres = this.
+		User user = this.userService.findByEmail(email);
+		Patient patient = this.patientService.findPatientByUser(user);
+		return new ResponseEntity <>(this.patientService.findAllEpresForUser(patient) ,HttpStatus.OK);
+	}
+
+
+
+
+
+
+	@PostMapping("/checkAndAddPenals/{email}")
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	public ResponseEntity<?> checkAndAddPenals(@PathVariable(name="email") String email) {
+		User user = this.userService.findByEmail(email);
+		Patient patient = this.patientService.findPatientByUser(user);
+		this.patientService.checkAndAddPenals(patient);
+		return  new ResponseEntity<>(HttpStatus.OK);
+	
+	}
+
 }

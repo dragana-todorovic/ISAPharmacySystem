@@ -3,6 +3,7 @@ package rs.ac.uns.ftn.informatika.spring.security.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import rs.ac.uns.ftn.informatika.spring.security.model.EPrescription;
 import rs.ac.uns.ftn.informatika.spring.security.model.Patient;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.User;
@@ -22,4 +23,9 @@ public interface PatientService {
 	int getPatientsDiscount(Patient patient);
 	List<EPrescriptionPharmacyView> findPharmacyForEPrescription(String codesAndCount);
     void buyEPrescriptionInPharmacy(Patient patient, Pharmacy pharmacy, List<String> medicineCodes, List<String> medicineCodesQuantity);
+
+	List<EPrescription> findAllEpresForUser(Patient patient);
+
+    void checkAndAddPenals(Patient patient);
+
 }

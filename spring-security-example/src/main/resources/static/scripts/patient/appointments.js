@@ -2,6 +2,7 @@ $(document).ready(function() {
 	var trid;
 	var email = localStorage.getItem('email')
 	var tableToShow;
+
 	$('a#history_derm').click(function(){
 		tableToShow="history"
 			customAjax({

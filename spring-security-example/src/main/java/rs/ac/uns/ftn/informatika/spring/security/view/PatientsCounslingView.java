@@ -13,14 +13,13 @@ public class PatientsCounslingView {
 	private String pharmacyStreet;
 	private LocalDateTime dateAndtime;
 	private int duration;
-	private String price;
 	private Boolean isCounslingExpired;
 	private Boolean isHistory;
 	public PatientsCounslingView() {
 		super();
 	}
 	public PatientsCounslingView(Long id, String pharmacistsFirstName, String pharmacistsLastName, String pharmacyName,
-			String pharmacyCity, String pharmacyStreet, LocalDateTime dateAndtime, int duration, String price,
+			String pharmacyCity, String pharmacyStreet, LocalDateTime dateAndtime, int duration,
 			Boolean isCounslingExpired,Boolean isHistory) {
 		super();
 		this.id = id;
@@ -31,7 +30,6 @@ public class PatientsCounslingView {
 		this.pharmacyStreet = pharmacyStreet;
 		this.dateAndtime = dateAndtime;
 		this.duration = duration;
-		this.price = price;
 		this.isCounslingExpired = isCounslingExpired;
 		this.isHistory=isHistory;
 	}
@@ -83,12 +81,7 @@ public class PatientsCounslingView {
 	public void setDuration(int duration) {
 		this.duration = duration;
 	}
-	public String getPrice() {
-		return price;
-	}
-	public void setPrice(String price) {
-		this.price = price;
-	}
+
 	public Boolean getIsCounslingExpired() {
 		return isCounslingExpired;
 	}
@@ -113,7 +106,7 @@ public class PatientsCounslingView {
 		return "PatientsCounslingView [id=" + id + ", pharmacistsFirstName=" + pharmacistsFirstName
 				+ ", pharmacistsLastName=" + pharmacistsLastName + ", pharmacyName=" + pharmacyName + ", pharmacyCity="
 				+ pharmacyCity + ", pharmacyStreet=" + pharmacyStreet + ", dateAndtime=" + dateAndtime + ", duration="
-				+ duration + ", price=" + price + ", isCounslingExpired=" + isCounslingExpired + ", isHistory="
+				+ duration + ",, isCounslingExpired=" + isCounslingExpired + ", isHistory="
 				+ isHistory + "]";
 	}
 	

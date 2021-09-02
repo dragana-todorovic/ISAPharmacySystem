@@ -5,6 +5,7 @@ var selectedShape = '';
 var file;
 var eMedicinesCodes = '';
 var eMedicinesCodesQuantity = '';
+var penals;
 function readURL(input) {
   if (input.files && input.files[0]) {
     var reader = new FileReader();
@@ -48,6 +49,41 @@ $(document).ready(function() {
             modalMedicines.style.display = "none";
         }
     }
+	$(window).on('load', function() {
+		
+ 		 customAjax({
+            url: '/patient/checkAndAddPenals/'+email ,
+            method: 'POST',
+            success: function () {
+               console.log("success")
+            },
+            error: function () {
+                console.log("error")
+            }
+
+        });
+			customAjax({
+				method:'GET',
+		        url:'/patient/getPatientById/'+email,
+		        contentType: 'application/json',
+	    		success: function(data) { 
+						penals=data.penal;
+								if(penals==3){
+									console.log("disejbluj")
+									$('a#schedule_consulting').off('click');
+									$('a#ePrescription').off('click');
+									$('a#reserve_medicine').off('click');
+									$("#appointments_derm").disabled = true;
+								}
+			},
+	    		error:function(message){
+					alert("Error")
+	    		}
+	    				    	    	    	
+	    })
+	});
+
+
     $('input:radio[name="postage"]').change(function(){
             if ($(this).is(':checked') ) {
                 selectedType = $(this).val();

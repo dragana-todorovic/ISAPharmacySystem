@@ -26,6 +26,7 @@
 <script src="../scripts/patient/counseling.js"></script>
 <script src="../scripts/patient/complaint.js"></script>
 <script src="../scripts/patient/evaluate.js"></script>
+<script src="../scripts/patient/ePres.js"></script>
 <script src="../scripts/jwt.js"></script>
 
 <link rel="stylesheet" type="text/css" href="../css/modal.css">
@@ -148,7 +149,6 @@ li.dropdown {
                     <a href="#" id="my_app_derm">My appointments at dermatologists</a>
                     <a href="#" id="my_app_ph">My appointments at pharmacists </a>
             </li>
-            <li><a href="#news">Penals</a></li>
             <li class="dropdown">
                 <a href="javascript:void(0)" class="dropbtn">Complaints</a>
                 <div class="dropdown-content">
@@ -170,9 +170,9 @@ li.dropdown {
                 <div class="dropdown-content">
                     <a href="#" id="reserve_medicine">Reserve medicine </a>
                     <a href="#" id="reserved_medicine">Reserved medicine</a>
-                    <a href="#" id="ePrescription">My ePrescription medicine</a>
-                    <a href="#">Issued ePrescription medicine </a>
-                    <a href="#">Take over your medicine</a>
+
+                    <a href="#" id="ePrescription">Upload ePrescription medicine for buying</a>
+                    <a href="#" id="historyEpres">Issued ePrescription medicine </a>
 
                 </div>
             </li>
@@ -210,6 +210,7 @@ li.dropdown {
                 <h5 id="category"  class="border rounded px-2 py-1 text-center" ></h5>
                 <h5 id="discount"  class="border rounded px-2 py-1 text-center" ></h5>
                 <h5 id="mypoints" style="font-weight: bold" class="border rounded px-2 py-1 text-center" ></h5>
+                 <h5 id="mypenals" style="font-weight: bold" class="border rounded px-2 py-1 text-center" ></h5>
                 <h5 id="actions_and_benefits" style="font-weight: bold" class="border rounded px-2 py-1 text-center" ></h5>
                 <div class="ui two column very relaxed grid">
                     <div class="column">
@@ -319,7 +320,7 @@ li.dropdown {
                 <p class="invalid_1" id="id_p_log"></p>
             </div>
             <div class="column">
-                <td><button id="appointments_derm"  class="ui primary basic button">Show available appointments at dermatologists</button>
+                <td><button id="appointments_derm"  class="ui primary basic button" disabled=false>Show available appointments at dermatologists</button>
                 <td><button id="submitSubscribe"  class="ui primary basic button">Subscribe On Pharmacy</button>
                     <p class="invalid_1" id="id_p_log"></p>
             </div>
@@ -345,6 +346,24 @@ li.dropdown {
         </table>
     </div>
 
+
+    <!-- HISTORY BUYING MEDICINE-->
+    <div class="ui list" id="history_div" hidden="true" class="cloumn">
+        <table class="table  table-bordered">
+            <thead>
+            <tr>History of taken Medicines by Eprescription</tr>
+            <tr>
+                <th>Medicines names</th>
+                <th>Medicines codes</th>
+                <th>Qunatitis</th>
+                <th>Pharmacy</th>
+                <th>Date of Buying</th>
+            </tr>
+            </thead>
+            <tbody id="history_table">
+            </tbody>
+        </table>
+    </div>
     <!-- SHOW ALL PHARMACIES-->
     <div class="ui list" id="all_pharmacies_show" hidden="true" style="padding:100px 300px 500px 300px;" class="cloumn">
         <div class="ui icon input" style="width:40%;" >
@@ -480,9 +499,9 @@ li.dropdown {
             </table>
         </form>
     </div>
-    <div class="container_1" hidden='true' id="pharamcies_with_medicine_show">
+    <div class="ui list"  hidden="true" class="cloumn" id="pharamcies_with_medicine_show">
         <form class="border rounded px-2 py-1 text-center">
-            <table class="ui celled table" >
+            <table class="table  table-bordered">
                 <thead>
                 <tr><th>Pharmacy Name</th>
                     <th>Street</th>
@@ -599,7 +618,6 @@ li.dropdown {
                         <th>Pharmacy City</th>
                         <th>Pharmacy Street</th>
                         <th name="sortByGrade">Grade<span  name="strelica" class="glyphicon glyphicon-arrow-down"></span></th>
-                        <th name="sortByPrice">Price<span  name="strelica" class="glyphicon glyphicon-arrow-down"></span></th>
                         <th></th>
                     </tr></thead>
                     <tbody id="ph_av_con_body" >
@@ -642,7 +660,6 @@ li.dropdown {
                         <th>Pharmacy Street</th>
                           <th name="sortByDate">Start date and time<span  name="strelica" class="glyphicon glyphicon-arrow-down"></span></th>
                          <th name="sortByDuration">Duration<span  name="strelica" class="glyphicon glyphicon-arrow-down"></span></th>
-                         <th name="sortByPrice">Price<span  name="strelica" class="glyphicon glyphicon-arrow-down"></span></th>
                         <th></th>
                     </tr></thead>
                     <tbody id="my_ph_appointments_body" >

@@ -30,7 +30,10 @@ public class EPrescription {
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Patient patient;
-	
+
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Pharmacy pharmacy;
+
 	@Column(name = "issuedDate", nullable = false)
 	private LocalDate issuedDate;
 
@@ -42,6 +45,22 @@ public class EPrescription {
 		this.medicines = medicines;
 		this.patient = patient;
 		this.issuedDate = issuedDate;
+	}
+
+	public EPrescription(Long id, Set<MedicineWithQuantity> medicines, Patient patient, Pharmacy pharmacy, LocalDate issuedDate) {
+		this.id = id;
+		this.medicines = medicines;
+		this.patient = patient;
+		this.pharmacy = pharmacy;
+		this.issuedDate = issuedDate;
+	}
+
+	public Pharmacy getPharmacy() {
+		return pharmacy;
+	}
+
+	public void setPharmacy(Pharmacy pharmacy) {
+		this.pharmacy = pharmacy;
 	}
 
 	public Long getId() {
