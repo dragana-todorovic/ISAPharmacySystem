@@ -1,5 +1,5 @@
 
-function drawPharmacistComplaintTable(data) {
+function drawHistoryComplaintTable(data) {
     let table = '';
         for (i in data){
                 var medicinesName = "";
@@ -18,9 +18,10 @@ function drawPharmacistComplaintTable(data) {
                 <td >`+medicinesName+`</td>
                 <td >`+medicinesCodes+`</td>
                 <td >`+medicinesQuantities+`</td>
-                <td>`+data[i].pharmacy.name+`</td>
+            <td>`+data[i].pharmacy.name+`</td>
                 <td>`+data[i].issuedDate+`</td>
                 </tr>`;
+
         }
 
 	$('#history_table').html(table);
@@ -34,8 +35,7 @@ $(document).ready(function() {
             success: function(data){
                 console.log("*******************")
                 console.log(data)
-                drawPharmacistComplaintTable(data)
-             //   drawDermatologistComplaintTable(data)
+                drawHistoryComplaintTable(data)
             },
             error: function(){
                 console.log("error");
