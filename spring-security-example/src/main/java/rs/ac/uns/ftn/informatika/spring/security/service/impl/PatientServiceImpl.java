@@ -220,6 +220,11 @@ public class PatientServiceImpl implements PatientService {
 				continue;
 			}
 				if(reservation.getPatient().equals(patient)) {
+					if(LocalDate.now().getDayOfMonth()==1) {
+						patient.setPenal(0);
+						this.patientRepository.save(patient);
+						break;
+					}
 					if(!reservation.getIsPenalGiven()) {
 						if(reservation.getDueTo().isBefore(LocalDate.now()) && reservation.getDueToTime().isBefore(LocalTime.now()) && reservation.getStatus().equals(MedicineReservationStatus.RESERVED)) {
 							patient.setPenal(patient.getPenal()+1);
@@ -228,15 +233,8 @@ public class PatientServiceImpl implements PatientService {
 							this.patientRepository.save(patient);
 						}
 					}
-					else {
-						System.out.println("refersovan nije dao");
-					}
 				}
 		}
-		
-		
-		
 	}
-
 
 }
