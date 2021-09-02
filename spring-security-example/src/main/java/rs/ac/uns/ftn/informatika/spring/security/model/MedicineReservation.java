@@ -15,8 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import org.springframework.data.annotation.Version;
+import javax.persistence.Version;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -51,8 +50,16 @@ public class MedicineReservation {
 	private Boolean isPenalGiven;
 	
 	@Version
-	@Column(name = "version", nullable = false)
-	private Long version;
+	@Column(name = "version", nullable = false,columnDefinition = "int default 1")
+	private long version;
+
+	public long getVersion() {
+		return version;
+	}
+
+	public void setVersion(long version) {
+		this.version = version;
+	}
 
 	public LocalTime getDueToTime() {
 		return dueToTime;
