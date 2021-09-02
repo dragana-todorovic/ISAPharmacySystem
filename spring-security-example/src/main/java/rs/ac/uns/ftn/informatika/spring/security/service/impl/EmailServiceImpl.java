@@ -41,12 +41,12 @@ public class EmailServiceImpl implements EmailService   {
 	              InternetAddress.parse(email));
 
 		   // Set Subject: header field
-		   message.setSubject("Appointment");
+		   message.setSubject("Confirm registration");
 
 		   // Send the actual HTML message, as big as you like
-		   message.setContent(
-		              "You have successfully scheduled an appointment",
-		             " text/html; charset=UTF-8");
+		message.setContent(
+				"<a href='"+ "http://localhost:8081/html/activateAccount.html" + "'>Activate account and confirm registration</a>",
+				"text/html");
 		   
 		   // Send message
 		   Transport.send(message);

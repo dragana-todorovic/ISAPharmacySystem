@@ -67,6 +67,9 @@ public class AuthenticationController {
 
 	@Autowired
 	private PatientService patientService;
+
+	@Autowired
+	private EmailService emailService;
 	
 	@Autowired
 	private AddressService addressService;
@@ -122,24 +125,49 @@ public class AuthenticationController {
 
 	// Endpoint za registraciju novog korisnika
 	@PostMapping("/register")
-	public ResponseEntity<User> addUser(@RequestBody UserRegisterView userRequest, UriComponentsBuilder ucBuilder) {
-		User existUser = this.userService.findByUsername(userRequest.getUsername());
+	public ResponseEntity<?> addUser(@RequestBody UserRegisterView userRequest, UriComponentsBuilder ucBuilder) {
+		//User existUser = this.userService.findByUsername(userRequest.getUsername());
 		User existUserByEmail = this.userService.findByEmail(userRequest.getEmail());
 		if (existUserByEmail != null) {
 			//log.warn("User with this email already exists");
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-			//return null;
+		//	return null;
 			//	throw new ResourceConflictException(userRequest.getId(), "Username already exists");
 		}
+
+
+		//HttpHeaders headers = new HttpHeaders();
+		//headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
+		//return new ResponseEntity<>(user, HttpStatus.CREATED);
+		try {
+
+			emailService.sendEmailForRecoveryOfAccount(userRequest.getEmail());
+			System.out.println("Mejl je poslat");
+			return new ResponseEntity<>(HttpStatus.OK);
+
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	}
+
+	@PostMapping("/activateAccount")
+	public ResponseEntity<User> activateAccount(@RequestBody UserRegisterView userRequest) {
 
 		User user = this.userService.save(userRequest);
 		Patient patient = new Patient();
 		patient.setUser(user);
 		this.patientService.savePatient(patient);
-		HttpHeaders headers = new HttpHeaders();
-		headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
-		return new ResponseEntity<>(user, HttpStatus.CREATED);
+		if(user !=null) {
+			//HttpHeaders headers = new HttpHeaders();
+			//headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
+			return new ResponseEntity<>(user, HttpStatus.CREATED);
+		} else {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 	}
+
+
 	@GetMapping(value = "/searchPharmacies/{let}",produces = MediaType.APPLICATION_JSON_VALUE)
 	public Collection<Pharmacy> searchPharmacies(@PathVariable("let") String let) {
 		return pharmacyService.searchPharmacy(let);
