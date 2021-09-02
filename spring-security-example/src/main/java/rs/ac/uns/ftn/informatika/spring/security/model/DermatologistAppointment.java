@@ -43,16 +43,25 @@ public class DermatologistAppointment {
 	@Column(name = "duration", nullable = false)
 	private int duration;
 	
-	@Column(name = "description")
+	@Column(name = "description",nullable = true)
 	private String description;
 	
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Therapy therapy;
 	
 	@Version
-	@Column(name = "version", nullable = false)
+	@Column(name = "version", nullable = false, columnDefinition = "int default 1")
 	private Long version;
+	
 
+
+	public Long getVersion() {
+		return version;
+	}
+
+	public void setVersion(Long version) {
+		this.version = version;
+	}
 
 	public Long getId() {
 		return id;

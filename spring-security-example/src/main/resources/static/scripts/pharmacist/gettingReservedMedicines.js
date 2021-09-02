@@ -1,4 +1,5 @@
 $(document).ready(function(e){
+	let version;
 	var email = localStorage.getItem('email')
 	 $("#reservedMedicines").click(function () {
 	$("#showData").html(`<table class="ui large table" style="width:50%; margin-left:auto; 
@@ -75,10 +76,25 @@ $("input:button[name=start]").click(function () {
 	var id= this.id;
 	idStart= id;
 	console.log(this.id)
+	
+		customAjax({
+		      url: '/pharm/getVersion/'+id,
+		      method: 'GET',
+			  async :false,
+		      success: function(ver){
+			version = ver.version;
+			console.log(version);
+			
+		},
+				error:function(){
+					
+				}
+	              });
 	customAjax({
-		      url: '/pharm/takeReservedMedicine/' + id,
+		      url: '/pharm/takeReservedMedicine/' + id +"/" + version,
 		      method: 'GET',
 		      success: function(medicines){
+			
 			alert("Successfully taken reservation")
 			location.href= "pharmacist.html";
 		},

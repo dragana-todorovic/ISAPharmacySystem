@@ -150,6 +150,9 @@ public class DermatologistServiceImpl implements DermatologistService{
 					System.out.println("Usao u if");
 				List <MyPatientDTO> myPatients =new ArrayList<MyPatientDTO>();
 				List<DermatologistAppointment> appointments = dermatologistAppointmentService.findById(d.getId());
+				if(appointments==null) {
+					return new ArrayList<MyPatientDTO>();
+				}
 				for (DermatologistAppointment da :appointments) {
 					
 					System.out.println("Usao u for"+da.getDermatologist().getUser().getFirstName());

@@ -25,7 +25,7 @@ $(document).ready(function(e){
 		                </tr>
 		          <tr>
 		                <td>Date for appointment:</td>		
-						<td><input type="text" id="datepickerStartDate"></td>		                
+						<td><input type="text" id="datepickerStartDate" readonly='true'></td>		                
 		            </tr>
 				<td>Time for appointment:</td>		
 						<td><input value="08:00" type="time" id="txtTime"></td>		                
@@ -46,6 +46,9 @@ $(document).ready(function(e){
 $( "#datepickerStartDate" ).datepicker({
 	format: 'yyyy-mm-dd'
 });
+var $datepicker = $('#datepickerStartDate');
+$datepicker.datepicker();
+$datepicker.datepicker('setDate', new Date());
 btnAcceptChange = document.getElementById("schedule")
 	btnAcceptChange.disabled = true
 	

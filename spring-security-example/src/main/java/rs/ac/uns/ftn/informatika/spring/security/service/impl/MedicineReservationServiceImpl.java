@@ -62,6 +62,7 @@ public class MedicineReservationServiceImpl implements MedicineReservationServic
 		 mR.setPatient(patientService.findPatientByUser(user));
 		 mR.setStatus(MedicineReservationStatus.RESERVED);
 		 mR.setDueToTime(localDueToTime);
+		 mR.setVersion(1L);
 		 
 		 for(MedicineReservation reservation : medicineReservationRepository.findAll()) {
 			 if(numberOfReservation==reservation.getNumberOfReservation()) {
