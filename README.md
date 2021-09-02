@@ -41,3 +41,5 @@
 •	Radi potrebe testiranja slanja emaila možete proveriti poslate poruke na priloženom emailu : notificationsnotifications22@gmail.com
 
 •	Za izradu je korišena Java 8
+
+•	Projekat se pokrece na portu 8081
