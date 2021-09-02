@@ -83,7 +83,7 @@ public interface PharmacyService {
 	Boolean acceptHolidayRequestP(long parseLong, long pharmacistId);
 	void declineHolidayRequestP(long parseLong, long pharmacistId, String reason);
 	List<RequestForMedicineAvailability> findRequestsByPharmacy(String email);
-	
+
 
 	Set<HolidayRequest> getHolidayRequestsForDerm(long id);
 
