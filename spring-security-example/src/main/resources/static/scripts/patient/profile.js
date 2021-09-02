@@ -148,6 +148,7 @@ $(document).ready(function() {
 		        url:'/patient/getPatientById/'+id,
 		        contentType: 'application/json',
 	    		success: function(data) { 	
+						console.log(data)
 						showPatientData(data);
 			},
 	    		error:function(message){
@@ -260,6 +261,11 @@ $(document).ready(function() {
 function showPatientData(data){
 		$('#category').text("Category:"+data.category);
 		$('#mypoints').text("My points:"+data.points);
+		if(data.penal>=3){
+			$('#mypenals').text("You have "+data.penal+"penals you can not reserve any more appointment at dermatologist,counseling at phramacist or medicine.Also your ePresription functions are disabled");
+		}
+		else
+			$('#mypenals').text("My penals: "+data.penal);
 		
 };
 function showAllergies(data){
