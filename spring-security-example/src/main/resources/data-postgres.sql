@@ -346,9 +346,9 @@ INSERT INTO workingday (day,end_time,start_time) VALUES (4,'16:00:00.000000', '0
 INSERT INTO workingday (day,end_time,start_time) VALUES (5,'16:00:00.000000', '08:00:00.000000');
 INSERT INTO workingday (day,end_time,start_time) VALUES (6,'16:30:00.000000', '08:00:00.000000');
 
-INSERT INTO workingday (day,end_time,start_time) VALUES (0,'15:00:00.000000', '07:00:00.000000');
-INSERT INTO workingday (day,end_time,start_time) VALUES (1,'15:00:00.000000', '07:00:00.000000');
-INSERT INTO workingday (day,end_time,start_time) VALUES (2,'15:00:00.000000', '07:00:00.000000');
+INSERT INTO workingday (day,end_time,start_time) VALUES (0,'16:00:00.000000', '07:00:00.000000');
+INSERT INTO workingday (day,end_time,start_time) VALUES (1,'16:00:00.000000', '07:00:00.000000');
+INSERT INTO workingday (day,end_time,start_time) VALUES (2,'16:00:00.000000', '07:00:00.000000');
 
 
 --working time
