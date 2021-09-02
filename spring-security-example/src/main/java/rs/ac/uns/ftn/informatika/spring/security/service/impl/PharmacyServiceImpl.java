@@ -917,6 +917,17 @@ public class PharmacyServiceImpl implements PharmacyService{
 			
 		}
 		//PROVERA DA LI MU JE PREPISAN LEK PREKO ERECEPTA
+		for(EPrescription ep:ePrescriptionService.findAll()) {
+			if(ep.getPharmacy().equals(pharmacy)) {
+				if(ep.getPatient()==null) {
+					continue;
+				}
+				if(ep.getPatient().getId()==patient) {
+					if(ep.getPharmacy().equals(pharmacy) && !pom.contains(pharmacy))
+							pom.add(pharmacy);
+					}
+			}
+		}
 }
 		for(Pharmacy p : pom) {
 			RatingView rdw=new RatingView(p.getId(),p.getName(),
