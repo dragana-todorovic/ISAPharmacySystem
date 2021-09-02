@@ -3,6 +3,7 @@ package rs.ac.uns.ftn.informatika.spring.security.service.impl;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -13,6 +14,7 @@ import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicineReservation;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicineReservationStatus;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicineWithQuantity;
+import rs.ac.uns.ftn.informatika.spring.security.model.Patient;
 import rs.ac.uns.ftn.informatika.spring.security.model.Pharmacy;
 import rs.ac.uns.ftn.informatika.spring.security.model.User;
 import rs.ac.uns.ftn.informatika.spring.security.model.DTO.MedicineReservationDTO;
@@ -62,7 +64,9 @@ public class MedicineReservationServiceImpl implements MedicineReservationServic
 		 mR.setPatient(patientService.findPatientByUser(user));
 		 mR.setStatus(MedicineReservationStatus.RESERVED);
 		 mR.setDueToTime(localDueToTime);
+		 mR.setIsPenalGiven(false);
 		 mR.setVersion(1L);
+
 		 
 		 for(MedicineReservation reservation : medicineReservationRepository.findAll()) {
 			 if(numberOfReservation==reservation.getNumberOfReservation()) {
@@ -114,6 +118,27 @@ public class MedicineReservationServiceImpl implements MedicineReservationServic
 	@Override
 	public MedicineReservation findById(Long id) {
 		return this.medicineReservationRepository.getMedicineReservationById(id);
+	}
+
+	@Override
+	public List<MedicineReservation> getAll() {
+		return this.medicineReservationRepository.findAll();
+	}
+
+	@Override
+	public void saveReservation(MedicineReservation medicineReservation) {
+		MedicineReservation mr = new MedicineReservation();
+		mr.setIsPenalGiven(medicineReservation.getIsPenalGiven());
+		mr.setVersion(medicineReservation.getVersion());
+		mr.setStatus(medicineReservation.getStatus());
+		mr.setPatient(medicineReservation.getPatient());
+		mr.setNumberOfReservation(medicineReservation.getNumberOfReservation());
+		mr.setMedicineWithQuantity(medicineReservation.getMedicineWithQuantity());
+		mr.setDueToTime(medicineReservation.getDueToTime());
+		mr.setDueTo(medicineReservation.getDueTo());
+		mr.setId(medicineReservation.getId());
+		this.medicineReservationRepository.save(mr);
+		
 	}
 
 }

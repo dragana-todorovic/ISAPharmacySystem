@@ -22,4 +22,5 @@ public interface PatientService {
 	int getPatientsDiscount(Patient patient);
 	List<EPrescriptionPharmacyView> findPharmacyForEPrescription(String codesAndCount);
     void buyEPrescriptionInPharmacy(Patient patient, Pharmacy pharmacy, List<String> medicineCodes, List<String> medicineCodesQuantity);
+    void checkAndAddPenals(Patient patient);
 }

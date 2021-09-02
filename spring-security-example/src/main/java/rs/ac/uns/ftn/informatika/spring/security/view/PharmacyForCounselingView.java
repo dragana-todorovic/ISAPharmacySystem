@@ -6,21 +6,19 @@ public class PharmacyForCounselingView {
 	String pharmacyCity;
 	String pharmacyStreet;
 	String pharmacyGrade;
-	String phramacyPrice;
 	
 	
 	public PharmacyForCounselingView() {
 		super();
 	}
 	public PharmacyForCounselingView(Long id, String pharmacyName, String pharmacyCity, String pharmacyStreet,
-			String pharmacyGrade, String phramacyPrice) {
+			String pharmacyGrade) {
 		super();
 		this.id = id;
 		this.pharmacyName = pharmacyName;
 		this.pharmacyCity = pharmacyCity;
 		this.pharmacyStreet = pharmacyStreet;
 		this.pharmacyGrade = pharmacyGrade;
-		this.phramacyPrice = phramacyPrice;
 	}
 	public Long getId() {
 		return id;
@@ -52,17 +50,12 @@ public class PharmacyForCounselingView {
 	public void setPharmacyGrade(String pharmacyGrade) {
 		this.pharmacyGrade = pharmacyGrade;
 	}
-	public String getPhramacyPrice() {
-		return phramacyPrice;
-	}
-	public void setPhramacyPrice(String phramacyPrice) {
-		this.phramacyPrice = phramacyPrice;
-	}
+
 	@Override
 	public String toString() {
 		return "PharmacyForCounselingView [id=" + id + ", pharmacyName=" + pharmacyName + ", pharmacyCity="
 				+ pharmacyCity + ", pharmacyStreet=" + pharmacyStreet + ", pharmacyGrade=" + pharmacyGrade
-				+ ", phramacyPrice=" + phramacyPrice + "]";
+				 + "]";
 	}
 	
 	
