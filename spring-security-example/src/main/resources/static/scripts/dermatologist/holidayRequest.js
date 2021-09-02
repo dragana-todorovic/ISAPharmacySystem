@@ -10,12 +10,12 @@ $(document).ready(function(e){
 		        <tbody>
 		            <tr>
 		                <td>Start date:</td>		
-						<td><input type="text" id="datepickerStartDate"></td>	
+						<td><input type="text" id="datepickerStartDate" readonly='true'></td>	
 							                
 		            </tr>
 		            <tr>
 		                <td>End date:</td>
-						<td><input type="text" id="datepickerEndDate"></td>
+						<td><input type="text" id="datepickerEndDate" readonly='true'></td>
 						
 		                
 		            </tr>
@@ -80,7 +80,7 @@ $( "#datepickerStartDate" ).datepicker({
 				},
 				error: function(){
 					
-					alert("Can't send holiday request. It's not dermatologist's working time.'")
+					alert("Can't send holiday request. It's not dermatologist's working time, so we don't know for which pharmacy you are asking for.")
 				}
 		            });
 		}else{

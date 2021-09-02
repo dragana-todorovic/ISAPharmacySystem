@@ -1,5 +1,6 @@
 package rs.ac.uns.ftn.informatika.spring.security.controller;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -22,13 +23,16 @@ import rs.ac.uns.ftn.informatika.spring.security.repository.UserRepository;
 import java.util.regex.Pattern;
 
 import javax.mail.MessagingException;
+import javax.persistence.LockModeType;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -231,6 +235,7 @@ public class DermatologistController {
 	}
 	@RequestMapping(value = "/scheduleAnAppointment" , method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
+	@Transactional(readOnly=false)
 	public ResponseEntity<?> scheduleAnAppointment(@RequestBody AppointmentScheduleDTO dto)  {
 		String startDate;
 		startDate = dto.getStartDate().replace('/', '-');	
@@ -285,13 +290,14 @@ public class DermatologistController {
 		 }
 		
 		return new ResponseEntity<>(HttpStatus.OK);		}
-		 catch (Exception e){
+		 catch (DateTimeException e){
 	         e.printStackTrace();
 	         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);	
 	     }
 	}
 	@RequestMapping(value = "/scheduleAPredefinedAppointment" , method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
+	@Lock(LockModeType.OPTIMISTIC_FORCE_INCREMENT)
 	public ResponseEntity<?> scheduleAPredefinedAppointment(@RequestBody PredefinedAppointmentScheduleDTO dto)  {
 	
 		String startDateTime = dto.getStartDateTimeId().split(" sifra ")[0];

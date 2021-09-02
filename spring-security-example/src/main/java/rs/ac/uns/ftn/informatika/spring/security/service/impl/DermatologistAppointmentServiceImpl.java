@@ -69,6 +69,8 @@ public class DermatologistAppointmentServiceImpl implements DermatologistAppoint
 			ap.setDuration(Integer.parseInt(appointmentDTO.getDuration()));
 			ap.setPatient(patient);
 			ap.setStartDateTime(startDateTime);
+			Long version = 1L;
+			ap.setVersion(version);
 	
 			
 			System.out.println("Usao prije save");

@@ -122,7 +122,7 @@ INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_i
 INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id, patient_id,pharmacy_id,version) VALUES (30,'2021-12-09 11:58:58.508-07','opis1',1,1,1,1);
 INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id, patient_id,pharmacy_id,version) VALUES (30,'2021-10-29 10:58:58.508-07','opis2',1,2,1,1);
 INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id, patient_id,pharmacy_id,version) VALUES (30,'2021-10-27 11:58:58.508-07','opis1',2,1,2,1);
-INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id,pharmacy_id,version) VALUES (30,'2019-05-16 08:58:58.508-07','opis2',1,1,1);
+INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id,pharmacy_id,version) VALUES (30,'2022-05-19 08:58:58.508-07','opis2',1,1,1);
 INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id,pharmacy_id,version) VALUES (30,'2021-09-01 08:00:00.508-07','opis2',2,2,1);
 INSERT INTO APPOITMENT ( duration, start_date_time, description, dermatologist_id,pharmacy_id,version) VALUES (30,'2022-08-31 12:55:00.508-07','opis2',2,2,1);
 

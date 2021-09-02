@@ -169,6 +169,9 @@ public class PharmacistServiceImpl implements PharmacistService {
 					System.out.println("Usao u if");
 				List <MyPatientDTO> myPatients =new ArrayList<MyPatientDTO>();
 				List<PharmacistCounseling> appointments = pharmacistCounselingService.findById(d.getId());
+				if(appointments==null) {
+					return new ArrayList<MyPatientDTO>();
+				}
 				for (PharmacistCounseling da :appointments) {
 					System.out.println("Usao u for"+da.getPharmacist().getUser().getFirstName());
 					if(da.getPatient()!=null  && da.getStartDateTime().isBefore(LocalDateTime.now())) {
