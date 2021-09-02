@@ -21,6 +21,7 @@ import rs.ac.uns.ftn.informatika.spring.security.repository.DermatologistAppoint
 import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacyRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.RequestForMedicineAvailabilityRepository;
 import rs.ac.uns.ftn.informatika.spring.security.service.AuthorityService;
+import rs.ac.uns.ftn.informatika.spring.security.service.EPrescriptionService;
 import rs.ac.uns.ftn.informatika.spring.security.service.EmailService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyAdminService;
 import rs.ac.uns.ftn.informatika.spring.security.service.PharmacyService;
@@ -85,6 +86,9 @@ public class PharmacyServiceImpl implements PharmacyService{
 	
 	@Autowired
 	private AuthorityService authService;
+	
+	@Autowired
+	private EPrescriptionService ePrescriptionService;
 	
 	@Autowired
 	private DermatologistAppointmentRepository dermatologistAppoitmentRepository;
@@ -912,6 +916,7 @@ public class PharmacyServiceImpl implements PharmacyService{
 			}
 			
 		}
+		//PROVERA DA LI MU JE PREPISAN LEK PREKO ERECEPTA
 }
 		for(Pharmacy p : pom) {
 			RatingView rdw=new RatingView(p.getId(),p.getName(),
