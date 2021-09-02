@@ -153,6 +153,18 @@ public class PatientServiceImpl implements PatientService {
 		}
 	}
 
+	@Override
+	public List<EPrescription> findAllEpresForUser(Patient patient) {
+		List<EPrescription> allE = this.ePrescriptionService.findAll();
+		List<EPrescription> newAll = new ArrayList<>();
+		for(EPrescription e: allE){
+			if(e.getPatient().equals(patient)){
+				newAll.add(e);
+			}
+		}
+		return newAll;
+	}
+
 	private void updateUserPoints(MedicineWithQuantity medicineWithQuantity, Patient patient) {
 		patient.setPoints(patient.getPoints() + medicineWithQuantity.getMedicine().getBuyingPoints()*(medicineWithQuantity.getQuantity() ==0 ? 1 : medicineWithQuantity.getQuantity()));
 		this.patientRepository.save(patient);
