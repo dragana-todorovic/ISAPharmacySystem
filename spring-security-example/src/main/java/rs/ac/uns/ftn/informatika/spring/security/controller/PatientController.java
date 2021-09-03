@@ -15,6 +15,7 @@ import com.google.zxing.*;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.HybridBinarizer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +30,7 @@ import rs.ac.uns.ftn.informatika.spring.security.service.*;
 import rs.ac.uns.ftn.informatika.spring.security.view.*;
 
 import javax.imageio.ImageIO;
+import javax.persistence.LockModeType;
 
 
 @RestController
@@ -157,6 +159,7 @@ public class PatientController {
 	//mili for loyaltyScale
 	@PostMapping("/saveLoyaltyScale")
 	@PreAuthorize("hasRole('ADMIN_SYSTEM')")
+	@Lock(LockModeType.OPTIMISTIC_FORCE_INCREMENT)
 	public ResponseEntity<?> saveLoyaltyScale(@RequestBody LoyaltyScaleView loyaltyScaleView) {
 		this.loyaltyScaleService.editLoyalty(loyaltyScaleView);
 		this.loyaltyScaleService.updateCathegoryOfPatients();
@@ -177,6 +180,7 @@ public class PatientController {
 
 	@PostMapping("/saveLoyaltyProgram")
 	@PreAuthorize("hasRole('ADMIN_SYSTEM')")
+	@Lock(LockModeType.OPTIMISTIC_FORCE_INCREMENT)
 	public ResponseEntity<?> saveLoyaltyProgram(@RequestBody LoyaltyProgramView loyaltyProgramView) {
 		// pronadjem po kategoriji i posaljem dva podatka za cuvanje  i setovanje
 		this.loyaltyProgramService.editLoyaltyProgram(loyaltyProgramView);
