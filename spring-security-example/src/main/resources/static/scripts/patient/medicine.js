@@ -524,11 +524,28 @@ $(document).ready(function() {
                     });
 				}
 		})
+	let version
+	let editMedicine = function(idSelected) {
+		customAjax({
+		    url: '/pharmacy/getSelectedMedicine/' + idSelected,
+		    method: 'GET',
+		    async: false,
+		    contentType: 'application/json',
+		    success: function(data){
+		    	version = data.version
+		    },
+		    error: function(){
+		    	alert("Failed")
+		    }
+
+		});
+	}
 
 		$('#ph_med_table').on('click','button',function(event){
 			if($(event.target).attr('id')=="reserve-medicine"){
 				trid2 = $(event.target).closest('tr').attr('id')
 				modal.style.display = "block"
+				editMedicine(trid)
 				 elem = document.getElementById("pickupdate")
 			    var iso = new Date().toISOString();
 			    var minDate = iso.substring(0,iso.length-1);
@@ -541,9 +558,9 @@ $(document).ready(function() {
 			if($(event.target).attr('id')=="cancel-reservation"){
 				pom = $(event.target).closest('tr').attr('id')
 					    customAjax({
-			            url: '/medicine/cancelReservation/' + pom ,
+			            url: '/medicine/cancelReservation/' + pom  ,
 			            method: 'POST',
-			            success: function (data) {
+			            success: function () {
 			               alert("Sucessfully canceled reservation!");
 			            },
 			            error: function () {
@@ -570,7 +587,7 @@ $(document).ready(function() {
 			obj = JSON.stringify({medicineId:medicineId,dueTo:dueTo,patientEmail:patientEmail,quantity:quantity,pharmacyId:pharmacyId});
 			customAjax({
 		        method:'POST',
-		        url:'/medicine/makeReservation',
+		        url:'/medicine/makeReservation/'+version,
 		        data : obj,
 		        contentType: 'application/json',
 		        success: function(){

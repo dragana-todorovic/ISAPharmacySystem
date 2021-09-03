@@ -472,7 +472,7 @@ public class PharmacyController {
 	}
 	
 	@GetMapping("/getSelectedMedicine/{id}")
-	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
+	@PreAuthorize("hasRole('ADMIN_PHARMACY') || hasRole('ROLE_PATIENT')")
 	public MedicineWithQuantity getSelectedMedicine(@PathVariable(name="id") String id) {
 		Long ID = Long.parseLong(id);
 		return this.medicineService.getMedicineById(ID);

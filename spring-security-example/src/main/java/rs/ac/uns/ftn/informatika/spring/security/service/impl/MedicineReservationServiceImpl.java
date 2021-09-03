@@ -8,7 +8,9 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
 import rs.ac.uns.ftn.informatika.spring.security.model.MedicineReservation;
@@ -46,7 +48,7 @@ public class MedicineReservationServiceImpl implements MedicineReservationServic
 	private MedicineWithQuantityRepository medicineWithQuantityRepository;
 	
 	@Override
-	public MedicineReservation saveReservation(MedicineReservationDTO medicineReservationDto) {
+	public MedicineReservation saveReservation(MedicineReservationDTO medicineReservationDto,Long v) {
 		 UUID numberOfReservation=UUID.randomUUID();
 		 User user = this.userService.findByUsername(medicineReservationDto.getPatientEmail());
 		 MedicineWithQuantity med = new MedicineWithQuantity();
@@ -78,6 +80,10 @@ public class MedicineReservationServiceImpl implements MedicineReservationServic
 		 
 		 Pharmacy pharmacy=pharmacyRepository.findPharmacyById(medicineReservationDto.getPharmacyId());
 			for (MedicineWithQuantity m : pharmacy.getMedicineWithQuantity()) {
+				if(m.getVersion() != v) {
+					throw new ObjectOptimisticLockingFailureException("Versions don't match", MedicineWithQuantity.class);
+				}
+				
 				if (medicine.getId() == m.getMedicine().getId()) {	
 					if(m.getQuantity()<medicineReservationDto.getQuantity()) {
 						return null;
@@ -97,17 +103,15 @@ public class MedicineReservationServiceImpl implements MedicineReservationServic
 	}
 
 	@Override
+	@Transactional(readOnly=false)
 	public void editReservation(MedicineReservation medicineReservation) {
 		for(Pharmacy ph: pharmacyRepository.findAll()) {
 			for(MedicineReservation res:ph.getMedicineReservations()) {
 				if(res.getId()==medicineReservation.getId()) {
-						for (MedicineWithQuantity m : ph.getMedicineWithQuantity()) {
-							if (medicineReservation.getMedicineWithQuantity().getMedicine().getId() == m.getMedicine().getId()) {			
+							MedicineWithQuantity m = this.medicineWithQuantityRepository.findByMedicineId(medicineReservation.getMedicineWithQuantity().getMedicine().getId());
 								m.setQuantity(m.getQuantity() + medicineReservation.getMedicineWithQuantity().getQuantity());
-								this.medicineWithQuantityRepository.save(m);
-								break;
-							}
-						}
+								this.medicineWithQuantityRepository.save(m);	
+						
 				}
 			}
 		}

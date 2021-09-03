@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.mail.MessagingException;
+import javax.persistence.LockModeType;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -83,6 +85,7 @@ public class AppointmentController {
 	
 	@PostMapping("/scheduleDermatologistAppointment/{pom}/{patient}")
 	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	@Lock(LockModeType.OPTIMISTIC_FORCE_INCREMENT)
 	public  ResponseEntity<?> scheduleDermatologistAppointment(@PathVariable(name="pom") Long pom,@PathVariable(name="patient") String patient) {
 		if(appointmentService.scheduleDermatologistAppointment(pom,patient))
 		{try {

@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.informatika.spring.security.model.Medicine;
@@ -127,11 +128,18 @@ public class MedicineController {
 		return medicineService.searchMedicine(let);
 	}
 	
-	 @PostMapping("/makeReservation")
+	 @PostMapping("/makeReservation/{version}")
 	 @PreAuthorize("hasRole('ROLE_PATIENT')")
-	 public ResponseEntity<?> makeReservation(@RequestBody MedicineReservationDTO medicineReservation){
-		 MedicineReservation reservation= medicineReservationService.saveReservation(medicineReservation);
-		if(reservation!=null) {
+	 public ResponseEntity<?> makeReservation(@RequestBody MedicineReservationDTO medicineReservation,@PathVariable("version") String version){
+		 Long v = Long.parseLong(version);
+		 MedicineReservation reservation;
+		
+		 try {
+			 reservation= medicineReservationService.saveReservation(medicineReservation,v);
+			} catch (ObjectOptimisticLockingFailureException e) {
+				return new ResponseEntity<>(HttpStatus.CONFLICT);
+			}
+		 if(reservation!=null) {
 			try {
 				System.out.println(medicineReservation.getPatientEmail());
 				emailService.sendEmail(medicineReservation.getPatientEmail(), "Medicine Reservation", "You have successfully reserved medicine with number of reservation "+reservation.getNumberOfReservation());
