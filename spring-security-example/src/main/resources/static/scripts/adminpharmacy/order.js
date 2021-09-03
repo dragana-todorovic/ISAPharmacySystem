@@ -246,7 +246,7 @@ $('.ui.dropdown')
   <div class="header">
     We're sorry, you cannot edit that order.
   </div>
-  <p>That order already has offers!
+  <p>That order has already offers!
 </p></div>
 	  </div>
 	</div>
