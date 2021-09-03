@@ -108,10 +108,9 @@ public class MedicineReservationServiceImpl implements MedicineReservationServic
 		for(Pharmacy ph: pharmacyRepository.findAll()) {
 			for(MedicineReservation res:ph.getMedicineReservations()) {
 				if(res.getId()==medicineReservation.getId()) {
-							MedicineWithQuantity m = this.medicineWithQuantityRepository.findByMedicineId(medicineReservation.getMedicineWithQuantity().getMedicine().getId());
-								m.setQuantity(m.getQuantity() + medicineReservation.getMedicineWithQuantity().getQuantity());
-								this.medicineWithQuantityRepository.save(m);	
-						
+					MedicineWithQuantity m=this.medicineWithQuantityRepository.findMedWithQById(medicineReservation.getMedicineWithQuantity().getId());
+					m.setQuantity(m.getQuantity() + medicineReservation.getMedicineWithQuantity().getQuantity());
+					this.medicineWithQuantityRepository.save(m);
 				}
 			}
 		}
