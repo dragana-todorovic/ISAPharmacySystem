@@ -64,7 +64,7 @@ public interface PharmacyService {
 	double getAvrageGrade(Pharmacy pharmacy);
 	Set<Dermatologist> getAllDermatologistExpectAlreadyExisted(String email);
 	Boolean addDermatologistInPharmacy(String email, NewDermatologistDTO newDermatologist);
-	void addPharmacistInPharmacy(String email, NewPharmacistDTO newPharmacist);
+	boolean addPharmacistInPharmacy(String email, NewPharmacistDTO newPharmacist);
 
 	
 	Pharmacy save(Pharmacy pharmacy);

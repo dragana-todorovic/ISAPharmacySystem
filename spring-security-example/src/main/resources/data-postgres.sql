@@ -80,7 +80,7 @@ INSERT INTO suplier(user_id) VALUES (14);
 INSERT INTO systemadmin(user_id) VALUES (1);
 
 
-INSERT INTO ADDRESS (street,city,coordX, coordY) VALUES ('Bulevar oslobodjenja 4', 'Novi Sad','19.833549','45.267136');
+INSERT INTO ADDRESS (street,city,coordX, coordY) VALUES ('Bulevar oslobodjenja 133', 'Novi Sad','19.84299058794297','45.24260488612191');
 INSERT INTO ADDRESS (street,city,coordX, coordY) VALUES ('Kralja Petra 20', 'Beograd',	'19.8424', '45.2541');
 INSERT INTO ADDRESS (street,city,coordX, coordY) VALUES ('Neznanih Junaka 5', 'Beograd','19.833549','45.2541');
 INSERT INTO ADDRESS (street,city,coordX, coordY) VALUES ('Narodnog Fronta 37', 'Beograd','19.8424', '45.2541');
@@ -276,7 +276,7 @@ INSERT INTO suplier_medicine_with_quantity (suplier_id, medicine_with_quantity_i
 
 --price list
 INSERT INTO pricelist(start_date) VALUES ('2021-08-28 21:58:58.508-07');
-INSERT INTO pricelist(start_date) VALUES ('2021-08-07 21:58:58.508-07');
+INSERT INTO pricelist(start_date) VALUES ('2021-08-03 21:58:58.508-07');
 INSERT INTO pricelist(start_date) VALUES ('2021-08-10 21:58:58.508-07');
 INSERT INTO pricelist(start_date) VALUES ('2021-08-14 21:58:58.508-07');
 
@@ -412,12 +412,12 @@ INSERT INTO medicine_ratings(medicine_id,ratings_id) VALUES (1,17);
 INSERT INTO medicine_ratings(medicine_id,ratings_id) VALUES (2,18);
 
 --medicine order
-INSERT INTO medicineorder(status,time_limit) VALUES (0,'2017-10-01 21:58:58.508-07');
-INSERT INTO medicineorder(status,time_limit) VALUES (1,'2017-10-29 21:58:58.508-07');
-INSERT INTO medicineorder(status,time_limit) VALUES (0,'2017-12-04 21:58:58.508-07');
+INSERT INTO medicineorder(status,time_limit,admin_id) VALUES (0,'2017-10-01 21:58:58.508-07',1);
+INSERT INTO medicineorder(status,time_limit,admin_id) VALUES (1,'2017-10-29 21:58:58.508-07',1);
+INSERT INTO medicineorder(status,time_limit,admin_id) VALUES (0,'2017-12-04 21:58:58.508-07',1);
 
-INSERT INTO medicineorder(status,time_limit) VALUES (1,'2022-10-29 21:58:58.508-07');
-INSERT INTO medicineorder(status,time_limit) VALUES (0,'2021-12-04 21:58:58.508-07');
+INSERT INTO medicineorder(status,time_limit,admin_id) VALUES (1,'2022-10-29 21:58:58.508-07',2);
+INSERT INTO medicineorder(status,time_limit,admin_id) VALUES (0,'2021-12-04 21:58:58.508-07',2);
 
 --pharmacy medicine order
 INSERT INTO pharmacy_medicine_orders(pharmacy_id, medicine_orders_id) VALUES (2,1);
@@ -450,8 +450,8 @@ INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,
 INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id,version,is_penal_given) VALUES ('123e4567-e89b-12d3-a456-426614174008','2021-10-22','14:00:00.000000',0,3,1,1,false);
 INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id,version,is_penal_given) VALUES ('123e4567-e89b-12d3-a456-426614174011','2021-10-04','14:00:00.000000',2,1,1,1,false);
 INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id,version,is_penal_given) VALUES ('123e4568-e89b-12d3-a456-426614174000','2021-08-04','14:00:00.000000',2,4,2,1,false);
-INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id,version,is_penal_given) VALUES ('133e4567-e89b-12d3-a456-426614174000','2021-03-05','14:00:00.000000',0,1,1,1,false);
-INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id,version,is_penal_given) VALUES ('123e4567-e89b-12d3-a456-426614174030','2021-02-06','14:00:00.000000',0,1,2,1,false);
+INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id,version,is_penal_given) VALUES ('133e4567-e89b-12d3-a456-426614174000','2021-03-05','14:00:00.000000',2,1,1,1,false);
+INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id,version,is_penal_given) VALUES ('123e4567-e89b-12d3-a456-426614174030','2021-02-06','14:00:00.000000',2,1,2,1,false);
 INSERT INTO medicinereservation(number_of_reservation,due_to,due_to_time,status,medicine_with_quantity_id,patient_id,version,is_penal_given) VALUES ('123e4566-e89b-12d3-a456-426614174000','2021-10-15','14:00:00.000000',2,1,2,1,false);
 
 

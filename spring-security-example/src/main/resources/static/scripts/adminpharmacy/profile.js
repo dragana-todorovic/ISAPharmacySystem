@@ -514,7 +514,7 @@ let editPharmacy = function (pharmacy) {
 			    margin-right:auto; margin-top: 40px;">
 					        <thead>
 					            <tr class="success">
-					                <th colspan="3" class = "text-info" style= "text-align:center;">Edit pharmacy</th>
+					                <th colspan="3" class = "text-info" style= "text-align:center;">Pharmacy profile</th>
 					            </tr>
 					        </thead>
 					        <tbody>

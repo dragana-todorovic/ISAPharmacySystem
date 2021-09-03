@@ -547,7 +547,10 @@ public class PharmacyServiceImpl implements PharmacyService{
 	}
 	
 	@Override
-	public void addPharmacistInPharmacy(String email, NewPharmacistDTO newpharmacist) {
+	public boolean addPharmacistInPharmacy(String email, NewPharmacistDTO newpharmacist) {
+		if(newpharmacist.getWorkingTimes().size() == 0) {
+			return false;
+		}
 		User user = new User();
 		user.setFirstName(newpharmacist.getFirstName());
 		user.setLastName(newpharmacist.getLastName());
@@ -560,16 +563,39 @@ public class PharmacyServiceImpl implements PharmacyService{
 		user.setAuthorities(auth);
 		Pharmacist pharmacist = new Pharmacist();
 		pharmacist.setUser(user);
+		
 
 		PharmacyAdmin pa = pharmacyAdminService.findPharmacyAdminByUser(userService.findByEmail(email));
 		Pharmacy p = pa.getPharmacy();
 		
 		WorkingTime wt = new WorkingTime();
 		wt.setPharmacy(p);
-		
+		for(WorkingDayDTO wd : newpharmacist.getWorkingTimes()) {
+			WorkingDay workingD = new WorkingDay();
+			if(wd.getDay().equals("MONDAY")) {
+				workingD.setDay(DayOfWeek.MONDAY);
+			} else if (wd.getDay().equals("TUESDAY")) {
+				workingD.setDay(DayOfWeek.TUESDAY);
+			} else if (wd.getDay().equals("WEDNESDAY")) {
+				workingD.setDay(DayOfWeek.WEDNESDAY);
+			} else if (wd.getDay().equals("THURSDAY")) {
+				workingD.setDay(DayOfWeek.THURSDAY);
+			} else if (wd.getDay().equals("FRIDAY")) {
+				workingD.setDay(DayOfWeek.FRIDAY);
+			} else if (wd.getDay().equals("SATURDAY")) {
+				workingD.setDay(DayOfWeek.SATURDAY);
+			} else {
+				workingD.setDay(DayOfWeek.SUNDAY);
+			}
+			
+			workingD.setStartTime(LocalTime.parse(wd.getStartTime()));
+			workingD.setEndTime(LocalTime.parse(wd.getEndTime()));
+			
+			wt.getWorkingDays().add(workingD);
+		}
 		pharmacist.setWorkingTimes(wt);
-		
 		this.pharmacistRepository.save(pharmacist);
+		return true;
 		
 	}
 	@Override
