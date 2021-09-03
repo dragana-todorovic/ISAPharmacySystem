@@ -1,5 +1,5 @@
 $(document).ready(function(e){
-    btnAdd = document.getElementById("submitRegisterSystemAdmin")
+        btnAdd = document.getElementById("submitRegisterPharmacy")
         btnAdd.disabled = true
 
        
@@ -38,7 +38,7 @@ $(document).ready(function(e){
 
 
           $('#txtCity').keyup(function () {
-           if(   $('#txtName').val()!= '' && $('#txtStreet').val()     $('#txtCity').val()!= ''   && $('#txtDescription').val()!=''){
+           if(   $('#txtName').val()!= '' && $('#txtStreet').val() &&    $('#txtCity').val()!= ''   && $('#txtDescription').val()!=''){
                                   btnAdd.disabled = false
                                   }
                               if($('#txtCity').val() == ''){

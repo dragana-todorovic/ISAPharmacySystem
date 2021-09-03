@@ -43,7 +43,7 @@ $(document).ready(function(e){
                 //alert("Failed")
             }
     })
- btnAdd = document.getElementById("submitAddMedicine")
+        btnAdd = document.getElementById("submitAddMedicine")
         btnAdd.disabled = true
 
           $('#txtCode').keyup(function () {
