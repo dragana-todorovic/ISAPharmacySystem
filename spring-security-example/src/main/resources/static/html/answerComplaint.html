@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <script src="../scripts/customAjax.js"></script>
-    <script src="../scripts/adminsystem/answerComplaint.js"></script>   
+    <script src="../scripts/adminsystem/answerComplaint.js"></script>
     <script src="../scripts/searchPharmacies.js"></script>
     <script src="../scripts/jwt.js"></script>
     <link rel="stylesheet" type="text/css" href="../css/modal.css">
@@ -127,7 +127,7 @@ div.container4 h2 {
                 <a id="register_admin_system" href="#" >Admin System</a>
             </div>
         </li>
-		<li><a id="s_p" href="loyaltyScale.html">Search Pharmacies</a></li>
+        <li><a id="s_p" href="loyaltyScale.html">Search Pharmacies</a></li>
         <li class="dropdown" style="float:right;">
             <a href="javascript:void(0)" class="dropbtn">Profile</a>
             <div class="dropdown-content" style="right:0;">
@@ -173,11 +173,15 @@ div.container4 h2 {
                 </tbody>
                 <tfoot class="full-width">
                 <tr>
+                    <th colspan="2">  <p id="error"></p></th>
+                </tr>
+                <tr>
                     <th></th>
                     <th colspan="2">
                         <input id = "submitSendAnswer" class="ui right floated positive basic button" type = "button" value = "Send Answer"></input>
                     </th>
                 </tr>
+
                 </tfoot>
             </table>
         </div>

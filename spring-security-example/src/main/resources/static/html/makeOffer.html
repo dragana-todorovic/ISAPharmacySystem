@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"  />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+    <script src="../scripts/supplier/makeOfferValidate.js"></script>
     <link href="https://cdn.rawgit.com/mdehoog/Semantic-UI/6e6d051d47b598ebab05857545f242caf2b4b48c/dist/semantic.min.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.rawgit.com/mdehoog/Semantic-UI/6e6d051d47b598ebab05857545f242caf2b4b48c/dist/semantic.min.js"></script>
     <script src="../scripts/customAjax.js"></script>
@@ -185,6 +186,9 @@ div.container4 h2 {
                 </tr>
                 </tbody>
                 <tfoot class="full-width">
+                <tr>
+                    <th colspan="2">  <p id="error"></p></th>
+                </tr>
                 <tr>
                     <th></th>
                     <th colspan="2">

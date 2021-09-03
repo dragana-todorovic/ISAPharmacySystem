@@ -47,6 +47,28 @@ $(document).ready(function(e){
             //alert("Failed")
         }
     })
+        btnAdd = document.getElementById("submitSendAnswer")
+		btnAdd.disabled = true
+    	  $('#txtAnswer').keyup(function () {
+    		  	if($('#txtAnswer').val() == ''){
+    		  		btnAdd.disabled = true
+    				$(this).addClass(`alert-danger`);
+    		  		$('#txtAnswer').css('border-color', 'red');
+    		  		$("#error").text("Please enter answer!")
+    		  		$('#error').css('color', 'red');
+    		  	}else {
+    		  		console.log( $('#txtAnswer').val())
+
+    		  		$(this).removeClass(`alert-danger`);
+    		  		$('#txtAnswer').css('border-color', '');
+    		  		$("#error").text("")
+    				btnAdd.disabled = false;
+    		  	}
+    	  });
+
+
+
+
     var modalMedicines = document.getElementById('modal-medicines')
     var spanMedicine = document.getElementsByClassName("closeMedicine")[0];
       spanMedicine.onclick = function () {
