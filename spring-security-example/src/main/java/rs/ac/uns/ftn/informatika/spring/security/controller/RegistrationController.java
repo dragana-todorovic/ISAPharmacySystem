@@ -116,6 +116,8 @@ public class RegistrationController {
         Address a = new Address();
         a.setStreet(pharmacyView.getStreet());
         a.setCity(pharmacyView.getCity());
+        a.setCoordX("0");
+        a.setCoordY("0");
         newPharmacy.setName(pharmacyView.getName());
         newPharmacy.setAddress(a);
         newPharmacy.setDescription(pharmacyView.getDescription());

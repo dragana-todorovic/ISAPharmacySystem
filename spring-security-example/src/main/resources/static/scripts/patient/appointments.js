@@ -317,10 +317,12 @@ function showSubscribedPharmacies(data){
 			</tr>`;
 	}
 	$('#all_pharmacies_table').html(temp);
+
+
 	$('#eval').attr('hidden',true);	
 	$('#my_derm_appointments').attr('hidden',true);
 	$('#pharmacy-details').attr('hidden',true);		
-	$('#all_pharmacies_show').attr('hidden',true);	
+	$('#all_pharmacies_show').attr('hidden',false);
 	$('#edit-profile').attr('hidden', true);
 	$('#show').attr('hidden',true);
 	$('#derm_appointments').attr('hidden',true);
