@@ -90,6 +90,7 @@ public class MedicineOrderServiceImpl implements MedicineOrderService {
 		mo.setMedicines(medicinesWithQuantity);
 		mo.setStatus(MedicineOrderStatus.ON_HOLD);
 		mo.setTimeLimit(date);
+		mo.setPharmacyAdminId(pa.getId());
 		
 		p.getMedicineOrders().add(mo);
 		
@@ -112,7 +113,10 @@ public class MedicineOrderServiceImpl implements MedicineOrderService {
 		} else {
 		
 		MedicineOrder mo = so.getMedicineOrder();
+		if(mo.getPharmacyAdminId() != pa.getId()) return false;
 		mo.setStatus(MedicineOrderStatus.PROCESSED);
+		so.setStatus(SuplierOfferStatus.ACCEPTED);
+		this.suplierOfferRepository.save(so);
 		
 		List<SuplierOffer> allOffersExceptAccepted = new ArrayList<SuplierOffer>();
 		for(SuplierOffer suplierOffer : this.suplierOfferRepository.findOffersByOrder(mo.getId())) {
@@ -147,6 +151,8 @@ public class MedicineOrderServiceImpl implements MedicineOrderService {
 					}
 				} else {
 					for(SuplierOffer su : allOffersExceptAccepted) {
+						su.setStatus(SuplierOfferStatus.REJECTED);
+						this.suplierOfferRepository.save(su);
 						if(soffer.equals(su)) {
 							try {
 								this.emailService.sendEmail(s.getUser().getEmail(), "Decline offer", "Your offer is declined");
@@ -227,8 +233,11 @@ public class MedicineOrderServiceImpl implements MedicineOrderService {
 
 		
 		List<SuplierOffer> offers = this.suplierOfferRepository.findAll();
-		
+		if(offers.size() == 0) {
+			return false;
+		}
 		for(SuplierOffer so : offers) {
+			
 			if(so.getMedicineOrder().getId() == id) {
 				return true;
 			}

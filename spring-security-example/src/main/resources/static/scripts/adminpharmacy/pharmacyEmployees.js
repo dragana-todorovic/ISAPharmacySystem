@@ -124,11 +124,6 @@ let showDermatologists = function(data) {
 		<i class="close icon"></i>
 		Delete
 		</button>
-		</td><td>
-			<button id = "`+data[i].id+`" name="prikaziZahjeve" class="ui secondary button">
-		<i class="eye icon"></i>
-		Show vacation requests
-		</button>
 		</td>`;
 	}
 	temp+=`</tr>`
@@ -137,7 +132,7 @@ let showDermatologists = function(data) {
 			    margin-right:auto; margin-top: 40px;">
 			    
 	  <thead>
-	  <tr> <th colspan="6">
+	  <tr> <th colspan="5">
 	  Filter by rating:
 	  <div class="ui input left">
                <input type="number" name="filter" placeholder = "Od..." id="odOcjena" min="0" style="width:80px;"/></div>
@@ -145,7 +140,7 @@ let showDermatologists = function(data) {
                <input type="number" name="filter" id="doOcjena" placeholder = "Do..." min="0" style="width:80px;"/></div>
            </th>
            </tr><tr>
-           <th colspan="6">
+           <th colspan="5">
              <div id="filterApoteke">
     </br><b>Filtriraj po apoteci:</b><br/>
         ${t}
@@ -153,7 +148,7 @@ let showDermatologists = function(data) {
            </th>
             </tr>
 	  <tr>
-			<th colspan="6">
+			<th colspan="5">
 			 <div class="ui input left">
       <input type="text" placeholder="Search by first name..." id="firstNameSearch">
     </div>
@@ -171,7 +166,6 @@ let showDermatologists = function(data) {
 	    <th>Avarage rating</th>
 	    <th>Pharmacies</th>
 	    <th>Options</th>
-	     <th>Vaction requests</th>
 	  </tr></thead><tbody id="tabelaDermatologa">
 	  </tbody>
 	  <tfoot class="full-width">
@@ -618,18 +612,19 @@ let showPharmacists = function(data) {
     <tbody>
 	 <tr>
     <td colspan="3"><div class="ui fluid input"><input type="text" id="txtFirstName" placeholder="Enter pharmacist's first name..."/>
-    </div></td>
+   <p id = "errorFirstName"></p> </div></td>
 </tr>
  <tr>
     <td colspan="3"><div class="ui fluid input"><input type="text" id="txtLastName" placeholder="Enter pharmacist's last name..."/>
-    </div></td>
+     <p id = "errorLastName"></p></div></td>
 </tr>
  <tr>
     <td colspan="3"><div class="ui fluid input"><input type="text" id="txtEmail" placeholder="Enter pharmacist's email..."/>
-    </div></td>
+    <p id = "errorEmail"></p></div></td>
 </tr>
  <tr>
-    <td colspan="3"><div class="ui fluid input"><input type="text" id="txtPassword" placeholder="Enter pharmacist's password..."/>
+    <td colspan="3"><div class="ui fluid input"><input type="password" id="txtPassword" placeholder="Enter pharmacist's password..."/>
+    <p id = "errorPassword"></p>
     </div></td>
 </tr>
 
@@ -796,6 +791,85 @@ $('#end').calendar({
 	  type: 'time'
 	});
 
+input_email = $('#txtEmail');
+input_password = $('#txtPassword');
+input_firstName = $('#txtFirstName');
+input_lastName = $('#txtLastName');
+var btnAdd = document.getElementById("addDermatologist")
+btnAdd.disabled = true
+
+input_email.keyup(function () {
+	  	if(validateEmail(input_email.val()) && validatePassword(input_password.val()) && validateName($('#txtFirstName').val()) && validateName($('#txtLastName').val())) {
+	  		btnAdd.disabled = false
+	  	}
+	  	if(!validateEmail(input_email.val())){
+	  		btnAdd.disabled = true
+			$(this).addClass(`alert-danger`);
+	  		$('#txtEmail').css('border-color', 'red');
+	  		$("#errorEmail").text("Email is in wrong format!")
+	  		$('#errorEmail').css('color', 'red');
+	  	}else {
+	  		$(this).removeClass(`alert-danger`);
+	  		$('#txtEmail').css('border-color', '');
+	  		$("#errorEmail").text("")
+	  	}
+});
+
+input_password.keyup(function () {
+	if(validateEmail(input_email.val()) && validatePassword(input_password.val()) && validateName($('#txtFirstName').val()) && validateName($('#txtLastName').val())) {
+  		btnAdd.disabled = false
+  	}
+		if(!validatePassword(input_password.val())) {
+			btnAdd.disabled = true
+			$(this).addClass(`alert-danger`);
+	  		$('#txtPassword').css('border-color', 'red');
+	  		$("#errorPassword").text("Password must have at least 8 characters, lower case, upper case, digit, special character!")
+	  		$('#errorPassword').css('color', 'red');
+		} else {
+			$(this).removeClass(`alert-danger`);
+	  		$('#txtPassword').css('border-color', '');
+	  		$("#errorPassword").text("")
+	  		
+		}
+	});
+
+input_firstName.keyup(function () {
+	if(validateEmail(input_email.val()) && validatePassword(input_password.val()) && validateName(input_firstName.val()) && validateName(input_lastName.val())) {
+  		btnAdd.disabled = false
+  	}
+		if(!validateName(input_firstName.val())) {
+			btnAdd.disabled = true
+			$(this).addClass(`alert-danger`);
+	  		$('#txtFirstName').css('border-color', 'red');
+	  		$("#errorFirstName").text("First name must start with upper case!")
+	  		$('#errorFirstName').css('color', 'red');
+		} else {
+			$(this).removeClass(`alert-danger`);
+	  		$('#txtFirstName').css('border-color', '');
+	  		$("#errorFirstName").text("")
+	  		
+		}
+	});
+
+input_lastName.keyup(function () {
+	if(validateEmail(input_email.val()) && validatePassword(input_password.val()) && validateName(input_firstName.val()) && validateName(input_lastName.val())) {
+  		btnAdd.disabled = false
+  	}
+		if(!validateName(input_lastName.val())) {
+			btnAdd.disabled = true
+			$(this).addClass(`alert-danger`);
+	  		$('#txtLastName').css('border-color', 'red');
+	  		$("#errorLastName").text("First name must start with upper case!")
+	  		$('#errorLastName').css('color', 'red');
+		} else {
+			$(this).removeClass(`alert-danger`);
+	  		$('#txtLastName').css('border-color', '');
+	  		$("#errorLastName").text("")
+	  		
+		}
+	});
+	  	
+
 $("#addDermatologist").click(function() {
 	var firstName = $('#txtFirstName').val();
 	var lastName = $('#txtLastName').val();
@@ -825,7 +899,7 @@ $("#addDermatologist").click(function() {
 				  location.href = "adminpharmacy.html"
 	    },
 	    error: function(){
-	    	alert("Failed")
+	    	alert("You try to add dermatologist without defining working times")
 	    }
 
 	});
@@ -851,6 +925,27 @@ $("button[name=prikaziZahjeve]").click(function() {
  });
 }
 
+
+function validateEmail(email) {
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
+
+function validatePassword(password) {
+  
+  var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
+  	if(password.match(strongRegex)) {
+  		return true;
+  	}
+  	else {
+  		return false;
+  	}
+}
+
+function validateName(name) {
+    const re = /^[A-Za-z]+$/;
+    return re.test(String(name));
+}
 
 
 

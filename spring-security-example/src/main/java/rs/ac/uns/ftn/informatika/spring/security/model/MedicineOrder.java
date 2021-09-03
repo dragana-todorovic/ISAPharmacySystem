@@ -34,7 +34,10 @@ public class MedicineOrder {
 	
 	@Column(name = "status" , nullable = false)
 	private MedicineOrderStatus status;
-
+	
+	@Column(name = "adminId" , nullable = false)
+	private long pharmacyAdminId;
+	
 	public long getId() {
 		return id;
 	}
@@ -71,6 +74,14 @@ public class MedicineOrder {
 	public String toString() {
 		return "MedicineOrder [id=" + id + ", medicines=" + medicines + ", timeLimit=" + timeLimit + ", status="
 				+ status + "]";
+	}
+
+	public long getPharmacyAdminId() {
+		return pharmacyAdminId;
+	}
+
+	public void setPharmacyAdminId(long pharmacyAdminId) {
+		this.pharmacyAdminId = pharmacyAdminId;
 	}
 	
 }

@@ -249,9 +249,12 @@ public class PharmacyController {
 	@PostMapping("/addPharmacistInPharmacy/{email}")
 	@PreAuthorize("hasRole('ADMIN_PHARMACY')")
 	public ResponseEntity<?> addPharmacistInPharmacy(@PathVariable(name="email") String email,@RequestBody NewPharmacistDTO newPharmacist) {
-		this.pharmacyService.addPharmacistInPharmacy(email, newPharmacist);
-		System.out.println("$$$$$$$$$$$$" + newPharmacist);
+		if(this.pharmacyService.addPharmacistInPharmacy(email, newPharmacist)) {
+		
 		return new ResponseEntity<>(HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		
 	}
 	
