@@ -8,9 +8,13 @@ import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.springframework.transaction.annotation.Transactional;
 import rs.ac.uns.ftn.informatika.spring.security.model.*;
+import rs.ac.uns.ftn.informatika.spring.security.repository.MedicineWithQuantityRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PatientRepository;
+import rs.ac.uns.ftn.informatika.spring.security.repository.UserRepository;
 import rs.ac.uns.ftn.informatika.spring.security.service.*;
+import rs.ac.uns.ftn.informatika.spring.security.view.EPrescriptionBuyPharmacyView;
 import rs.ac.uns.ftn.informatika.spring.security.view.EPrescriptionPharmacyView;
 import rs.ac.uns.ftn.informatika.spring.security.view.PharmacyWithMedicationView;
 
@@ -37,6 +41,15 @@ public class PatientServiceImpl implements PatientService {
 
 	@Autowired
 	private PriceListService priceListService;
+
+	@Autowired
+	private UserRepository userRepository;
+
+	@Autowired
+	private EmailService emailService;
+
+	@Autowired
+	private MedicineWithQuantityRepository medicineWithQuantityRepository;
 	
 	@Override
 	public List<Patient> findAll() {
@@ -113,6 +126,7 @@ public class PatientServiceImpl implements PatientService {
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public void buyEPrescriptionInPharmacy(Patient patient, Pharmacy pharmacy, List<String> medicineCodes, List<String> medicineCodesQuantity) {
 		EPrescription ePrescription = new EPrescription();
 		ePrescription.setPatient(patient);
@@ -142,10 +156,11 @@ public class PatientServiceImpl implements PatientService {
 
 		//update in pharmacy medicine quantity
 		for(MedicineWithQuantity myMed :medicineWithQuantities) {
-			updateMedicineQuantityInPharmacy(myMed, pharmacy);
+			MedicineWithQuantity m = this.medicineWithQuantityRepository.findMedWithQById(myMed.getId());
+			updateMedicineQuantityInPharmacy(m, pharmacy);
 
 			//TODO: check this againg milica
-			updateUserPoints(myMed,patient );
+			updateUserPoints(m,patient );
 			this.loyaltyScaleService.updateCathegoryOfPatient(patient);
 		}
 	}
@@ -263,5 +278,6 @@ public class PatientServiceImpl implements PatientService {
 				}
 		}
 	}
+
 
 }

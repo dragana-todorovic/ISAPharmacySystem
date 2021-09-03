@@ -1,13 +1,6 @@
 package rs.ac.uns.ftn.informatika.spring.security.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name="LOYALTYSCALE")
@@ -26,6 +19,18 @@ public class LoyaltyScale {
 	
 	@Column(name = "discount", nullable = false)
 	private int disccount;
+
+	public long getVersion() {
+		return version;
+	}
+
+	public void setVersion(long version) {
+		this.version = version;
+	}
+
+	@Version
+	@Column(name = "version", nullable = false, columnDefinition = "int default 1")
+	private long version;
 
 	public LoyaltyScale(Long id, PatientCategory category, int neededPoints, int disccount) {
 		this.id = id;

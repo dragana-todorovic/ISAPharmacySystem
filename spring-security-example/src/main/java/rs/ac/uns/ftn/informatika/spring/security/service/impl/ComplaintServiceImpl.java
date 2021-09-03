@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import rs.ac.uns.ftn.informatika.spring.security.model.DermatologistComplaint;
@@ -15,6 +16,8 @@ import rs.ac.uns.ftn.informatika.spring.security.repository.DermatologistComplai
 import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacistComplaintRepository;
 import rs.ac.uns.ftn.informatika.spring.security.repository.PharmacyComplaintRepository;
 import rs.ac.uns.ftn.informatika.spring.security.service.ComplaintService;
+import rs.ac.uns.ftn.informatika.spring.security.service.EmailService;
+import rs.ac.uns.ftn.informatika.spring.security.view.AnswerOnComplaintView;
 import rs.ac.uns.ftn.informatika.spring.security.view.ComplaintView;
 
 import java.util.ArrayList;
@@ -30,6 +33,12 @@ public class ComplaintServiceImpl  implements ComplaintService {
 
     @Autowired
     private DermatologistComplaintRepository dermatologistComplaintRepository;
+    @Autowired
+    private ComplaintService complaintService;
+
+    @Autowired
+    private EmailService emailService;
+
 
     @Override
     public List<PharmacyComplaint> findAllPharmacyComplaint() {
@@ -106,6 +115,55 @@ public class ComplaintServiceImpl  implements ComplaintService {
     @Override
     public PharmacistComplaint savePharmacist(PharmacistComplaint pharmacistComplaint) {
         return this.pharmacistComplaintRepository.save(pharmacistComplaint);
+    }
+
+    @Override
+    @Transactional(readOnly = false)
+    public void sendAnswer(AnswerOnComplaintView answerInfo) {
+        List<PharmacistComplaint> pharmacistComplaints = this.complaintService.findAllPharmacistComplaint();
+        List<DermatologistComplaint> dermatologistComplaints = this.complaintService.findAllDermatologistComplaint();
+        List<PharmacyComplaint> pharmacyComplaints = this.complaintService.findAllPharmacyComplaint();
+
+        String sendToEmail =null;
+
+        if(answerInfo.getComplaintTip().equals("PHARMACY")) {
+            PharmacyComplaint ph = pharmacyComplaintRepository.findPharmacyComplaintById(Long.parseLong(answerInfo.getComplaintId()));
+            if (!ph.isAnswered()) {
+                sendToEmail = ph.getPatient().getUser().getEmail();
+                ph.setAnswered(true);
+                this.complaintService.savePharmacy(ph);
+
+            }
+        }else   if(answerInfo.getComplaintTip().equals("PHARMACIST")){
+            PharmacistComplaint ph = pharmacistComplaintRepository.findPharmacistComplaintById(Long.parseLong(answerInfo.getComplaintId()));
+
+            if (!ph.isAnswered()) {
+                        sendToEmail = ph.getPatient().getUser().getEmail();
+                        ph.setAnswered(true);
+                        this.complaintService.savePharmacist(ph);
+
+                }
+
+        }else   if(answerInfo.getComplaintTip().equals("DERMATOLOGIST")) {
+            DermatologistComplaint ph = dermatologistComplaintRepository
+                    .findDermatologistComplaintById(Long.parseLong(answerInfo.getComplaintId()));
+
+            if (!ph.isAnswered()) {
+                        sendToEmail = ph.getPatient().getUser().getEmail();
+                        ph.setAnswered(true);
+                        this.complaintService.saveDerm(ph);
+
+            }
+        }
+        try {
+            System.out.println("USAOOOOOOOOOOO DA POSALJE AAAAAAADMIN MEJL naaaaaa");
+            System.out.println(sendToEmail);
+            emailService.sendEmail(sendToEmail,"We value your opinion for our services",answerInfo.getAnswer());
+            System.out.println("Mejl je poslat");
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 

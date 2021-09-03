@@ -16,6 +16,17 @@ public class LoyaltyProgram {
     @Column(name = "advisingPoints", nullable = false)
     private int advisingPoints;
 
+    public long getVersion() {
+        return version;
+    }
+
+    public void setVersion(long version) {
+        this.version = version;
+    }
+
+    @Version
+    @Column(name = "version", nullable = false, columnDefinition = "int default 1")
+    private long version;
     public LoyaltyProgram() {
     }
 
