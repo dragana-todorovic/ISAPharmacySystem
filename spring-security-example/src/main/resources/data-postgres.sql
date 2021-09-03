@@ -416,7 +416,6 @@ INSERT INTO medicineorder(status,time_limit,admin_id) VALUES (0,'2017-10-01 21:5
 INSERT INTO medicineorder(status,time_limit,admin_id) VALUES (1,'2017-10-29 21:58:58.508-07',1);
 INSERT INTO medicineorder(status,time_limit,admin_id) VALUES (0,'2017-12-04 21:58:58.508-07',1);
 
-INSERT INTO medicineorder(status,time_limit,admin_id) VALUES (1,'2022-10-29 21:58:58.508-07',2);
 INSERT INTO medicineorder(status,time_limit,admin_id) VALUES (0,'2021-12-04 21:58:58.508-07',2);
 
 --pharmacy medicine order
@@ -424,8 +423,7 @@ INSERT INTO pharmacy_medicine_orders(pharmacy_id, medicine_orders_id) VALUES (2,
 INSERT INTO pharmacy_medicine_orders(pharmacy_id, medicine_orders_id) VALUES (2,2);
 INSERT INTO pharmacy_medicine_orders(pharmacy_id, medicine_orders_id) VALUES (1,3);
 
-INSERT INTO pharmacy_medicine_orders(pharmacy_id, medicine_orders_id) VALUES (2,4);
-INSERT INTO pharmacy_medicine_orders(pharmacy_id, medicine_orders_id) VALUES (1,5);
+INSERT INTO pharmacy_medicine_orders(pharmacy_id, medicine_orders_id) VALUES (1,4);
 
 
 --medicine order medicines
@@ -438,7 +436,6 @@ INSERT INTO medicineorder_medicines(medicine_order_id,medicines_id) VALUES (1,9)
 
 INSERT INTO medicineorder_medicines(medicine_order_id,medicines_id) VALUES (4,3);
 INSERT INTO medicineorder_medicines(medicine_order_id,medicines_id) VALUES (4,4);
-INSERT INTO medicineorder_medicines(medicine_order_id,medicines_id) VALUES (5,9);
 
 --medicine reservation
 

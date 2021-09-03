@@ -267,13 +267,13 @@ public class PharmacyServiceImpl implements PharmacyService{
 				}
 			}
 		}
-		
+			
 		for(WorkingTime t : dermatologist.getWorkingTimes()) {
 			if(t.getPharmacy().equals(p)) {
 				dermatologist.getWorkingTimes().remove(t);
 			}
 		}
-		
+	
 		this.dermatologistRepository.save(dermatologist);
 		return true;
 			
