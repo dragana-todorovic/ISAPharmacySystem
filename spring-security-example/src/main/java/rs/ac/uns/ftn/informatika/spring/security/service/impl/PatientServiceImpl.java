@@ -268,12 +268,15 @@ public class PatientServiceImpl implements PatientService {
 						break;
 					}
 					if(!reservation.getIsPenalGiven()) {
-						if(reservation.getDueTo().isBefore(LocalDate.now()) && reservation.getDueToTime().isBefore(LocalTime.now()) && reservation.getStatus().equals(MedicineReservationStatus.RESERVED)) {
-							patient.setPenal(patient.getPenal()+1);
-							reservation.setIsPenalGiven(true);
-							this.medicineReservationService.saveReservation(reservation);
-							this.patientRepository.save(patient);
+						if(reservation.getDueTo().getMonth().equals(LocalDate.now().getMonth()) && reservation.getDueTo().getYear()==LocalDate.now().getYear()) {
+							if(reservation.getDueTo().isBefore(LocalDate.now()) && reservation.getDueToTime().isBefore(LocalTime.now()) && reservation.getStatus().equals(MedicineReservationStatus.RESERVED)) {
+								patient.setPenal(patient.getPenal()+1);
+								reservation.setIsPenalGiven(true);
+								this.medicineReservationService.saveReservation(reservation);
+								this.patientRepository.save(patient);
+							}
 						}
+						
 					}
 				}
 		}

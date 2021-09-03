@@ -181,6 +181,7 @@ public class AppointmentServiceImpl implements AppointmentService{
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public Boolean scheduleDermatologistAppointment(Long id,String patient) {
 		System.out.println(patient);	
 		User user = this.userService.findByUsername(patient);

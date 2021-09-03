@@ -11,7 +11,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.repository.query.Param;
 
-import rs.ac.uns.ftn.informatika.spring.security.model.MedicineWithQuantity;;import javax.persistence.LockModeType;
+import rs.ac.uns.ftn.informatika.spring.security.model.MedicineWithQuantity;
+import javax.persistence.LockModeType;
 import javax.persistence.QueryHint;
 
 public interface MedicineWithQuantityRepository extends JpaRepository<MedicineWithQuantity, Long> {
