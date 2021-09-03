@@ -499,9 +499,9 @@ INSERT INTO therapy(duration,medicine_id) VALUES (4,1);
 INSERT INTO therapy(duration,medicine_id) VALUES (6,2);
 
 --loyalty scale
-INSERT INTO loyaltyscale(id,category,needed_points,discount) VALUES (1,0,0,0);
-INSERT INTO loyaltyscale(id,category,needed_points,discount) VALUES (2,1,20,10);
-INSERT INTO loyaltyscale(id,category,needed_points,discount) VALUES (3,2,60,30);
+INSERT INTO loyaltyscale(id,category,needed_points,discount, version) VALUES (1,0,0,0,0);
+INSERT INTO loyaltyscale(id,category,needed_points,discount,version) VALUES (2,1,20,10,0);
+INSERT INTO loyaltyscale(id,category,needed_points,discount, version) VALUES (3,2,60,30,0);
 
 
 --pharmacist consulting
@@ -529,5 +529,5 @@ INSERT INTO pharmacistcounselingprice(price,counseling_id) VALUES (600,7);
 INSERT INTO pharmacistcounselingprice(price,counseling_id) VALUES (1000,9);
 INSERT INTO pharmacistcounselingprice(price,counseling_id) VALUES (870,8);
 
-INSERT INTO loyaltyprogram(id,appointment_points,advising_points) VALUES (1,5,3);
+INSERT INTO loyaltyprogram(id,appointment_points,advising_points, version) VALUES (1,5,3,0);
 
