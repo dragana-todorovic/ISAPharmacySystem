@@ -5,6 +5,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"  />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="../scripts/adminsystem/loyaltyValidate.js"></script>
 
     <script src="../scripts/customAjax.js"></script>
     <script src="../scripts/adminsystem/loyalty.js"></script>
@@ -207,11 +208,20 @@ div.container4 h2 {
                 <td class="ui input small"> <input type="number" id="txtGoldNeededPoints"/></td>
             </tr>
             <tr>
+                <th colspan="2">  <p id="errorPoint"></p></th>
+            </tr>
+            <tr>
                 <td>Discount:</td>
                 <td class="ui input small"> <input type="number" id="txtGoldDiscount"/></td>
             </tr>
+            <tr>
+                <th colspan="2">  <p id="errorDisc"></p></th>
+            </tr>
             </tbody>
             <tfoot class="full-width">
+            <tr>
+                <th colspan="2">  <p id="error"></p></th>
+            </tr>
             <tr>
                 <th></th>
                 <th colspan="2">
@@ -239,6 +249,9 @@ div.container4 h2 {
             </tr>
             </tbody>
             <tfoot class="full-width">
+            <tr>
+                <th colspan="2">  <p id="errorProgram"></p></th>
+            </tr>
             <tr>
                 <th></th>
                 <th colspan="2">

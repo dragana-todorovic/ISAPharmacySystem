@@ -5,9 +5,10 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"  />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
     <script src="../scripts/customAjax.js"></script>
-    <script src="../scripts/adminsystem/main.js"></script>   
+    <script src="../scripts/adminsystem/main.js"></script>
     <script src="../scripts/searchPharmacies.js"></script>
     <script src="../scripts/jwt.js"></script>
     <title>Admin system Homepage</title>
@@ -125,7 +126,7 @@ div.container4 h2 {
                 <a id="register_supplier" href="registerSupplier.html">Supplier</a>
                 <a id="register_admin_system" href="registerAdminSystem.html" >Admin System</a>           </div>
         </li>
-		<li><a id="s_p" href="loyaltyScale.html">Search Pharmacies</a></li>
+        <li><a id="s_p" href="loyaltyScale.html">Search Pharmacies</a></li>
         <li class="dropdown" style="float:right;">
             <a href="javascript:void(0)" class="dropbtn">Profile</a>
             <div class="dropdown-content" style="right:0;">
@@ -238,6 +239,9 @@ div.container4 h2 {
             </tr>
             </tbody>
             <tfoot class="full-width">
+            <tr>
+                <th colspan="2">  <p id="error"></p></th>
+            </tr>
             <tr>
                 <th></th>
                 <th colspan="2">

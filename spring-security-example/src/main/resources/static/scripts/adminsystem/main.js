@@ -43,6 +43,177 @@ $(document).ready(function(e){
                 //alert("Failed")
             }
     })
+ btnAdd = document.getElementById("submitAddMedicine")
+        btnAdd.disabled = true
+
+          $('#txtCode').keyup(function () {
+            if( $('#txtCode').val() != ''  &&  $('#txtName').val()!= '' && $('#txtContent').val()!= '' && $('#txtProducer').val() &&   $('#txtAdvisedDailyDose').val() != ''  &&  $('#txtContradiction').val()!= '' && $('#txtBuyingPoints').val()!= '' ){
+                                   btnAdd.disabled = false
+                                   }
+                if($('#txtCode').val() == ''){
+                    btnAdd.disabled = true
+                    $(this).addClass(`alert-danger`);
+                    $('#txtCode').css('border-color', 'red');
+                    $("#error").text("Please enter answer!")
+                    $('#error').css('color', 'red');
+                }else{
+                    $(this).removeClass(`alert-danger`);
+                    $('#txtCode').css('border-color', '');
+                    $("#error").text("")
+                }
+
+          });
+           $('#txtName').keyup(function () {
+            if( $('#txtCode').val() != ''  &&  $('#txtName').val()!= '' && $('#txtContent').val()!= '' && $('#txtProducer').val() &&   $('#txtAdvisedDailyDose').val() != ''  &&  $('#txtContradiction').val()!= '' && $('#txtBuyingPoints').val()!= '' ){
+                                   btnAdd.disabled = false
+                                   }
+              if($('#txtName').val() == ''){
+                  btnAdd.disabled = true
+                  $(this).addClass(`alert-danger`);
+                  $('#txtName').css('border-color', 'red');
+                  $("#error").text("Please enter answer!")
+                  $('#error').css('color', 'red');
+              }else {
+                  $(this).removeClass(`alert-danger`);
+                  $('#txtName').css('border-color', '');
+                  $("#error").text("")
+              }
+        });
+         $('#txtContent').keyup(function () {
+                    if( $('#txtCode').val() != ''  &&  $('#txtName').val()!= '' && $('#txtContent').val()!= '' && $('#txtProducer').val() &&   $('#txtAdvisedDailyDose').val() != ''  &&  $('#txtContradiction').val()!= '' && $('#txtBuyingPoints').val()!= '' ){
+                        btnAdd.disabled = false
+                        }
+                      if($('#txtContent').val() == ''){
+                          btnAdd.disabled = true
+                          $(this).addClass(`alert-danger`);
+                          $('#txtContent').css('border-color', 'red');
+                          $("#error").text("Please enter answer!")
+                          $('#error').css('color', 'red');
+                      }else {
+                          $(this).removeClass(`alert-danger`);
+                          $('#txtContent').css('border-color', '');
+                          $("#error").text("")
+                      }
+                });
+         $('#txtProducer').keyup(function () {
+          if( $('#txtCode').val() != ''  &&  $('#txtName').val()!= '' && $('#txtContent').val()!= '' && $('#txtProducer').val() &&   $('#txtAdvisedDailyDose').val() != ''  &&  $('#txtContradiction').val()!= '' && $('#txtBuyingPoints').val()!= '' ){
+                                 btnAdd.disabled = false
+                                 }
+           if($('#txtProducer').val() == ''){
+               btnAdd.disabled = true
+               $(this).addClass(`alert-danger`);
+               $('#txtProducer').css('border-color', 'red');
+               $("#error").text("Please enter answer!")
+               $('#error').css('color', 'red');
+           }else {
+               $(this).removeClass(`alert-danger`);
+               $('#txtProducer').css('border-color', '');
+               $("#error").text("")
+           }
+     });
+
+         $('#txtSubstituteMedicineCodes').keyup(function () {
+          if( $('#txtCode').val() != ''  &&  $('#txtName').val()!= '' && $('#txtContent').val()!= '' && $('#txtProducer').val() &&   $('#txtAdvisedDailyDose').val() != ''  &&  $('#txtContradiction').val()!= '' && $('#txtBuyingPoints').val()!= '' ){
+                                 btnAdd.disabled = false
+                                 }
+                if($('#txtSubstituteMedicineCodes').val() == ''){
+                    btnAdd.disabled = true
+                    $(this).addClass(`alert-danger`);
+                    $('#txtSubstituteMedicineCodes').css('border-color', 'red');
+                    $("#error").text("Please enter answer!")
+                    $('#error').css('color', 'red');
+                }else {
+                    $(this).removeClass(`alert-danger`);
+                    $('#txtSubstituteMedicineCodes').css('border-color', '');
+                    $("#error").text("")
+                }
+          });
+            $('#txtNotes').keyup(function () { if( $('#txtCode').val() != ''  &&  $('#txtName').val()!= '' && $('#txtContent').val()!= '' && $('#txtProducer').val() &&   $('#txtAdvisedDailyDose').val() != ''  &&  $('#txtContradiction').val()!= '' && $('#txtBuyingPoints').val()!= '' ){
+                                                                      btnAdd.disabled = false
+                                                                      }
+                  if($('#txtNotes').val() == ''){
+                      btnAdd.disabled = true
+                      $(this).addClass(`alert-danger`);
+                      $('#txtNotes').css('border-color', 'red');
+                      $("#error").text("Please enter answer!")
+                      $('#error').css('color', 'red');
+                  }else {
+                      $(this).removeClass(`alert-danger`);
+                      $('#txtNotes').css('border-color', '');
+                      $("#error").text("")
+                  }
+            });
+
+              $('#txtAdvisedDailyDose').keyup(function () {
+              if( $('#txtCode').val() != ''  &&  $('#txtName').val()!= '' && $('#txtContent').val()!= '' && $('#txtProducer').val() &&   $('#txtAdvisedDailyDose').val() != ''  &&  $('#txtContradiction').val()!= '' && $('#txtBuyingPoints').val()!= '' ){
+                                                                                   btnAdd.disabled = false
+                                                                                   }
+                      if($('#txtAdvisedDailyDose').val() == ''){
+                          btnAdd.disabled = true
+                          $(this).addClass(`alert-danger`);
+                          $('#txtAdvisedDailyDose').css('border-color', 'red');
+                          $("#error").text("Please enter answer!")
+                          $('#error').css('color', 'red');
+                      }else {
+                          $(this).removeClass(`alert-danger`);
+                          $('#txtAdvisedDailyDose').css('border-color', '');
+                          $("#error").text("")
+                      }
+                });
+          $('#txtContradiction').keyup(function () {
+           if( $('#txtCode').val() != ''  &&  $('#txtName').val()!= '' && $('#txtContent').val()!= '' && $('#txtProducer').val() &&   $('#txtAdvisedDailyDose').val() != ''  &&  $('#txtContradiction').val()!= '' && $('#txtBuyingPoints').val()!= '' ){
+                                  btnAdd.disabled = false
+                                  }
+                              if($('#txtContradiction').val() == ''){
+                                  btnAdd.disabled = true
+                                  $(this).addClass(`alert-danger`);
+                                  $('#txtContradiction').css('border-color', 'red');
+                                  $("#error").text("Please enter all fields!")
+                                  $('#error').css('color', 'red');
+                              }else {
+                                  $(this).removeClass(`alert-danger`);
+                                  $('#txtContradiction').css('border-color', '');
+                                  $("#error").text("")
+                              }
+                        });
+               $('#txtBuyingPoints').keyup(function () {
+                if( $('#txtCode').val() != ''  &&  $('#txtName').val()!= '' && $('#txtContent').val()!= '' && $('#txtProducer').val() &&   $('#txtAdvisedDailyDose').val() != ''  &&  $('#txtContradiction').val()!= '' && $('#txtBuyingPoints').val()!= '' ){
+                                       btnAdd.disabled = false
+                                       }
+                     if($('#txtBuyingPoints').val() == ''){
+                         btnAdd.disabled = true
+                         $(this).addClass(`alert-danger`);
+                         $('#txtBuyingPoints').css('border-color', 'red');
+                         $("#error").text("Please enter all fields!")
+                         $('#error').css('color', 'red');
+                     }else {
+                         $(this).removeClass(`alert-danger`);
+                         $('#txtBuyingPoints').css('border-color', '');
+                         $("#error").text("")
+                     }
+               });
+
+     /*  if(document. getElementById("txtCode"). value. length == 0 ||
+        document. getElementById("txtName"). value. length == 0 ||
+        document. getElementById("txtProducer"). value. length == 0 ||
+        document. getElementById("txtContent"). value. length == 0 ||
+        document. getElementById("txtSubstituteMedicineCodes"). value. length == 0 ||
+        document. getElementById("txtNotes"). value. length == 0 ||
+        document. getElementById("txtAdvisedDailyDose"). value. length == 0 ||
+        document. getElementById("txtContradiction"). value. length == 0 ||
+        document. getElementById("txtBuyingPoints"). value. length == 0 )*/
+      /*if( $('#txtCode').val()=='' || $('#txtName').val()='' || $('#txtContent').val()=='' ||
+        $('#txtProducer').val()=='' || $('#txtSubstituteMedicineCodes').val()=='' || $('#txtNotes').val()=='' ||
+        $('#txtAdvisedDailyDose').val()=='' || $('#txtContradiction').val()=='' ||
+        $('#txtBuyingPoints').val()==''){
+                            btnAdd.disabled = true
+                                 $(this).addClass(`alert-danger`);
+                               //  $('#txtBuyingPoints').css('border-color', 'red');
+                                 $("#error").text("Please enter all fields!")
+                                 $('#error').css('color', 'red');
+        }else{
+            btnAdd.disabled = false
+        }*/
     $('#submitAddMedicine').click(function(){
         let code=$('#txtCode').val()
         let name=$('#txtName').val()

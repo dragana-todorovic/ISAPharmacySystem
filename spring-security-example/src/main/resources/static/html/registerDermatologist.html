@@ -5,9 +5,11 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"  />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="../scripts/adminsystem/registerValidation.js"></script>
 
     <script src="../scripts/customAjax.js"></script>
-    <script src="../scripts/adminsystem/register.js"></script>   
+    <script src="../scripts/adminsystem/register.js"></script>
+    <script src="../scripts/adminsystem/registerDerm.js"></script>
     <script src="../scripts/searchPharmacies.js"></script>
     <script src="../scripts/jwt.js"></script>
     <title>Admin system Homepage</title>
@@ -152,9 +154,15 @@ div.container4 h2 {
                 <td class="ui input small"> <input type="text" id="txtEmail" /></td>
             </tr>
             <tr>
+                <th colspan="2">  <p id="errorEmail"></p></th>
+            </tr>
+            <tr>
                 <td>Password:</td>
                 <td class="ui input small"> <input type="text" id="txtPassword" /></td>
 
+            </tr>
+            <tr>
+                <th colspan="2">  <p id="errorPassword"></p></th>
             </tr>
             <tr>
                 <td>First Name:</td>
@@ -183,6 +191,9 @@ div.container4 h2 {
             </tr>
             </tbody>
             <tfoot class="full-width">
+            <tr>
+                <th colspan="2">  <p id="error"></p></th>
+            </tr>
             <tr>
                 <th></th>
                 <th colspan="2">

@@ -42,6 +42,14 @@ $(document).ready(function(e){
         pharmacyIdd = this.value;
      });
 
+     $('#pharmacyTable').on('click',function(event){
+     btn =document.getElementById("submitRegisterPharmacyAdmin")
+        btn.disabled = false
+         $(this).removeClass(`alert-danger`);
+        $('#pharmacyTable').css('border-color', '');
+        $("#errorAdmin").text("")
+     })
+
       $('#submitRegisterPharmacyAdmin').click(function(){
             let password=$('#txtPassword').val()
              let firstName=$('#txtFirstName').val()
@@ -63,7 +71,8 @@ $(document).ready(function(e){
              phoneNumber:phoneNumber,
              pharmacyId : pharmacyId
          });
-        console.log(pharmacyId)
+
+
          customAjax({
                url: '/register/pharmacyAdmin',
                method: 'POST',
